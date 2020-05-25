@@ -18,6 +18,7 @@ var app = new Vue({
         </b-sidebar>
         <b-row v-if="menu == 3">
           <b-button @click="get_news">Get</b-button>
+          <b-button @click="get_sa_news">Get SA</b-button>
         </b-row>
         <b-row v-if="menu == 4">
           <b-col>
@@ -44,7 +45,7 @@ var app = new Vue({
     }
   },
   methods: {
-    get_news() {
+    get_sa_news() {
       var settings = {
       	"async": true,
       	"crossDomain": true,
@@ -52,6 +53,22 @@ var app = new Vue({
       	"method": "GET",
       	"headers": {
       		"x-rapidapi-host": "the-south-asian-express-news.p.rapidapi.com",
+      		"x-rapidapi-key": "8447cbb122msh32c4dd4f5eca4dap1da01cjsnd1dbc1b0e977"
+      	}
+      }
+
+      $.ajax(settings).done(function (response) {
+      	console.log(response);
+      });
+    },
+    get_news() {
+      var settings = {
+      	"async": true,
+      	"crossDomain": true,
+      	"url": "https://newscafapi.p.rapidapi.com/apirapid/news/?q=news",
+      	"method": "GET",
+      	"headers": {
+      		"x-rapidapi-host": "newscafapi.p.rapidapi.com",
       		"x-rapidapi-key": "8447cbb122msh32c4dd4f5eca4dap1da01cjsnd1dbc1b0e977"
       	}
       }
