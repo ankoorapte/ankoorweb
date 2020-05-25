@@ -87,14 +87,14 @@ Vue.component('ankoor-news',{
     },
     update_news() {
       for(var i = 0; i < this.news.length; i++) {
-        Vue.set(this.news_content, i, '');
-        Vue.set(this.news_head, i, '');
+        Vue.set(this.news_content, i, this.news.content);
+        Vue.set(this.news_head, i, this.news.title);
       }
     },
     update_sa_news() {
       for(var i = 0; i < this.sa_news.length; i++) {
-        Vue.set(this.sa_news_content, i, '');
-        Vue.set(this.sa_news_head, i, '');
+        Vue.set(this.sa_news_content, i, this.sa_news.content.rendered);
+        Vue.set(this.sa_news_head, i, this.sa_news.title.rendered);
       }
     }
   }
