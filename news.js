@@ -27,7 +27,7 @@ Vue.component('news-item',{
   `,
   data() {
     return {
-      show: false;
+      show: false
     }
   }
 });
