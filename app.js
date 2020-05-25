@@ -7,7 +7,7 @@ var app = new Vue({
   <b-container>
     <b-row>
       <b-col>
-        <b-button variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list>Menu</b-button>
+        <b-button variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Menu </b-button>
         <b-sidebar id="sidebar-1" title="Ankoor" shadow backdrop-variant="dark" backdrop>
         <b-list-group flush>
           <b-list-group-item @click="menu = 1">me</b-list-group-item>
@@ -16,7 +16,7 @@ var app = new Vue({
           <b-list-group-item @click="menu = 4">my stuff</b-list-group-item>
         </b-list-group>
         </b-sidebar>
-        <b-collapse v-if="menu === 4">
+        <b-collapse v-if="menu == 4">
           <b-input-group>
             <b-form-input v-model="password"></b-form-input>
             <b-input-group-append>
