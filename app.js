@@ -4,8 +4,8 @@ $.getJSON("./test.json", function(json) {encrypted_js = json});
 var app = new Vue({
   el: '#app',
   template: `
-  <b-container class="m-1 p-1">
-    <b-row>
+  <b-container>
+    <b-row class="m-1 p-1">
       <b-col>
         <b-button class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
         <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
@@ -17,8 +17,10 @@ var app = new Vue({
           </b-list-group>
         </b-sidebar>
         <b-row v-if="menu == 3">
-          <b-button @click="get_news">Get</b-button>
-          <b-button @click="get_sa_news">Get SA</b-button>
+          <b-col>
+            <b-button @click="get_news">Get</b-button>
+            <b-button @click="get_sa_news">Get SA</b-button>
+          </b-col>
         </b-row>
         <b-row v-if="menu == 4">
           <b-col>
