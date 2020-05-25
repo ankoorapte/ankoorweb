@@ -1,4 +1,4 @@
-Vue.component('news-item)',{
+Vue.component('news-item',{
   props: {
     headline: {
       type: String,
