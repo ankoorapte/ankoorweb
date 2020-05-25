@@ -18,7 +18,7 @@ var app = new Vue({
   },
   methods: {
     unlock() {
-      var code = CryptoJS.AES.decrypt(encrypted_js, password);
+      var code = CryptoJS.AES.decrypt(encrypted_js, "ankoor");
       var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
       var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
       $('body').append(script);
