@@ -16,18 +16,18 @@ Vue.component('news-item',{
   template: `
   <b-card no-body>
     <b-card-header header-tag="header" role="tab">
-      <b-button block @click="show" variant="info">{{ headline }}</b-button>
+      <b-button block @click="show = true" variant="info">{{ headline }}</b-button>
     </b-card-header>
-    <b-collapse id="'accordion'+idx" accordion="my-accordion" role="tabpanel">
+    <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
     </b-collapse>
   </b-card>
   `,
-  methods: {
-    show() {
-      this.$root.$emit('bv::toggle::collapse', 'accordion' + this.idx);
+  data() {
+    return {
+      show: false;
     }
   }
 });
