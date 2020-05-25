@@ -26,16 +26,17 @@ var app = new Vue({
   },
   methods: {
     unlock() {
-      var self = this;
-      var code = CryptoJS.AES.decrypt(encrypted_js.value, self.password);
-      console.log(code)
-      var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
-      console.log(decryptedMessage)
-      var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
-      $('body').append(script);
-      setTimeout(function() {
+      try {
+        var self = this;
+        var code = CryptoJS.AES.decrypt(encrypted_js.value, self.password);
+        var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
+        var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
+        $('body').append(script);
         self.auth = true;
-      },2000)
+      } catch(e) {
+        console.log(e);
+        throw new Error("error: " + e);
+      }
     }
   }
 })
