@@ -26,7 +26,7 @@ Vue.component('news-item',{
 Vue.component('ankoor-news',{
   template: `
   <b-container class="m-1 p-1">
-    <b-button @click="get_news"><b-icon-arrow-clockwise></b-icon-arrow-clockwise> Get </b-button>
+    <b-button class="m-1 p-1" @click="get_news"><b-icon-arrow-clockwise></b-icon-arrow-clockwise> Get </b-button>
     <b-tabs>
       <b-tab title="News">
         <div id="news_list" role="tablist">
