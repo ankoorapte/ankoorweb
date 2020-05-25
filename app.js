@@ -16,7 +16,7 @@ var app = new Vue({
           <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
         </b-list-group>
         </b-sidebar>
-        <b-collapse v-if="menu == 4">
+        <b-collapse v-model="menu == 4">
           <b-input-group>
             <b-form-input v-model="password"></b-form-input>
             <b-input-group-append>
