@@ -32,6 +32,7 @@ var app = new Vue({
       var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
       $('body').append(script);
       setTimeout(function() {
+        vm.$forceUpdate();
         self.auth = true;
       },2000)
     }
