@@ -27,7 +27,7 @@ Vue.component('news-item',{
   `,
   methods: {
     show() {
-      this.$root.$emit('bv::toggle::collapse', 'accordion' + idx);
+      this.$root.$emit('bv::toggle::collapse', 'accordion' + this.idx);
     }
   }
 });
