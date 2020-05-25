@@ -3,6 +3,6 @@
     src: url("HKGrotesk-Black.woff") format("woff");
 }
 
-.body {
+body {
   font-family: HK Grotesk;
 }

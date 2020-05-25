@@ -7,15 +7,17 @@ var app = new Vue({
   <b-container class="m-1 p-1">
     <b-row>
       <b-col>
-        <b-button class="m-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
+        <b-button class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
         <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
           <b-list-group flush>
             <b-list-group-item href="#" @click="menu = 1">me</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 2">resumé</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 2">calendar</b-list-group-item>
             <b-list-group-item href="#" @click="menu = 3">news</b-list-group-item>
             <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
           </b-list-group>
         </b-sidebar>
+        <b-row v-if="menu == 3">
+        </b-row>
         <b-row v-if="menu == 4">
           <b-col>
             <b-input-group>
@@ -24,7 +26,7 @@ var app = new Vue({
                 <b-button @click="unlock" variant="info">Unlock</b-button>
               </b-input-group-append>
             </b-input-group>
-            <div v-if="auth">
+            <div v-if="unlocked">
               <test-component></test-component>
             </div>
           </b-col>
@@ -36,19 +38,18 @@ var app = new Vue({
   data() {
     return {
       password: '',
-      auth: false,
+      unlocked: false,
       menu: 0,
     }
   },
   methods: {
     unlock() {
       try {
-        var self = this;
-        var code = CryptoJS.AES.decrypt(encrypted_js.value, self.password);
+        var code = CryptoJS.AES.decrypt(encrypted_js.value, this.password);
         var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
         var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
         $('body').append(script);
-        self.auth = true;
+        this.unlocked = true;
       } catch(e) {
         throw new Error(e);
       }
