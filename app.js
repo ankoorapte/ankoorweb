@@ -7,13 +7,13 @@ var app = new Vue({
   <b-container>
     <b-row class="m-1 p-1">
       <b-col>
-        <b-button class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
+        <b-button id="menu_toggle" class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
         <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
           <b-list-group flush>
-            <b-list-group-item href="#" @click="menu = 1">me</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 2">calendar</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 3">news</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 1; document.getElementById('menu_toggle').click();">me</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 2; document.getElementById('menu_toggle').click();">calendar</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 3; document.getElementById('menu_toggle').click();">news</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 4; document.getElementById('menu_toggle').click();">my stuff</b-list-group-item>
           </b-list-group>
         </b-sidebar>
         <b-row v-if="menu == 3">
