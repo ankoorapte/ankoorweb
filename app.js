@@ -6,7 +6,7 @@ var app = new Vue({
   template: `
   <b-container>
     <b-row>
-
+      <b-button @click="unlock">Unlock</b-button>
     </b-row>
   </b-container>
   `,
