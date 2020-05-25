@@ -16,17 +16,19 @@ var app = new Vue({
             <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
           </b-list-group>
         </b-sidebar>
-        <b-collapse v-model="menu == 4">
-          <b-input-group>
-            <b-form-input v-model="password"></b-form-input>
-            <b-input-group-append>
-              <b-button @click="unlock" variant="info">Unlock</b-button>
-            </b-input-group-append>
-          </b-input-group>
-          <b-row v-if="auth">
-            <test-component></test-component>
-          </b-row>
-        </b-collapse>
+        <b-row v-if="menu == 4">
+          <b-col>
+            <b-input-group>
+              <b-form-input v-model="password"></b-form-input>
+              <b-input-group-append>
+                <b-button @click="unlock" variant="info">Unlock</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <div v-if="auth">
+              <test-component></test-component>
+            </div>
+          </b-col>
+        </b-row>
       </b-col>
     </b-row>
   </b-container>
