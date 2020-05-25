@@ -24,7 +24,7 @@ Vue.component('news-item',{
     </b-card-header>
     <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
-        <img class="mx-auto w-100" align="center" v-if="img_url.length" :src="img_url"></img>
+        <img class="mx-auto w-50" align="center" v-if="img_url.length" :src="img_url"></img>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
     </b-collapse>
@@ -43,7 +43,7 @@ Vue.component('ankoor-news',{
     <b-button class="m-1 p-1" @click="get_news"><b-icon-arrow-clockwise></b-icon-arrow-clockwise> Get </b-button>
     <b-tabs>
       <b-tab title="Global News">
-        <div id="news_list" role="tablist">
+        <div id="news_list" role="tablist" style="max-height:65vh; overflow:auto;">
           <news-item idx=0 v-if="news.length > 0" :img_url="news_img[0]" :content="news_content[0]" :headline="news_head[0]"></news-item>
           <news-item idx=1 v-if="news.length > 1" :img_url="news_img[1]" :content="news_content[1]" :headline="news_head[1]"></news-item>
           <news-item idx=2 v-if="news.length > 2" :img_url="news_img[2]" :content="news_content[2]" :headline="news_head[2]"></news-item>
@@ -62,7 +62,7 @@ Vue.component('ankoor-news',{
         </div>
       </b-tab>
       <b-tab title="South Asia">
-        <div id="sa_news_list" role="tablist">
+        <div id="sa_news_list" role="tablist" style="max-height:65vh; overflow:auto;">
           <news-item idx=15 v-if="sa_news.length > 0" img_url="" :content="sa_news_content[0]" :headline="sa_news_head[0]"></news-item>
           <news-item idx=16 v-if="sa_news.length > 1" img_url="" :content="sa_news_content[1]" :headline="sa_news_head[1]"></news-item>
           <news-item idx=17 v-if="sa_news.length > 2" img_url="" :content="sa_news_content[2]" :headline="sa_news_head[2]"></news-item>
