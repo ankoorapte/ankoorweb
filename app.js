@@ -58,7 +58,6 @@ var app = new Vue({
       		"x-rapidapi-key": "8447cbb122msh32c4dd4f5eca4dap1da01cjsnd1dbc1b0e977"
       	}
       }
-
       $.ajax(settings).done(function (response) {
       	console.log(response);
       });
@@ -74,9 +73,8 @@ var app = new Vue({
       		"x-rapidapi-key": "8447cbb122msh32c4dd4f5eca4dap1da01cjsnd1dbc1b0e977"
       	}
       }
-
       $.ajax(settings).done(function (response) {
-      	console.log(response);
+      	console.log(JSON.parse(response));
       });
     },
     unlock() {
