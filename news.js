@@ -9,16 +9,16 @@ Vue.component('news-item',{
       required: true
     },
     idx: {
-      type: Number,
+      type: String,
       required: true
     },
   },
   template: `
   <b-card no-body>
     <b-card-header header-tag="header" role="tab">
-      <b-button block v-b-toggle="'accordion'+idx.toString()" variant="info">{{ headline }}</b-button>
+      <b-button block v-b-toggle="'accordion'+idx" variant="info">{{ headline }}</b-button>
     </b-card-header>
-    <b-collapse id="'accordion'+idx.toString()" accordion="my-accordion" role="tabpanel">
+    <b-collapse id="'accordion'+idx" accordion="my-accordion" role="tabpanel">
       <b-card-body>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
