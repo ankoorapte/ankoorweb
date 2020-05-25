@@ -24,7 +24,7 @@ Vue.component('news-item',{
     </b-card-header>
     <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
-        <img v-if "img_url.length" src="img_url" class="mx-auto"></img>
+        <img v-if="img_url.length" src="img_url" class="mx-auto"></img>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
     </b-collapse>
