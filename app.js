@@ -6,6 +6,7 @@ var app = new Vue({
   template: `
   <b-container>
     <b-row>
+      <p> hello </p>
       <b-input-group prepend="Enter password" class="mt-3">
         <b-form-input v-model="password"></b-form-input>
         <b-input-group-append>
