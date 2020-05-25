@@ -4,7 +4,7 @@ $.getJSON("./test.json", function(json) {encrypted_js = json});
 var app = new Vue({
   el: '#app',
   template: `
-  <b-container>
+  <b-container class="m-1 p-1">
     <b-row>
       <b-col>
         <b-button variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
