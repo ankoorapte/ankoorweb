@@ -29,6 +29,7 @@ var app = new Vue({
       var self = this;
       var code = CryptoJS.AES.decrypt(encrypted_js.value, self.password);
       var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
+      console.log(decryptedMessage)
       var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
       console.log(script);
       $('body').append(script);
