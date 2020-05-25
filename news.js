@@ -134,7 +134,8 @@ Vue.component('ankoor-news',{
         console.log(this.sa_news[i])
         var rendered = this.sa_news[i].content.rendered.replace(/\//g, '');
         console.log(rendered);
-        rendered = rendered.replace(/(<p style="text-align:justify">|<p>)/g, "");
+        rendered = rendered.replace(/(<p style="text-align:justify">)/g, "");
+        rendered = rendered.replace(/(<p>)/g, "");
         console.log(rendered);
         Vue.set(this.sa_news_content, i, rendered);
         Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
