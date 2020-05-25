@@ -16,9 +16,9 @@ Vue.component('news-item',{
   template: `
   <b-card no-body>
     <b-card-header header-tag="header" role="tab">
-      <b-button block v-b-toggle="'accordion'+index.toString()" variant="info">{{ headline }}</b-button>
+      <b-button block v-b-toggle="'accordion'+idx.toString()" variant="info">{{ headline }}</b-button>
     </b-card-header>
-    <b-collapse id="'accordion'+index.toString()" accordion="my-accordion" role="tabpanel">
+    <b-collapse id="'accordion'+idx.toString()" accordion="my-accordion" role="tabpanel">
       <b-card-body>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
