@@ -6,7 +6,6 @@ var app = new Vue({
   template: `
   <b-container>
     <b-row>
-      <p> hello </p>
       <b-input-group prepend="Enter password" class="mt-3">
         <b-form-input v-model="password"></b-form-input>
         <b-input-group-append>
@@ -29,10 +28,10 @@ var app = new Vue({
     unlock() {
       var self = this;
       var code = CryptoJS.AES.decrypt(encrypted_js.value, self.password);
+      console.log(code)
       var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
       console.log(decryptedMessage)
       var script = "<script type='text/javascript'> " + decryptedMessage + " </script>";
-      console.log(script);
       $('body').append(script);
       setTimeout(function() {
         self.auth = true;
