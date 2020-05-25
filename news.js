@@ -16,7 +16,7 @@ Vue.component('news-item',{
   template: `
   <b-card no-body>
     <b-card-header header-tag="header" role="tab">
-      <b-button block @click="show = true" variant="info">{{ headline }}</b-button>
+      <b-button block @click="show = !show" variant="info">{{ headline }}</b-button>
     </b-card-header>
     <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
@@ -125,7 +125,9 @@ Vue.component('ankoor-news',{
       this.sa_news = response;
       for(var i = 0; i < this.sa_news.length; i++) {
         console.log(this.sa_news[i])
-        Vue.set(this.sa_news_content, i, this.sa_news[i].content.rendered.replace('</p>','').replace('<p style="text-align:justify">',''));
+        var rendered = this.sa_news[i].content.rendered.replace('</p>','');
+        rendered = rendered.replace('<p style="text-align:justify">','');
+        Vue.set(this.sa_news_content, i, this.sa_news[i].content.rendered);
         Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
       }
     }
