@@ -75,23 +75,23 @@ Vue.component('ankoor-news',{
       	}
       }
       $.ajax(ncaf_settings).done(function (response) {
-      	console.log(JSON.parse(response));
-        self.news = JSON.parse(response)
-        self.update_news();
+        self.update_news(response);
       });
       $.ajax(sa_settings).done(function (response) {
-      	console.log(response);
-        self.sa_news = response;
-        self.update_sa_news();
+        self.update_sa_news(response);
       });
     },
-    update_news() {
+    update_news(response) {
+      this.news = JSON.parse(response);
+      console.log(this.news);
       for(var i = 0; i < this.news.length; i++) {
         Vue.set(this.news_content, i, this.news.content);
         Vue.set(this.news_head, i, this.news.title);
       }
     },
-    update_sa_news() {
+    update_sa_news(response) {
+      this.sa_news = response;
+      console.log(this.sa_news);
       for(var i = 0; i < this.sa_news.length; i++) {
         Vue.set(this.sa_news_content, i, this.sa_news.content.rendered);
         Vue.set(this.sa_news_head, i, this.sa_news.title.rendered);
