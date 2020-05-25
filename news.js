@@ -128,7 +128,7 @@ Vue.component('ankoor-news',{
         var rendered = this.sa_news[i].content.rendered.replace('</p>','');
         rendered = rendered.replace('<p style="text-align:justify">','');
         Vue.set(this.sa_news_content, i, this.sa_news[i].content.rendered);
-        Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
+        Vue.set(this.sa_news_head, i, rendered);
       }
     }
   }
