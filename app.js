@@ -7,8 +7,8 @@ var app = new Vue({
   <b-container class="m-1 p-1">
     <b-row>
       <b-col>
-        <b-button variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
-        <b-sidebar id="sidebar-1" title="Menu" shadow backdrop-variant="dark" backdrop>
+        <b-button class="m-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
+        <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
           <b-list-group flush>
             <b-list-group-item href="#" @click="menu = 1">me</b-list-group-item>
             <b-list-group-item href="#" @click="menu = 2">resumé</b-list-group-item>
