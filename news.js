@@ -24,7 +24,7 @@ Vue.component('news-item',{
     </b-card-header>
     <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
-        <img v-if="img_url.length" :src="img_url" class="mx-auto"></img>
+        <img class="mx-auto w-100" align="center" v-if="img_url.length" :src="img_url" class="mx-auto"></img>
         <b-card-text>{{ content }}</b-card-text>
       </b-card-body>
     </b-collapse>
@@ -133,10 +133,8 @@ Vue.component('ankoor-news',{
       for(var i = 0; i < this.sa_news.length; i++) {
         console.log(this.sa_news[i])
         var rendered = this.sa_news[i].content.rendered.replace(/\//g, '');
-        console.log(rendered);
         rendered = rendered.replace(/(<p style="text-align:justify">)/g, "");
         rendered = rendered.replace(/(<p>)/g, "");
-        console.log(rendered);
         Vue.set(this.sa_news_content, i, rendered);
         Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
       }
