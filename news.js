@@ -16,7 +16,7 @@ Vue.component('news-item',{
   template: `
   <b-card no-body>
     <b-card-header header-tag="header" role="tab">
-      <b-button block @click="show = !show" variant="info">{{ headline }}</b-button>
+      <b-button block @click="show = !show" variant="outline-light">{{ headline }}</b-button>
     </b-card-header>
     <b-collapse v-model="show" accordion="my-accordion" role="tabpanel">
       <b-card-body>
