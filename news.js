@@ -132,9 +132,9 @@ Vue.component('ankoor-news',{
       this.sa_news = response;
       for(var i = 0; i < this.sa_news.length; i++) {
         console.log(this.sa_news[i])
-        var rendered = this.sa_news[i].content.rendered.replace(/(<p style="text-align:justify">)/g, "");
+        var rendered = this.sa_news[i].content.rendered.replace(/\//g, '');
         console.log(rendered);
-        rendered = rendered.replace(/\//g, '');
+        rendered = rendered.replace(/(<p style="text-align:justify">|<p>)/g, "");
         console.log(rendered);
         Vue.set(this.sa_news_content, i, rendered);
         Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
