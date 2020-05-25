@@ -10,10 +10,10 @@ var app = new Vue({
         <b-button id="menu_toggle" class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
         <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
           <b-list-group flush>
-            <b-list-group-item href="#" @click="menu = 1; document.getElementById('menu_toggle').click();">me</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 2; document.getElementById('menu_toggle').click();">calendar</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 3; document.getElementById('menu_toggle').click();">news</b-list-group-item>
-            <b-list-group-item href="#" @click="menu = 4; document.getElementById('menu_toggle').click();">my stuff</b-list-group-item>
+            <b-list-group-item href="#" @click="menu_click(1)">me</b-list-group-item>
+            <b-list-group-item href="#" @click="menu_click(2)">calendar</b-list-group-item>
+            <b-list-group-item href="#" @click="menu_click(3)">news</b-list-group-item>
+            <b-list-group-item href="#" @click="menu_click(4)">my stuff</b-list-group-item>
           </b-list-group>
         </b-sidebar>
         <b-row v-if="menu == 3">
@@ -47,6 +47,10 @@ var app = new Vue({
     }
   },
   methods: {
+    menu_click(idx) {
+      this.menu = idx;
+      document.getElementById('menu_toggle').click();
+    }
     get_sa_news() {
       var settings = {
       	"async": true,
