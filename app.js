@@ -17,6 +17,7 @@ var app = new Vue({
           </b-list-group>
         </b-sidebar>
         <b-row v-if="menu == 3">
+          <b-button @click="get_news">Get</b-button>
         </b-row>
         <b-row v-if="menu == 4">
           <b-col>
@@ -43,6 +44,22 @@ var app = new Vue({
     }
   },
   methods: {
+    get_news() {
+      var settings = {
+      	"async": true,
+      	"crossDomain": true,
+      	"url": "https://the-south-asian-express-news.p.rapidapi.com/posts/",
+      	"method": "GET",
+      	"headers": {
+      		"x-rapidapi-host": "the-south-asian-express-news.p.rapidapi.com",
+      		"x-rapidapi-key": "8447cbb122msh32c4dd4f5eca4dap1da01cjsnd1dbc1b0e977"
+      	}
+      }
+
+      $.ajax(settings).done(function (response) {
+      	console.log(response);
+      });
+    },
     unlock() {
       try {
         var code = CryptoJS.AES.decrypt(encrypted_js.value, this.password);
