@@ -5,16 +5,16 @@ var app = new Vue({
   el: '#app',
   template: `
   <b-container>
-    <b-row class="m-1 p-1">
+    <b-row>
       <b-col>
         <b-button variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
         <b-sidebar id="sidebar-1" title="Menu" shadow backdrop-variant="dark" backdrop>
-        <b-list-group flush>
-          <b-list-group-item href="#" @click="menu = 1">me</b-list-group-item>
-          <b-list-group-item href="#" @click="menu = 2">resumé</b-list-group-item>
-          <b-list-group-item href="#" @click="menu = 3">news</b-list-group-item>
-          <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
-        </b-list-group>
+          <b-list-group flush>
+            <b-list-group-item href="#" @click="menu = 1">me</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 2">resumé</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 3">news</b-list-group-item>
+            <b-list-group-item href="#" @click="menu = 4">my stuff</b-list-group-item>
+          </b-list-group>
         </b-sidebar>
         <b-collapse v-model="menu == 4">
           <b-input-group>
