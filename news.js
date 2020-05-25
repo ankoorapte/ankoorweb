@@ -120,8 +120,8 @@ Vue.component('ankoor-news',{
       this.sa_news = response;
       for(var i = 0; i < this.sa_news.length; i++) {
         console.log(this.sa_news[i])
-        Vue.set(this.sa_news_content, i, this.sa_news[i].content.rendered);
-        Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered.replace('</p>','').replace('<p style="text-align:justify">',''));
+        Vue.set(this.sa_news_content, i, this.sa_news[i].content.rendered.replace('</p>','').replace('<p style="text-align:justify">',''));
+        Vue.set(this.sa_news_head, i, this.sa_news[i].title.rendered);
       }
     }
   }
