@@ -7,14 +7,14 @@ var app = new Vue({
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
       <b-col>
-        <img style="max-height:100px" src="./ankoor.png">
+        <img style="max-height:100px" src="./ankoor.jpg">
         <b-row><b-col>
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram mt-2 mb-2"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter mt-2 mb-2 "></a>
           <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-envelope mt-2 mb-2 "></a>
         </b-col></b-row>
         <p> Spellbound EP coming out on 8/6! </p>
-        <img style="max-height:400px" src="./spellbound.png">
+        <img style="max-height:400px" src="./spellbound_cover_blurred.jpg">
         <b-row v-if="false">
           <b-col>
             <b-input-group>
