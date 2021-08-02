@@ -6,8 +6,8 @@ var app = new Vue({
   template: `
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
-      <b-col>
-        <img style="max-height:100px" src="./ankoor.jpg">
+      <b-col align="center">
+        <img style="max-height:100px" src="./ankoor.png">
         <b-row><b-col>
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram mt-2 mb-2"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter mt-2 mb-2 "></a>
