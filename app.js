@@ -16,7 +16,7 @@ var app = new Vue({
           <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
           <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
         </b-col></b-row>
-        <p>EP coming out on 8/6!</p>
+        <p>my first EP out on 8/6!</p>
         <img style="max-height:400px" src="./spellbound_cover_blurred.jpg">
         <br>
         <p style="font-weight: bold"> spellbound, 2021 </p>
