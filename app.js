@@ -10,7 +10,6 @@ var app = new Vue({
         <img style="max-height:100px" src="./ankoor.png">
         <br>
         <p style="font-weight: bold; font-size:26px" class="mt-2 mb-1"> ankoor </p>
-        <p> find me at: </p>
         <b-row class="m-0"><b-col align="center">
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter m-2" style="text-decoration:none"></a>
