@@ -4,22 +4,18 @@ $.getJSON("./test.json", function(json) {encrypted_js = json});
 var app = new Vue({
   el: '#app',
   template: `
-  <b-container>
+  <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
       <b-col>
-        <b-button id="menu_toggle" class="mb-1 p-1" variant="outline-dark" v-b-toggle.sidebar-1><b-icon-list></b-icon-list> Ankoor </b-button>
-        <b-sidebar id="sidebar-1" title="Things" shadow backdrop-variant="dark" backdrop>
-          <b-list-group flush>
-            <b-list-group-item href="#" @click="menu_click(1)">me</b-list-group-item>
-            <b-list-group-item href="#" @click="menu_click(2)">calendar</b-list-group-item>
-            <b-list-group-item href="#" @click="menu_click(3)">news</b-list-group-item>
-            <b-list-group-item href="#" @click="menu_click(4)">my stuff</b-list-group-item>
-          </b-list-group>
-        </b-sidebar>
-        <b-row v-if="menu == 3">
-          <ankoor-news></ankoor-news>
-        </b-row>
-        <b-row v-if="menu == 4">
+        <img style="max-height:100px" src="./ankoor.png">
+        <b-row><b-col>
+          <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram mt-2 mb-2"></a>
+          <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter mt-2 mb-2 "></a>
+          <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-envelope mt-2 mb-2 "></a>
+        </b-col></b-row>
+        <p> Spellbound EP coming out on 8/6! </p>
+        <img style="max-height:400px" src="./spellbound.png">
+        <b-row v-if="false">
           <b-col>
             <b-input-group>
               <b-form-input v-model="password"></b-form-input>
@@ -44,10 +40,6 @@ var app = new Vue({
     }
   },
   methods: {
-    menu_click(idx) {
-      this.menu = idx;
-      document.getElementById('menu_toggle').click();
-    },
     unlock() {
       try {
         var code = CryptoJS.AES.decrypt(encrypted_js.value, this.password);
