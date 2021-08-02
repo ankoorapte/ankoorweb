@@ -18,8 +18,7 @@ var app = new Vue({
         </b-col></b-row>
         <p>my first EP out on 8/6!</p>
         <img style="max-height:300px" src="./spellbound_cover_blurred.jpg">
-        <br>
-        <p style="font-weight: bold"> spellbound, 2021 </p>
+        <p style="font-weight: bold" class="mt-2"> spellbound, 2021 </p>
         <b-row v-if="false">
           <b-col>
             <b-input-group>
