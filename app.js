@@ -9,15 +9,17 @@ var app = new Vue({
       <b-col align="center">
         <img style="max-height:100px" src="./ankoor.png">
         <br>
-        <p style="font-weight: bold; font-size:18px" class="mt-2 mb-1"> ankoor </p>
+        <p style="font-weight: bold; font-size:26px" class="mt-2 mb-1"> ankoor </p>
+        <p> find me at: </p>
         <b-row><b-col align="center">
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
           <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
         </b-col></b-row>
-        <p style="font-weight: bold;">spellbound EP coming out on 8/6!</p>
+        <p>EP coming out on 8/6!</p>
         <img style="max-height:400px" src="./spellbound_cover_blurred.jpg">
+        <b>spellbound</b>
         <b-row v-if="false">
           <b-col>
             <b-input-group>
