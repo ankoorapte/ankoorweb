@@ -8,6 +8,7 @@ var app = new Vue({
     <b-row class="m-1 p-1">
       <b-col align="center">
         <img style="max-height:100px" src="./ankoor.png">
+        <br>
         <p><b> ankoor </b></p>
         <b-row><b-col align="center">
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
