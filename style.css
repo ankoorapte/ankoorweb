@@ -3,6 +3,12 @@
     src: url("HKGrotesk-Light.woff") format("woff");
 }
 
+@font-face {
+    font-family: HK Grotesk;
+    src: url("HKGrotesk-Bold.woff") format("woff");
+    font-weight: bold;
+}
+
 body {
   font-family: HK Grotesk;
 }
