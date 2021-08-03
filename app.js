@@ -17,7 +17,7 @@ var app = new Vue({
           <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
         </b-col></b-row>
         <p>my first EP out on 8/6!</p>
-        <img style="max-height:300px" src="./spellbound_title.jpg">
+        <img style="max-height:300px" src="./spellbound_date.jpg">
         <b-row v-if="false">
           <b-col>
             <b-input-group>
