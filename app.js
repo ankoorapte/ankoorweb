@@ -16,9 +16,11 @@ var app = new Vue({
           <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
           <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
         </b-col></b-row>
-        <p><p style="font-weight: bold;">aftertaste featuring Maryjessie</p> is OUT NOW! Watch out for the rest of Spellbound EP on 8/6!</p>
-        <a style="font-weight: bold;" href="https://soundcloud.com/ankoorsmusic/aftertaste-maryjessie">Soundcloud</a>
-        <a style="font-weight: bold;" href="https://ankoor.bandcamp.com/track/aftertaste-feat-maryjessie">Bandcamp</a>
+        <p><p style="font-weight: bold;">aftertaste featuring Maryjessie</p> OUT NOW! Watch out for the rest of Spellbound EP on 8/6!</p>
+        <p><a style="font-weight: bold;" href="https://soundcloud.com/ankoorsmusic/aftertaste-maryjessie">Soundcloud</a></p>
+        <p><a style="font-weight: bold;" href="https://ankoor.bandcamp.com/track/aftertaste-feat-maryjessie">Bandcamp</a></p>
+        <br>
+        <br>
         <img style="max-height:300px" src="./spellbound_date.jpeg">
         <b-row v-if="false">
           <b-col>
