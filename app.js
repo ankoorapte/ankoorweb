@@ -20,7 +20,6 @@ var app = new Vue({
         <p><a style="font-weight: bold;" href="https://soundcloud.com/ankoorsmusic/aftertaste-maryjessie">Soundcloud</a></p>
         <p><a style="font-weight: bold;" href="https://ankoor.bandcamp.com/track/aftertaste-feat-maryjessie">Bandcamp</a></p>
         <br>
-        <br>
         <img style="max-height:300px" src="./spellbound_date.jpeg">
         <b-row v-if="false">
           <b-col>
