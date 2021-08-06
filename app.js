@@ -13,7 +13,7 @@ var app = new Vue({
         <p><p style="font-weight: bold;">STREAM SPELLBOUND EP</p>
         <b-row class="m-0"><b-col align="center">
           <a target="_blank" href="https://open.spotify.com/album/3RWjp9knMvAmUDdVA9sMRF?si=RAS_3b1dQsKVbQ6ukJRcTQ&dl_branch=1" class="fa fa-2x fa-spotify m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://music.apple.com/us/album/spellbound/1579955071" class="fa fa-2x fa-music m-2" style="text-decoration:none"></a>
+          <a target="_blank" href="https://music.apple.com/us/album/spellbound/1579955071" class="fa fa-2x fa-apple m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://music.youtube.com/playlist?list=OLAK5uy_mbySL4m6MpDanAu0vgIwtsrE79Bs3gnrs&feature=share" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://soundcloud.com/ankoorsmusic/sets/spellbound" class="fa fa-2x fa-soundcloud m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://ankoor.bandcamp.com/album/spellbound" class="fa fa-2x fa-bandcamp m-2" style="text-decoration:none"></a>
