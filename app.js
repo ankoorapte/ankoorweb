@@ -10,17 +10,22 @@ var app = new Vue({
         <img style="max-height:100px" src="./ankoor.png">
         <br>
         <p style="font-weight: bold; font-size:26px" class="mt-2 mb-1"> ankoor </p>
+        <p><p style="font-weight: bold;">STREAM SPELLBOUND EP</p>
+        <b-row class="m-0"><b-col align="center">
+          <a target="_blank" href="https://open.spotify.com/album/3RWjp9knMvAmUDdVA9sMRF?si=RAS_3b1dQsKVbQ6ukJRcTQ&dl_branch=1" class="fa fa-2x fa-spotify m-2" style="text-decoration:none"></a>
+          <a target="_blank" href="https://music.apple.com/us/album/spellbound/1579955071" class="fa fa-2x fa-itunes-note m-2" style="text-decoration:none"></a>
+          <a target="_blank" href="https://music.youtube.com/playlist?list=OLAK5uy_mbySL4m6MpDanAu0vgIwtsrE79Bs3gnrs&feature=share" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
+          <a target="_blank" href="https://soundcloud.com/ankoorsmusic/sets/spellbound" class="fa fa-2x fa-soundcloud m-2" style="text-decoration:none"></a>
+          <a target="_blank" href="https://ankoor.bandcamp.com/album/spellbound" class="fa fa-2x fa-bandcamp m-2" style="text-decoration:none"></a>
+        </b-col></b-row>
+        <br>
+        <img style="max-height:300px" src="./spellbound_cover.jpg">
         <b-row class="m-0"><b-col align="center">
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
           <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
         </b-col></b-row>
-        <p><p style="font-weight: bold;">aftertaste featuring Maryjessie</p> OUT NOW! Watch out for the rest of Spellbound EP on 8/6!</p>
-        <p><a target="_blank" style="font-weight: bold;" href="https://soundcloud.com/ankoorsmusic/aftertaste-maryjessie">Soundcloud</a></p>
-        <p><a target="_blank" style="font-weight: bold;" href="https://ankoor.bandcamp.com/track/aftertaste-feat-maryjessie">Bandcamp</a></p>
-        <br>
-        <img style="max-height:300px" src="./spellbound_date.jpeg">
         <b-row v-if="false">
           <b-col>
             <b-input-group>
