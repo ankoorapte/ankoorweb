@@ -22,7 +22,7 @@ var app = new Vue({
         <img style="max-height:300px" src="./spellbound_cover.JPG">
         <br>
         <br>
-        <p> socials: </p>
+        <p> follow me </p>
         <b-row class="m-0"><b-col align="center">
           <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
           <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter m-2" style="text-decoration:none"></a>
