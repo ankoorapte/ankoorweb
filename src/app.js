@@ -4,7 +4,7 @@ var app = new Vue({
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
       <b-col align="center">
-        <img style="max-height:100px" src="./ankoor.png">
+        <img style="max-height:100px" src="./img/ankoor.png">
         <br>
         <p style="font-weight: bold; font-size:26px" class="mt-2 mb-1"> ankoor </p>
         <p><p style="font-weight: bold;">STREAM SPELLBOUND EP</p>
@@ -16,7 +16,7 @@ var app = new Vue({
           <a target="_blank" href="https://ankoor.bandcamp.com/album/spellbound" class="fa fa-2x fa-bandcamp m-2" style="text-decoration:none"></a>
         </b-col></b-row>
         <br>
-        <img style="max-height:300px" src="./spellbound_cover.JPG">
+        <img style="max-height:300px" src="./img/spellbound_cover.JPG">
         <br>
         <br>
         <p> follow me </p>
