@@ -1,33 +1,124 @@
-var app = new Vue({
-  el: '#app',
-  template: `
-  <b-container style="background-color:#E0FFF2">
-    <b-row class="m-1 p-1">
-      <b-col align="center">
-        <img style="max-height:100px" src="./img/ankoor.png">
-        <br>
-        <p style="font-weight: bold; font-size:26px" class="mt-2 mb-1"> ankoor </p>
-        <p><p style="font-weight: bold;">STREAM SPELLBOUND EP</p>
-        <b-row class="m-0"><b-col align="center">
-          <a target="_blank" href="https://open.spotify.com/album/3RWjp9knMvAmUDdVA9sMRF?si=RAS_3b1dQsKVbQ6ukJRcTQ&dl_branch=1" class="fa fa-2x fa-spotify m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://music.apple.com/us/album/spellbound/1579955071" class="fa fa-2x fa-apple m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://music.youtube.com/playlist?list=OLAK5uy_mbySL4m6MpDanAu0vgIwtsrE79Bs3gnrs&feature=share" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://soundcloud.com/ankoorsmusic/sets/spellbound" class="fa fa-2x fa-soundcloud m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://ankoor.bandcamp.com/album/spellbound" class="fa fa-2x fa-bandcamp m-2" style="text-decoration:none"></a>
-        </b-col></b-row>
-        <br>
-        <img style="max-height:300px" src="./img/spellbound_cover.JPG">
-        <br>
-        <br>
-        <p> follow me </p>
-        <b-row class="m-0"><b-col align="center">
-          <a target="_blank" href="https://www.instagram.com/ankoorsmusic/" class="fa fa-2x fa-instagram m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://twitter.com/ankoorsmusic" class="fa fa-2x fa-twitter m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="https://www.youtube.com/channel/UC0iiGmxfRqd_fUZWUbRjNWw" class="fa fa-2x fa-youtube m-2" style="text-decoration:none"></a>
-          <a target="_blank" href="mailto:encore.apte@gmail.com" class="fa fa-2x fa-envelope m-2" style="text-decoration:none"></a>
-        </b-col></b-row>
-      </b-col>
-    </b-row>
-  </b-container>
-  `
-})
+App = {
+    loading: false,
+    contracts: {},
+  
+    load: async () => {
+      await App.loadWeb3()
+      await App.loadAccount()
+      await App.loadContract()
+      await App.render()
+    },
+  
+    loadWeb3: async () => {
+      // Modern dapp browsers...
+      if (window.ethereum) {
+        window.ethereum = new Web3(ethereum)
+      }
+      // Non-dapp browsers...
+      else {
+        console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      }
+    },
+  
+    loadAccount: async () => {
+      // Set the current blockchain account
+      console.log(ethereum)
+      App.account = ethereum.eth.accounts[0]
+      App.web3Provider = ethereum.currentProvider
+    },
+  
+    loadContract: async () => {
+      // Create a JavaScript version of the smart contract
+      const todoList = await $.getJSON('TodoList.json')
+      App.contracts.TodoList = TruffleContract(todoList)
+      App.contracts.TodoList.setProvider(App.web3Provider)
+  
+      // Hydrate the smart contract with values from the blockchain
+      App.todoList = await App.contracts.TodoList.deployed()
+    },
+  
+    render: async () => {
+      // Prevent double render
+      if (App.loading) {
+        return
+      }
+  
+      // Update app loading state
+      App.setLoading(true)
+  
+      // Render Account
+      $('#account').html(App.account)
+  
+      // Render Tasks
+      await App.renderTasks()
+  
+      // Update loading state
+      App.setLoading(false)
+    },
+  
+    renderTasks: async () => {
+      // Load the total task count from the blockchain
+      const taskCount = await App.todoList.taskCount()
+      const $taskTemplate = $('.taskTemplate')
+  
+      // Render out each task with a new task template
+      for (var i = 1; i <= taskCount; i++) {
+        // Fetch the task data from the blockchain
+        const task = await App.todoList.tasks(i)
+        const taskId = task[0].toNumber()
+        const taskContent = task[1]
+        const taskCompleted = task[2]
+  
+        // Create the html for the task
+        const $newTaskTemplate = $taskTemplate.clone()
+        $newTaskTemplate.find('.content').html(taskContent)
+        $newTaskTemplate.find('input')
+                        .prop('name', taskId)
+                        .prop('checked', taskCompleted)
+                        .on('click', App.toggleCompleted)
+  
+        // Put the task in the correct list
+        if (taskCompleted) {
+          $('#completedTaskList').append($newTaskTemplate)
+        } else {
+          $('#taskList').append($newTaskTemplate)
+        }
+  
+        // Show the task
+        $newTaskTemplate.show()
+      }
+    },
+
+    createTask: async () => {
+      App.setLoading(true)
+      const content = $('#newTask').val()
+      await App.todoList.createTask(content)
+      window.location.reload()
+    },
+
+    toggleCompleted: async (e) => {
+      App.setLoading(true)
+      const taskId = e.target.name
+      await App.todoList.toggleCompleted(taskId)
+      window.location.reload()
+    },
+  
+    setLoading: (boolean) => {
+      App.loading = boolean
+      const loader = $('#loader')
+      const content = $('#content')
+      if (boolean) {
+        loader.show()
+        content.hide()
+      } else {
+        loader.hide()
+        content.show()
+      }
+    }
+  }
+  
+  $(() => {
+    $(window).load(() => {
+      App.load()
+    })
+  })
