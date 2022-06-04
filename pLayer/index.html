@@ -44,8 +44,7 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const storage = getStorage(app);
-    const storageRef2 = ref(storage, 'public');
-    console.log(storageRef2);
+    const storageRef = ref(storage, 'public');
   </script>
   
   <div id="app"></div>
