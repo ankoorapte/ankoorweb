@@ -49,8 +49,7 @@ let app = new Vue({
     onFile(file) {
       console.log(file);
       this.uploaded = false;
-      var fileReader = new FileReader();
-      this.audio = fileReader.readAsArrayBuffer(file);
+      this.audio = window.URL.createObjectURL(file)
       this.uploaded = true;
     }
   }
