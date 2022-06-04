@@ -33,10 +33,11 @@ let app = new Vue({
     }
   },
   methods: {
-    upload() {
+    async upload() {
       let uuid = uuidv4();
-      let uuid_filepath = ref(storage, 'public/'+uuid);
-      console.log(uuid_filepath)
+      let uuidRef = ref(storage, 'public/'+uuid);
+      await uploadBytes(uuidRef, this.file);
+      console.log('Uploaded file to ' + uuidRef._location.path_)
     }
   }
 })
