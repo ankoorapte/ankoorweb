@@ -21,19 +21,19 @@ let app = new Vue({
     <b-row class="m-1 p-1">
       <b-col align="center">
         <b-form-file v-model="file" class="mt-3" plain @input="onFile"></b-form-file>
-        <div class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
+        <b-button @click="upload">Upload</b-button>
         <audio controls>
-          <source :src="file" type="audio/wav">
+          <source :src="audio_file" type="audio/wav">
           Your browser does not support the <code>audio</code> element.
         </audio>
-        <b-button @click="upload">Upload</b-button>
       </b-col>
     </b-row>
   </b-container>
   `,
   data() {
     return {
-      file: null
+      file: null,
+      audio_file: null
     }
   },
   methods: {
@@ -45,6 +45,7 @@ let app = new Vue({
     },
     onFile(file) {
       console.log(file);
+      audio_file = readAsArrayBuffer(file);
     }
   }
 })
