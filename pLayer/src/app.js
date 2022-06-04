@@ -21,13 +21,13 @@ let app = new Vue({
     <b-row class="m-1 p-1">
       <b-col align="center">
         <b-form-group>
-          <b-form-file @input="onFile" v-model="file"></b-form-file>
+          <b-form-file @input="onFile" v-model="file" accept="audio/wav, audio/mpeg3"></b-form-file>
         </b-form-group>
         <b-button variant="success" @click="upload">Upload</b-button>
         <br>
-        <div v-if="uploaded">
-          <audio controls>
-            <source :src="audio" type="audio/wav">
+        <div>
+          <audio v-if="uploaded" controls>
+            <source :src="audio" type="audio/wav, audio/mpeg3">
             Your browser does not support the <code>audio</code> element.
           </audio>
         </div>
