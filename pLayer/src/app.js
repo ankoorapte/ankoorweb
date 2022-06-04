@@ -1,6 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+import { getStorage, ref } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 
-import { storageRef } from "./firebaseconfig.js";
-var app = new Vue({
+const firebaseConfig = {
+  apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
+  authDomain: "player-76353.firebaseapp.com",
+  projectId: "player-76353",
+  storageBucket: "player-76353.appspot.com",
+  messagingSenderId: "954598460815",
+  appId: "1:954598460815:web:52ae341cbaf40a1c6e8ffa",
+  measurementId: "G-VK3H3Y1430"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const storage = getStorage(firebaseApp);
+
+let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E0FFF2">
@@ -21,7 +35,7 @@ var app = new Vue({
   methods: {
     upload() {
       let uuid = uuidv4();
-      let uuid_filepath = storageRef.child(uuid);
+      let uuid_filepath = ref(storage, 'public/'+uuid);
       console.log(uuid_filepath)
     }
   }
