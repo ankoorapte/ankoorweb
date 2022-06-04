@@ -32,7 +32,7 @@ let app = new Vue({
         <b-button variant="success" @click="upload">Upload</b-button>
         <br>
         <div v-if="uploaded">
-          <audio controls>
+          <audio id="audio_player" controls>
             <source :src="audio" type="audio/wav">
             Your browser does not support the <code>audio</code> element.
           </audio>
@@ -57,6 +57,7 @@ let app = new Vue({
     onFile(file) {
       this.uploaded = false;
       this.audio = window.URL.createObjectURL(file);
+      document.getElementById("audio_player").load();
       this.uploaded = true;
     }
   }
