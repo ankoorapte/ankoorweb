@@ -1,3 +1,4 @@
+const storageRef = ref(storage, 'public');
 var app = new Vue({
   el: '#app',
   template: `
