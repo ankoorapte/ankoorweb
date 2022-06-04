@@ -22,6 +22,10 @@ let app = new Vue({
       <b-col align="center">
         <b-form-file v-model="file" class="mt-3" plain></b-form-file>
         <div class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
+        <audio controls>
+          <source :src="file" type="audio/wav">
+          Your browser does not support the <code>audio</code> element.
+        </audio>
         <b-button @click="upload">Upload</b-button>
       </b-col>
     </b-row>
