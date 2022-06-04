@@ -20,9 +20,15 @@ let app = new Vue({
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
       <b-col align="center">
-        <b-form-group>
-          <b-form-file @input="onFile" v-model="file" accept="audio/wav"></b-form-file>
-        </b-form-group>
+        <b-form-file
+          v-model="file"
+          :state="Boolean(file)"
+          placeholder="Choose a .wav or drop it here..."
+          drop-placeholder="Drop .wav here..."
+          accept="audio/wav"
+          @input="onFile"
+        ></b-form-file>
+        <br>
         <b-button variant="success" @click="upload">Upload</b-button>
         <br>
         <div v-if="uploaded">
