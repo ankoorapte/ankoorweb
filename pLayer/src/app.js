@@ -1,5 +1,5 @@
 
-const storageRef = ref(storage, 'public');
+import { storageRef } from "./firebaseconfig";
 var app = new Vue({
   el: '#app',
   template: `
