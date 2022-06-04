@@ -1,5 +1,5 @@
 const functions = require("firebase-functions");
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 admin.initializeApp();
 
 const db = admin.firestore();
@@ -10,17 +10,20 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 // To deploy, run in "functions" directory:
-// gcloud functions deploy helloGCS --runtime nodejs16
+// gcloud functions deploy addLayer --runtime nodejs16
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
-exports.helloGCS = async (file, context) => {
+exports.addLayer = (file, context) => {
   console.log(`  File: ${file.name}`);
   console.log(`  Metageneration: ${file.metageneration}`);
   console.log(`  Updated: ${file.updated}`);
 
-  let layer_doc = {
+  const layer = {
     bucket: file.name,
-    uid: ""
-  }
-  await db.collection('L1').add(layer_doc);
+    uid: "",
+  };
+
+  db.collection("L1").add(layer).then((result) => {
+    console.log(result);
+  });
 };
