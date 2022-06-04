@@ -27,14 +27,11 @@ let app = new Vue({
           @input="onFile"
         ></b-form-file>
         <br>
+        <audio ref="audioPlayer" controls>
+          <source :src="audio" type="audio/wav">
+          Your browser does not support the <code>audio</code> element.
+        </audio>
         <b-button variant="success" @click="upload">Upload</b-button>
-        <br>
-        <div>
-          <audio ref="audioPlayer" controls>
-            <source :src="audio" type="audio/wav">
-            Your browser does not support the <code>audio</code> element.
-          </audio>
-        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -42,8 +39,7 @@ let app = new Vue({
   data() {
     return {
       file: null,
-      audio: null,
-      uploaded: false
+      audio: null
     }
   },
   methods: {
@@ -53,10 +49,8 @@ let app = new Vue({
       console.log('Uploaded file to ' + uuidRef._location.path_);
     },
     onFile(file) {
-      this.uploaded = false;
       this.audio = window.URL.createObjectURL(file);
       this.$refs.audioPlayer.load();
-      this.uploaded = true;
     }
   }
 })
