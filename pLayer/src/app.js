@@ -48,7 +48,7 @@ let app = new Vue({
     onFile(file) {
       console.log(file);
       var fileReader = new FileReader();
-      audio_file = fileReader.readAsArrayBuffer(file);
+      this.audio_file = fileReader.readAsArrayBuffer(file);
     }
   }
 })
