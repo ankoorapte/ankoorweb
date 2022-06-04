@@ -25,8 +25,8 @@ let app = new Vue({
         </b-form-group>
         <b-button variant="success" @click="upload">Upload</b-button>
         <br>
-        <div>
-          <audio v-if="uploaded" controls>
+        <div v-if="uploaded">
+          <audio controls>
             <source :src="audio" type="audio/wav, audio/mpeg3">
             Your browser does not support the <code>audio</code> element.
           </audio>
