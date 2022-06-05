@@ -28,11 +28,11 @@ let app = new Vue({
           @input="onFile"
           class="m-2"
         ></b-form-file>
-        <audio ref="audioPlayer" controls>
+        <audio class="m-2" ref="audioPlayer" controls>
           <source :src="audio" type="audio/wav">
           Your browser does not support the <code>audio</code> element.
         </audio>
-        <b-button variant="success" @click="upload">Upload</b-button>
+        <b-button class="m-2" variant="success" @click="upload">Upload</b-button>
       </b-col>
     </b-row>
   </b-container>
