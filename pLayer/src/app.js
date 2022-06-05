@@ -18,13 +18,6 @@ const db = getFirestore(firebaseApp);
 
 let L1 = {};
 let L1_keys = [];
-getDocs(collection(db, "L1")).then((querySnapshot) => {
-  querySnapshot.forEach((doc) => {
-    L1[doc.id] = doc.data();
-    L1_keys.push(doc.id);
-  });
-});
-
 
 let app = new Vue({
   el: '#app',
@@ -71,7 +64,15 @@ let app = new Vue({
   </b-container>
   `,
   created() {
-    this.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
+    let self = this;
+    getDocs(collection(db, "L1")).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        L1[doc.id] = doc.data();
+        L1_keys.push(doc.id);
+      });
+      self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
+    });
+    
   },
   data() {
     return {
