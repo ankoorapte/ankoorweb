@@ -18,7 +18,7 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6">
-    <h1>pLayer - social music networking</h1>
+    <h2 align="center">pLayer - social music networking</h2>
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical end v-model="tabIndex" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
