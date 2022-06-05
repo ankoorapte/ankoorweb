@@ -20,18 +20,6 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6">
     <b-row class="m-1 p-1">
       <b-col align="center">
-      <div>
-    <b-button v-b-toggle.sidebar-border>Toggle Sidebar</b-button>
-    <b-sidebar id="sidebar-border" sidebar-class="border-right border-danger">
-      <div class="px-3 py-2">
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        </p>
-        <b-img src="https://picsum.photos/500/500/?image=54" fluid thumbnail></b-img>
-      </div>
-    </b-sidebar>
-  </div>
         <b-form-file
           v-model="file"
           placeholder="Drop .wav here"
@@ -44,7 +32,7 @@ let app = new Vue({
           Your browser does not support the <code>audio</code> element.
         </audio>
         <br>
-        <b-button class="m-2" variant="success" @click="upload">Upload</b-button>
+        <b-button class="m-2" variant="info" @click="upload">Post</b-button>
       </b-col>
     </b-row>
   </b-container>
