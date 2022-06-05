@@ -18,23 +18,25 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6">
-    <b-card no-body>
-      <b-tabs pills card vertical end>
+    <b-card no-body class="m-4">
+      <b-tabs pills card vertical end variant="info">
         <b-tab title="Home" active><b-card-text>Browse library</b-card-text></b-tab>
         <b-tab title="Create">
-          <b-form-file
-            v-model="file"
-            placeholder="Drop .wav here"
-            accept="audio/wav"
-            @input="onFile"
-            class="m-2"
-          ></b-form-file>
-          <audio class="m-2" ref="audioPlayer" controls>
-            <source :src="audio" type="audio/wav">
-            Your browser does not support the <code>audio</code> element.
-          </audio>
-          <br>
-          <b-button class="m-2" variant="info" @click="upload">Post</b-button>
+          <b-row><b-col>
+            <b-form-file
+              v-model="file"
+              placeholder="Drop .wav here"
+              accept="audio/wav"
+              @input="onFile"
+              class="m-2"
+            ></b-form-file>
+            <audio class="m-2" ref="audioPlayer" controls>
+              <source :src="audio" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+            <br>
+            <b-button class="m-2" variant="info" @click="upload">Post</b-button>
+          </b-col></b-row>
         </b-tab>
         <b-tab title="Settings"><b-card-text>Account settings</b-card-text></b-tab>
       </b-tabs>
