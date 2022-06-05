@@ -71,7 +71,7 @@ let app = new Vue({
   </b-container>
   `,
   created() {
-    this.getLayer(uuid)
+    this.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
   },
   data() {
     return {
