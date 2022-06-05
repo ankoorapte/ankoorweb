@@ -71,8 +71,6 @@ let app = new Vue({
         L1[doc.id] = doc.data();
         L1_keys.push(doc.id);
       });
-      console.log(L1_keys);
-      console.log(L1);
       self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
     });
     
@@ -108,6 +106,7 @@ let app = new Vue({
       console.log('Uploaded file to ' + uuidRef._location.path_);
     },
     async getLayer(uuid) {
+      console.log(uuid);
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
       const xhr = new XMLHttpRequest();
