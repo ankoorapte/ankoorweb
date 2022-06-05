@@ -18,26 +18,29 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E0FFF2">
+    <div>
+      <b-button variant="success" v-b-toggle.sidebar-variant>Create</b-button>
+      <b-sidebar id="sidebar-variant" title="Sidebar" bg-variant="light" text-variant="dark" shadow>
+        <div class="px-3 py-2">
+          <b-form-file
+            v-model="file"
+            placeholder="Drop .wav here"
+            accept="audio/wav"
+            @input="onFile"
+            class="m-2"
+          ></b-form-file>
+          <audio class="m-2" ref="audioPlayer" controls>
+            <source :src="audio" type="audio/wav">
+            Your browser does not support the <code>audio</code> element.
+          </audio>
+          <br>
+          <b-button class="m-2" variant="success" @click="upload">Upload</b-button>
+        </div>
+      </b-sidebar>
+    </div>
     <b-row class="m-1 p-1">
       <b-col align="center">
-        <b-button variant="success" v-b-toggle.sidebar-variant>Create</b-button>
-        <b-sidebar id="sidebar-variant" title="Sidebar" bg-variant="light" text-variant="dark" shadow>
-          <div class="px-3 py-2">
-            <b-form-file
-              v-model="file"
-              placeholder="Drop .wav here"
-              accept="audio/wav"
-              @input="onFile"
-              class="m-2"
-            ></b-form-file>
-            <audio class="m-2" ref="audioPlayer" controls>
-              <source :src="audio" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
-            <br>
-            <b-button class="m-2" variant="success" @click="upload">Upload</b-button>
-          </div>
-        </b-sidebar>
+        
       </b-col>
     </b-row>
   </b-container>
