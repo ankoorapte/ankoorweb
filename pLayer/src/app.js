@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
+import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -16,75 +16,104 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 
+let L1 = {};
+let L1_keys = [];
+getDocs(collection(db, "L1")).then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    L1[doc.id] = doc.data();
+    L1_keys.push(doc.id);
+  });
+});
+
+
 let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6">
-    <h1 class="m-2" align="center"><b>pLayer<b></h1>
-    <h6 align="center">social music networking</h6>
+    <h1 class="m-2" align="center"><b>pLayer</b></h1>
     <b-card bg-variant="light" no-body class="m-4">
-      <b-tabs pills card vertical v-model="tabIndex" nav-wrapper-class="w-25">
-        <b-tab title="Home" active :title-link-class="linkClass(0)">
+      <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
+        <b-tab title="Home" active :title-link-class="tabClass(0)">
           <b-row>
             <b-col align="center">
-              <b-button class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
             </b-col>
             <b-col align="center">
-              <audio class="m-2" ref="audioPlayer" controls>
-                <source :src="audio" type="audio/wav">
+              <audio class="m-2" ref="pLayer" controls>
+                <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
             </b-col>
             <b-col align="center">
-              <b-button class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </b-col>
           </b-row>
         </b-tab>
-        <b-tab title="Create" :title-link-class="linkClass(1)">
+        <b-tab title="Create" :title-link-class="tabClass(1)">
           <b-row><b-col align="center">
             <b-form-file
-              v-model="file"
-              placeholder="Drop .wav here"
+              placeholder="Drop audio here"
               accept="audio/wav"
-              @input="onFile"
+              @input="onLayer"
               class="m-2 w-75"
             ></b-form-file>
-            <audio class="m-2" ref="audioPlayer" controls>
-              <source :src="audio" type="audio/wav">
+            <audio class="m-2" ref="layer" controls>
+              <source :src="layerURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
             <br>
             <b-button class="m-2" variant="info" @click="upload">post to pLayer</b-button>
           </b-col></b-row>
         </b-tab>
-        <b-tab title="Settings" :title-link-class="linkClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
+        <b-tab title="Settings" :title-link-class="tabClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
       </b-tabs>
     </b-card>
   </b-container>
   `,
+  created() {
+    this.getLayer(uuid)
+  },
   data() {
     return {
-      file: null,
-      audio: null,
-      tabIndex: 0
+      tab: 0,
+      layer: null,
+      layerURL: null,
+      trackURL: null,
+      trackIdx: 0
     }
   },
   methods: {
+    tabClass(idx) {
+      return (this.tab === idx) ? 
+        ['bg-info', 'text-light'] : 
+        ['bg-light', 'text-dark']
+    },
+    async toggle(forward) {
+      if(forward) { this.trackIdx++; }
+      else { this.trackIdx--; }
+      await this.getLayer(L1[L1_keys[trackIdx]]['uid']);
+    },
+    onLayer(layer) {
+      this.layer = layer;
+      this.layerURL = window.URL.createObjectURL(layer);
+      this.$refs.layer.load();
+    },
     async upload() {
       let uuidRef = ref(storage, 'public/'+uuidv4());
-      await uploadBytes(uuidRef, this.file);
+      await uploadBytes(uuidRef, this.layer);
       console.log('Uploaded file to ' + uuidRef._location.path_);
     },
-    onFile(file) {
-      this.audio = window.URL.createObjectURL(file);
-      this.$refs.audioPlayer.load();
-    },
-    linkClass(idx) {
-      if (this.tabIndex === idx) {
-        return ['bg-info', 'text-light']
-      } else {
-        return ['bg-light', 'text-dark']
-      }
+    async getLayer(uuid) {
+      let url = await getDownloadURL(ref(storage, 'public/'+uuid));
+      let self = this;
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        self.trackURL = window.URL.createObjectURL(xhr.response);
+        self.$refs.pLayer.load();
+      };
+      xhr.open('GET', url);
+      xhr.send();
     }
   }
 })
