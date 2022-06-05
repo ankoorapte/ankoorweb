@@ -19,7 +19,7 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6">
     <b-card no-body class="m-4">
-      <b-tabs pills card vertical end variant="info">
+      <b-tabs pills card vertical end v-model="tabIndex">
         <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
         <b-tab title="Create" :title-link-class="linkClass(1)">
           <b-row><b-col align="center">
@@ -46,7 +46,8 @@ let app = new Vue({
   data() {
     return {
       file: null,
-      audio: null
+      audio: null,
+      tabIndex: 0
     }
   },
   methods: {
