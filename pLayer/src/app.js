@@ -18,6 +18,13 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6">
+    <b-card no-body>
+      <b-tabs pills card vertical>
+        <b-tab title="Tab 1" active><b-card-text>Tab contents 1</b-card-text></b-tab>
+        <b-tab title="Tab 2"><b-card-text>Tab contents 2</b-card-text></b-tab>
+        <b-tab title="Tab 3"><b-card-text>Tab contents 3</b-card-text></b-tab>
+      </b-tabs>
+    </b-card>
     <b-row class="m-1 p-1">
       <b-col align="center">
         <b-form-file
