@@ -25,7 +25,7 @@ let app = new Vue({
         <b-tab title="Home" active :title-link-class="linkClass(0)">
           <b-row>
             <b-col align="center">
-              <b-button variant="info"><= prev</b-button>
+              <b-button class="m-2" variant="info"><= prev</b-button>
             </b-col>
             <b-col align="center">
               <audio class="m-2" ref="audioPlayer" controls>
@@ -34,7 +34,7 @@ let app = new Vue({
               </audio>
             </b-col>
             <b-col align="center">
-              <b-button variant="info">next =></b-button>
+              <b-button class="m-2" variant="info">next =></b-button>
             </b-col>
           </b-row>
         </b-tab>
