@@ -18,7 +18,8 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6">
-    <b-card no-body class="m-4">
+    <h1>pLayer - social music networking</h1>
+    <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical end v-model="tabIndex" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
         <b-tab title="Create" :title-link-class="linkClass(1)">
@@ -35,7 +36,7 @@ let app = new Vue({
               Your browser does not support the <code>audio</code> element.
             </audio>
             <br>
-            <b-button class="m-2" variant="info" @click="upload">Post</b-button>
+            <b-button class="m-2" variant="info" @click="upload">post to pLayer</b-button>
           </b-col></b-row>
         </b-tab>
         <b-tab title="Settings" :title-link-class="linkClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
