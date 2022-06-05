@@ -31,6 +31,7 @@ let app = new Vue({
           <source :src="audio" type="audio/wav">
           Your browser does not support the <code>audio</code> element.
         </audio>
+        <br>
         <b-button variant="success" @click="upload">Upload</b-button>
       </b-col>
     </b-row>
