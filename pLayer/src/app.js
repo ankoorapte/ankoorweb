@@ -65,11 +65,14 @@ let app = new Vue({
   `,
   created() {
     let self = this;
+    console.log('hi');
     getDocs(collection(db, "L1")).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         L1[doc.id] = doc.data();
         L1_keys.push(doc.id);
       });
+      console.log(L1_keys);
+      console.log(L1);
       self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
     });
     
