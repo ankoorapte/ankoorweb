@@ -19,19 +19,18 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
-      <b-col align="center">
+      <b-col align="center" class="p-2">
         <b-form-file
           v-model="file"
           :state="Boolean(file)"
+          placeholder="Drop .wav here"
           accept="audio/wav"
           @input="onFile"
         ></b-form-file>
-        <br>
         <audio ref="audioPlayer" controls>
           <source :src="audio" type="audio/wav">
           Your browser does not support the <code>audio</code> element.
         </audio>
-        <br>
         <b-button variant="success" @click="upload">Upload</b-button>
       </b-col>
     </b-row>
