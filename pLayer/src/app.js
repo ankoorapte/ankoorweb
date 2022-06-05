@@ -22,7 +22,7 @@ let app = new Vue({
       <b-tabs pills card vertical end variant="info">
         <b-tab title="Home" active><b-card-text>Browse library</b-card-text></b-tab>
         <b-tab title="Create">
-          <b-row><b-col>
+          <b-row><b-col align="center">
             <b-form-file
               v-model="file"
               placeholder="Drop .wav here"
