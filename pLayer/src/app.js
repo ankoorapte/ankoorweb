@@ -22,7 +22,22 @@ let app = new Vue({
     <h5 align="center">social music networking</h5>
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical end v-model="tabIndex" nav-wrapper-class="w-25">
-        <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
+        <b-tab title="Home" active :title-link-class="linkClass(0)">
+          <b-row>
+            <b-col>
+              <b-button variant="info"><= prev</b-button>
+            </b-col>
+            <b-col>
+              <audio class="m-2" ref="audioPlayer" controls>
+                <source :src="audio" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+            </b-col>
+            <b-col>
+              <b-button variant="info">next =></b-button>
+            </b-col>
+          </b-row>
+        </b-tab>
         <b-tab title="Create" :title-link-class="linkClass(1)">
           <b-row><b-col align="center">
             <b-form-file
