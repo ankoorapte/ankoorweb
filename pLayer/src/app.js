@@ -20,8 +20,8 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6">
     <b-card no-body class="m-4">
       <b-tabs pills card vertical end variant="info">
-        <b-tab title="Home" active><b-card-text>Browse library</b-card-text></b-tab>
-        <b-tab title="Create">
+        <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
+        <b-tab title="Create" :title-link-class="linkClass(1)">
           <b-row><b-col align="center">
             <b-form-file
               v-model="file"
@@ -38,7 +38,7 @@ let app = new Vue({
             <b-button class="m-2" variant="info" @click="upload">Post</b-button>
           </b-col></b-row>
         </b-tab>
-        <b-tab title="Settings"><b-card-text>Account settings</b-card-text></b-tab>
+        <b-tab title="Settings" :title-link-class="linkClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
       </b-tabs>
     </b-card>
   </b-container>
@@ -58,6 +58,13 @@ let app = new Vue({
     onFile(file) {
       this.audio = window.URL.createObjectURL(file);
       this.$refs.audioPlayer.load();
+    },
+    linkClass(idx) {
+      if (this.tabIndex === idx) {
+        return ['bg-info', 'text-light']
+      } else {
+        return ['bg-light', 'text-dark']
+      }
     }
   }
 })
