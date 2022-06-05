@@ -21,7 +21,7 @@ exports.addLayer = (file, context) => {
   const layer = {
     bucket: file.name,
     uid: "",
-    timestamp: file.update,
+    timestamp: file.updated,
   };
 
   db.collection("L1").add(layer).then((result) => {
