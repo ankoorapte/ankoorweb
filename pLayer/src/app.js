@@ -19,7 +19,7 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6">
     <b-card no-body class="m-4">
-      <b-tabs pills card vertical end v-model="tabIndex">
+      <b-tabs pills card vertical end v-model="tabIndex" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="linkClass(0)"><b-card-text>Browse library</b-card-text></b-tab>
         <b-tab title="Create" :title-link-class="linkClass(1)">
           <b-row><b-col align="center">
@@ -28,7 +28,7 @@ let app = new Vue({
               placeholder="Drop .wav here"
               accept="audio/wav"
               @input="onFile"
-              class="m-2"
+              class="m-2 w-75"
             ></b-form-file>
             <audio class="m-2" ref="audioPlayer" controls>
               <source :src="audio" type="audio/wav">
