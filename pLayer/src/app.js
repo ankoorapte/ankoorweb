@@ -19,13 +19,14 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E0FFF2">
     <b-row class="m-1 p-1">
-      <b-col align="center" class="p-2">
+      <b-col align="center">
         <b-form-file
           v-model="file"
           :state="Boolean(file)"
           placeholder="Drop .wav here"
           accept="audio/wav"
           @input="onFile"
+          class="m-2"
         ></b-form-file>
         <audio ref="audioPlayer" controls>
           <source :src="audio" type="audio/wav">
