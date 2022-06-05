@@ -19,21 +19,21 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6">
     <h1 class="m-2" align="center"><b>pLayer<b></h1>
-    <h5 align="center">social music networking</h5>
+    <h6 align="center">social music networking</h6>
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical end v-model="tabIndex" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="linkClass(0)">
           <b-row>
-            <b-col>
+            <b-col align="center">
               <b-button variant="info"><= prev</b-button>
             </b-col>
-            <b-col>
+            <b-col align="center">
               <audio class="m-2" ref="audioPlayer" controls>
                 <source :src="audio" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
             </b-col>
-            <b-col>
+            <b-col align="center">
               <b-button variant="info">next =></b-button>
             </b-col>
           </b-row>
