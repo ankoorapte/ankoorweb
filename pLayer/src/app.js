@@ -33,6 +33,7 @@ let app = new Vue({
         label-for="input-1"
         :invalid-feedback="invalidFeedback"
         :state="state"
+        align="center"
       >
         <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
         <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
