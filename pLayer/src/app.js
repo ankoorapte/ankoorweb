@@ -83,7 +83,6 @@ let app = new Vue({
         L1[doc.id] = doc.data();
         L1_keys.push(doc.id);
       });
-      console.log(L1);
       if(L1_keys.length) {
         self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
       }
@@ -129,6 +128,9 @@ let app = new Vue({
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
+
+      console.log(L1);
+      console.log(L1[uuid]);
       self.trackName = L1[uuid]['name'];
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
