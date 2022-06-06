@@ -149,7 +149,7 @@ let app = new Vue({
       const metadata = {
         customMetadata: {
           'name': self.layerName,
-          'user': self.user.displayName
+          'user': self.user.uid
         }
       };
       await uploadBytes(uuidRef, self.layer, metadata);
