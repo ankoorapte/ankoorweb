@@ -27,19 +27,19 @@ let app = new Vue({
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="tabClass(0)">
-          <b-row>
-            <b-col align="center">
-              <b>{{trackName}}</b>
-              <audio class="m-2" ref="pLayer" controls>
-                <source :src="trackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
-              <b-row><b-col align="center">
-                <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </b-col></b-row>
-            </b-col>
-          </b-row>
+          <b-row><b-col align="center">
+            <b>{{trackName}}</b>
+          </b-col></b-row>
+          <b-row><b-col align="center">
+            <audio class="m-2" ref="pLayer" controls>
+              <source :src="trackURL" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+            <b-row><b-col align="center">
+              <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            </b-col></b-row>
+          </b-col></b-row>
         </b-tab>
         <b-tab title="Create" :title-link-class="tabClass(1)">
           <b-row><b-col align="center">
