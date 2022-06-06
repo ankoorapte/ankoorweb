@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -119,7 +119,7 @@ let app = new Vue({
       user_uids.push(doc.id);
     });
 
-    await setPersistence(auth, browserSessionPersistence);
+    await setPersistence(auth, browserLocalPersistence);
   },
   computed: {
     notPostReady() {
