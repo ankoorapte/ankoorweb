@@ -174,8 +174,13 @@ let app = new Vue({
       try {
         let userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
         this.user = userCredential.user;
-        this.signedIn = true;
-        await sendEmailVerification(auth.currentUser);
+        if(this.user.emailVerified) {
+          this.signedIn = true;
+        } else {
+          alert('Please go to your email inbox and verify your email.')
+          await sendEmailVerification(auth.currentUser);
+          this.signedIn = false;
+        }
       } catch(e) {
         console.log(e.code + ": " + e.message);
         if(e.code == "auth/user-not-found") {
@@ -188,13 +193,14 @@ let app = new Vue({
         let self = this;
         let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
         self.user = userCredential.user;
-        self.signedIn = true;
         console.log(self.user);
         await sendEmailVerification(auth.currentUser);
         await updateProfile(auth.currentUser, { displayName: self.user.email });
         await setDoc(doc(db, "users", self.user.uid), {
-          created: self.user.metadata.creationTime
+          created: self.user.metadata.creationTime,
+          displayName: self.user.displayName
         });
+        alert('Please go to your email inbox and verify your email.')
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
