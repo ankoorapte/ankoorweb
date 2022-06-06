@@ -192,7 +192,7 @@ let app = new Vue({
       }
     },
     signinKeydown(event) {
-      if (event.which === 13 && this.state()) {
+      if (event.which === 13 && this.state) {
         this.signIn();
       }
     }
