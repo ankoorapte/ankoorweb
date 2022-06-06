@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -26,44 +26,62 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
-    <b-card bg-variant="light" no-body class="m-4">
-      <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
-        <b-tab title="Home" active :title-link-class="tabClass(0)">
-          <b-row><b-col align="center">
-            <b>{{trackName}}</b>
-          </b-col></b-row>
-          <b-row><b-col align="center">
-            <audio class="m-2" ref="pLayer" controls>
-              <source :src="trackURL" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
+    <b-collapse v-model="!signedIn">
+      <b-card>
+        <b-form-group
+          id="fieldset-1"
+          description="Create an account"
+          label="Enter email and password with a minimum of 5 characters."
+          label-for="input-1"
+          valid-feedback="Thank you!"
+          :invalid-feedback="invalidFeedback"
+          :state="state"
+        >
+          <b-form-input id="input-1" v-model="email" trim></b-form-input>
+          <b-form-input id="input-2" v-model="password" :state="state" trim></b-form-input>
+        </b-form-group>
+      </b-card>
+    </b-collapse>
+    <b-collapse v-model="signedIn">
+      <b-card bg-variant="light" no-body class="m-4">
+        <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
+          <b-tab title="Home" active :title-link-class="tabClass(0)">
             <b-row><b-col align="center">
-              <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b>{{trackName}}</b>
             </b-col></b-row>
-          </b-col></b-row>
-        </b-tab>
-        <b-tab title="Create" :title-link-class="tabClass(1)">
-          <b-row><b-col align="center">
-            <b-form-file
-              placeholder="Drop audio here"
-              accept="audio/wav"
-              @input="onLayer"
-              class="m-2 w-75"
-            ></b-form-file>
-            <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
-            <br>
-            <audio class="m-2" ref="layer" controls>
-              <source :src="layerURL" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
-            <br>
-            <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
-          </b-col></b-row>
-        </b-tab>
-        <b-tab title="Settings" :title-link-class="tabClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
-      </b-tabs>
-    </b-card>
+            <b-row><b-col align="center">
+              <audio class="m-2" ref="pLayer" controls>
+                <source :src="trackURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+              <b-row><b-col align="center">
+                <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </b-col></b-row>
+            </b-col></b-row>
+          </b-tab>
+          <b-tab title="Create" :title-link-class="tabClass(1)">
+            <b-row><b-col align="center">
+              <b-form-file
+                placeholder="Drop audio here"
+                accept="audio/wav"
+                @input="onLayer"
+                class="m-2 w-75"
+              ></b-form-file>
+              <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
+              <br>
+              <audio class="m-2" ref="layer" controls>
+                <source :src="layerURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+              <br>
+              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
+            </b-col></b-row>
+          </b-tab>
+          <b-tab title="Settings" :title-link-class="tabClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
+        </b-tabs>
+      </b-card>
+    </b-collapse>
   </b-container>
   `,
   data() {
@@ -75,7 +93,10 @@ let app = new Vue({
       trackName: "",
       trackURL: null,
       trackIdx: 0,
-      user: ""
+      user: "",
+      signedIn: false,
+      email: "",
+      password: ""
     }
   },
   created() {
@@ -96,6 +117,12 @@ let app = new Vue({
         return false;
       }
       return true;
+    },
+    state() {
+      return this.password.length >= 5;
+    },
+    invalidFeedback() {
+      return 'Enter a valid email ID and password.'
     }
   },
   methods: {
@@ -139,6 +166,16 @@ let app = new Vue({
       };
       xhr.open('GET', url);
       xhr.send();
+    },
+    async createUser(email, pw) {
+      try {
+        let userCredential = await createUserWithEmailAndPassword(auth, email, pw);
+        this.user = userCredential.user;
+      } catch(e) {
+        console.log(e);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      }
     }
   }
 })
