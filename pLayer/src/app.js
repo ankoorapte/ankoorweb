@@ -41,7 +41,7 @@ let app = new Vue({
           <b-form-input placeholder="email" @keydown.native="signinKeydown" id="input-1" v-model="email" :state="state" trim></b-form-input>
           <b-form-input placeholder="password" @keydown.native="signinKeydown" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
         </b-form-group>
-        <b-button :disabled="!state" @click="signIn" variant="success">Sign In</b-button>
+        <b-button :disabled="!state" @click="signIn(0)" variant="success">Sign In</b-button>
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
@@ -187,7 +187,7 @@ let app = new Vue({
       xhr.open('GET', url);
       xhr.send();
     },
-    async signIn(user=null) {
+    async signIn(user) {
       try {
         console.log(user);
         if(user) {
