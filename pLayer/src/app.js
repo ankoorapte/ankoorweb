@@ -54,7 +54,7 @@ let app = new Vue({
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
           id="fieldset-1"
-          label="Enter your credentials"
+          label="enter your credentials"
           label-for="input-1"
           :invalid-feedback="invalidFeedback"
           :state="state"
@@ -63,7 +63,7 @@ let app = new Vue({
           <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="state" trim></b-form-input>
           <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
         </b-form-group>
-        <b-button :disabled="!state" @click="signIn(0)" variant="success">Sign In</b-button>
+        <b-button :disabled="!state" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
@@ -130,6 +130,7 @@ let app = new Vue({
       signedIn: false,
       email: "",
       password: "",
+      posting: false,
       layer: null,
       layerName: "",
       layerURL: null,
@@ -167,7 +168,7 @@ let app = new Vue({
   },
   computed: {
     notPostReady() {
-      if(this.layer && this.layerName.length) {
+      if(this.layer && this.layerName.length && !this.posting) {
         return false;
       }
       return true;
@@ -202,7 +203,8 @@ let app = new Vue({
     },
     async postLayer() {
       const uuidRef = ref(storage, 'public/'+uuidv4());
-      const self = this;
+      let self = this;
+      self.posting = true;
       const metadata = {
         customMetadata: {
           'name': self.layerName,
@@ -210,7 +212,7 @@ let app = new Vue({
         }
       };
       await uploadBytes(uuidRef, self.layer, metadata);
-      console.log('Uploaded file to ' + uuidRef._location.path_);
+      self.posting = false;
     },
     async toggleTrack(forward) {
       if(forward) { this.trackIdx++; }
@@ -220,6 +222,9 @@ let app = new Vue({
     },
     async signOut() {
       this.signedIn = false;
+      this.user = null;
+      this.email = "";
+      this.password = "";
       await signOut(auth);
     },
     async signIn(user) {
