@@ -1,13 +1,13 @@
-const functions = require("firebase-functions");
+// const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
 const db = admin.firestore();
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
-});
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
 
 // To deploy, run in "functions" directory:
 // gcloud functions deploy addLayer --runtime nodejs16
@@ -19,7 +19,7 @@ exports.addLayer = (file, context) => {
   console.log(`  Updated: ${file.updated}`);
 
   console.log(file.metadata);
-  
+
   const layer = {
     bucket: file.name,
     uid: file.name.replace("public/", ""),

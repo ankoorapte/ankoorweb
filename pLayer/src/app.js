@@ -22,7 +22,7 @@ let L1_keys = [];
 let app = new Vue({
   el: '#app',
   template: `
-  <b-container style="background-color:#E1F3F6; font-family:Georgia, serif;">
+  <b-container style="background-color:#E1F3F6; font-family:Georgia, sans-serif;">
     <h1 class="m-2" align="center"><b>pLayer</b></h1>
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
