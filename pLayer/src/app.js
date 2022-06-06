@@ -18,7 +18,7 @@ const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-onAuthStateChanged(auth).then((user) => {
+onAuthStateChanged(auth, (user) => {
   console.log(user);
 });
 
