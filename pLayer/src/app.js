@@ -130,7 +130,9 @@ let app = new Vue({
       let self = this;
 
       console.log(L1);
+      console.log(uuid);
       console.log(L1[uuid]);
+      console.log(L1.uuid);
       self.trackName = L1[uuid]['name'];
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
