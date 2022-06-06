@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -102,24 +102,24 @@ let app = new Vue({
       password: ""
     }
   },
-  created() {
+  async created() {
     let self = this;
-    getDocs(collection(db, "L1")).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        L1[doc.id] = doc.data();
-        L1_keys.push(doc.id);
-      });
-      if(L1_keys.length) {
-        self.getLayer(L1_keys[0]).then(() => {});
-      }
+    let querySnapshot = await getDocs(collection(db, "L1"));
+    querySnapshot.forEach((doc) => {
+      L1[doc.id] = doc.data();
+      L1_keys.push(doc.id);
+    });
+    if(L1_keys.length) {
+      self.getLayer(L1_keys[0]).then(() => {});
+    }
+
+    querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+      users[doc.id] = doc.data();
+      user_uids.push(doc.id);
     });
 
-    getDocs(collection(db, "users")).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        users[doc.id] = doc.data();
-        users_uids.push(doc.id);
-      });
-    });
+    await setPersistence(auth, browserSessionPersistence);
   },
   computed: {
     notPostReady() {
