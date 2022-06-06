@@ -26,7 +26,9 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
-
+    <b-collapse v-model="!signedIn">
+      
+    </b-collapse>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-4">
         <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
