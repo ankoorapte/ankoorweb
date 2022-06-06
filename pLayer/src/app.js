@@ -104,6 +104,11 @@ let app = new Vue({
     }
   },
   async created() {
+
+    onAuthStateChanged(auth, async (user) => {
+      if(user) { await app.signIn(user); }
+    });
+
     let self = this;
     let querySnapshot = await getDocs(collection(db, "L1"));
     querySnapshot.forEach((doc) => {
@@ -230,6 +235,4 @@ let app = new Vue({
   }
 });
 
-onAuthStateChanged(auth, (user) => {
-  if(user) { app.signIn(user); }
-});
+
