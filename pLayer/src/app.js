@@ -33,10 +33,10 @@ let app = new Vue({
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <b-row>
+              <b-row><b-col align="center">
                 <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                 <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </b-row>
+              </b-col></b-row>
             </b-col>
           </b-row>
         </b-tab>
