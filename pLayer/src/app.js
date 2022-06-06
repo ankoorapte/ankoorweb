@@ -178,10 +178,13 @@ let app = new Vue({
       xhr.open('GET', url);
       xhr.send();
     },
-    async signIn() {
+    async signIn(user=null) {
       try {
-        let userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-        this.user = userCredential.user;
+        if(user) {
+          this.user = user;
+        } else {
+          this.user = await signInWithEmailAndPassword(auth, this.email, this.password);
+        }
         if(this.user.emailVerified) {
           this.signedIn = true;
         } else {
@@ -222,6 +225,11 @@ let app = new Vue({
 });
 
 onAuthStateChanged(auth, (user) => {
-  console.log(user);
-  console.log(app)
+  if(user) {
+    console.log(user);
+    console.log(app);
+    app.signIn(user);
+  } else {
+    console.log('user is signed out');
+  }
 });
