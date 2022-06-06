@@ -81,7 +81,7 @@ let app = new Vue({
             </b-col></b-row>
           </b-tab>
           <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
-          <b-tab title="Sign Out" class="bg-info text-light" @click="signOut"></b-tab>
+          <b-tab title="Sign Out" variant="info" @click="signOut"></b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
@@ -222,8 +222,8 @@ let app = new Vue({
       }
     },
     async signOut() {
-      await signOut(auth);
       this.signedIn = false;
+      await signOut(auth);
       location.reload();
     }
   }
