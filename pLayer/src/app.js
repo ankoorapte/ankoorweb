@@ -26,20 +26,22 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
-    <b-card v-if="!signedIn" align="center" class="w-50">
-      <b-form-group
-        id="fieldset-1"
-        label="Enter your credentials"
-        label-for="input-1"
-        :invalid-feedback="invalidFeedback"
-        :state="state"
-        align="center"
-      >
-        <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
-        <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
-      </b-form-group>
-      <b-button :disabled="!state" @click="createUser" variant="success">Sign In</b-button>
-    </b-card>
+    <b-row><b-col align="center">
+      <b-card v-if="!signedIn" align="center" class="w-50">
+        <b-form-group
+          id="fieldset-1"
+          label="Enter your credentials"
+          label-for="input-1"
+          :invalid-feedback="invalidFeedback"
+          :state="state"
+          align="center"
+        >
+          <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
+          <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+        </b-form-group>
+        <b-button :disabled="!state" @click="createUser" variant="success">Sign In</b-button>
+      </b-card>
+    </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-4">
         <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
