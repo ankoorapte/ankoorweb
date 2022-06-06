@@ -104,27 +104,30 @@ let app = new Vue({
     }
   },
   async created() {
-
     onAuthStateChanged(auth, async (user) => {
       if(user) { await app.signIn(user); }
     });
 
     let self = this;
-    let querySnapshot = await getDocs(collection(db, "L1"));
-    querySnapshot.forEach((doc) => {
-      L1[doc.id] = doc.data();
-      L1_keys.push(doc.id);
-    });
-    if(L1_keys.length) {
-      self.getLayer(L1_keys[0]).then(() => {});
+    let queryResponse = {};
+    if(self.signedIn) {
+      queryResponse = await getDocs(collection(db, "L1"));
+      queryResponse.forEach((doc) => {
+        L1[doc.id] = doc.data();
+        L1_keys.push(doc.id);
+      });
+      if(L1_keys.length) {
+        self.getLayer(L1_keys[0]).then(() => {});
+      }
+  
+      queryResponse = {};
+      queryResponse = await getDocs(collection(db, "users"));
+      queryResponse.forEach((doc) => {
+        users[doc.id] = doc.data();
+        user_uids.push(doc.id);
+      });
     }
 
-    querySnapshot = {};
-    querySnapshot = await getDocs(collection(db, "users"));
-    querySnapshot.forEach((doc) => {
-      users[doc.id] = doc.data();
-      user_uids.push(doc.id);
-    });
   },
   computed: {
     notPostReady() {
