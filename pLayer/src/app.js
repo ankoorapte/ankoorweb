@@ -26,7 +26,7 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
-    <b-card v-if="!signedIn" align="center">
+    <b-card v-if="!signedIn" align="center" class="w-50">
       <b-form-group
         id="fieldset-1"
         label="Enter your credentials"
