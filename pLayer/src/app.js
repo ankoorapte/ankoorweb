@@ -31,13 +31,12 @@ let app = new Vue({
         id="fieldset-1"
         label="Enter email and password with a minimum of 5 characters."
         label-for="input-1"
-        valid-feedback="Thank you!"
         :invalid-feedback="invalidFeedback"
         :state="state"
       >
         <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
-        <b-form-input id="input-2" v-model="password" :state="state" trim></b-form-input>
-        <b-button :disabled="!state" @click="createUser">Create account</b-button>
+        <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+        <b-button :disabled="!state" @click="createUser" variant="success">Create account</b-button>
       </b-form-group>
     </b-card>
     <b-collapse v-model="signedIn">
@@ -169,6 +168,7 @@ let app = new Vue({
       try {
         let userCredential = await createUserWithEmailAndPassword(auth, email, pw);
         this.user = userCredential.user;
+        console.log(this.user);
       } catch(e) {
         console.log(e);
         const errorCode = error.code;
