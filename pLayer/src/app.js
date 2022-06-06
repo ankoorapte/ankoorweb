@@ -170,9 +170,7 @@ let app = new Vue({
         this.user = userCredential.user;
         console.log(this.user);
       } catch(e) {
-        console.log(e);
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        console.log(e.code + ": " + e.message);
       }
     }
   }
