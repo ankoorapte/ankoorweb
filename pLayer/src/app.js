@@ -36,8 +36,8 @@ let app = new Vue({
           :state="state"
           align="center"
         >
-          <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
-          <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+          <b-form-input @keydown.native="signinKeydown" id="input-1" v-model="email" :state="state" trim></b-form-input>
+          <b-form-input @keydown.native="signinKeydown" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!state" @click="signIn" variant="success">Sign In</b-button>
       </b-card>
@@ -119,7 +119,7 @@ let app = new Vue({
       return true;
     },
     state() {
-      return this.password.length >= 6;
+      return this.password.length >= 6 && this.email.includes("@");
     },
     invalidFeedback() {
       return 'Enter a valid email ID and password with minimum 6 characters.'
@@ -189,6 +189,11 @@ let app = new Vue({
         await sendEmailVerification(auth.currentUser);
       } catch(e) {
         console.log(e.code + ": " + e.message);
+      }
+    },
+    signinKeydown(event) {
+      if (event.which === 13 && this.state()) {
+        this.signIn();
       }
     }
   }
