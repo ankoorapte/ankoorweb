@@ -1,7 +1,29 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
-import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { 
+  initializeApp 
+} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  sendEmailVerification, 
+  updateProfile, 
+  onAuthStateChanged, 
+  signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+
+import { 
+  getStorage, 
+  ref, 
+  uploadBytes, 
+  getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
+
+import { 
+  getFirestore, 
+  doc,
+  collection, 
+  getDocs,
+  setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -38,8 +60,8 @@ let app = new Vue({
           :state="state"
           align="center"
         >
-          <b-form-input placeholder="email" @keydown.native="signinKeydown" id="input-1" v-model="email" :state="state" trim></b-form-input>
-          <b-form-input placeholder="password" @keydown.native="signinKeydown" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="state" trim></b-form-input>
+          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!state" @click="signIn(0)" variant="success">Sign In</b-button>
       </b-card>
@@ -57,8 +79,8 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <b-row><b-col align="center">
-                <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </b-col></b-row>
             </b-col></b-row>
           </b-tab>
@@ -67,7 +89,7 @@ let app = new Vue({
               <b-form-file
                 placeholder="Drop audio here"
                 accept="audio/wav"
-                @input="onLayer"
+                @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
               <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
@@ -77,11 +99,11 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
+              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
-          <b-tab title="Sign Out" variant="info" @click="signOut"></b-tab>
+          <b-tab title="Sign Out" :title-link-class="tabClass(3)"></b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
@@ -90,17 +112,17 @@ let app = new Vue({
   data() {
     return {
       tab: 0,
+      user: "",
+      signedIn: false,
+      email: "",
+      password: "",
       layer: null,
       layerName: "",
       layerURL: null,
       artistName: "",
       trackName: "",
       trackURL: null,
-      trackIdx: 0,
-      user: "",
-      signedIn: false,
-      email: "",
-      password: ""
+      trackIdx: 0
     }
   },
   async created() {
@@ -144,33 +166,10 @@ let app = new Vue({
     }
   },
   methods: {
-    tabClass(idx) {
-      return (this.tab === idx) ? 
-        ['bg-info', 'text-light'] : 
-        ['bg-light', 'text-dark'];
-    },
-    async toggle(forward) {
-      if(forward) { this.trackIdx++; }
-      else { this.trackIdx--; }
-      this.trackIdx = this.trackIdx % L1_keys.length;
-      await this.getLayer(L1_keys[this.trackIdx]);
-    },
-    onLayer(layer) {
+    refreshLayer(layer) {
       this.layer = layer;
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
-    },
-    async upload() {
-      const uuidRef = ref(storage, 'public/'+uuidv4());
-      const self = this;
-      const metadata = {
-        customMetadata: {
-          'name': self.layerName,
-          'user': self.user.uid
-        }
-      };
-      await uploadBytes(uuidRef, self.layer, metadata);
-      console.log('Uploaded file to ' + uuidRef._location.path_);
     },
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
@@ -187,15 +186,39 @@ let app = new Vue({
       xhr.open('GET', url);
       xhr.send();
     },
+    async postLayer() {
+      const uuidRef = ref(storage, 'public/'+uuidv4());
+      const self = this;
+      const metadata = {
+        customMetadata: {
+          'name': self.layerName,
+          'user': self.user.uid
+        }
+      };
+      await uploadBytes(uuidRef, self.layer, metadata);
+      console.log('Uploaded file to ' + uuidRef._location.path_);
+    },
+    async toggleTrack(forward) {
+      if(forward) { this.trackIdx++; }
+      else { this.trackIdx--; }
+      this.trackIdx = this.trackIdx % L1_keys.length;
+      await this.getLayer(L1_keys[this.trackIdx]);
+    },
+    async signOut() {
+      this.signedIn = false;
+      await signOut(auth);
+    },
     async signIn(user) {
       try {
-        console.log(user);
         if(user) {
           this.user = user;
         } else {
-          this.user = (await signInWithEmailAndPassword(auth, this.email, this.password)).user;
+          this.user = (await signInWithEmailAndPassword(
+            auth, 
+            this.email, 
+            this.password
+          )).user;
         }
-        console.log(this.user);
         if(this.user.emailVerified) {
           this.signedIn = true;
         } else {
@@ -226,15 +249,20 @@ let app = new Vue({
         console.log(e.code + ": " + e.message);
       }
     },
-    signinKeydown(event) {
+    tabClass(idx) {
+      if(idx == 3) {
+        return ['bg-info', 'text-light'];
+      }
+      return (this.tab === idx) ? 
+        ['bg-info', 'text-light'] : 
+        ['bg-light', 'text-dark'];
+    },
+    signinKeydownHandler(event) {
       if (event.which === 13 && this.state) {
         this.signIn();
       }
-    },
-    async signOut() {
-      this.signedIn = false;
-      await signOut(auth);
     }
+    
   }
 });
 
