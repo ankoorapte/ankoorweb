@@ -84,7 +84,7 @@ let app = new Vue({
         L1_keys.push(doc.id);
       });
       if(L1_keys.length) {
-        self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
+        self.getLayer(L1_keys[0]).then(() => {});
       }
     });
   },
@@ -106,7 +106,7 @@ let app = new Vue({
       if(forward) { this.trackIdx++; }
       else { this.trackIdx--; }
       this.trackIdx = this.trackIdx % L1_keys.length;
-      await this.getLayer(L1[L1_keys[this.trackIdx]]['uid']);
+      await this.getLayer(L1_keys[this.trackIdx]);
     },
     onLayer(layer) {
       this.layer = layer;
@@ -128,11 +128,6 @@ let app = new Vue({
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
-
-      console.log(L1);
-      console.log(uuid);
-      console.log(L1[uuid]);
-      console.log(L1.uuid);
       self.trackName = L1[uuid]['name'];
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';

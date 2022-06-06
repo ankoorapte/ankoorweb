@@ -14,19 +14,12 @@ const db = admin.firestore();
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
 exports.addLayer = (file, context) => {
-  console.log(`  File: ${file.name}`);
-  console.log(`  Metageneration: ${file.metageneration}`);
-  console.log(`  Updated: ${file.updated}`);
-
-  console.log(file.metadata);
-
-  const layer = {
+  const uid = file.name.replace("public/", "");
+  db.collection("L1").doc(uid).set({
     bucket: file.name,
-    uid: file.name.replace("public/", ""),
     name: file.metadata.name,
     user: file.metadata.user,
     timestamp: file.updated,
-  };
-
-  db.collection("L1").add(layer).then(() => {});
+  }).then(() => {});
+  console.log(`  File: ${file.name} added to DB`);
 };
