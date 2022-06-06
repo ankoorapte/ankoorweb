@@ -230,6 +230,6 @@ let app = new Vue({
   }
 });
 
-onAuthStateChanged(auth, (userCredential) => {
-  if(userCredential) { app.signIn(userCredential.user); }
+onAuthStateChanged(auth, (user) => {
+  if(user) { app.signIn(user); }
 });
