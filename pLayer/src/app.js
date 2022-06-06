@@ -181,6 +181,7 @@ let app = new Vue({
     },
     async signIn(user=null) {
       try {
+        console.log(user);
         if(user) {
           this.user = user;
         } else {
@@ -230,9 +231,5 @@ let app = new Vue({
 });
 
 onAuthStateChanged(auth, (user) => {
-  if(user) {
-    app.signIn(user);
-  } else {
-    console.log('user is signed out');
-  }
+  if(user) { app.signIn(user); }
 });
