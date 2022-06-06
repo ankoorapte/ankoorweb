@@ -93,8 +93,8 @@ let app = new Vue({
     async toggle(forward) {
       if(forward) { this.trackIdx++; }
       else { this.trackIdx--; }
-      trackIdx = trackIdx % L1_keys.length;
-      await this.getLayer(L1[L1_keys[trackIdx]]['uid']);
+      this.trackIdx = this.trackIdx % L1_keys.length;
+      await this.getLayer(L1[L1_keys[this.trackIdx]]['uid']);
     },
     onLayer(layer) {
       this.layer = layer;
