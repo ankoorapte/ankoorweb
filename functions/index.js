@@ -23,6 +23,8 @@ exports.addLayer = (file, context) => {
   const layer = {
     bucket: file.name,
     uid: file.name.replace("public/", ""),
+    name: file.metadata.name,
+    user: file.metadata.user,
     timestamp: file.updated,
   };
 

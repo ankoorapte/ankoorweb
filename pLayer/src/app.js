@@ -22,13 +22,14 @@ let L1_keys = [];
 let app = new Vue({
   el: '#app',
   template: `
-  <b-container style="background-color:#E1F3F6">
+  <b-container style="background-color:#E1F3F6; font-family:Georgia, serif;">
     <h1 class="m-2" align="center"><b>pLayer</b></h1>
     <b-card bg-variant="light" no-body class="m-4">
       <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
         <b-tab title="Home" active :title-link-class="tabClass(0)">
           <b-row>
             <b-col align="center">
+              <b>{{trackName}}</b>
               <audio class="m-2" ref="pLayer" controls>
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
@@ -63,6 +64,18 @@ let app = new Vue({
     </b-card>
   </b-container>
   `,
+  data() {
+    return {
+      tab: 0,
+      layer: null,
+      layerName: "",
+      layerURL: null,
+      trackName: "",
+      trackURL: null,
+      trackIdx: 0,
+      user: ""
+    }
+  },
   created() {
     let self = this;
     getDocs(collection(db, "L1")).then((querySnapshot) => {
@@ -74,17 +87,6 @@ let app = new Vue({
         self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
       }
     });
-  },
-  data() {
-    return {
-      tab: 0,
-      layer: null,
-      layerName: "",
-      layerURL: null,
-      trackURL: null,
-      trackIdx: 0,
-      user: ""
-    }
   },
   computed: {
     notPostReady() {
@@ -129,6 +131,7 @@ let app = new Vue({
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
+        self.trackName = L1[uuid]['name'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
       };
