@@ -119,10 +119,10 @@ let app = new Vue({
       return true;
     },
     state() {
-      return this.password.length >= 5;
+      return this.password.length >= 6;
     },
     invalidFeedback() {
-      return 'Enter a valid email ID and password with minimum 5 characters.'
+      return 'Enter a valid email ID and password with minimum 6 characters.'
     }
   },
   methods: {
