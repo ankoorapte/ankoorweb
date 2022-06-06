@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, setPersistence, inMemoryPersistence } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -17,6 +17,10 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
+
+onAuthStateChanged(auth).then((user) => {
+  console.log(user);
+});
 
 let L1 = {};
 let L1_keys = [];
@@ -113,13 +117,12 @@ let app = new Vue({
       self.getLayer(L1_keys[0]).then(() => {});
     }
 
+    querySnapshot = {};
     querySnapshot = await getDocs(collection(db, "users"));
     querySnapshot.forEach((doc) => {
       users[doc.id] = doc.data();
       user_uids.push(doc.id);
     });
-
-    await setPersistence(auth, inMemoryPersistence);
   },
   computed: {
     notPostReady() {
