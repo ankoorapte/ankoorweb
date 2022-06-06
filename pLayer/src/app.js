@@ -20,6 +20,8 @@ const auth = getAuth(firebaseApp);
 
 let L1 = {};
 let L1_keys = [];
+let users = {};
+let user_uids = [];
 
 let app = new Vue({
   el: '#app',
@@ -111,6 +113,13 @@ let app = new Vue({
         self.getLayer(L1_keys[0]).then(() => {});
       }
     });
+
+    getDocs(collection(db, "users")).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        users[doc.id] = doc.data();
+        users_uids.push(doc.id);
+      });
+    });
   },
   computed: {
     notPostReady() {
@@ -163,7 +172,7 @@ let app = new Vue({
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
         self.trackName = L1[uuid]['name'];
-        self.artistName = L1[uuid]['user'];
+        self.artistName = users[L1[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
       };
