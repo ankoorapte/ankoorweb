@@ -49,12 +49,12 @@ let app = new Vue({
               @input="onLayer"
               class="m-2 w-75"
             ></b-form-file>
+            <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
+            <br>
             <audio class="m-2" ref="layer" controls>
               <source :src="layerURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
-            <br>
-            <b-form-input v-model="layerName" placeholder="Name"></b-form-input>
             <br>
             <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
           </b-col></b-row>
