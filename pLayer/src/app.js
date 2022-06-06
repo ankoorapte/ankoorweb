@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -166,6 +166,16 @@ let app = new Vue({
       };
       xhr.open('GET', url);
       xhr.send();
+    },
+    async signIn() {
+      try {
+        let userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
+        this.user = userCredential.user;
+        this.signedIn = true;
+        await sendEmailVerification(auth.currentUser);
+      } catch(e) {
+        console.log(e.code + ": " + e.message);
+      }
     },
     async createUser() {
       try {
