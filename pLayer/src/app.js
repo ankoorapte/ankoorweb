@@ -29,15 +29,15 @@ let app = new Vue({
     <b-card v-if="!signedIn">
       <b-form-group
         id="fieldset-1"
-        description="Create an account"
         label="Enter email and password with a minimum of 5 characters."
         label-for="input-1"
         valid-feedback="Thank you!"
         :invalid-feedback="invalidFeedback"
         :state="state"
       >
-        <b-form-input id="input-1" v-model="email" trim></b-form-input>
+        <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
         <b-form-input id="input-2" v-model="password" :state="state" trim></b-form-input>
+        <b-button :disabled="!state" @click="createUser">Create account</b-button>
       </b-form-group>
     </b-card>
     <b-collapse v-model="signedIn">
