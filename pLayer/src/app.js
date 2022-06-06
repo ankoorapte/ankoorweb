@@ -126,11 +126,12 @@ let app = new Vue({
     }
   },
   async created() {
+    let self = this;
     onAuthStateChanged(auth, async (user) => {
-      if(user) { await app.signIn(user); }
+      if(user) { await self.signIn(user); }
+      self.tab = 0;
     });
 
-    let self = this;
     let queryResponse = {};
     if(self.signedIn) {
       queryResponse = await getDocs(collection(db, "L1"));
