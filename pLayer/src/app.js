@@ -129,10 +129,10 @@ let app = new Vue({
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
+      self.trackName = L1[uuid]['name'];
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
-        self.trackName = L1[uuid]['name'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
       };
