@@ -103,7 +103,7 @@ let app = new Vue({
             </b-col></b-row>
           </b-tab>
           <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
-          <b-tab title="Sign Out" :title-link-class="tabClass(3)"></b-tab>
+          <b-tab title="Sign Out" :title-link-class="tabClass(3)" @click="signOut"></b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
