@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -47,7 +47,7 @@ let app = new Vue({
         <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
           <b-tab title="Home" active :title-link-class="tabClass(0)">
             <b-row><b-col align="center">
-              <b>{{trackName}}</b>
+              <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
             </b-col></b-row>
             <b-row><b-col align="center">
               <audio class="m-2" ref="pLayer" controls>
@@ -78,7 +78,7 @@ let app = new Vue({
               <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="Settings" :title-link-class="tabClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
+          <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
@@ -90,6 +90,7 @@ let app = new Vue({
       layer: null,
       layerName: "",
       layerURL: null,
+      artistName: "",
       trackName: "",
       trackURL: null,
       trackIdx: 0,
@@ -148,7 +149,7 @@ let app = new Vue({
       const metadata = {
         customMetadata: {
           'name': self.layerName,
-          'user': self.user
+          'user': self.user.displayName
         }
       };
       await uploadBytes(uuidRef, self.layer, metadata);
@@ -157,10 +158,12 @@ let app = new Vue({
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
-      self.trackName = L1[uuid]['name'];
+      
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
+        self.trackName = L1[uuid]['name'];
+        self.artistName = L1[uuid]['user'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
       };
@@ -182,11 +185,13 @@ let app = new Vue({
     },
     async createUser() {
       try {
-        let userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
-        this.user = userCredential.user;
-        this.signedIn = true;
-        console.log(this.user);
+        let self = this;
+        let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
+        self.user = userCredential.user;
+        self.signedIn = true;
+        console.log(self.user);
         await sendEmailVerification(auth.currentUser);
+        await updateProfile(auth.currentUser, { displayName: self.user.email });
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
