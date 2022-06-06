@@ -68,7 +68,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-4">
-        <b-tabs pills card vertical v-model="tab" nav-wrapper-class="w-25">
+        <b-tabs pills card align="center" v-model="tab">
           <b-tab title="Home" active :title-link-class="tabClass(0)">
             <b-row><b-col align="center">
               <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
