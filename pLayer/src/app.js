@@ -130,27 +130,26 @@ let app = new Vue({
     onAuthStateChanged(auth, async (user) => {
       if(user) { await self.signIn(user); }
       self.tab = 0;
-    });
 
-    let queryResponse = {};
-    if(self.signedIn) {
-      queryResponse = await getDocs(collection(db, "L1"));
-      queryResponse.forEach((doc) => {
-        L1[doc.id] = doc.data();
-        L1_keys.push(doc.id);
-      });
-      if(L1_keys.length) {
-        self.getLayer(L1_keys[0]).then(() => {});
+      let queryResponse = {};
+      if(self.signedIn) {
+        queryResponse = await getDocs(collection(db, "L1"));
+        queryResponse.forEach((doc) => {
+          L1[doc.id] = doc.data();
+          L1_keys.push(doc.id);
+        });
+        if(L1_keys.length) {
+          self.getLayer(L1_keys[0]).then(() => {});
+        }
+    
+        queryResponse = {};
+        queryResponse = await getDocs(collection(db, "users"));
+        queryResponse.forEach((doc) => {
+          users[doc.id] = doc.data();
+          user_uids.push(doc.id);
+        });
       }
-  
-      queryResponse = {};
-      queryResponse = await getDocs(collection(db, "users"));
-      queryResponse.forEach((doc) => {
-        users[doc.id] = doc.data();
-        user_uids.push(doc.id);
-      });
-    }
-
+    });
   },
   computed: {
     notPostReady() {
@@ -251,9 +250,6 @@ let app = new Vue({
       }
     },
     tabClass(idx) {
-      if(idx == 3) {
-        return ['bg-info', 'text-light'];
-      }
       return (this.tab === idx) ? 
         ['bg-info', 'text-light'] : 
         ['bg-light', 'text-dark'];
