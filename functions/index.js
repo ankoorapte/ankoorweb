@@ -18,6 +18,8 @@ exports.addLayer = (file, context) => {
   console.log(`  Metageneration: ${file.metageneration}`);
   console.log(`  Updated: ${file.updated}`);
 
+  console.log(file.metageneration);
+  
   const layer = {
     bucket: file.name,
     uid: file.name.replace("public/", ""),

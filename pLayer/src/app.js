@@ -29,16 +29,14 @@ let app = new Vue({
         <b-tab title="Home" active :title-link-class="tabClass(0)">
           <b-row>
             <b-col align="center">
-              <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            </b-col>
-            <b-col align="center">
               <audio class="m-2" ref="pLayer" controls>
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-            </b-col>
-            <b-col align="center">
-              <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b-row>
+                <b-button @click="toggle(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button @click="toggle(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </b-row>
             </b-col>
           </b-row>
         </b-tab>
@@ -55,7 +53,9 @@ let app = new Vue({
               Your browser does not support the <code>audio</code> element.
             </audio>
             <br>
-            <b-button class="m-2" variant="info" @click="upload">post to pLayer</b-button>
+            <b-form-input v-model="layerName" placeholder="Name"></b-form-input>
+            <br>
+            <b-button :disabled="notPostReady" class="m-2" variant="info" @click="upload">post to pLayer</b-button>
           </b-col></b-row>
         </b-tab>
         <b-tab title="Settings" :title-link-class="tabClass(2)"><b-card-text>Account settings</b-card-text></b-tab>
@@ -79,16 +79,26 @@ let app = new Vue({
     return {
       tab: 0,
       layer: null,
+      layerName: "",
       layerURL: null,
       trackURL: null,
-      trackIdx: 0
+      trackIdx: 0,
+      user: ""
+    }
+  },
+  computed: {
+    notPostReady() {
+      if(this.layer && this.layerName.length) {
+        return true;
+      }
+      return false;
     }
   },
   methods: {
     tabClass(idx) {
       return (this.tab === idx) ? 
         ['bg-info', 'text-light'] : 
-        ['bg-light', 'text-dark']
+        ['bg-light', 'text-dark'];
     },
     async toggle(forward) {
       if(forward) { this.trackIdx++; }
@@ -102,12 +112,17 @@ let app = new Vue({
       this.$refs.layer.load();
     },
     async upload() {
-      let uuidRef = ref(storage, 'public/'+uuidv4());
-      await uploadBytes(uuidRef, this.layer);
+      const uuidRef = ref(storage, 'public/'+uuidv4());
+      const self = this;
+      const metadata = {
+        contentType: 'audio/wav',
+        name: self.layerName,
+        user: self.user
+      };
+      await uploadBytes(uuidRef, self.layer, metadata);
       console.log('Uploaded file to ' + uuidRef._location.path_);
     },
     async getLayer(uuid) {
-      console.log(uuid);
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
       const xhr = new XMLHttpRequest();
