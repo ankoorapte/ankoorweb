@@ -226,7 +226,6 @@ let app = new Vue({
     async signOut() {
       this.signedIn = false;
       await signOut(auth);
-      location.reload();
     }
   }
 });
