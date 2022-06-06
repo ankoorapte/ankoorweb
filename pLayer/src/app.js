@@ -164,9 +164,9 @@ let app = new Vue({
       xhr.open('GET', url);
       xhr.send();
     },
-    async createUser(email, pw) {
+    async createUser() {
       try {
-        let userCredential = await createUserWithEmailAndPassword(auth, email, pw);
+        let userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
         this.user = userCredential.user;
         console.log(this.user);
       } catch(e) {
