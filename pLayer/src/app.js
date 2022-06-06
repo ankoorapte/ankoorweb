@@ -185,7 +185,7 @@ let app = new Vue({
         if(user) {
           this.user = user;
         } else {
-          this.user = await signInWithEmailAndPassword(auth, this.email, this.password);
+          this.user = (await signInWithEmailAndPassword(auth, this.email, this.password)).user;
         }
         console.log(this.user);
         if(this.user.emailVerified) {
