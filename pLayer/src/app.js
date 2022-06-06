@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
-import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -192,6 +192,7 @@ let app = new Vue({
         console.log(self.user);
         await sendEmailVerification(auth.currentUser);
         await updateProfile(auth.currentUser, { displayName: self.user.email });
+        await setDoc(doc(db, "users", self.user.uid), self.user);
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
