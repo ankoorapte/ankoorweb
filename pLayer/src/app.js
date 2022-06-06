@@ -192,7 +192,9 @@ let app = new Vue({
         console.log(self.user);
         await sendEmailVerification(auth.currentUser);
         await updateProfile(auth.currentUser, { displayName: self.user.email });
-        await setDoc(doc(db, "users", self.user.uid), self.user);
+        await setDoc(doc(db, "users", self.user.uid), {
+          created: self.user.metadata.creationTime
+        });
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
