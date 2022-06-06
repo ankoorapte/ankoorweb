@@ -29,7 +29,7 @@ let app = new Vue({
     <b-card v-if="!signedIn">
       <b-form-group
         id="fieldset-1"
-        label="Sign up for pLayer"
+        label="Enter credentials"
         label-for="input-1"
         :invalid-feedback="invalidFeedback"
         :state="state"
@@ -37,8 +37,8 @@ let app = new Vue({
       >
         <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
         <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
-        <b-button :disabled="!state" @click="createUser" variant="success">Sign Up</b-button>
       </b-form-group>
+      <b-button :disabled="!state" @click="createUser" variant="success">Sign In</b-button>
     </b-card>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-4">
