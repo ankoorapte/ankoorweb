@@ -49,7 +49,7 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon icon="music-note-list"></b-icon> <b>pLayer</b></h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
@@ -69,22 +69,10 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-4">
         <b-tabs pills card align="center" v-model="tab">
-          <b-tab title="Home" active :title-link-class="tabClass(0)">
-            <b-row><b-col align="center">
-              <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
-            </b-col></b-row>
-            <b-row><b-col align="center">
-              <audio class="m-2" ref="pLayer" controls>
-                <source :src="trackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
-              <b-row><b-col align="center">
-                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </b-col></b-row>
-            </b-col></b-row>
-          </b-tab>
-          <b-tab title="Create" :title-link-class="tabClass(1)">
+          <b-tab :title-link-class="tabClass(0)">
+            <template slot="title">
+             <b-icon icon="music-note"></b-icon> Create 
+            </template>
             <b-row><b-col align="center">
               <b-form-file
                 placeholder="Drop audio here"
@@ -102,8 +90,34 @@ let app = new Vue({
               <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
-          <b-tab title="Sign Out" :title-link-class="tabClass(3)" @click="signOut"></b-tab>
+          <b-tab active :title-link-class="tabClass(1)">
+            <template slot="title">
+             <b-icon icon="house-door-fill"></b-icon> Home 
+            </template>
+            <b-row><b-col align="center">
+              <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
+            </b-col></b-row>
+            <b-row><b-col align="center">
+              <audio class="m-2" ref="pLayer" controls>
+                <source :src="trackURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+              <b-row><b-col align="center">
+                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </b-col></b-row>
+            </b-col></b-row>
+          </b-tab>
+          <b-tab :title-link-class="tabClass(2)">
+            <template slot="title">
+             <b-icon icon="wrench"></b-icon> Settings 
+            </template>
+          </b-tab>
+          <b-tab :title-link-class="tabClass(3)" @click="signOut">
+            <template slot="title">
+             <b-icon icon="box-arrow-right"></b-icon> Sign Out
+            </template>
+          </b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
