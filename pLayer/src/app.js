@@ -71,7 +71,7 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-              New <b-icon icon="music-note"></b-icon> 
+              post <b-icon icon="music-note"></b-icon> 
             </template>
             <b-row><b-col align="center">
               <b-form-file
@@ -92,7 +92,7 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-             <b-icon icon="house-door-fill"></b-icon> 
+              browse <b-icon icon="music-note-beamed"></b-icon>
             </template>
             <b-row><b-col align="center">
               <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
@@ -110,12 +110,12 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-             <b-icon icon="wrench"></b-icon> 
+              settings <b-icon icon="wrench"></b-icon> 
             </template>
           </b-tab>
           <b-tab :title-link-class="tabClass(3)" @click="signOut">
             <template slot="title">
-              sign out<b-icon icon="box-arrow-right"></b-icon>
+              sign out <b-icon icon="box-arrow-right"></b-icon>
             </template>
           </b-tab>
         </b-tabs>
