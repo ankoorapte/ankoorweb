@@ -36,8 +36,8 @@ let app = new Vue({
           :state="state"
           align="center"
         >
-          <b-form-input @keydown.native="signinKeydown" id="input-1" v-model="email" :state="state" trim></b-form-input>
-          <b-form-input @keydown.native="signinKeydown" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+          <b-form-input placeholder="email" @keydown.native="signinKeydown" id="input-1" v-model="email" :state="state" trim></b-form-input>
+          <b-form-input placeholder="password" @keydown.native="signinKeydown" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!state" @click="signIn" variant="success">Sign In</b-button>
       </b-card>
