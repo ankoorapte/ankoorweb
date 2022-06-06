@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -29,14 +29,14 @@ let app = new Vue({
     <b-card v-if="!signedIn">
       <b-form-group
         id="fieldset-1"
-        label="Enter email and password with a minimum of 5 characters."
+        label="Sign up for pLayer"
         label-for="input-1"
         :invalid-feedback="invalidFeedback"
         :state="state"
       >
         <b-form-input id="input-1" v-model="email" :state="state" trim></b-form-input>
         <b-form-input type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
-        <b-button :disabled="!state" @click="createUser" variant="success">Create account</b-button>
+        <b-button :disabled="!state" @click="createUser" variant="success">Sign Up</b-button>
       </b-form-group>
     </b-card>
     <b-collapse v-model="signedIn">
@@ -119,7 +119,7 @@ let app = new Vue({
       return this.password.length >= 5;
     },
     invalidFeedback() {
-      return 'Enter a valid email ID and password.'
+      return 'Enter a valid email ID and password with minimum 5 characters.'
     }
   },
   methods: {
@@ -168,7 +168,9 @@ let app = new Vue({
       try {
         let userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
         this.user = userCredential.user;
+        this.signedIn = true;
         console.log(this.user);
+        await sendEmailVerification(auth.currentUser);
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
