@@ -83,8 +83,7 @@ let app = new Vue({
         L1[doc.id] = doc.data();
         L1_keys.push(doc.id);
       });
-      console.log(L1_keys);
-      console.log(L1_keys.length);
+      console.log(L1);
       if(L1_keys.length) {
         self.getLayer(L1[L1_keys[0]]['uid']).then(() => {});
       }
