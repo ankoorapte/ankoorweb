@@ -115,9 +115,10 @@ let app = new Vue({
       const uuidRef = ref(storage, 'public/'+uuidv4());
       const self = this;
       const metadata = {
-        contentType: 'audio/wav',
-        name: self.layerName,
-        user: self.user
+        customMetadata: {
+          'name': self.layerName,
+          'user': self.user
+        }
       };
       await uploadBytes(uuidRef, self.layer, metadata);
       console.log('Uploaded file to ' + uuidRef._location.path_);

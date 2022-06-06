@@ -18,7 +18,7 @@ exports.addLayer = (file, context) => {
   console.log(`  Metageneration: ${file.metageneration}`);
   console.log(`  Updated: ${file.updated}`);
 
-  console.log(file.metageneration);
+  console.log(file.metadata);
   
   const layer = {
     bucket: file.name,
@@ -26,7 +26,5 @@ exports.addLayer = (file, context) => {
     timestamp: file.updated,
   };
 
-  db.collection("L1").add(layer).then((result) => {
-    console.log(result);
-  });
+  db.collection("L1").add(layer).then(() => {});
 };
