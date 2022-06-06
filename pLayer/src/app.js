@@ -175,6 +175,9 @@ let app = new Vue({
         await sendEmailVerification(auth.currentUser);
       } catch(e) {
         console.log(e.code + ": " + e.message);
+        if(e.code == "auth/user-not-found") {
+          await this.createUser();
+        }
       }
     },
     async createUser() {
