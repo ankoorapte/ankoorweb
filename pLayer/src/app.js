@@ -89,9 +89,9 @@ let app = new Vue({
   computed: {
     notPostReady() {
       if(this.layer && this.layerName.length) {
-        return true;
+        return false;
       }
-      return false;
+      return true;
     }
   },
   methods: {
