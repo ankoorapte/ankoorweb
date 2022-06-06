@@ -20,6 +20,7 @@ const auth = getAuth(firebaseApp);
 
 onAuthStateChanged(auth, (user) => {
   console.log(user);
+  console.log(document.getElementById("app"))
 });
 
 let L1 = {};
