@@ -18,11 +18,6 @@ const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-onAuthStateChanged(auth, (user) => {
-  console.log(user);
-  console.log(document.getElementById("app"))
-});
-
 let L1 = {};
 let L1_keys = [];
 let users = {};
@@ -224,4 +219,9 @@ let app = new Vue({
       }
     }
   }
-})
+});
+
+onAuthStateChanged(auth, (user) => {
+  console.log(user);
+  console.log(app)
+});
