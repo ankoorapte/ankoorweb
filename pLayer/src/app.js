@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 import { getFirestore, collection, getDocs, doc, setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -81,6 +81,7 @@ let app = new Vue({
             </b-col></b-row>
           </b-tab>
           <b-tab title="Settings" :title-link-class="tabClass(2)"></b-tab>
+          <b-tab title="Sign Out" class="bg-info text-light" @click="signOut"></b-tab>
         </b-tabs>
       </b-card>
     </b-collapse>
@@ -204,7 +205,6 @@ let app = new Vue({
         let self = this;
         let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
         self.user = userCredential.user;
-        console.log(self.user);
         await sendEmailVerification(auth.currentUser);
         await updateProfile(auth.currentUser, { displayName: self.user.email });
         await setDoc(doc(db, "users", self.user.uid), {
@@ -220,14 +220,17 @@ let app = new Vue({
       if (event.which === 13 && this.state) {
         this.signIn();
       }
+    },
+    async signOut() {
+      await signOut(auth);
+      this.signedIn = false;
+      location.reload();
     }
   }
 });
 
 onAuthStateChanged(auth, (user) => {
   if(user) {
-    console.log(user);
-    console.log(app);
     app.signIn(user);
   } else {
     console.log('user is signed out');
