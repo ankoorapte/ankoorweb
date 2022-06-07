@@ -226,12 +226,12 @@ let app = new Vue({
       xhr.send();
 
       const audioxhr = new XMLHttpRequest();
-      xhr.responseType = 'arraybuffer';
-      xhr.onload = (event) => {
-        audioTest(xhr.response, xhr.response).then(() => {});
+      audioxhr.responseType = 'arraybuffer';
+      audioxhr.onload = (event) => {
+        audioTest(audioxhr.response, audioxhr.response).then(() => {});
       };
-      xhr.open('GET', url);
-      xhr.send();
+      audioxhr.open('GET', url);
+      audioxhr.send();
 
     },
     async postLayer(level) {
