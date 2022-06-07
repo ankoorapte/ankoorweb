@@ -221,10 +221,18 @@ let app = new Vue({
         self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
+      };
+      xhr.open('GET', url);
+      xhr.send();
+
+      const audioxhr = new XMLHttpRequest();
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = (event) => {
         audioTest(xhr.response, xhr.response).then(() => {});
       };
       xhr.open('GET', url);
       xhr.send();
+
     },
     async postLayer(level) {
       const uuidRef = ref(storage, 'public/'+uuidv4());
