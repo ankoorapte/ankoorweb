@@ -85,14 +85,6 @@ let app = new Vue({
               </audio>
               <br>
               <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer(0)">post to pLayer</b-button>
-              <br>
-              <vue-audio-mixer 
-                :config="config" 
-                size="medium" 
-                theme="dark" 
-                :show-pan="true"
-                :show-total-time="true"
-              />
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
@@ -152,34 +144,7 @@ let app = new Vue({
       artistName: "",
       trackName: "",
       trackURL: null,
-      trackIdx: 0,
-      is_loaded:false,
-      newconfig:{},
-      config: {
-        "tracks":[
-            {
-                "title":"Bass",
-                "url":"",
-                "pan":-30,
-                "gain":0.5,
-                "muted":false,
-                "hidden":false
-            },
-            // {
-            //     "title":"Flutes",
-            //     "url":"https://api.soundcloud.com/tracks/841840234/stream?client_id=ae1dadcc70f054f451de8c6358bcf396",
-            //     "pan":81,
-            //     "gain":1.08,
-            //     "muted":false,
-            //     "hidden":false
-            // }
-        ],
-        "master":{
-            "pan":0,
-            "gain":1,
-            "muted":false
-        }
-      }
+      trackIdx: 0
     }
   },
   async created() {
@@ -240,7 +205,6 @@ let app = new Vue({
         self.trackName = L0[uuid]['name'];
         self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
-        self.config.tracks[0].url = self.trackURL;
         self.$refs.pLayer.load();
       };
       xhr.open('GET', url);
