@@ -44,6 +44,7 @@ let L0 = {};
 let users = {};
 
 let audioTest = async (audio1, audio2) => {
+  console.log(audio1);
   const ac = new AudioContext();
   const merger = ac.createChannelMerger(2);
   const dest = ac.createMediaStreamDestination();
@@ -51,6 +52,7 @@ let audioTest = async (audio1, audio2) => {
   let source1 = ac.createBufferSource();
   source1.buffer = data1;
   source1.connect(merger, 0, 0);
+  console.log(audio2);
   let data2 = await ac.decodeAudioData(audio2);
   let source2 = ac.createBufferSource();
   source2.buffer = data2;
