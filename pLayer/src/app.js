@@ -49,17 +49,17 @@ let audioTest = async (audio1, audio2) => {
   document.addEventListener('click', async function() {
     console.log(audio1);
     console.log(audio2);
-    const ac = new AudioContext();
-    const merger = ac.createChannelMerger(2);
-    const dest = ac.createMediaStreamDestination();
-    let data1 = await ac.decodeAudioData(audio1);
-    let source1 = ac.createBufferSource();
+    const ac1 = new AudioContext();
+    const ac2 = new AudioContext();
+    const merger = ac1.createChannelMerger(2);
+    const dest = ac1.createMediaStreamDestination();
+    let data1 = await ac1.decodeAudioData(audio1);
+    let data2 = await ac2.decodeAudioData(audio2);
+    let source1 = ac1.createBufferSource();
+    let source2 = ac2.createBufferSource();
     source1.buffer = data1;
-    source1.connect(merger, 0, 0);
-    console.log(audio1);
-    let data2 = await ac.decodeAudioData(audio1);
-    let source2 = ac.createBufferSource();
     source2.buffer = data2;
+    source1.connect(merger, 0, 0);
     source2.connect(merger, 0, 1);
     merger.connect(dest);
   });
