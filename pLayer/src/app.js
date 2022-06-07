@@ -53,7 +53,7 @@ let audioTest = async (audio1, audio2) => {
       console.log('Playback resumed successfully');
     });
   });
-  document.getElementById('app').click();
+  document.firstChild.click();
   const merger = ac.createChannelMerger(2);
   const dest = ac.createMediaStreamDestination();
   let data1 = await ac.decodeAudioData(audio1);
