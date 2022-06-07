@@ -44,6 +44,7 @@ let L0 = {};
 let users = {};
 
 let audioTest = async (audio1, audio2) => {
+  getAudioContext().resume();
   console.log(audio1);
   const ac = new AudioContext();
   ac.resume();
@@ -59,10 +60,6 @@ let audioTest = async (audio1, audio2) => {
   source2.buffer = data2;
   source2.connect(merger, 0, 1);
   merger.connect(dest);
-}
-
-function touchStarted() {
-  getAudioContext().resume();
 }
 
 let app = new Vue({
