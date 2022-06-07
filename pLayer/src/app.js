@@ -193,7 +193,8 @@ let app = new Vue({
     },
     stateUsername() {
       return !usernames.includes(this.newUsername) 
-        && (this.user.displayname != this.newUsername);
+        && (this.user.displayname != this.newUsername)
+        && this.newUsername.length;
     }
   },
   methods: {   
