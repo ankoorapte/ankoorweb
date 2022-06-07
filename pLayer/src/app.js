@@ -48,9 +48,8 @@ let users = {};
 let audioTest = async (audio1, audio2) => {  
   document.addEventListener('click', async function() {
     console.log(audio1);
+    console.log(audio2);
     const ac = new AudioContext();
-    await ac.resume();
-    console.log('Playback resumed successfully');
     const merger = ac.createChannelMerger(2);
     const dest = ac.createMediaStreamDestination();
     let data1 = await ac.decodeAudioData(audio1);
