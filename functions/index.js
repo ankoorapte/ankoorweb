@@ -15,7 +15,7 @@ const db = admin.firestore();
 // --trigger-event google.storage.object.finalize
 exports.addLayer = (file, context) => {
   const uid = file.name.replace("public/", "");
-  db.collection("L1").doc(uid).set({
+  db.collection(file.metadata.layer).doc(uid).set({
     bucket: file.name,
     name: file.metadata.name,
     user: file.metadata.user,

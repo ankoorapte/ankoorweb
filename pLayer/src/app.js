@@ -40,10 +40,8 @@ const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-let L1 = {};
-let L1_keys = [];
+let L0 = {};
 let users = {};
-let usernames = [];
 
 let app = new Vue({
   el: '#app',
@@ -157,20 +155,18 @@ let app = new Vue({
 
       let queryResponse = {};
       if(self.signedIn) {
-        queryResponse = await getDocs(collection(db, "L1"));
+        queryResponse = await getDocs(collection(db, "L0"));
         queryResponse.forEach((doc) => {
-          L1[doc.id] = doc.data();
-          L1_keys.push(doc.id);
+          L0[doc.id] = doc.data();
         });
-        if(L1_keys.length) {
-          self.getLayer(L1_keys[0]).then(() => {});
+        if(Object.keys(L0).length) {
+          self.getLayer(Object.keys(L0)[0]).then(() => {});
         }
     
         queryResponse = {};
         queryResponse = await getDocs(collection(db, "users"));
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
-          usernames.push(doc.data()['displayName']);
         });
       }
     });
@@ -192,7 +188,7 @@ let app = new Vue({
       return 'Username is already taken.'
     },
     stateUsername() {
-      return !usernames.includes(this.newUsername) 
+      return !Object.keys(users).includes(this.newUsername) 
         && (this.user.displayname != this.newUsername)
         && Boolean(this.newUsername.length);
     }
@@ -205,22 +201,23 @@ let app = new Vue({
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
-        self.trackName = L1[uuid]['name'];
-        self.artistName = users[L1[uuid]['user']]['displayName'];
+        self.trackName = L0[uuid]['name'];
+        self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
         self.$refs.pLayer.load();
       };
       xhr.open('GET', url);
       xhr.send();
     },
-    async postLayer() {
+    async postLayer(level=0) {
       const uuidRef = ref(storage, 'public/'+uuidv4());
       let self = this;
       self.posting = true;
       const metadata = {
         customMetadata: {
           'name': self.layerName,
-          'user': self.user.uid
+          'user': self.user.uid,
+          'layer': level
         }
       };
       await uploadBytes(uuidRef, self.layer, metadata);
@@ -229,8 +226,8 @@ let app = new Vue({
     async toggleTrack(forward) {
       if(forward) { this.trackIdx++; }
       else { this.trackIdx--; }
-      this.trackIdx = this.trackIdx % L1_keys.length;
-      await this.getLayer(L1_keys[this.trackIdx]);
+      this.trackIdx = this.trackIdx % Object.keys(L0).length;
+      await this.getLayer(Object.keys(L0)[this.trackIdx]);
     },
     async signOut() {
       this.signedIn = false;
