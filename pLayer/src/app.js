@@ -61,6 +61,10 @@ let audioTest = async (audio1, audio2) => {
   merger.connect(dest);
 }
 
+function touchStarted() {
+  getAudioContext().resume();
+}
+
 let app = new Vue({
   el: '#app',
   template: `
