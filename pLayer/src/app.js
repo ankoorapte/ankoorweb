@@ -159,7 +159,7 @@ let app = new Vue({
         "tracks":[
             {
                 "title":"Bass",
-                "url":trackURL,
+                "url":"",
                 "pan":-30,
                 "gain":0.5,
                 "muted":false,
@@ -240,6 +240,7 @@ let app = new Vue({
         self.trackName = L0[uuid]['name'];
         self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
+        self.config.tracks[0].url = self.trackURL;
         self.$refs.pLayer.load();
       };
       xhr.open('GET', url);
