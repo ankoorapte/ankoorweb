@@ -153,6 +153,8 @@ let app = new Vue({
       trackName: "",
       trackURL: null,
       trackIdx: 0,
+      is_loaded:false,
+      newconfig:{},
       config: {
         "tracks":[
             {
