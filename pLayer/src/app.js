@@ -188,7 +188,8 @@ let app = new Vue({
       return 'Username is already taken.'
     },
     stateUsername() {
-      return !Object.keys(users).includes(this.newUsername) 
+      return this.user
+        && !Object.keys(users).includes(this.newUsername)
         && (this.user.displayname != this.newUsername)
         && Boolean(this.newUsername.length);
     }
@@ -266,9 +267,7 @@ let app = new Vue({
         let self = this;
         let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
         self.user = userCredential.user;
-        await sendEmailVerification(auth.currentUser);
         await self.changeUsername(self.user.email);
-        alert('Please go to your email inbox and verify your email.')
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
