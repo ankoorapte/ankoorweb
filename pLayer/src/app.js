@@ -267,7 +267,7 @@ let app = new Vue({
         let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
         self.user = userCredential.user;
         await sendEmailVerification(auth.currentUser);
-        await changeUsername(self.user.email);
+        await self.changeUsername(self.user.email);
         alert('Please go to your email inbox and verify your email.')
       } catch(e) {
         console.log(e.code + ": " + e.message);
