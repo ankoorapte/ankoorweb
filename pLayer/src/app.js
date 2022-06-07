@@ -43,9 +43,18 @@ const auth = getAuth(firebaseApp);
 let L0 = {};
 let users = {};
 
+
+
 let audioTest = async (audio1, audio2) => {
   console.log(audio1);
   const ac = new AudioContext();
+
+  document.addEventListener('click', function() {
+    ac.resume().then(() => {
+      console.log('Playback resumed successfully');
+    });
+  });
+  
   const merger = ac.createChannelMerger(2);
   const dest = ac.createMediaStreamDestination();
   let data1 = await ac.decodeAudioData(audio1);
