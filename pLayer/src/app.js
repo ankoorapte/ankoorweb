@@ -57,13 +57,13 @@ let audioTest = async (audio1, audio2) => {
     promises.push(ac1.decodeAudioData(audio1));
     promises.push(ac2.decodeAudioData(audio2));
     let data = await Promise.all(promises);
-    let source1 = ac1.createBufferSource();
-    let source2 = ac2.createBufferSource();
-    source1.buffer = data[0];
-    source2.buffer = data[1];
-    source1.connect(merger, 0, 0);
-    source2.connect(merger, 0, 1);
-    merger.connect(dest);
+    // let source1 = ac1.createBufferSource();
+    // let source2 = ac2.createBufferSource();
+    // source1.buffer = data[0];
+    // source2.buffer = data[1];
+    // source1.connect(merger, 0, 0);
+    // source2.connect(merger, 0, 1);
+    // merger.connect(dest);
   });
 }
 
