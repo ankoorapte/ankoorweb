@@ -192,7 +192,9 @@ let app = new Vue({
       return 'Username is already taken.'
     },
     stateUsername() {
-      return true;
+      return !usernames.includes(this.newUsername) 
+        && (this.user.displayname != this.newUsername)
+        && Boolean(this.newUsername.length);
     }
   },
   methods: {   
