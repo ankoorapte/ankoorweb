@@ -55,7 +55,7 @@ let audioTest = async (audio1, audio2) => {
     const dest = ac1.createMediaStreamDestination();
     let promises = [];
     promises.push(ac1.decodeAudioData(audio1));
-    promises.push(ac2.decodeAudioData(audio2));
+    // promises.push(ac2.decodeAudioData(audio2));
     let data = await Promise.all(promises);
     // let source1 = ac1.createBufferSource();
     // let source2 = ac2.createBufferSource();
