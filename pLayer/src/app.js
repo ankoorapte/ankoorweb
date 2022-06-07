@@ -45,10 +45,9 @@ let users = {};
 
 
 
-let audioTest = async (audio1, audio2) => {
-  console.log(audio1);
-  
+let audioTest = async (audio1, audio2) => {  
   document.addEventListener('click', async function() {
+    console.log(audio1);
     const ac = new AudioContext();
     await ac.resume();
     console.log('Playback resumed successfully');
@@ -58,8 +57,8 @@ let audioTest = async (audio1, audio2) => {
     let source1 = ac.createBufferSource();
     source1.buffer = data1;
     source1.connect(merger, 0, 0);
-    console.log(audio2);
-    let data2 = await ac.decodeAudioData(audio2);
+    console.log(audio1);
+    let data2 = await ac.decodeAudioData(audio1);
     let source2 = ac.createBufferSource();
     source2.buffer = data2;
     source2.connect(merger, 0, 1);
