@@ -228,7 +228,8 @@ let app = new Vue({
       const audioxhr = new XMLHttpRequest();
       audioxhr.responseType = 'arraybuffer';
       audioxhr.onload = (event) => {
-        audioTest(audioxhr.response, audioxhr.response).then(() => {});
+        let response = audioxhr.response;
+        audioTest(response, response).then(() => {});
       };
       audioxhr.open('GET', url);
       audioxhr.send();
