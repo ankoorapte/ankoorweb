@@ -53,7 +53,6 @@ let app = new Vue({
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
-          id="fieldset-1"
           label="enter your credentials"
           label-for="input-1"
           :invalid-feedback="invalidFeedback"
@@ -112,11 +111,8 @@ let app = new Vue({
             <template slot="title">
               settings <b-icon icon="wrench"></b-icon> 
             </template>
-            <p> Username: {{ user.displayName }}</p>
+            <p align="center"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
-              id="fieldset-1"
-              label="Change username"
-              label-for="input-1"
               :invalid-feedback="invalidFeedbackUsername"
               :state="stateUsername"
               align="center"
