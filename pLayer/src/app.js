@@ -84,7 +84,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer">post to pLayer</b-button>
+              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer(0)">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
@@ -210,7 +210,7 @@ let app = new Vue({
       xhr.open('GET', url);
       xhr.send();
     },
-    async postLayer(level=0) {
+    async postLayer(level) {
       const uuidRef = ref(storage, 'public/'+uuidv4());
       let self = this;
       self.posting = true;
