@@ -43,7 +43,7 @@ const auth = getAuth(firebaseApp);
 let L1 = {};
 let L1_keys = [];
 let users = {};
-let user_uids = [];
+let usernames = [];
 
 let app = new Vue({
   el: '#app',
@@ -112,6 +112,18 @@ let app = new Vue({
             <template slot="title">
               settings <b-icon icon="wrench"></b-icon> 
             </template>
+            <p> Username: {{ user.displayName }}</p>
+            <b-form-group
+              id="fieldset-1"
+              label="Change username"
+              label-for="input-1"
+              :invalid-feedback="invalidFeedbackUsername"
+              :state="stateUsername"
+              align="center"
+            >
+              <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" id="input-1" v-model="newUsername" :state="state" trim></b-form-input>
+              <b-button variant="primary" :disabled="posting" @click="changeUsername(0)">update username</b-button>  
+            </b-form-group>
           </b-tab>
           <b-tab :title-link-class="tabClass(3)" @click="signOut">
             <template slot="title">
@@ -130,6 +142,7 @@ let app = new Vue({
       signedIn: false,
       email: "",
       password: "",
+      newUsername: "",
       posting: false,
       layer: null,
       layerName: "",
@@ -161,7 +174,7 @@ let app = new Vue({
         queryResponse = await getDocs(collection(db, "users"));
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
-          user_uids.push(doc.id);
+          usernames.push(doc.data()['displayName']);
         });
       }
     });
@@ -178,14 +191,16 @@ let app = new Vue({
     },
     invalidFeedback() {
       return 'Enter a valid email ID and password with minimum 6 characters.'
+    },
+    invalidFeedbackUsername() {
+      return 'Username is already taken.'
+    },
+    stateUsername() {
+      return !usernames.includes(this.newUsername) 
+        && (this.user.displayname != this.newUsername);
     }
   },
-  methods: {
-    refreshLayer(layer) {
-      this.layer = layer;
-      this.layerURL = window.URL.createObjectURL(layer);
-      this.$refs.layer.load();
-    },
+  methods: {   
     async getLayer(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
@@ -258,15 +273,28 @@ let app = new Vue({
         let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
         self.user = userCredential.user;
         await sendEmailVerification(auth.currentUser);
-        await updateProfile(auth.currentUser, { displayName: self.user.email });
-        await setDoc(doc(db, "users", self.user.uid), {
-          created: self.user.metadata.creationTime,
-          displayName: self.user.displayName
-        });
+        await changeUsername(self.user.email);
         alert('Please go to your email inbox and verify your email.')
       } catch(e) {
         console.log(e.code + ": " + e.message);
       }
+    },
+    async changeUsername(un) {
+      let self = this;
+      self.posting = true;
+      if(!un) {
+        un = self.newUsername;
+      }
+      await updateProfile(auth.currentUser, { displayName: un });
+      await setDoc(doc(db, "users", self.user.uid), {
+        displayName: un
+      });
+      self.posting = false;
+    },
+    refreshLayer(layer) {
+      this.layer = layer;
+      this.layerURL = window.URL.createObjectURL(layer);
+      this.$refs.layer.load();
     },
     tabClass(idx) {
       return (this.tab === idx) ? 
@@ -277,8 +305,12 @@ let app = new Vue({
       if (event.which === 13 && this.state) {
         this.signIn();
       }
+    },
+    usernameKeydownHandler(event) {
+      if (event.which === 13 && this.stateUsername) {
+        this.changeUsername(0);
+      }
     }
-    
   }
 });
 
