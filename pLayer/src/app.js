@@ -111,7 +111,7 @@ let app = new Vue({
             <template slot="title">
               settings <b-icon icon="wrench"></b-icon> 
             </template>
-            <p align="center"> your username is <b>{{ user.displayName }}</b></p>
+            <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
               :invalid-feedback="invalidFeedbackUsername"
               :state="stateUsername"
