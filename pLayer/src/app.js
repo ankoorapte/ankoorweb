@@ -43,6 +43,15 @@ const auth = getAuth(firebaseApp);
 let L0 = {};
 let users = {};
 
+document.addEventListener('click', async function() {
+  var sound = new Howl({
+    src: [app.data().trackURL],
+    html5: true
+  });
+  
+  sound.play();
+})
+
 let app = new Vue({
   el: '#app',
   template: `
@@ -205,12 +214,6 @@ let app = new Vue({
         self.trackName = L0[uuid]['name'];
         self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
-        var sound = new Howl({
-          src: [self.trackURL],
-          html5: true
-        });
-        
-        sound.play();
         self.$refs.pLayer.load();
       };
       xhr.open('GET', url);
