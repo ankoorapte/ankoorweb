@@ -45,7 +45,7 @@ let users = {};
 
 document.addEventListener('click', async function() {
   var sound = new Howl({
-    src: [app.data().trackURL],
+    src: [app.trackURL],
     html5: true
   });
   
