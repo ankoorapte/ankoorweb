@@ -43,14 +43,14 @@ const auth = getAuth(firebaseApp);
 let L0 = {};
 let users = {};
 
-document.addEventListener('click', async function() {
-  var sound = new Howl({
-    src: [app.trackURL],
-    html5: true
-  });
+// document.addEventListener('click', async function() {
+//   var sound = new Howl({
+//     src: [app.trackURL],
+//     html5: true
+//   });
   
-  sound.play();
-})
+//   sound.play();
+// })
 
 let app = new Vue({
   el: '#app',
