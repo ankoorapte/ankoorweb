@@ -80,14 +80,14 @@ let app = new Vue({
               create <b-icon icon="music-note"></b-icon> 
             </template>
             <b-row><b-col align="center">
-              <b-form-input class="w-75" v-model="rootTrack" placeholder="OPTIONAL: enter track ID to layer your audio on top"></b-form-input>
               <b-form-file
                 placeholder="Drop audio here"
                 accept="audio/wav"
                 @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
-              <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
+              <b-form-input class="w-75" v-model="layerName" :state="stateLayername" placeholder="Name your clip"></b-form-input>
+              <b-form-input class="w-75" v-model="rootTrack" :state="stateRootTrack" placeholder="OPTIONAL: enter track ID to layer your audio on top" @keyup.native="rootTrackKeyupHandler"></b-form-input>
               <br>
               <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate">
                 <source :src="layerURL" type="audio/wav">
@@ -111,6 +111,7 @@ let app = new Vue({
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
+              <p>{{trackID}}<p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -150,10 +151,12 @@ let app = new Vue({
       layerName: "",
       layerURL: null,
       artistName: "",
+      trackID: "",
       trackName: "",
       trackURL: null,
       trackIdx: 0,
-      rootTrack: ""
+      rootTrack: "",
+      rootTrackExists: false
     }
   },
   async created() {
@@ -201,6 +204,12 @@ let app = new Vue({
         && !Object.keys(users).includes(this.newUsername)
         && (this.user.displayname != this.newUsername)
         && Boolean(this.newUsername.length);
+    },
+    stateLayername() {
+      return this.layerName.length;
+    },
+    stateRootTrack() {
+      return this.rootTrackExists;
     }
   },
   methods: {   
@@ -211,6 +220,7 @@ let app = new Vue({
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
+        self.trackID = uuid;
         self.trackName = L0[uuid]['name'];
         self.artistName = users[L0[uuid]['user']]['displayName'];
         self.trackURL = window.URL.createObjectURL(xhr.response);
@@ -312,6 +322,9 @@ let app = new Vue({
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername(0);
       }
+    },
+    rootTrackKeyupHandler(event) {
+      this.rootTrackExists = Object.keys(L0).includes(this.rootTrack);
     }
   }
 });
