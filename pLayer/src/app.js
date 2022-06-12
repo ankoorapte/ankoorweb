@@ -112,7 +112,7 @@ let app = new Vue({
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <p>{{trackID}}<p>
+              <p>{{trackID}}</p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
