@@ -88,7 +88,7 @@ let app = new Vue({
               ></b-form-file>
               <b-form-input class="w-75" v-model="layerName" placeholder="Name"></b-form-input>
               <br>
-              <audio class="m-2" ref="layer" controls controlsList="nodownload, noplaybackrate">
+              <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate">
                 <source :src="layerURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
@@ -106,7 +106,7 @@ let app = new Vue({
                 <b>{{trackName}}</b> by <b>{{artistName}}</b>
                 <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
-              <audio class="m-2" ref="pLayer" controls controlsList="nodownload, noplaybackrate">
+              <audio class="m-2" ref="pLayer" controls controlsList="nodownload noplaybackrate">
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
