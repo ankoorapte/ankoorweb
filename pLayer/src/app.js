@@ -126,7 +126,7 @@ let app = new Vue({
               align="center"
             >
               <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
-              <b-button variant="primary" :disabled="posting || Boolean()" @click="changeUsername(0)">update username</b-button>  
+              <b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button>  
             </b-form-group>
           </b-tab>
           <b-tab :title-link-class="tabClass(3)" @click="signOut">
