@@ -77,9 +77,10 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-              post <b-icon icon="music-note"></b-icon> 
+              create <b-icon icon="music-note"></b-icon> 
             </template>
             <b-row><b-col align="center">
+              <b-form-input class="w-75" v-model="rootTrack" placeholder="OPTIONAL: enter track ID to layer your audio on top"></b-form-input>
               <b-form-file
                 placeholder="Drop audio here"
                 accept="audio/wav"
@@ -98,7 +99,7 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-              browse <b-icon icon="music-note-beamed"></b-icon>
+              play <b-icon icon="music-note-beamed"></b-icon>
             </template>
             <b-row><b-col align="center">
               <p>
@@ -151,7 +152,8 @@ let app = new Vue({
       artistName: "",
       trackName: "",
       trackURL: null,
-      trackIdx: 0
+      trackIdx: 0,
+      rootTrack: ""
     }
   },
   async created() {
