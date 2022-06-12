@@ -100,18 +100,16 @@ let app = new Vue({
             <template slot="title">
               browse <b-icon icon="music-note-beamed"></b-icon>
             </template>
-            <b-row><b-col align="center">
-              <p><b>{{trackName}}</b> by <b>{{artistName}}</b></p>
-            </b-col></b-row>
-            <b-row><b-col align="center">
+            <b-row><b-col align="center" v-show="notBrowseReady">
+              <p>
+                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b>{{trackName}}</b> by <b>{{artistName}}</b>
+                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </p>
               <audio class="m-2" ref="pLayer" controls controlsList="nodownload, noplaybackrate">
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <b-row><b-col align="center">
-                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </b-col></b-row>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -181,6 +179,9 @@ let app = new Vue({
     });
   },
   computed: {
+    notBrowseReady() {
+      return Object.keys(L0).length;
+    },
     notPostReady() {
       if(this.layer && this.layerName.length && !this.posting) {
         return false;
