@@ -180,7 +180,7 @@ let app = new Vue({
   },
   computed: {
     notBrowseReady() {
-      return Object.keys(L0).length;
+      return Object.keys(L0).length > 0;
     },
     notPostReady() {
       if(this.layer && this.layerName.length && !this.posting) {
