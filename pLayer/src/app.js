@@ -81,12 +81,13 @@ let app = new Vue({
             </template>
             <b-row><b-col align="center">
               <b-form-file
-                placeholder="Drop audio here"
+                placeholder="Drop your clip"
                 accept="audio/wav"
                 @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
               <b-form-input class="w-75" v-model="layerName" :state="stateLayername" placeholder="Name your clip"></b-form-input>
+              <p> Layer your clip on top of:</p>
               <b-form-input class="w-75" v-model="rootTrack" :state="stateRootTrack" placeholder="OPTIONAL: enter track ID to layer your audio on top" @keyup.native="rootTrackKeyupHandler"></b-form-input>
               <br>
               <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate">
@@ -125,7 +126,7 @@ let app = new Vue({
               align="center"
             >
               <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
-              <b-button variant="primary" :disabled="posting" @click="changeUsername(0)">update username</b-button>  
+              <b-button variant="primary" :disabled="posting || Boolean()" @click="changeUsername(0)">update username</b-button>  
             </b-form-group>
           </b-tab>
           <b-tab :title-link-class="tabClass(3)" @click="signOut">
