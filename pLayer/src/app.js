@@ -207,7 +207,7 @@ let app = new Vue({
         && Boolean(this.newUsername.length);
     },
     stateLayername() {
-      return this.layerName.length;
+      return Boolean(this.layerName.length);
     },
     stateRootTrack() {
       return this.rootTrackExists;
