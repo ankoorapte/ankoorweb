@@ -100,7 +100,7 @@ let app = new Vue({
             <template slot="title">
               browse <b-icon icon="music-note-beamed"></b-icon>
             </template>
-            <b-row><b-col align="center" v-show="notBrowseReady">
+            <b-row><b-col align="center">
               <p>
                 <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                 <b>{{trackName}}</b> by <b>{{artistName}}</b>
@@ -179,9 +179,6 @@ let app = new Vue({
     });
   },
   computed: {
-    notBrowseReady() {
-      return Object.keys(L0).length > 0;
-    },
     notPostReady() {
       if(this.layer && this.layerName.length && !this.posting) {
         return false;
