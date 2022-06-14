@@ -81,14 +81,14 @@ let app = new Vue({
             </template>
             <b-row><b-col align="center">
               <b-form-file
-                placeholder="Drop your clip"
+                placeholder="drop your clip"
                 accept="audio/wav"
                 @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
-              <b-form-input class="w-75" v-model="layerName" :state="stateLayername" placeholder="Name your clip"></b-form-input>
-              <p> Layer your clip on top of:</p>
-              <b-form-input class="w-75" v-model="rootTrack" :state="stateRootTrack" placeholder="OPTIONAL: enter track ID to layer your audio on top" @keyup.native="rootTrackKeyupHandler"></b-form-input>
+              <b-form-input class="w-75" v-model="layerName" :state="stateLayername" placeholder="name your clip"></b-form-input>
+              <p class="mt-1"> OPTIONAL: enter track ID below to layer your clip on top</p>
+              <b-form-input class="w-75" v-model="rootTrackID" :state="stateRootTrack" placeholder="enter track ID" @keyup.native="rootTrackKeyupHandler"></b-form-input>
               <br>
               <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate">
                 <source :src="layerURL" type="audio/wav">
@@ -152,11 +152,13 @@ let app = new Vue({
       layerName: "",
       layerURL: null,
       artistName: "",
+      track: null,
       trackID: "",
       trackName: "",
       trackURL: null,
       trackIdx: 0,
-      rootTrack: "",
+      rootTrack: null,
+      rootTrackID: "",
       rootTrackExists: false
     }
   },
@@ -173,7 +175,7 @@ let app = new Vue({
           L0[doc.id] = doc.data();
         });
         if(Object.keys(L0).length) {
-          self.getLayer(Object.keys(L0)[0]).then(() => {});
+          self.getTrack(Object.keys(L0)[0]).then(() => {});
         }
     
         queryResponse = {};
@@ -214,17 +216,27 @@ let app = new Vue({
     }
   },
   methods: {   
-    async getLayer(uuid) {
+    async getTrack(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
       let self = this;
+
+      let response = await fetch(url);
+      if(response.status !== 200) {
+        console.log('Looks like there was a problem. Status Code: ' +
+        response.status);
+      } else {
+        console.log(response)
+      }
       
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = (event) => {
+        console.log(xhr.response);
+        self.track = xhr.response;
         self.trackID = uuid;
         self.trackName = L0[uuid]['name'];
         self.artistName = users[L0[uuid]['user']]['displayName'];
-        self.trackURL = window.URL.createObjectURL(xhr.response);
+        self.trackURL = window.URL.createObjectURL(self.track);
         self.$refs.pLayer.load();
       };
       xhr.open('GET', url);
@@ -248,7 +260,7 @@ let app = new Vue({
       if(forward) { this.trackIdx++; }
       else { this.trackIdx--; }
       this.trackIdx = this.trackIdx % Object.keys(L0).length;
-      await this.getLayer(Object.keys(L0)[this.trackIdx]);
+      await this.getTrack(Object.keys(L0)[this.trackIdx]);
     },
     async signOut() {
       this.signedIn = false;
@@ -324,8 +336,10 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    rootTrackKeyupHandler(event) {
-      this.rootTrackExists = Object.keys(L0).includes(this.rootTrack);
+    async rootTrackKeyupHandler(event) {
+      this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
+      await this.getTrack();
+      this.rootTrack = this.track;
     }
   }
 });
