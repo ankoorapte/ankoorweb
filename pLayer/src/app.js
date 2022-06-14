@@ -159,7 +159,8 @@ let app = new Vue({
       trackIdx: 0,
       rootTrack: null,
       rootTrackID: "",
-      rootTrackExists: false
+      rootTrackExists: false,
+      rootTrackURL: null
     }
   },
   async created() {
@@ -309,6 +310,13 @@ let app = new Vue({
       this.layer = layer;
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
+      let self = this;
+      var sound = new Howl({
+        src: [self.layerURL, self.rootTrackURL],
+        html5: true
+      });
+      
+      sound.play();
     },
     tabClass(idx) {
       return (this.tab === idx) ? 
@@ -328,6 +336,7 @@ let app = new Vue({
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
+      this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
     }
   }
 });
