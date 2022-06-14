@@ -225,7 +225,8 @@ let app = new Vue({
         console.log('Looks like there was a problem. Status Code: ' +
         response.status);
       } else {
-        console.log(response.blob())
+        let blob = await response.blob();
+        console.log(blob);
       }
       
       const xhr = new XMLHttpRequest();
