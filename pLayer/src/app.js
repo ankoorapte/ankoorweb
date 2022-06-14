@@ -311,14 +311,14 @@ let app = new Vue({
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
       let self = this;
-      console.log(self.layerURL);
-      console.log(self.rootTrackURL);
-      var sound = new Howl({
-        src: [self.layerURL, self.rootTrackURL],
-        html5: true
-      });
-      
-      sound.play();
+      if(self.rootTrackURL) {
+        var sound = new Howl({
+          src: [self.layerURL, self.rootTrackURL],
+          html5: true
+        });
+        
+        sound.play();
+      }
     },
     tabClass(idx) {
       return (this.tab === idx) ? 
@@ -339,6 +339,7 @@ let app = new Vue({
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
       this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
+      this.refreshLayer();
     }
   }
 });
