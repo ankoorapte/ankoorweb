@@ -218,30 +218,18 @@ let app = new Vue({
   methods: {   
     async getTrack(uuid) {
       let url = await getDownloadURL(ref(storage, 'public/'+uuid));
-      let self = this;
-
       let response = await fetch(url);
-      if(response.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' +
-        response.status);
-      } else {
-        let blob = await response.blob();
-        console.log(blob);
+
+      if(response.status === 200) {
+        this.track = await response.blob();
+        this.trackName = L0[uuid]['name'];
+        this.artistName = users[L0[uuid]['user']]['displayName'];
+        this.trackURL = window.URL.createObjectURL(this.track);
+        this.$refs.pLayer.load();
+        return this.track; 
       }
-      
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        console.log(xhr.response);
-        self.track = xhr.response;
-        self.trackID = uuid;
-        self.trackName = L0[uuid]['name'];
-        self.artistName = users[L0[uuid]['user']]['displayName'];
-        self.trackURL = window.URL.createObjectURL(self.track);
-        self.$refs.pLayer.load();
-      };
-      xhr.open('GET', url);
-      xhr.send();
+      console.log('Looks like there was a problem. Status Code: ' + response.status);
+      return 0;
     },
     async postLayer(level) {
       const uuidRef = ref(storage, 'public/'+uuidv4());
@@ -339,8 +327,7 @@ let app = new Vue({
     },
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
-      await this.getTrack();
-      this.rootTrack = this.track;
+      this.rootTrack = await this.getTrack(this.rootTrackID);
     }
   }
 });
