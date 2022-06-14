@@ -311,6 +311,8 @@ let app = new Vue({
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
       let self = this;
+      console.log(self.layerURL);
+      console.log(self.rootTrackURL);
       var sound = new Howl({
         src: [self.layerURL, self.rootTrackURL],
         html5: true
