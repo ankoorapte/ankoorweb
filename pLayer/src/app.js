@@ -344,7 +344,7 @@ let app = new Vue({
       this.rootTrack = await this.getTrack(this.rootTrackID);
       console.log(this.rootTrack);
       this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
-      this.refreshLayer();
+      this.refreshLayer(this.layer);
     }
   }
 });
