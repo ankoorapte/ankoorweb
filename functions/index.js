@@ -7,7 +7,7 @@ const db = admin.firestore();
 // gcloud functions deploy addLayer --runtime nodejs16
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
-exports.addLayer =  (file, context) => {
+exports.addLayer = async (file, context) => {
   const uid = file.name.replace("public/", "");
   const tracks = db.collection("library").doc("tracks");
   await tracks.collection("track-"+uid).doc(uid).set({
@@ -20,7 +20,7 @@ exports.addLayer =  (file, context) => {
   if (file.metadata.root && file.metadata.uid) {
     const newTrack = tracks.collection("track-"+file.metadata.uid);
     const rootTrackLayers = await tracks.collection(file.metadata.root).get();
-    let promises = [];
+    const promises = [];
     rootTrackLayers.forEach((layerDoc) => {
       promises.push(newTrack.doc(layerDoc.id).set(layerDoc.data()));
     });
