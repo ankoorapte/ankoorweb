@@ -314,7 +314,6 @@ let app = new Vue({
       this.$refs.layer.load();
       let self = this;
       if(self.rootTrackURL) {
-        console.log('creating howl')
         self.howl = new Howl({
           src: [self.rootTrackURL],
           html5: true
@@ -322,13 +321,9 @@ let app = new Vue({
       }
     },
     layerPause() {
-      console.log('pause');
-      console.log(this.howl);
       if(this.howl) this.howl.pause();
     },
     layerPlay() {
-      console.log('play');
-      console.log(this.howl);
       if(this.howl) this.howl.play();
     },
     tabClass(idx) {
