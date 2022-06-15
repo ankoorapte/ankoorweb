@@ -77,7 +77,7 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-              create <b-icon icon="music-note"></b-icon> 
+            <b-icon icon="music-note"></b-icon> create  
             </template>
             <b-row><b-col align="center">
               <b-form-file
@@ -100,7 +100,7 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-              play <b-icon icon="music-note-beamed"></b-icon>
+            <b-icon icon="music-note-beamed"></b-icon> play 
             </template>
             <b-row><b-col align="center">
               <p>
@@ -117,7 +117,7 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-              settings <b-icon icon="wrench"></b-icon> 
+              <b-icon icon="wrench"></b-icon> settings 
             </template>
             <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
@@ -131,7 +131,7 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(3)" @click="signOut">
             <template slot="title">
-              sign out <b-icon icon="box-arrow-right"></b-icon>
+              <b-icon icon="box-arrow-right"></b-icon> sign out 
             </template>
           </b-tab>
         </b-tabs>
@@ -343,9 +343,7 @@ let app = new Vue({
     },
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
-      console.log(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
-      console.log(this.rootTrack);
       this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
       this.refreshLayer(this.layer);
     }
