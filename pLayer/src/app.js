@@ -86,7 +86,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="postLayer(0)">post to pLayer</b-button>
+              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="post()">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
@@ -190,10 +190,10 @@ let app = new Vue({
       return this.password.length >= 6 && this.email.includes("@");
     },
     invalidFeedback() {
-      return 'Enter a valid email ID and password with minimum 6 characters.'
+      return 'enter a valid email ID and password with minimum 6 characters.'
     },
     invalidFeedbackUsername() {
-      return 'Username is already taken.'
+      return 'username is already taken.'
     },
     stateUsername() {
       return this.user
@@ -208,49 +208,21 @@ let app = new Vue({
       return this.rootTrackExists;
     }
   },
-  methods: {   
-    async getTrack(uuid) {
-      let url = await getDownloadURL(ref(storage, 'public/'+uuid));
-      let response = await fetch(url);
-
-      if(response.status === 200) {
-        this.track = await response.blob();
-        this.trackID = uuid;
-        this.trackName = L0[uuid]['name'];
-        this.artistName = users[L0[uuid]['user']]['displayName'];
-        this.trackURL = window.URL.createObjectURL(this.track);
-        this.$refs.pLayer.load();
-        return this.track; 
+  methods: {
+    tabClass(idx) {
+      return (this.tab === idx) ? 
+        ['bg-info', 'text-light'] : 
+        ['bg-light', 'text-dark'];
+    },
+    async createUser() {
+      try {
+        let self = this;
+        let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
+        self.user = userCredential.user;
+        await self.changeUsername(self.user.email);
+      } catch(e) {
+        console.log(e.code + ": " + e.message);
       }
-      console.log('Looks like there was a problem. Status Code: ' + response.status);
-      return 0;
-    },
-    async postLayer(level) {
-      const uuidRef = ref(storage, 'public/'+uuidv4());
-      let self = this;
-      self.posting = true;
-      const metadata = {
-        customMetadata: {
-          'name': self.layerName,
-          'user': self.user.uid,
-          'layer': level.toString()
-        }
-      };
-      await uploadBytes(uuidRef, self.layer, metadata);
-      self.posting = false;
-    },
-    async toggleTrack(forward) {
-      if(forward) { this.trackIdx++; }
-      else { this.trackIdx--; }
-      this.trackIdx = this.trackIdx % Object.keys(L0).length;
-      await this.getTrack(Object.keys(L0)[this.trackIdx]);
-    },
-    async signOut() {
-      this.signedIn = false;
-      this.user = null;
-      this.email = "";
-      this.password = "";
-      await signOut(auth);
     },
     async signIn(user) {
       try {
@@ -277,15 +249,12 @@ let app = new Vue({
         }
       }
     },
-    async createUser() {
-      try {
-        let self = this;
-        let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
-        self.user = userCredential.user;
-        await self.changeUsername(self.user.email);
-      } catch(e) {
-        console.log(e.code + ": " + e.message);
-      }
+    async signOut() {
+      this.signedIn = false;
+      this.user = null;
+      this.email = "";
+      this.password = "";
+      await signOut(auth);
     },
     async changeUsername(un) {
       let self = this;
@@ -298,6 +267,55 @@ let app = new Vue({
         displayName: un
       });
       self.posting = false;
+    },
+    signinKeydownHandler(event) {
+      if (event.which === 13 && this.state) {
+        this.signIn();
+      }
+    },
+    usernameKeydownHandler(event) {
+      if (event.which === 13 && this.stateUsername) {
+        this.changeUsername(0);
+      }
+    },
+    async post() {
+      let self = this;
+      self.posting = true;
+
+      const metadata = {
+        customMetadata: {
+          'name': self.layerName,
+          'user': self.user.id,
+          'root': self.rootTrackID,
+          'uid': "t-"+uuidv4()
+        }
+      };
+
+      const bucketPath = ref(storage, 'public/'+uuidv4());
+      await uploadBytes(bucketPath, self.layer, metadata);
+      self.posting = false;
+    },
+    async toggleTrack(forward) {
+      if(forward) { this.trackIdx++; }
+      else { this.trackIdx--; }
+      this.trackIdx = this.trackIdx % Object.keys(L0).length;
+      await this.getTrack(Object.keys(L0)[this.trackIdx]);
+    },
+    async getTrack(uuid) {
+      let url = await getDownloadURL(ref(storage, 'public/'+uuid));
+      let response = await fetch(url);
+
+      if(response.status === 200) {
+        this.track = await response.blob();
+        this.trackID = uuid;
+        this.trackName = L0[uuid]['name'];
+        this.artistName = users[L0[uuid]['user']]['displayName'];
+        this.trackURL = window.URL.createObjectURL(this.track);
+        this.$refs.pLayer.load();
+        return this.track; 
+      }
+      console.log('Looks like there was a problem. Status Code: ' + response.status);
+      return 0;
     },
     async refreshLayer(layer) {
       this.layer = layer;
@@ -316,21 +334,6 @@ let app = new Vue({
     },
     layerPlay() {
       if(this.howl) this.howl.play();
-    },
-    tabClass(idx) {
-      return (this.tab === idx) ? 
-        ['bg-info', 'text-light'] : 
-        ['bg-light', 'text-dark'];
-    },
-    signinKeydownHandler(event) {
-      if (event.which === 13 && this.state) {
-        this.signIn();
-      }
-    },
-    usernameKeydownHandler(event) {
-      if (event.which === 13 && this.stateUsername) {
-        this.changeUsername(0);
-      }
     },
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);

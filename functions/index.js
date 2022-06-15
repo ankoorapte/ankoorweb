@@ -8,9 +8,14 @@ const db = admin.firestore();
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
 exports.addLayer = async (file, context) => {
-  const uid = file.name.replace("public/", "");
+  const layerUID = file.name.replace("public/", "");
+  const trackUID = "t-" + layerUID;
   const tracks = db.collection("library").doc("tracks");
-  await tracks.collection("track-"+uid).doc(uid).set({
+
+  await tracks.set({
+    tracks: admin.firestore.FieldValue.arrayUnion(trackUID),
+  }, {merge: true});
+  await tracks.collection(trackUID).doc(layerUID).set({
     bucket: file.name,
     name: file.metadata.name,
     user: file.metadata.user,
@@ -18,7 +23,10 @@ exports.addLayer = async (file, context) => {
   });
 
   if (file.metadata.root && file.metadata.uid) {
-    const newTrack = tracks.collection("track-"+file.metadata.uid);
+    await tracks.set({
+      tracks: admin.firestore.FieldValue.arrayUnion(file.metadata.uid),
+    }, {merge: true});
+    const newTrack = tracks.collection(file.metadata.uid);
     const rootTrackLayers = await tracks.collection(file.metadata.root).get();
     const promises = [];
     rootTrackLayers.forEach((layerDoc) => {
