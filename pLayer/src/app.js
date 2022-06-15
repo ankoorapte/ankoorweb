@@ -160,7 +160,8 @@ let app = new Vue({
       rootTrack: null,
       rootTrackID: "",
       rootTrackExists: false,
-      rootTrackURL: null
+      rootTrackURL: null,
+      howl: null
     }
   },
   async created() {
@@ -314,7 +315,7 @@ let app = new Vue({
       let self = this;
       if(self.rootTrackURL) {
         console.log('creating howl')
-        this.howl = new Howl({
+        self.howl = new Howl({
           src: [self.rootTrackURL]
         });
       }
