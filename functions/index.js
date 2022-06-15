@@ -13,13 +13,13 @@ const db = admin.firestore();
 // gcloud functions deploy addLayer --runtime nodejs16
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
-exports.addLayer = (file, context) => {
+exports.addLayer = async (file, context) => {
   const uid = file.name.replace("public/", "");
-  db.collection("L"+file.metadata.layer).doc(uid).set({
+  await db.collection("L"+file.metadata.layer).doc(uid).set({
     bucket: file.name,
     name: file.metadata.name,
     user: file.metadata.user,
     timestamp: file.updated,
-  }).then(() => {});
+  });
   console.log(`  File: ${file.name} added to DB`);
 };
