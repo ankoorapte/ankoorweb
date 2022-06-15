@@ -316,16 +316,19 @@ let app = new Vue({
       if(self.rootTrackURL) {
         console.log('creating howl')
         self.howl = new Howl({
-          src: [self.rootTrackURL]
+          src: [self.rootTrackURL],
+          html5: true
         });
       }
     },
     layerPause() {
       console.log('pause');
+      console.log(this.howl);
       if(this.howl) this.howl.pause();
     },
     layerPlay() {
       console.log('play');
+      console.log(this.howl);
       if(this.howl) this.howl.play();
     },
     tabClass(idx) {
