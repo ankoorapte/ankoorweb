@@ -90,7 +90,7 @@ let app = new Vue({
               <p class="mt-1"> OPTIONAL: enter track ID below to layer your clip on top</p>
               <b-form-input class="w-75" v-model="rootTrackID" :state="stateRootTrack" placeholder="enter track ID" @keyup.native="rootTrackKeyupHandler"></b-form-input>
               <br>
-              <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate">
+              <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate" onpause="layerPause" onplay="layerPlay">
                 <source :src="layerURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
@@ -312,13 +312,16 @@ let app = new Vue({
       this.$refs.layer.load();
       let self = this;
       if(self.rootTrackURL) {
-        var sound = new Howl({
-          src: [self.layerURL, self.rootTrackURL],
-          html5: true
+        this.howl = new Howl({
+          src: [self.rootTrackURL]
         });
-        
-        sound.play();
       }
+    },
+    layerPause() {
+      if(this.howl) this.howl.pause();
+    },
+    layerPlay() {
+      if(this.howl) this.howl.play();
     },
     tabClass(idx) {
       return (this.tab === idx) ? 
