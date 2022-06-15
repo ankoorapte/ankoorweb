@@ -306,21 +306,24 @@ let app = new Vue({
       });
       self.posting = false;
     },
-    refreshLayer(layer) {
+    async refreshLayer(layer) {
       this.layer = layer;
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
       let self = this;
       if(self.rootTrackURL) {
+        console.log('creating howl')
         this.howl = new Howl({
           src: [self.rootTrackURL]
         });
       }
     },
     layerPause() {
+      console.log('pause');
       if(this.howl) this.howl.pause();
     },
     layerPlay() {
+      console.log('play');
       if(this.howl) this.howl.play();
     },
     tabClass(idx) {
