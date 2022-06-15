@@ -223,6 +223,7 @@ let app = new Vue({
 
       if(response.status === 200) {
         this.track = await response.blob();
+        this.trackID = uuid;
         this.trackName = L0[uuid]['name'];
         this.artistName = users[L0[uuid]['user']]['displayName'];
         this.trackURL = window.URL.createObjectURL(this.track);
