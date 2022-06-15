@@ -340,7 +340,9 @@ let app = new Vue({
     },
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
+      console.log(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
+      console.log(this.rootTrack);
       this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
       this.refreshLayer();
     }
