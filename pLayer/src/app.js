@@ -154,6 +154,7 @@ let app = new Vue({
   async created() {
     let self = this;
     onAuthStateChanged(auth, async (user) => {
+      console.log(user);
       if(user) { await self.signIn(user); }
       self.tab = 1;
 
@@ -224,6 +225,7 @@ let app = new Vue({
     async signIn(user) {
       try {
         if(user) {
+          console.log(user);
           this.user = user;
         } else {
           this.user = (await signInWithEmailAndPassword(
@@ -287,7 +289,7 @@ let app = new Vue({
           'uid': uuidv4()
         }
       };
-      console.log(metadata);
+      console.log(self.user);
 
       const bucketPath = ref(storage, 'public/'+uuidv4());
       await uploadBytes(bucketPath, self.layer, metadata);
