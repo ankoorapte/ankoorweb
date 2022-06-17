@@ -316,8 +316,6 @@ let app = new Vue({
           let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
           let url = await getDownloadURL(layer);
           let metadata = await getMetadata(layer);
-          console.log(metadata.customMetadata.uid);
-          console.log(users);
           this.artistNames.push(users[metadata.customMetadata.user].displayName);
           this.track.push(new Howl({
             src: [url],
@@ -334,15 +332,19 @@ let app = new Vue({
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
     },
-    layerPause() {
+    async layerPause() {
+      let pauses = [];
       this.track.forEach((layer) => {
-        layer.pause()
+        pauses.push(layer.pause());
       });
+      await Promise.all(pauses);
     },
-    layerPlay() {
+    async layerPlay() {
+      let plays = [];
       this.track.forEach((layer) => {
-        layer.play()
+        plays.plus(layer.play());
       });
+      await Promise.all(plays);
     },
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(tracks).includes(this.rootTrackID);
