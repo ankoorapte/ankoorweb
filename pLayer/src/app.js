@@ -163,7 +163,7 @@ let app = new Vue({
         queryResponse.forEach((doc) => {
           tracks[doc.id] = doc.data();
         });
-        
+
         queryResponse = {};
         queryResponse = await getDocs(collection(db, "users"));
         queryResponse.forEach((doc) => {
@@ -316,7 +316,7 @@ let app = new Vue({
           let metadata = await getMetadata(layer);
           console.log(metadata.customMetadata.uid);
           console.log(users);
-          this.artistNames.push(users[metadata.customMetadata.uid].displayName);
+          this.artistNames.push(users[metadata.customMetadata.user].displayName);
           this.track.push(new Howl({
             src: [url],
             html5: true
