@@ -164,16 +164,15 @@ let app = new Vue({
           tracks[doc.id] = doc.data();
         });
         
-        if(Object.keys(tracks).length) {
-          await self.getTrack(Object.keys(tracks)[0]);
-        }
-    
         queryResponse = {};
         queryResponse = await getDocs(collection(db, "users"));
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
         });
-        console.log(users);
+        
+        if(Object.keys(tracks).length) {
+          await self.getTrack(Object.keys(tracks)[0]);
+        }
       }
     });
   },
