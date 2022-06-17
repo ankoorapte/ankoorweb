@@ -314,6 +314,7 @@ let app = new Vue({
           let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
           let url = await getDownloadURL(layer);
           let metadata = await getMetadata(layer);
+          console.log(metadata);
           this.artistNames.push(users[metadata['user']]['displayName']);
           this.track.push(new Howl({
             src: [url],
