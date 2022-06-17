@@ -154,7 +154,6 @@ let app = new Vue({
   async created() {
     let self = this;
     onAuthStateChanged(auth, async (user) => {
-      console.log(user);
       if(user) { await self.signIn(user); }
       self.tab = 1;
 
@@ -225,7 +224,6 @@ let app = new Vue({
     async signIn(user) {
       try {
         if(user) {
-          console.log(user);
           this.user = user;
         } else {
           this.user = (await signInWithEmailAndPassword(
@@ -284,12 +282,11 @@ let app = new Vue({
       const metadata = {
         customMetadata: {
           'name': self.layerName,
-          'user': self.user.id,
+          'user': self.user.uid,
           'root': self.rootTrackID,
           'uid': uuidv4()
         }
       };
-      console.log(self.user);
 
       const bucketPath = ref(storage, 'public/'+uuidv4());
       await uploadBytes(bucketPath, self.layer, metadata);
@@ -317,7 +314,6 @@ let app = new Vue({
           let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
           let url = await getDownloadURL(layer);
           let metadata = await getMetadata(layer);
-          console.log(metadata);
           this.artistNames.push(users[metadata['user']]['displayName']);
           this.track.push(new Howl({
             src: [url],
