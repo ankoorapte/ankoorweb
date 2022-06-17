@@ -287,6 +287,7 @@ let app = new Vue({
           'uid': uuidv4()
         }
       };
+      console.log(metadata);
 
       const bucketPath = ref(storage, 'public/'+uuidv4());
       await uploadBytes(bucketPath, self.layer, metadata);
