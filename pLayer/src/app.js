@@ -284,7 +284,7 @@ let app = new Vue({
           'name': self.layerName,
           'user': self.user.id,
           'root': self.rootTrackID,
-          'uid': "t-"+uuidv4()
+          'uid': uuidv4()
         }
       };
 
