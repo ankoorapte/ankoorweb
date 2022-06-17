@@ -310,7 +310,7 @@ let app = new Vue({
         this.artistNames = [];
         this.track = [];
 
-        for(idx in tracks[uuid].layers) {
+        for(const idx in tracks[uuid].layers) {
           let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
           let url = await getDownloadURL(layer);
           let metadata = await getMetadata(layer);
