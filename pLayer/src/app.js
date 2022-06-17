@@ -43,6 +43,7 @@ const auth = getAuth(firebaseApp);
 
 let tracks = {};
 let users = {};
+let playing = false;
 
 let app = new Vue({
   el: '#app',
@@ -300,8 +301,9 @@ let app = new Vue({
     },
     togglePlayer() {
       this.track.forEach((layer) => {
-        layer.playing() ? layer.pause() : layer.play();
+        playing ? layer.pause() : layer.play();
       });
+      playing = !playing;
     },
     async getTrack(uuid) {
       if(tracks[uuid]) {
@@ -345,7 +347,6 @@ let app = new Vue({
     async rootTrackKeyupHandler(event) {
       this.rootTrackExists = Object.keys(tracks).includes(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
-      this.refreshLayer(this.layer);
     }
   }
 });
