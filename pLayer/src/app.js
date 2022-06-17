@@ -15,7 +15,8 @@ import {
   getStorage, 
   ref, 
   uploadBytes, 
-  getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
+  getDownloadURL,
+  getMetadata } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 
 import { 
   getFirestore, 
@@ -40,7 +41,7 @@ const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-let L0 = {};
+let tracks = {};
 let users = {};
 
 let app = new Vue({
@@ -94,15 +95,12 @@ let app = new Vue({
             <b-icon icon="music-note-beamed"></b-icon> play 
             </template>
             <b-row><b-col align="center">
+              <p> <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b> </p>
               <p>
                 <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b>{{trackName}}</b> by <b>{{artistName}}</b>
+                <b-button @click="togglePlayer" class="m-2" variant="info"><b-icon icon="play-fill"></b-icon></b-button>
                 <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
-              <audio class="m-2" ref="pLayer" controls controlsList="nodownload noplaybackrate">
-                <source :src="trackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
               <p>{{trackID}}</p>
             </b-col></b-row>
           </b-tab>
@@ -142,16 +140,14 @@ let app = new Vue({
       layer: null,
       layerName: "",
       layerURL: null,
-      artistName: "",
-      track: null,
+      artistNames: [],
+      track: [],
       trackID: "",
       trackName: "",
-      trackURL: null,
       trackIdx: 0,
-      rootTrack: null,
+      rootTrack: [],
       rootTrackID: "",
       rootTrackExists: false,
-      rootTrackURL: null,
       howl: null
     }
   },
@@ -163,12 +159,13 @@ let app = new Vue({
 
       let queryResponse = {};
       if(self.signedIn) {
-        queryResponse = await getDocs(collection(db, "L0"));
+        queryResponse = await getDocs(collection(db, "tracks"));
         queryResponse.forEach((doc) => {
-          L0[doc.id] = doc.data();
+          tracks[doc.id] = doc.data();
         });
-        if(Object.keys(L0).length) {
-          self.getTrack(Object.keys(L0)[0]).then(() => {});
+        
+        if(Object.keys(tracks).length) {
+          await self.getTrack(Object.keys(tracks)[0]);
         }
     
         queryResponse = {};
@@ -298,47 +295,55 @@ let app = new Vue({
     async toggleTrack(forward) {
       if(forward) { this.trackIdx++; }
       else { this.trackIdx--; }
-      this.trackIdx = this.trackIdx % Object.keys(L0).length;
-      await this.getTrack(Object.keys(L0)[this.trackIdx]);
+      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
+      await this.getTrack(Object.keys(tracks)[this.trackIdx]);
+    },
+    togglePlayer() {
+      this.track.forEach((layer) => {
+        layer.playing() ? layer.pause() : layer.play();
+      });
     },
     async getTrack(uuid) {
-      let url = await getDownloadURL(ref(storage, 'public/'+uuid));
-      let response = await fetch(url);
-
-      if(response.status === 200) {
-        this.track = await response.blob();
+      if(tracks[uuid]) {
         this.trackID = uuid;
-        this.trackName = L0[uuid]['name'];
-        this.artistName = users[L0[uuid]['user']]['displayName'];
-        this.trackURL = window.URL.createObjectURL(this.track);
-        this.$refs.pLayer.load();
-        return this.track; 
+        this.trackName = tracks[uuid].name;
+        this.artistNames = [];
+        this.track = [];
+
+        for(idx in tracks[uuid].layers) {
+          let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
+          let url = await getDownloadURL(layer);
+          let metadata = await getMetadata(layer);
+          console.log(metadata);
+          this.artistNames.push(users[metadata['user']]['displayName']);
+          this.track.push(new Howl({
+            src: [url],
+            html5: true
+          }));
+        }
+        return this.track;
+      } else {
+        throw new Error('track ' + uuid + ' not found');
       }
-      console.log('Looks like there was a problem. Status Code: ' + response.status);
-      return 0;
     },
     async refreshLayer(layer) {
       this.layer = layer;
       this.layerURL = window.URL.createObjectURL(layer);
       this.$refs.layer.load();
-      let self = this;
-      if(self.rootTrackURL) {
-        self.howl = new Howl({
-          src: [self.rootTrackURL],
-          html5: true
-        });
-      }
     },
     layerPause() {
-      if(this.howl) this.howl.pause();
+      this.track.forEach((layer) => {
+        layer.pause()
+      });
     },
     layerPlay() {
-      if(this.howl) this.howl.play();
+      this.track.forEach((layer) => {
+        layer.play()
+      });
     },
     async rootTrackKeyupHandler(event) {
-      this.rootTrackExists = Object.keys(L0).includes(this.rootTrackID);
+      this.rootTrackExists = Object.keys(tracks).includes(this.rootTrackID);
       this.rootTrack = await this.getTrack(this.rootTrackID);
-      this.rootTrackURL = window.URL.createObjectURL(this.rootTrack);
       this.refreshLayer(this.layer);
     }
   }
