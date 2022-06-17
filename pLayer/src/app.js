@@ -173,6 +173,7 @@ let app = new Vue({
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
         });
+        console.log(users);
       }
     });
   },
