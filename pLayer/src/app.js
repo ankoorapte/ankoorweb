@@ -321,10 +321,10 @@ let app = new Vue({
         };
 
         recorder.onstop = function(event) {
-          let blob = new Blob(chunks, {
+          self.newTrack = new Blob(chunks, {
             "type": "audio/wav"
           });
-          self.newTrackURL = URL.createObjectURL(blob);
+          self.newTrackURL = URL.createObjectURL(newTrack);
           self.$refs.newTrack.load();
         };
 
@@ -348,7 +348,7 @@ let app = new Vue({
       const trackPath = ref(storage, 'tracks/'+uid);
       const layerPath = ref(storage, 'layers/'+uid);
       await uploadBytes(trackPath, self.layer, metadata);
-      await uploadBytes(layerPath, self.layer, metadata);
+      await uploadBytes(layerPath, self.newTrack, metadata);
       self.posting = false;
     }
   }
