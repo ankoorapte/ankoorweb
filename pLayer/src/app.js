@@ -253,7 +253,7 @@ let app = new Vue({
       self.posting = false;
     },
     signinKeydownHandler(event) {
-      if (event.which === 13 && this.state) {
+      if (event.which === 13 && this.stateCredentials) {
         this.signIn();
       }
     },
