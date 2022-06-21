@@ -156,10 +156,6 @@ let app = new Vue({
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
         });
-        
-        if(Object.keys(tracks).length) {
-          await self.getTrack(Object.keys(tracks)[0]);
-        }
       }
     });
   },
@@ -272,10 +268,12 @@ let app = new Vue({
       let self = this;
       self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
       if(self.baseTrackExists) {
+        console.log('get base track id + metadata');
         let base = ref(storage, 'tracks/'+self.baseTrackID);
         let baseTrackURL = await getDownloadURL(base);
         let baseMetadata = await getMetadata(base);
 
+        console.log('convert to arrayBuffers');
         let layerArrayBuffer = await self.layer.arrayBuffer();
         let baseTrack = await fetch(baseTrackURL);
         let baseArrayBuffer = await baseTrack.arrayBuffer();
@@ -286,6 +284,8 @@ let app = new Vue({
           [0, 1],
           [1, 0]
         ];
+
+        console.log('wire up audio');
         let audio = new AudioContext();
         let merger = audio.createChannelMerger(2);
         let splitter = audio.createChannelSplitter(2);
@@ -308,28 +308,29 @@ let app = new Vue({
         merger.connect(mixedAudio);
         merger.connect(audio.destination);
         let recorder = new MediaRecorder(mixedAudio.stream);
+
+        recorder.ondataavailable = function(event) {
+          console.log('ondataavailable');
+          chunks.push(event.data);
+          console.log(chunks);
+        };
+        recorder.onstop = function(event) {
+          console.log('onstop');
+          self.newTrack = new Blob(chunks, {
+            "type": "audio/wav"
+          });
+          self.newTrackURL = URL.createObjectURL(self.newTrack);
+          self.$refs.newTrack.load();
+        };
+        console.log('start recorder + nodes');
         recorder.start(0);
         audioNodes.forEach(function(node, index) {
           node.onended = () => {
             ended[index] = true;
+            if(ended.every((e) => e)) recorder.stop();
           }
-          node.start(0)
+          node.start(0);
         });
-
-        recorder.ondataavailable = function(event) {
-          chunks.push(event.data);
-        };
-
-        recorder.onstop = function(event) {
-          self.newTrack = new Blob(chunks, {
-            "type": "audio/wav"
-          });
-          self.newTrackURL = URL.createObjectURL(newTrack);
-          self.$refs.newTrack.load();
-        };
-
-        while(!ended.every((e) => e)) {}
-        recorder.stop();
       }
     },
     async post() {
