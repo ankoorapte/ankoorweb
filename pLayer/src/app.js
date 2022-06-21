@@ -103,8 +103,8 @@ let app = new Vue({
             <template slot="title">
               <b-icon icon="wrench"></b-icon> settings 
             </template>
-            <b-button variant="danger" @click="signOut">sign out</b-button>  
-            <br>
+            <b-button align="center" variant="danger" @click="signOut">sign out</b-button>  
+            <hr>
             <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
               :invalid-feedback="invalidUsername"
