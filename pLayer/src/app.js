@@ -345,10 +345,12 @@ let app = new Vue({
       };
 
       const uid = uuidv4();
-      const trackPath = ref(storage, 'tracks/'+uid);
       const layerPath = ref(storage, 'layers/'+uid);
-      await uploadBytes(trackPath, self.newTrack, metadata);
       await uploadBytes(layerPath, self.layer, metadata);
+      if(self.baseTrackExists) {
+        const trackPath = ref(storage, 'tracks/'+uid);
+        await uploadBytes(trackPath, self.newTrack, metadata);
+      }
       self.posting = false;
     }
   }
