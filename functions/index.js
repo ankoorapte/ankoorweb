@@ -6,35 +6,19 @@ const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 // To deploy, run in "functions" directory:
-// gcloud functions deploy addLayer --runtime nodejs16
+// gcloud functions deploy updateDB --runtime nodejs16
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
-exports.addLayer = async (file, context) => {
-  const rootUID = file.metadata.root;
-  const newUID = file.metadata.uid;
-  const layerUID = file.name.replace("public/", "");
-  const layerData = {
+exports.updateDB = async (file, context) => {
+  const collection = file.name.includes("layers") ? layers : tracks;
+  const uid = file.name.split("/")[1];
+  const data = {
     bucket: file.name,
+    timestamp: file.updated,
     name: file.metadata.name,
     user: file.metadata.user,
-    timestamp: file.updated,
+    base: file.metadata.base,
   };
 
-  await layers.doc(layerUID).set(layerData);
-  await tracks.doc(layerUID).set({
-    layers: [layerUID],
-    name: file.metadata.name,
-  });
-
-  if (rootUID && newUID) {
-    const root = await tracks.doc(rootUID).get();
-    if (root.exists) {
-      await tracks.doc(newUID).set({
-        layers: root.data().layers.concat([layerUID]),
-        name: file.metadata.name,
-      });
-    } else {
-      throw new Error("Root track " + rootUID + " does not exist!");
-    }
-  }
+  await collection.doc(uid).set(data);
 };

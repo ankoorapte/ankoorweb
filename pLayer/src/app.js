@@ -43,7 +43,6 @@ const auth = getAuth(firebaseApp);
 
 let tracks = {};
 let users = {};
-let playing = false;
 
 let app = new Vue({
   el: '#app',
@@ -55,8 +54,8 @@ let app = new Vue({
         <b-form-group
           label="enter your credentials"
           label-for="input-1"
-          :invalid-feedback="invalidFeedback"
-          :state="state"
+          :invalid-feedback="invalidCredentials"
+          :state="stateCredentials"
           align="center"
         >
           <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="state" trim></b-form-input>
@@ -66,7 +65,7 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
-      <b-card bg-variant="light" no-body class="m-4">
+      <b-card bg-variant="light" no-body class="m-3">
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
@@ -76,19 +75,21 @@ let app = new Vue({
               <b-form-file
                 placeholder="drop your clip"
                 accept="audio/wav"
-                @input="refreshLayer"
-                class="m-2 w-75"
+                @input="layerHandler"
+                class="w-75"
               ></b-form-file>
-              <b-form-input class="w-75" v-model="layerName" :state="stateLayername" placeholder="name your clip"></b-form-input>
-              <p class="mt-1"> OPTIONAL: enter track ID below to layer your clip on top</p>
-              <b-form-input class="w-75" v-model="rootTrackID" :state="stateRootTrack" placeholder="enter track ID" @keyup.native="rootTrackKeyupHandler"></b-form-input>
-              <br>
-              <audio class="m-2" ref="layer" controls controlsList="nodownload noplaybackrate" @pause="layerPause()" @play="layerPlay()">
+              <audio ref="layer" controls controlsList="nodownload noplaybackrate">
                 <source :src="layerURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <br>
-              <b-button :disabled="notPostReady" class="m-2" variant="info" @click="post()">post to pLayer</b-button>
+              <p> OPTIONAL: enter track ID below to layer your clip on top</p>
+              <b-form-input class="w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="enter track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <audio v-show="stateBaseTrack" ref="newTrack" controls controlsList="nodownload noplaybackrate">
+                <source :src="newTrackURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+              <b-form-input class="w-75" v-model="newTrackName" :state="stateTrackName" placeholder="name your track"></b-form-input>
+              <b-button :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
@@ -96,33 +97,23 @@ let app = new Vue({
             <b-icon icon="music-note-beamed"></b-icon> play 
             </template>
             <b-row><b-col align="center">
-              <p> <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b> </p>
-              <p>
-                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="togglePlayer" class="m-2" variant="info"><b-icon icon="play-fill"></b-icon></b-button>
-                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </p>
-              <p>{{trackID}}</p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
               <b-icon icon="wrench"></b-icon> settings 
             </template>
+            <b-button variant="danger" @click="signOut">sign out</b-button>  
+            <br>
             <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
-              :invalid-feedback="invalidFeedbackUsername"
+              :invalid-feedback="invalidUsername"
               :state="stateUsername"
               align="center"
             >
               <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
               <b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button>  
             </b-form-group>
-          </b-tab>
-          <b-tab :title-link-class="tabClass(3)" @click="signOut">
-            <template slot="title">
-              <b-icon icon="box-arrow-right"></b-icon> sign out 
-            </template>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -139,17 +130,12 @@ let app = new Vue({
       newUsername: "",
       posting: false,
       layer: null,
-      layerName: "",
       layerURL: null,
-      artistNames: [],
-      track: [],
-      trackID: "",
-      trackName: "",
-      trackIdx: 0,
-      rootTrack: [],
-      rootTrackID: "",
-      rootTrackExists: false,
-      howl: null
+      baseTrackID: "",
+      baseTrackExists: false,
+      newTrack: null,
+      newTrackURL: null,
+      newTrackName: ""
     }
   },
   async created() {
@@ -178,19 +164,19 @@ let app = new Vue({
     });
   },
   computed: {
-    notPostReady() {
-      if(this.layer && this.layerName.length && !this.posting) {
+    postDisabled() {
+      if(this.layer && this.newTrackName.length && !this.posting) {
         return false;
       }
       return true;
     },
-    state() {
+    stateCredentials() {
       return this.password.length >= 6 && this.email.includes("@");
     },
-    invalidFeedback() {
+    invalidCredentials() {
       return 'enter a valid email ID and password with minimum 6 characters.'
     },
-    invalidFeedbackUsername() {
+    invalidUsername() {
       return 'username is already taken.'
     },
     stateUsername() {
@@ -199,11 +185,11 @@ let app = new Vue({
         && (this.user.displayname != this.newUsername)
         && Boolean(this.newUsername.length);
     },
-    stateLayername() {
-      return Boolean(this.layerName.length);
+    stateTrackName() {
+      return Boolean(this.newTrackName.length);
     },
-    stateRootTrack() {
-      return this.rootTrackExists;
+    stateBaseTrack() {
+      return this.baseTrackExists;
     }
   },
   methods: {
@@ -276,81 +262,94 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
+    async layerHandler(layer) {
+      this.layer = layer;
+      this.layerURL = window.URL.createObjectURL(layer);
+      this.$refs.layer.load();
+      await this.baseTrackIDHandler();
+    },
+    async baseTrackIDHandler(event) {
+      let self = this;
+      self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
+      if(self.baseTrackExists) {
+        let base = ref(storage, 'tracks/'+self.baseTrackID);
+        let baseTrackURL = await getDownloadURL(base);
+        let baseMetadata = await getMetadata(base);
+
+        let layerArrayBuffer = await self.layer.arrayBuffer();
+        let baseTrack = await fetch(baseTrackURL);
+        let baseArrayBuffer = await baseTrack.arrayBuffer();
+
+        let ended = [false, false];
+        let chunks = [];
+        let channels = [
+          [0, 1],
+          [1, 0]
+        ];
+        let audio = new AudioContext();
+        let merger = audio.createChannelMerger(2);
+        let splitter = audio.createChannelSplitter(2);
+        let mixedAudio = audio.createMediaStreamDestination();
+
+        let audioSetup = async (buffer, index) => {
+          let bufferSource = await audio.decodeAudioData(buffer);
+          let channel = channels[index];
+          let source = audio.createBufferSource();
+          source.buffer = bufferSource;
+          source.connect(splitter);
+          splitter.connect(merger, channel[0], channel[1]);          
+          return source;
+        }
+
+        let promises = [];
+        promises.push(audioSetup(layerArrayBuffer, 0));
+        promises.push(audioSetup(baseArrayBuffer, 0));
+        let audioNodes = await Promise.all(promises);
+        merger.connect(mixedAudio);
+        merger.connect(audio.destination);
+        let recorder = new MediaRecorder(mixedAudio.stream);
+        recorder.start(0);
+        audioNodes.forEach(function(node, index) {
+          node.onended = () => {
+            ended[index] = true;
+          }
+          node.start(0)
+        });
+
+        recorder.ondataavailable = function(event) {
+          chunks.push(event.data);
+        };
+
+        recorder.onstop = function(event) {
+          let blob = new Blob(chunks, {
+            "type": "audio/wav"
+          });
+          self.newTrackURL = URL.createObjectURL(blob);
+          self.$refs.newTrack.load();
+        };
+
+        while(!ended.every((e) => e)) {}
+        recorder.stop();
+      }
+    },
     async post() {
       let self = this;
       self.posting = true;
 
       const metadata = {
         customMetadata: {
-          'name': self.layerName,
+          'name': self.newTrackName,
           'user': self.user.uid,
-          'root': self.rootTrackID,
-          'uid': uuidv4()
+          'base': self.baseTrackID
         }
       };
 
-      const bucketPath = ref(storage, 'public/'+uuidv4());
-      await uploadBytes(bucketPath, self.layer, metadata);
+      const uid = uuidv4();
+      const trackPath = ref(storage, 'tracks/'+uid);
+      const layerPath = ref(storage, 'layers/'+uid);
+      await uploadBytes(trackPath, self.layer, metadata);
+      await uploadBytes(layerPath, self.layer, metadata);
       self.posting = false;
-    },
-    async toggleTrack(forward) {
-      if(forward) { this.trackIdx++; }
-      else { this.trackIdx--; }
-      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
-      await this.getTrack(Object.keys(tracks)[this.trackIdx]);
-    },
-    togglePlayer() {
-      this.track.forEach((layer) => {
-        playing ? layer.pause() : layer.play();
-      });
-      playing = !playing;
-    },
-    async getTrack(uuid) {
-      if(tracks[uuid]) {
-        this.trackID = uuid;
-        this.trackName = tracks[uuid].name;
-        this.artistNames = [];
-        this.track = [];
-
-        for(const idx in tracks[uuid].layers) {
-          let layer = ref(storage, 'public/'+tracks[uuid].layers[idx]);
-          let url = await getDownloadURL(layer);
-          let metadata = await getMetadata(layer);
-          this.artistNames.push(users[metadata.customMetadata.user].displayName);
-          this.track.push(new Howl({
-            src: [url],
-            html5: true
-          }));
-        }
-        return this.track;
-      } else {
-        throw new Error('track ' + uuid + ' not found');
-      }
-    },
-    async refreshLayer(layer) {
-      this.layer = layer;
-      this.layerURL = window.URL.createObjectURL(layer);
-      this.$refs.layer.load();
-    },
-    async layerPause() {
-      let pauses = [];
-      this.track.forEach((layer) => {
-        pauses.push(layer.pause());
-      });
-      await Promise.all(pauses);
-    },
-    async layerPlay() {
-      let plays = [];
-      this.track.forEach((layer) => {
-        plays.plus(layer.play());
-      });
-      await Promise.all(plays);
-    },
-    async rootTrackKeyupHandler(event) {
-      this.rootTrackExists = Object.keys(tracks).includes(this.rootTrackID);
-      this.rootTrack = await this.getTrack(this.rootTrackID);
     }
   }
 });
-
-
