@@ -343,7 +343,7 @@ let app = new Vue({
     async post() {
       let self = this;
       self.posting = true;
-      if(self.baseTrackExists) {
+      if(!self.baseTrackExists) {
         self.newTrack = self.layer;
       }
 
