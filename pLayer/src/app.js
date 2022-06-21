@@ -71,7 +71,7 @@ let app = new Vue({
             <template slot="title">
             <b-icon icon="music-note"></b-icon> create  
             </template>
-            <b-row><b-col align="center">
+            <b-row><b-col align="center" class="p-2">
               <b-form-file
                 placeholder="drop your clip"
                 accept="audio/wav"
@@ -82,8 +82,7 @@ let app = new Vue({
                 <source :src="layerURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <p> OPTIONAL: enter track ID below to layer your clip on top</p>
-              <b-form-input class="w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="enter track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <b-form-input class="w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="optional: enter track ID to layer on top" @keyup.native="baseTrackIDHandler"></b-form-input>
               <audio v-show="stateBaseTrack" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
@@ -348,8 +347,8 @@ let app = new Vue({
       const uid = uuidv4();
       const trackPath = ref(storage, 'tracks/'+uid);
       const layerPath = ref(storage, 'layers/'+uid);
-      await uploadBytes(trackPath, self.layer, metadata);
-      await uploadBytes(layerPath, self.newTrack, metadata);
+      await uploadBytes(trackPath, self.newTrack, metadata);
+      await uploadBytes(layerPath, self.layer, metadata);
       self.posting = false;
     }
   }
