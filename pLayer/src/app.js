@@ -343,6 +343,9 @@ let app = new Vue({
     async post() {
       let self = this;
       self.posting = true;
+      if(self.baseTrackExists) {
+        self.newTrack = self.layer;
+      }
 
       const metadata = {
         customMetadata: {
@@ -355,10 +358,8 @@ let app = new Vue({
       const uid = uuidv4();
       const layerPath = ref(storage, 'layers/'+uid);
       await uploadBytes(layerPath, self.layer, metadata);
-      if(self.baseTrackExists) {
-        const trackPath = ref(storage, 'tracks/'+uid);
-        await uploadBytes(trackPath, self.newTrack, metadata);
-      }
+      const trackPath = ref(storage, 'tracks/'+uid);
+      await uploadBytes(trackPath, self.newTrack, metadata);
       self.posting = false;
     }
   }
