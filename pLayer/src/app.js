@@ -71,24 +71,24 @@ let app = new Vue({
             <template slot="title">
             <b-icon icon="music-note"></b-icon> create  
             </template>
-            <b-row><b-col align="center" class="p-2">
+            <b-row><b-col align="center">
               <b-form-file
                 placeholder="drop your clip"
                 accept="audio/wav"
                 @input="layerHandler"
-                class="w-75"
+                class="m-2 w-75"
               ></b-form-file>
-              <audio ref="layer" controls controlsList="nodownload noplaybackrate">
+              <audio ref="layer" class="m-2" controls controlsList="nodownload noplaybackrate">
                 <source :src="layerURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <b-form-input class="w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="optional: enter track ID to layer on top" @keyup.native="baseTrackIDHandler"></b-form-input>
-              <audio v-show="stateBaseTrack" ref="newTrack" controls controlsList="nodownload noplaybackrate">
+              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="optional: enter track ID to layer on top" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <audio v-show="stateBaseTrack" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <b-form-input class="w-75" v-model="newTrackName" :state="stateTrackName" placeholder="name your track"></b-form-input>
-              <b-button :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
+              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName" placeholder="name your track"></b-form-input>
+              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
