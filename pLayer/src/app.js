@@ -86,6 +86,7 @@ let app = new Vue({
               <hr>
               <b>(OPTIONAL) layer your audio on an existing track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="enter track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <p v-show="stateBaseTrack">preview</p>
               <audio v-show="stateBaseTrack" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
