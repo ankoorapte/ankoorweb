@@ -58,8 +58,8 @@ let app = new Vue({
           :state="stateCredentials"
           align="center"
         >
-          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="state" trim></b-form-input>
-          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="state" trim></b-form-input>
+          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="stateCredentials" trim></b-form-input>
+          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!state" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
