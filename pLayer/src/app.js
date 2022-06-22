@@ -48,7 +48,7 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon icon="music-note-list" font-size="1"></b-icon> <b>pLayer</b></h1>
+    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon icon="music-note-list"></b-icon> <b>pLayer</b></h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
@@ -67,7 +67,7 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-            <b-icon icon="music-note" font-size="1"></b-icon>  
+            <b-icon icon="music-note" font-scale="2"></b-icon>  
             </template>
             <b-row><b-col align="center">
               <b class="m-2">upload track</b>
@@ -100,7 +100,7 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-            <b-icon icon="house-door-fill" font-size="1"></b-icon> 
+            <b-icon icon="house-door-fill" font-scale="2"></b-icon> 
             </template>
             <b-row><b-col align="center">
               <p>
@@ -117,7 +117,7 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-              <b-icon icon="wrench" font-size="1"></b-icon> 
+              <b-icon icon="wrench" font-scale="2"></b-icon> 
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
