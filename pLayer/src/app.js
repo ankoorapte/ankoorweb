@@ -108,7 +108,7 @@ let app = new Vue({
             <template slot="title">
               <b-icon icon="wrench"></b-icon> settings 
             </template>
-            <b-row></b-col align="center">
+            <b-row align="center"></b-col align="center">
               <b-button align="center" variant="danger" @click="signOut">sign out</b-button>  
             </b-col></b-row>
             <hr>
