@@ -330,7 +330,7 @@ let app = new Vue({
         };
         recorder.onstop = function(event) {
           self.newTrack = new Blob(chunks, {
-            "type": "audio/mpeg"
+            "type": "audio/mp3"
           });
           self.newTrackURL = URL.createObjectURL(self.newTrack);
           self.$refs.newTrack.load();
@@ -358,7 +358,8 @@ let app = new Vue({
           'name': self.newTrackName,
           'user': self.user.uid,
           'base': self.baseTrackID
-        }
+        },
+        contentType: 'audio/mp3',
       };
 
       const uid = uuidv4();
