@@ -319,7 +319,7 @@ let app = new Vue({
 
         let promises = [];
         promises.push(audioSetup(layerArrayBuffer, 0));
-        promises.push(audioSetup(baseArrayBuffer, 0));
+        promises.push(audioSetup(baseArrayBuffer, 1));
         let audioNodes = await Promise.all(promises);
         merger.connect(mixedAudio);
         merger.connect(audio.destination);
