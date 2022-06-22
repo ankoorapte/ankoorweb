@@ -74,19 +74,19 @@ let app = new Vue({
               <br>
               <b-form-file
                 placeholder=""
-                accept="audio/wav"
+                accept="audio/*"
                 @input="layerHandler"
                 class="m-2 w-75"
               ></b-form-file>
               <audio ref="layer" class="m-2" controls controlsList="nodownload noplaybackrate">
-                <source :src="layerURL" type="audio/wav">
+                <source :src="layerURL" type="audio/*">
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <hr>
               <b class="m-2">optional: layer on another track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
               <audio v-show="stateBaseTrack && !layering" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
-                <source :src="newTrackURL" type="audio/wav">
+                <source :src="newTrackURL" type="audio/*">
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <hr>
@@ -107,7 +107,7 @@ let app = new Vue({
                 <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
               <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
-                <source :src="trackURL" type="audio/wav">
+                <source :src="trackURL" type="audio/*">
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <p>{{trackID}}</p>
@@ -329,7 +329,7 @@ let app = new Vue({
         };
         recorder.onstop = function(event) {
           self.newTrack = new Blob(chunks, {
-            "type": "audio/wav; codecs=MS_PCM"
+            "type": "audio/mp3"
           });
           self.newTrackURL = URL.createObjectURL(self.newTrack);
           self.$refs.newTrack.load();
