@@ -108,9 +108,7 @@ let app = new Vue({
             <template slot="title">
               <b-icon icon="wrench"></b-icon> settings 
             </template>
-            <b-row align="center"></b-col align="center">
-              <b-button align="center" variant="danger" @click="signOut">sign out</b-button>  
-            </b-col></b-row>
+            <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
             <hr>
             <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
