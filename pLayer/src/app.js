@@ -85,7 +85,6 @@ let app = new Vue({
               <hr>
               <b class="m-2">optional: layer on another track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
-              <b-icon v-show="layering" icon="disc" animation="spin"></b-icon>
               <p v-show="stateBaseTrack && !layering">preview</p>
               <audio v-show="stateBaseTrack && !layering" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
@@ -95,7 +94,7 @@ let app = new Vue({
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
-              <b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner>
+              <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
@@ -331,7 +330,7 @@ let app = new Vue({
         };
         recorder.onstop = function(event) {
           self.newTrack = new Blob(chunks, {
-            "type": "audio/wav; codecs=0"
+            "type": "audio/wav; codecs=MS_PCM"
           });
           self.newTrackURL = URL.createObjectURL(self.newTrack);
           self.$refs.newTrack.load();
