@@ -125,7 +125,7 @@ let app = new Vue({
               :state="stateUsername"
               align="center"
             >
-              <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
+              <b-form-input class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
             </b-form-group>
             <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
           </b-tab>
@@ -385,6 +385,7 @@ let app = new Vue({
       let response = await fetch(url);
 
       if(response.status === 200) {
+        this.trackID = uuid;
         this.trackName = tracks[uuid]['name'];
         this.artistNames = [users[tracks[uuid]['user']]['displayName']];
         this.trackURL = window.URL.createObjectURL(await response.blob());
