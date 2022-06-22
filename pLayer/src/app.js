@@ -117,17 +117,17 @@ let app = new Vue({
             <template slot="title">
               <b-icon icon="wrench"></b-icon> 
             </template>
+            <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
             <hr>
-            <p align="center" v-if="user"> your username is <b>{{ user.displayName }}</b></p>
             <b-form-group
               :invalid-feedback="invalidUsername"
               :state="stateUsername"
               align="center"
             >
               <b-form-input placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
-              <b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button>  
             </b-form-group>
+            <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
           </b-tab>
         </b-tabs>
       </b-card>
