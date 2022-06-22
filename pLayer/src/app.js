@@ -75,7 +75,6 @@ let app = new Vue({
               <b class="m-2">upload track</b>
               <br>
               <b-form-file
-                placeholder="drop here"
                 accept="audio/wav"
                 @input="layerHandler"
                 class="m-2 w-75"
@@ -86,7 +85,7 @@ let app = new Vue({
               </audio>
               <hr>
               <b class="m-2">optional: layer on top of existing track </b>
-              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="enter track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
               <p v-show="stateBaseTrack">preview</p>
               <audio v-show="stateBaseTrack" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
@@ -94,7 +93,7 @@ let app = new Vue({
               </audio>
               <hr>
               <b class="m-2">name your track and post it!</b>
-              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName" placeholder="enter name"></b-form-input>
+              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
@@ -163,6 +162,8 @@ let app = new Vue({
         queryResponse.forEach((doc) => {
           users[doc.id] = doc.data();
         });
+
+
       }
     });
   },
