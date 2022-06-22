@@ -195,7 +195,7 @@ let app = new Vue({
       return 'enter a valid email ID and password with minimum 6 characters.'
     },
     invalidUsername() {
-      return 'username is already taken.'
+      return this.newUsername.length ? 'username is already taken.' : '';
     },
     stateUsername() {
       return this.user
