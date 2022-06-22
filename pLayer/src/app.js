@@ -69,10 +69,11 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-            <b-icon icon="music-note"></b-icon> create  
+            <b-icon icon="music-note"></b-icon>  
             </template>
             <b-row><b-col align="center">
-              <b class="m-2">upload layer</b>
+              <b class="m-2">upload track</b>
+              <br>
               <b-form-file
                 placeholder="drop here"
                 accept="audio/wav"
@@ -99,14 +100,14 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-            <b-icon icon="music-note-beamed"></b-icon> play 
+            <b-icon icon="house-door-fill"></b-icon> 
             </template>
             <b-row><b-col align="center">
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-              <b-icon icon="wrench"></b-icon> settings 
+              <b-icon icon="wrench"></b-icon> 
             </template>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
             <hr>
