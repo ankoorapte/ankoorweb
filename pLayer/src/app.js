@@ -52,13 +52,11 @@ let app = new Vue({
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
-          label="enter your credentials"
-          label-for="input-1"
           :invalid-feedback="invalidCredentials"
           :state="stateCredentials"
           align="center"
         >
-          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" id="input-1" v-model="email" :state="stateCredentials" trim></b-form-input>
+          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
           <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
