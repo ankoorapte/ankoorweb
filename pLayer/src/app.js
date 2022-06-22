@@ -275,9 +275,9 @@ let app = new Vue({
     async baseTrackIDHandler(event) {
       let self = this;
       if(self.layering) return;
-      self.layering = true;
       self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
       if(self.baseTrackExists) {
+        self.layering = true;
         let base = ref(storage, 'tracks/'+self.baseTrackID);
         let baseTrackURL = await getDownloadURL(base);
         let baseMetadata = await getMetadata(base);
