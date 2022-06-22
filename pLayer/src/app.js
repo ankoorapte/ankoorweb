@@ -171,7 +171,8 @@ let app = new Vue({
           users[doc.id] = doc.data();
         });
 
-        await self.getTrack(Object.keys(tracks)[0]);
+        if(Object.keys(tracks).length) 
+          await self.getTrack(Object.keys(tracks)[0]);
       }
     });
   },
