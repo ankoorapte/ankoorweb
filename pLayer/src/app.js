@@ -123,9 +123,8 @@ let app = new Vue({
             <b-form-group
               :invalid-feedback="invalidUsername"
               :state="stateUsername"
-              align="center"
             >
-              <b-form-input class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
+              <b-form-input align="center" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
             </b-form-group>
             <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
           </b-tab>
