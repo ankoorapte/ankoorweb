@@ -67,7 +67,7 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-            <b-icon icon="music-note" font-scale="2"></b-icon>  
+            <b-icon icon="music-note" font-scale="1"></b-icon>  
             </template>
             <b-row><b-col align="center">
               <b class="m-2">upload track</b>
@@ -95,12 +95,12 @@ let app = new Vue({
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
-              <b-icon v-show="posting" icon="disc" animation="spin"></b-icon>
+              <b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-            <b-icon icon="house-door-fill" font-scale="2"></b-icon> 
+            <b-icon icon="house-door-fill" font-scale="1"></b-icon> 
             </template>
             <b-row><b-col align="center">
               <p>
@@ -117,7 +117,7 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-              <b-icon icon="wrench" font-scale="2"></b-icon> 
+              <b-icon icon="wrench" font-scale="1"></b-icon> 
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
