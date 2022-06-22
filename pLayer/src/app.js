@@ -67,7 +67,7 @@ let app = new Vue({
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-            <b-icon icon="music-note" font-scale="4"></b-icon>  
+            <b-icon icon="music-note"></b-icon>  
             </template>
             <b-row><b-col align="center">
               <b class="m-2">upload track</b>
@@ -85,7 +85,7 @@ let app = new Vue({
               <hr>
               <b class="m-2">optional: layer on another track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
-              <b-icon v-show="layering" icon="disc" animation="spin" font-scale="4"></b-icon>
+              <b-icon v-show="layering" icon="disc" animation="spin"></b-icon>
               <p v-show="stateBaseTrack && !layering">preview</p>
               <audio v-show="stateBaseTrack && !layering" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
                 <source :src="newTrackURL" type="audio/wav">
@@ -95,18 +95,18 @@ let app = new Vue({
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
-              <b-icon v-show="postDisabled" icon="disc" animation="spin" font-scale="4"></b-icon>
+              <b-icon v-show="posting" icon="disc" animation="spin"></b-icon>
             </b-col></b-row>
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-            <b-icon icon="house-door-fill" font-scale="4"></b-icon> 
+            <b-icon icon="house-door-fill"></b-icon> 
             </template>
             <b-row><b-col align="center">
               <p>
-                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill" font-scale="4"></b-icon></b-button>
+                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill" font-scale="4"></b-icon></b-button>
+                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
               <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
                 <source :src="trackURL" type="audio/wav">
@@ -117,7 +117,7 @@ let app = new Vue({
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
             <template slot="title">
-              <b-icon icon="wrench" font-scale="4"></b-icon> 
+              <b-icon icon="wrench"></b-icon> 
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
