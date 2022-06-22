@@ -83,7 +83,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <hr>
-              <b class="m-2">optional: layer on top of existing track </b>
+              <b class="m-2">optional: layer on another track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
               <p v-show="stateBaseTrack">preview</p>
               <audio v-show="stateBaseTrack" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
