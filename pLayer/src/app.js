@@ -291,10 +291,10 @@ let app = new Vue({
       self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
       if(self.baseTrackExists) {
         self.layering = true;
+        await self.getTrack(self.baseTrackID);
         let base = ref(storage, 'tracks/'+self.baseTrackID);
         let baseTrackURL = await getDownloadURL(base);
-        let baseMetadata = await getMetadata(base);
-        console.log(baseMetadata);
+        let baseMetadata = (await getMetadata(base)).customMetadata;
         let layerArrayBuffer = await self.layer.arrayBuffer();
         let baseTrack = await fetch(baseTrackURL);
         let baseArrayBuffer = await baseTrack.arrayBuffer();
@@ -389,8 +389,9 @@ let app = new Vue({
         this.artistNames = [users[tracks[uuid]['user']]['displayName']];
         this.trackURL = window.URL.createObjectURL(await response.blob());
         this.$refs.pLayer.load();
+      } else {
+        console.log('Looks like there was a problem. Status Code: ' + response.status);
       }
-      console.log('Looks like there was a problem. Status Code: ' + response.status);
     },
   }
 });
