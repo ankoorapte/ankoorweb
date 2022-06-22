@@ -120,7 +120,7 @@ let app = new Vue({
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
             <hr>
-            <b-form-input align="center" :invalid-feedback="invalidUsername" :state="stateUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
+            <b-form-input align="center" :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input>
             <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
           </b-tab>
         </b-tabs>
