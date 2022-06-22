@@ -103,6 +103,16 @@ let app = new Vue({
             <b-icon icon="house-door-fill"></b-icon> 
             </template>
             <b-row><b-col align="center">
+              <p>
+                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b>{{trackName}}</b> by <b>{{artistNames}}</b>
+                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </p>
+              <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
+                <source :src="trackURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
+              <p>{{trackID}}</p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -142,7 +152,12 @@ let app = new Vue({
       baseTrackExists: false,
       newTrack: null,
       newTrackURL: null,
-      newTrackName: ""
+      newTrackName: "",
+      trackIdx: 0,
+      trackID: "",
+      trackName: "",
+      trackURL: null,
+      artistNames: []
     }
   },
   async created() {
@@ -164,7 +179,7 @@ let app = new Vue({
           users[doc.id] = doc.data();
         });
 
-
+        await self.getTrack(Object.keys(tracks)[0]);
       }
     });
   },
@@ -360,6 +375,24 @@ let app = new Vue({
       const trackPath = ref(storage, 'tracks/'+uid);
       await uploadBytes(trackPath, self.newTrack, metadata);
       self.posting = false;
-    }
+    },
+    async toggleTrack(forward) {
+      if(forward) { this.trackIdx++; }
+      else { this.trackIdx--; }
+      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
+      await this.getTrack(Object.keys(tracks)[this.trackIdx]);
+    },
+    async getTrack(uuid) {
+      let url = await getDownloadURL(ref(storage, 'tracks/'+uuid));
+      let response = await fetch(url);
+
+      if(response.status === 200) {
+        this.trackName = tracks[uuid]['name'];
+        this.artistNames = [users[tracks[uuid]['user']]['displayName']];
+        this.trackURL = window.URL.createObjectURL(await response.blob());
+        this.$refs.pLayer.load();
+      }
+      console.log('Looks like there was a problem. Status Code: ' + response.status);
+    },
   }
 });
