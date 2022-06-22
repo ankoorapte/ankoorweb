@@ -103,7 +103,7 @@ let app = new Vue({
             <b-row><b-col align="center">
               <p>
                 <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b>{{trackName}}</b> by <b>{{artistNames}}</b>
+                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
                 <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
               <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
