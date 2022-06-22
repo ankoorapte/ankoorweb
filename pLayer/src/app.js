@@ -72,7 +72,7 @@ let app = new Vue({
             <b-icon icon="music-note"></b-icon> create  
             </template>
             <b-row><b-col align="center">
-              <b class="m-2">upload your audio</b>
+              <b class="m-2">upload layer</b>
               <b-form-file
                 placeholder="drop here"
                 accept="audio/wav"
@@ -84,7 +84,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <hr>
-              <b class="m-2">(OPTIONAL) layer your audio on an existing track </b>
+              <b class="m-2">optional: layer on top of existing track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="enter track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
               <p v-show="stateBaseTrack">preview</p>
               <audio v-show="stateBaseTrack" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
@@ -93,7 +93,7 @@ let app = new Vue({
               </audio>
               <hr>
               <b class="m-2">name your track and post it!</b>
-              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName" placeholder="name your track"></b-form-input>
+              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName" placeholder="enter name"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
             </b-col></b-row>
           </b-tab>
@@ -279,6 +279,7 @@ let app = new Vue({
         let base = ref(storage, 'tracks/'+self.baseTrackID);
         let baseTrackURL = await getDownloadURL(base);
         let baseMetadata = await getMetadata(base);
+        console.log(baseMetadata);
         let layerArrayBuffer = await self.layer.arrayBuffer();
         let baseTrack = await fetch(baseTrackURL);
         let baseArrayBuffer = await baseTrack.arrayBuffer();
