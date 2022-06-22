@@ -75,6 +75,7 @@ let app = new Vue({
               <b class="m-2">upload track</b>
               <br>
               <b-form-file
+                placeholder=""
                 accept="audio/wav"
                 @input="layerHandler"
                 class="m-2 w-75"
