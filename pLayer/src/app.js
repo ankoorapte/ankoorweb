@@ -330,7 +330,7 @@ let app = new Vue({
         };
         recorder.onstop = function(event) {
           self.newTrack = new Blob(chunks, {
-            "type": "audio/mp3"
+            "type": "audio/mpeg"
           });
           self.newTrackURL = URL.createObjectURL(self.newTrack);
           self.$refs.newTrack.load();
@@ -382,6 +382,7 @@ let app = new Vue({
         this.trackID = uuid;
         this.trackName = tracks[uuid]['name'];
         this.artistNames = [users[tracks[uuid]['user']]['displayName']];
+        console.log(response);
         this.trackURL = window.URL.createObjectURL(await response.blob());
         this.$refs.pLayer.load();
       } else {
