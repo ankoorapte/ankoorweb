@@ -136,6 +136,7 @@ let app = new Vue({
       password: "",
       newUsername: "",
       posting: false,
+      layering: false,
       layer: null,
       layerURL: null,
       baseTrackID: "",
@@ -168,7 +169,7 @@ let app = new Vue({
   },
   computed: {
     postDisabled() {
-      if(this.layer && this.newTrackName.length && !this.posting) {
+      if(this.layer && this.newTrackName.length && !this.posting && !this.layering) {
         return false;
       }
       return true;
@@ -273,14 +274,13 @@ let app = new Vue({
     },
     async baseTrackIDHandler(event) {
       let self = this;
+      if(self.layering) return;
+      self.layering = true;
       self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
       if(self.baseTrackExists) {
-        console.log('get base track id + metadata');
         let base = ref(storage, 'tracks/'+self.baseTrackID);
         let baseTrackURL = await getDownloadURL(base);
         let baseMetadata = await getMetadata(base);
-
-        console.log('convert to arrayBuffers');
         let layerArrayBuffer = await self.layer.arrayBuffer();
         let baseTrack = await fetch(baseTrackURL);
         let baseArrayBuffer = await baseTrack.arrayBuffer();
@@ -292,7 +292,6 @@ let app = new Vue({
           [1, 0]
         ];
 
-        console.log('wire up audio');
         let audio = new AudioContext();
         let merger = audio.createChannelMerger(2);
         let splitter = audio.createChannelSplitter(2);
@@ -317,9 +316,7 @@ let app = new Vue({
         let recorder = new MediaRecorder(mixedAudio.stream);
 
         recorder.ondataavailable = function(event) {
-          console.log('ondataavailable');
           chunks.push(event.data);
-          console.log(chunks);
         };
         recorder.onstop = function(event) {
           console.log('onstop');
@@ -328,8 +325,8 @@ let app = new Vue({
           });
           self.newTrackURL = URL.createObjectURL(self.newTrack);
           self.$refs.newTrack.load();
+          self.layering = false;
         };
-        console.log('start recorder + nodes');
         recorder.start(0);
         audioNodes.forEach(function(node, index) {
           node.onended = () => {
