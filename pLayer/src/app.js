@@ -88,7 +88,7 @@ let app = new Vue({
               <hr>
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
-              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="post()">post to pLayer</b-button>
+              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post to pLayer</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
@@ -271,15 +271,15 @@ let app = new Vue({
       }
     },
     async uploadHandler(audio) {
-      if(!audio) return;
       this.layer = audio;
-      this.newTrackURL = window.URL.createObjectURL(audio);
+      if(!this.layer) return;
+      this.newTrackURL = window.URL.createObjectURL(this.layer);
       this.$refs.newTrack.load();
       await this.baseTrackHandler();
     },
     async baseTrackHandler() {
       this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
-      if(!this.baseTrackExists || this.layering) return;
+      if(!this.baseTrackExists || this.layering || !this.layer) return;
       this.layering = true;
       let base = ref(storage, 'tracks/'+this.baseTrackID);
       let baseTrack = await fetch(await getDownloadURL(base));
@@ -334,13 +334,13 @@ let app = new Vue({
         node.start(0);
       });
     },
-    async post() {
+    async postTrack() {
       let self = this;
       self.posting = true;
-      if(!self.baseTrackExists) {
-        self.newTrack = self.layer;
-      }
-
+      if(!self.baseTrackExists) self.newTrack = self.layer;
+      const uid = uuidv4();
+      const layerPath = ref(storage, 'layers/'+uid);
+      const trackPath = ref(storage, 'tracks/'+uid);
       const metadata = {
         customMetadata: {
           'name': self.newTrackName,
@@ -348,12 +348,8 @@ let app = new Vue({
           'base': self.baseTrackID
         },
         contentType: 'audio/wav',
-      };
-
-      const uid = uuidv4();
-      const layerPath = ref(storage, 'layers/'+uid);
+      }; 
       await uploadBytes(layerPath, self.layer, metadata);
-      const trackPath = ref(storage, 'tracks/'+uid);
       await uploadBytes(trackPath, self.newTrack, metadata);
       self.posting = false;
     },
@@ -366,7 +362,6 @@ let app = new Vue({
     async getTrack(uuid) {
       let url = await getDownloadURL(ref(storage, 'tracks/'+uuid));
       let response = await fetch(url);
-
       if(response.status === 200) {
         this.trackID = uuid;
         this.trackName = tracks[uuid]['name'];
