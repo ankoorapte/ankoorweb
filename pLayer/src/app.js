@@ -271,6 +271,7 @@ let app = new Vue({
       }
     },
     async layerHandler(audio) {
+      if(!audio) return;
       this.layer = audio;
       this.newTrackURL = window.URL.createObjectURL(audio);
       this.$refs.newTrack.load();
