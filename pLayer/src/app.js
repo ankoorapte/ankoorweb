@@ -70,6 +70,10 @@ let app = new Vue({
             <b-icon icon="music-note" font-scale="1"></b-icon>  
             </template>
             <b-row><b-col align="center">
+              <audio ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
+                <source :src="newTrackURL" type="audio/wav">
+                Your browser does not support the <code>audio</code> element.
+              </audio>
               <b class="m-2">upload track</b>
               <br>
               <b-form-file
@@ -78,17 +82,9 @@ let app = new Vue({
                 @input="layerHandler"
                 class="m-2 w-75"
               ></b-form-file>
-              <audio ref="layer" class="m-2" controls controlsList="nodownload noplaybackrate">
-                <source :src="layerURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
               <hr>
               <b class="m-2">optional: layer on another track </b>
               <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
-              <audio v-show="stateBaseTrack && !layering" class="m-2" ref="newTrack" controls controlsList="nodownload noplaybackrate">
-                <source :src="newTrackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
               <hr>
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
@@ -101,15 +97,15 @@ let app = new Vue({
             <b-icon icon="house-door-fill" font-scale="1"></b-icon> 
             </template>
             <b-row><b-col align="center">
-              <p>
-                <b-button @click="toggleTrack(0)" class="m-2" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-                <b-button @click="toggleTrack(1)" class="m-2" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </p>
               <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
                 <source :src="trackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
+              <p>
+                <b-button @click="toggleTrack(0)" class="m-2 p-0" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <p class="mt-1"><b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
+                <b-button @click="toggleTrack(1)" class="m-2 p-0" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </p>
               <p>{{trackID}}</p>
             </b-col></b-row>
           </b-tab>
@@ -139,7 +135,6 @@ let app = new Vue({
       posting: false,
       layering: false,
       layer: null,
-      layerURL: null,
       baseTrackID: "",
       baseTrackExists: false,
       newTrack: null,
@@ -275,13 +270,13 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    async layerHandler(layer) {
-      this.layer = layer;
-      this.layerURL = window.URL.createObjectURL(layer);
-      this.$refs.layer.load();
+    async layerHandler(audio) {
+      this.layer = audio;
+      this.newTrackURL = window.URL.createObjectURL(audio);
+      this.$refs.newTrack.load();
       await this.baseTrackIDHandler();
     },
-    async baseTrackIDHandler(event) {
+    async baseTrackIDHandler() {
       let self = this;
       if(self.layering) return;
       self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
