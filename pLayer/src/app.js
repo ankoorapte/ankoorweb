@@ -289,7 +289,7 @@ let app = new Vue({
         await baseTrack.arrayBuffer(), 
         await this.newTrack.arrayBuffer()
       ]);
-      this.newTrackURL = URL.createObjectURL(self.newTrack);
+      this.newTrackURL = URL.createObjectURL(this.newTrack);
       this.$refs.newTrack.load();
       this.layering = false;
     },
