@@ -77,6 +77,8 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
+              <p class="m-2">layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
+              <hr>
               <b class="m-2">upload track</b>
               <br>
               <b-form-file
