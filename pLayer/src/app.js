@@ -289,6 +289,7 @@ let app = new Vue({
       } else { 
         this.newTrack = this.layer; 
       }
+      console.log(this.newTrack);
       this.newTrackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
       this.$refs.newTrack.load();
       this.layering = false;
