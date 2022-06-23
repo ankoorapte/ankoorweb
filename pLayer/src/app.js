@@ -167,7 +167,7 @@ let app = new Vue({
           });
 
           if(Object.keys(tracks).length) 
-            await self.getTrack(Object.keys(tracks)[0]);
+            self.getTrack(Object.keys(tracks)[0]).then(() => {});
         });
       }
     });
