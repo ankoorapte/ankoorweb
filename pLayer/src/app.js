@@ -23,7 +23,8 @@ import {
   doc,
   collection, 
   getDocs,
-  setDoc  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+  setDoc,
+  onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -43,6 +44,7 @@ const auth = getAuth(firebaseApp);
 
 let tracks = {};
 let users = {};
+let unsubscribe = () => {};
 
 let app = new Vue({
   el: '#app',
@@ -152,22 +154,21 @@ let app = new Vue({
     onAuthStateChanged(auth, async (user) => {
       if(user) { await self.signIn(user); }
       self.tab = 1;
-
-      let queryResponse = {};
       if(self.signedIn) {
-        queryResponse = await getDocs(collection(db, "tracks"));
-        queryResponse.forEach((doc) => {
-          tracks[doc.id] = doc.data();
-        });
-
-        queryResponse = {};
-        queryResponse = await getDocs(collection(db, "users"));
-        queryResponse.forEach((doc) => {
+        let userDocs = await getDocs(collection(db, "users"));
+        userDocs.forEach((doc) => {
           users[doc.id] = doc.data();
         });
 
-        if(Object.keys(tracks).length) 
-          await self.getTrack(Object.keys(tracks)[0]);
+        unsubscribe = onSnapshot(collection(db, "tracks"), (trackDocs) => {
+          tracks = {}
+          trackDocs.forEach((doc) => {
+            tracks[doc.id] = doc.data();
+          });
+
+          if(Object.keys(tracks).length) 
+            await self.getTrack(Object.keys(tracks)[0]);
+        });
       }
     });
   },
@@ -242,6 +243,7 @@ let app = new Vue({
       }
     },
     async signOut() {
+      unsubscribe();
       this.signedIn = false;
       this.user = null;
       this.email = "";
