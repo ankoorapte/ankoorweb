@@ -61,7 +61,7 @@ let app = new Vue({
           <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
           <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
         </b-form-group>
-        <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
+        <b-button href="#" :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
@@ -77,7 +77,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <p v-if="baseTrackExists" class="m-2">layered over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
+              <p v-if="baseTrackExists" class="m-2">layered over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button href="#" variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
               <hr>
               <b class="m-2">upload</b>
               <br>
@@ -90,7 +90,7 @@ let app = new Vue({
               <hr>
               <b class="m-2">name</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
-              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
+              <b-button href="#" class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
@@ -104,13 +104,13 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <p>
-                <b-button @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button href="#" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-                <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+                <b-button href="#" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
-              <p><b-button variant="info" @click="layerOptions = !layerOptions"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
+              <p><b-button href="#" variant="info" @click="layerOptions = !layerOptions"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
               <b-collapse v-model="layerOptions">
-                <p><b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button></p>
+                <p><b-button href="#" variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button></p>
               </b-collapse>
             </b-col></b-row>
           </b-tab>
@@ -119,10 +119,10 @@ let app = new Vue({
               <b-icon icon="wrench" font-scale="1"></b-icon> 
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-            <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+            <p align="center"><b-button href="#" variant="danger" @click="signOut">sign out</b-button></p>
             <hr>
             <p align="center"><b-form-input :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input></p>
-            <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
+            <p align="center"><b-button href="#" variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
           </b-tab>
         </b-tabs>
       </b-card>
