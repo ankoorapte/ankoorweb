@@ -82,12 +82,12 @@ let app = new Vue({
               <b-form-file
                 placeholder=""
                 accept="audio/wav"
-                @input="onUpload"
+                @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
               <hr>
               <b class="m-2">optional: layer on another track </b>
-              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="refreshLayer"></b-form-input>
+              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="refreshLayer(layer)"></b-form-input>
               <hr>
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
@@ -273,29 +273,24 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    async onUpload(audio) {
-      this.layer = audio;
-      await this.refreshLayer();
-    },
-    async refreshLayer() {
+    async refreshLayer(layer) {
+      if(this.layering) return;
+      this.layering = true;
+      this.layer = layer;
       this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
-      if(this.baseTrackExists && this.layer && !this.layering) {
-        await this.layerBaseTrack();
+      if(this.baseTrackExists) {
+        let baseTrack = await fetch(await getDownloadURL(
+          ref(storage, 'tracks/'+this.baseTrackID)
+        ));
+        this.newTrack = this.layer ? await this.mixBuffers([
+          await baseTrack.arrayBuffer(), 
+          await this.layer.arrayBuffer()
+        ]) : baseTrack;
       } else { 
         this.newTrack = this.layer; 
       }
       this.newTrackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
       this.$refs.newTrack.load();
-    },
-    async layerBaseTrack() {
-      this.layering = true;
-      let base = ref(storage, 'tracks/'+this.baseTrackID);
-      let baseTrack = await fetch(await getDownloadURL(base));
-      let baseMetadata = (await getMetadata(base)).customMetadata;
-      this.newTrack = await this.mixBuffers([
-        await baseTrack.arrayBuffer(), 
-        await this.layer.arrayBuffer()
-      ]);
       this.layering = false;
     },
     async mixBuffers(audioBuffers) {
