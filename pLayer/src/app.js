@@ -77,7 +77,7 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <p class="m-2">layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
+              <p v-if="baseTrackExists" class="m-2">layered over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase">clear</b-button></p>
               <hr>
               <b class="m-2">upload track</b>
               <br>
@@ -269,10 +269,14 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    pickBase() {
+    async pickBase() {
       this.baseTrackID = this.trackID;
       this.tab = 0;
-      this.refreshLayer(this.layer);
+      await this.refreshLayer(this.layer);
+    },
+    async clearBase() {
+      this.baseTrackID = null;
+      await this.refreshLayer(this.layer);
     },
     async refreshLayer(layer) {
       if(this.layering) return;
