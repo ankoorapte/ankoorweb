@@ -102,9 +102,9 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <p>
-                <b-button @click="toggleTrack(0)" class="m-2 p-0" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <p class="mt-1"><b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
-                <b-button @click="toggleTrack(1)" class="m-2 p-0" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+                <b-button @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+                <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
               <p>{{trackID}}</p>
             </b-col></b-row>
