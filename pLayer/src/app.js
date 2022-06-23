@@ -79,12 +79,12 @@ let app = new Vue({
               <b-form-file
                 placeholder=""
                 accept="audio/wav"
-                @input="layerHandler"
+                @input="uploadHandler"
                 class="m-2 w-75"
               ></b-form-file>
               <hr>
               <b class="m-2">optional: layer on another track </b>
-              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackIDHandler"></b-form-input>
+              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="baseTrackHandler"></b-form-input>
               <hr>
               <b class="m-2">name your track and post it!</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
@@ -270,77 +270,69 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    async layerHandler(audio) {
+    async uploadHandler(audio) {
       if(!audio) return;
       this.layer = audio;
       this.newTrackURL = window.URL.createObjectURL(audio);
       this.$refs.newTrack.load();
-      await this.baseTrackIDHandler();
+      await this.baseTrackHandler();
     },
-    async baseTrackIDHandler() {
+    async baseTrackHandler() {
+      this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
+      if(!this.baseTrackExists || this.layering) return;
+      this.layering = true;
+      let base = ref(storage, 'tracks/'+this.baseTrackID);
+      let baseTrack = await fetch(await getDownloadURL(base));
+      await this.mixLayers([
+        await baseTrack.arrayBuffer(), 
+        await this.layer.arrayBuffer()
+      ]);
+      let baseMetadata = (await getMetadata(base)).customMetadata;
+    },
+    async mixLayers(audioBuffers) {
       let self = this;
-      if(self.layering) return;
-      self.baseTrackExists = Object.keys(tracks).includes(self.baseTrackID);
-      if(self.baseTrackExists) {
-        self.layering = true;
-        await self.getTrack(self.baseTrackID);
-        let base = ref(storage, 'tracks/'+self.baseTrackID);
-        let baseTrackURL = await getDownloadURL(base);
-        let baseMetadata = (await getMetadata(base)).customMetadata;
-        let layerArrayBuffer = await self.layer.arrayBuffer();
-        let baseTrack = await fetch(baseTrackURL);
-        let baseArrayBuffer = await baseTrack.arrayBuffer();
+      let ended = [false, false];
+      let chunks = [];
+      let channels = [[0, 1],[1, 0]];
+      let audio = new AudioContext();
+      let merger = audio.createChannelMerger(2);
+      let splitter = audio.createChannelSplitter(2);
+      let mixedAudio = audio.createMediaStreamDestination();
 
-        let ended = [false, false];
-        let chunks = [];
-        let channels = [
-          [0, 1],
-          [1, 0]
-        ];
-
-        let audio = new AudioContext();
-        let merger = audio.createChannelMerger(2);
-        let splitter = audio.createChannelSplitter(2);
-        let mixedAudio = audio.createMediaStreamDestination();
-
-        let audioSetup = async (buffer, index) => {
-          let bufferSource = await audio.decodeAudioData(buffer);
-          let channel = channels[index];
-          let source = audio.createBufferSource();
-          source.buffer = bufferSource;
-          source.connect(splitter);
-          splitter.connect(merger, channel[0], channel[1]);          
-          return source;
-        }
-
-        let promises = [];
-        promises.push(audioSetup(layerArrayBuffer, 0));
-        promises.push(audioSetup(baseArrayBuffer, 1));
-        let audioNodes = await Promise.all(promises);
-        merger.connect(mixedAudio);
-        merger.connect(audio.destination);
-        let recorder = new MediaRecorder(mixedAudio.stream);
-
-        recorder.ondataavailable = function(event) {
-          chunks.push(event.data);
-        };
-        recorder.onstop = function(event) {
-          self.newTrack = new Blob(chunks, {
-            "type": "audio/wav"
-          });
-          self.newTrackURL = URL.createObjectURL(self.newTrack);
-          self.$refs.newTrack.load();
-          self.layering = false;
-        };
-        recorder.start(0);
-        audioNodes.forEach(function(node, index) {
-          node.onended = () => {
-            ended[index] = true;
-            if(ended.every((e) => e)) recorder.stop();
-          }
-          node.start(0);
-        });
+      let audioSetup = async (buffer, index) => {
+        let bufferSource = await audio.decodeAudioData(buffer);
+        let channel = channels[index];
+        let source = audio.createBufferSource();
+        source.buffer = bufferSource;
+        source.connect(splitter);
+        splitter.connect(merger, channel[0], channel[1]);          
+        return source;
       }
+
+      let promises = audioBuffers.map(audioSetup);
+      let audioNodes = await Promise.all(promises);
+      merger.connect(mixedAudio);
+      merger.connect(audio.destination);
+      let recorder = new MediaRecorder(mixedAudio.stream);
+
+      recorder.ondataavailable = (event) => {
+        chunks.push(event.data);
+      };
+
+      recorder.onstop = () => {
+        self.newTrack = new Blob(chunks, {"type": "audio/wav"});
+        self.newTrackURL = URL.createObjectURL(self.newTrack);
+        self.$refs.newTrack.load();
+        self.layering = false;
+      };
+      recorder.start(0);
+      audioNodes.forEach(function(node, index) {
+        node.onended = () => {
+          ended[index] = true;
+          if(ended.every((e) => e)) recorder.stop();
+        }
+        node.start(0);
+      });
     },
     async post() {
       let self = this;
