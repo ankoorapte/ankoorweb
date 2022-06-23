@@ -76,8 +76,8 @@ let app = new Vue({
                 <source :src="newTrackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <br>
               <b class="m-2">upload track</b>
+              <br>
               <b-form-file
                 placeholder=""
                 accept="audio/wav"
@@ -174,7 +174,7 @@ let app = new Vue({
   },
   computed: {
     postDisabled() {
-      if(this.layer && this.newTrackName.length && !this.posting && !this.layering) {
+      if(this.newTrack && this.newTrackName.length && !this.posting && !this.layering) {
         return false;
       }
       return true;
@@ -273,23 +273,22 @@ let app = new Vue({
       }
     },
     async uploadHandler(audio) {
-      this.newTrack = audio;
-      this.newTrackURL = audio ? window.URL.createObjectURL(audio) : "";
-      this.$refs.newTrack.load();
+      this.layer = audio;
       await this.baseTrackHandler();
     },
     async baseTrackHandler() {
       this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
-      if(!this.baseTrackExists || this.layering || !this.newTrack) return;
-      this.layering = true;
-      let base = ref(storage, 'tracks/'+this.baseTrackID);
-      let baseTrack = await fetch(await getDownloadURL(base));
-      let baseMetadata = (await getMetadata(base)).customMetadata;
-      this.newTrack = await this.mixLayers([
-        await baseTrack.arrayBuffer(), 
-        await this.newTrack.arrayBuffer()
-      ]);
-      this.newTrackURL = URL.createObjectURL(this.newTrack);
+      if(this.baseTrackExists && this.layer && !this.layering) {
+        this.layering = true;
+        let base = ref(storage, 'tracks/'+this.baseTrackID);
+        let baseTrack = await fetch(await getDownloadURL(base));
+        let baseMetadata = (await getMetadata(base)).customMetadata;
+        this.newTrack = await this.mixLayers([
+          await baseTrack.arrayBuffer(), 
+          await this.layer.arrayBuffer()
+        ]);
+      } else { this.newTrack = this.layer; }
+      this.newTrackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
       this.$refs.newTrack.load();
       this.layering = false;
     },
