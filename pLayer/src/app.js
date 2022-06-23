@@ -74,8 +74,8 @@ let app = new Vue({
                 <source :src="newTrackURL" type="audio/wav">
                 Your browser does not support the <code>audio</code> element.
               </audio>
-              <b class="m-2">upload track</b>
               <br>
+              <b class="m-2">upload track</b>
               <b-form-file
                 placeholder=""
                 accept="audio/wav"
