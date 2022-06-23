@@ -285,7 +285,7 @@ let app = new Vue({
         this.newTrack = this.layer ? await this.mixBuffers([
           await baseTrack.arrayBuffer(), 
           await this.layer.arrayBuffer()
-        ]) : baseTrack;
+        ]) : await baseTrack.blob();
       } else { 
         this.newTrack = this.layer; 
       }
