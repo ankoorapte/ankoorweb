@@ -86,10 +86,7 @@ let app = new Vue({
                 class="m-2 w-75"
               ></b-form-file>
               <hr>
-              <b class="m-2">optional: layer on another track </b>
-              <b-form-input class="m-2 w-75" v-model="baseTrackID" :state="stateBaseTrack" placeholder="track ID" @keyup.native="refreshLayer(layer)"></b-form-input>
-              <hr>
-              <b class="m-2">name your track and post it!</b>
+              <b class="m-2">name track</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post to pLayer</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
@@ -109,7 +106,7 @@ let app = new Vue({
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
                 <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
-              <p>{{trackID}}</p>
+              <p><b-button variant="primary" @click="pickBase"><b-icon icon="music-note-list"></b-icon> Layer</b-button></p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -197,9 +194,6 @@ let app = new Vue({
     },
     stateTrackName() {
       return Boolean(this.newTrackName.length);
-    },
-    stateBaseTrack() {
-      return this.baseTrackExists;
     }
   },
   methods: {
@@ -273,6 +267,11 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
+    pickBase() {
+      this.baseTrackID = this.trackID;
+      this.tab = 0;
+      this.refreshLayer(this.layer);
+    },
     async refreshLayer(layer) {
       if(this.layering) return;
       this.layering = true;
@@ -289,7 +288,6 @@ let app = new Vue({
       } else { 
         this.newTrack = this.layer; 
       }
-      console.log(this.newTrack);
       this.newTrackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
       this.$refs.newTrack.load();
       this.layering = false;
