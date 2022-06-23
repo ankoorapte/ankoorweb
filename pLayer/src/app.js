@@ -77,9 +77,9 @@ let app = new Vue({
                 Your browser does not support the <code>audio</code> element.
               </audio>
               <br>
-              <p v-if="baseTrackExists" class="m-2">layered over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase">clear</b-button></p>
+              <p v-if="baseTrackExists" class="m-2">layered over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
               <hr>
-              <b class="m-2">upload track</b>
+              <b class="m-2">upload</b>
               <br>
               <b-form-file
                 placeholder=""
@@ -88,9 +88,9 @@ let app = new Vue({
                 class="m-2 w-75"
               ></b-form-file>
               <hr>
-              <b class="m-2">name track</b>
+              <b class="m-2">name</b>
               <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
-              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post to pLayer</b-button>
+              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
@@ -108,7 +108,10 @@ let app = new Vue({
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
                 <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
-              <p><b-button variant="primary" @click="pickBase"><b-icon icon="music-note-list"></b-icon> Layer</b-button></p>
+              <p><b-button variant="info" @click="layerOptions = !layerOptions"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
+              <b-collapse v-model="layerOptions">
+                <p><b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button></p>
+              </b-collapse>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -135,6 +138,7 @@ let app = new Vue({
       password: "",
       newUsername: "",
       posting: false,
+      layerOptions: false,
       layering: false,
       layer: null,
       baseTrackID: "",
@@ -355,7 +359,11 @@ let app = new Vue({
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
       await uploadBytes(trackPath, self.newTrack, metadata);
+      self.newTrackName = "";
+      self.layer = null;
+      self.clearBase();
       self.posting = false;
+      
     },
     async toggleTrack(forward) {
       if(forward) { this.trackIdx++; }
