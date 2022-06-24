@@ -71,7 +71,9 @@ let app = new Vue({
             <p v-if="layer && layer.name && !baseTrackExists">{{layer.name}}</p>
             <p v-if="baseTrackExists || !layer">
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
-              <b v-show="trackName.length && artistNames.length">{{trackName + " - " + artistNames.join(", ")}}</b>
+              <p v-show="trackName.length && artistNames.length">
+                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+              </p>
             </p>
             <audio ref="pLayer" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
