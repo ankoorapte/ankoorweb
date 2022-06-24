@@ -67,8 +67,8 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-3">
         <template #header><b-row><b-col align="center">
-          <audio ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
-            <source :src="newTrackURL" type="audio/wav">
+          <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
+            <source :src="trackURL" type="audio/wav">
             Your browser does not support the <code>audio</code> element.
           </audio>
         </b-col></b-row></template>
@@ -78,11 +78,6 @@ let app = new Vue({
             <b-icon icon="music-note" font-scale="1"></b-icon>  
             </template>
             <b-row><b-col align="center">
-              <audio ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
-                <source :src="newTrackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
-              <br>
               <p v-if="baseTrackExists" class="m-2">layer over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
               <hr>
               <b class="m-2">upload</b>
@@ -105,10 +100,6 @@ let app = new Vue({
             <b-icon icon="house-door-fill" font-scale="1"></b-icon> 
             </template>
             <b-row><b-col align="center">
-              <audio class="m-2" ref="pLayer" controls controlsList="noplaybackrate">
-                <source :src="trackURL" type="audio/wav">
-                Your browser does not support the <code>audio</code> element.
-              </audio>
               <p>
                 <b-button @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
@@ -150,7 +141,6 @@ let app = new Vue({
       baseTrackID: "",
       baseTrackExists: false,
       newTrack: null,
-      newTrackURL: null,
       newTrackName: "",
       trackIdx: 0,
       trackID: "",
@@ -304,8 +294,8 @@ let app = new Vue({
       } else { 
         this.newTrack = this.layer; 
       }
-      this.newTrackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
-      this.$refs.newTrack.load();
+      this.trackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
+      this.$refs.pLayer.load();
       this.layering = false;
     },
     async mixBuffers(audioBuffers) {
