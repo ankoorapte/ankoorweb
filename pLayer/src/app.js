@@ -72,7 +72,7 @@ let app = new Vue({
             Your browser does not support the <code>audio</code> element.
           </audio>
         </b-col></b-row></template>
-        <b-tabs pills card align="center" v-model="tab">
+        <b-tabs pills card end align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
             <b-icon icon="music-note" font-scale="1"></b-icon>  
