@@ -346,7 +346,7 @@ let app = new Vue({
       await uploadBytes(trackPath, self.newTrack, metadata);
       self.newTrackName = "";
       self.layer = null;
-      self.clearBase();
+      self.baseTrackID = null;
       self.busy = false;
       
     },
