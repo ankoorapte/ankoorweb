@@ -68,7 +68,6 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-if="layer && layer.name && !baseTrackExists">{{layer.name}}</p>
             <p v-if="baseTrackExists || !layer">
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
               <p v-show="trackName.length && artistNames.length">
