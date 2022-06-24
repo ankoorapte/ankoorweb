@@ -84,6 +84,7 @@ let app = new Vue({
                 placeholder=""
                 accept="audio/wav"
                 @input="refreshLayer"
+                browse-text="upload"
                 class="m-2 w-75"
               ></b-form-file>
               <b-input-group append="name">
