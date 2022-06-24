@@ -87,7 +87,7 @@ let app = new Vue({
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <b-row><b-col align="center">
               <b-input-group class="m-2 w-75">
-                <b-form-input type="number" min="0"></b-form-input>
+                <b-form-input type="number" min="0" v-model="layerCount" @change="filterTracks"></b-form-input>
                 <b-input-group-append>
                   <b-input-group-text>
                     layers
@@ -155,7 +155,9 @@ let app = new Vue({
       trackID: "",
       trackName: "",
       trackURL: null,
-      artistNames: []
+      artistNames: [],
+      layerCount: 1,
+      tracks: {}
     }
   },
   async created() {
@@ -175,8 +177,12 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
           });
 
-          if(Object.keys(tracks).length) 
-            self.getTrack(Object.keys(tracks)[0]).then(() => {});
+          self.filterTracks();
+
+          if(Object.keys(self.tracks).length) 
+            self.getTrack(Object.keys(self.tracks)[0]).then(() => {
+              self.busy = false;
+            });
         });
       }
       self.busy = false;
@@ -397,5 +403,12 @@ let app = new Vue({
         console.log('Looks like there was a problem. Status Code: ' + response.status);
       }
     },
+    filterTracks() {
+      let baseList = Object.keys(tracks).map((id) => tracks[id].base);
+      for(const id in tracks) {
+        if(this.layerCount && baseList.includes(id)) continue;
+        this.tracks[id] = tracks[id];
+      }
+    }
   }
 });
