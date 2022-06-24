@@ -89,7 +89,17 @@ let app = new Vue({
           </b-col></b-row>
           <b-collapse v-model="showSettings" class="m-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-            <p align="center">
+            <b-row><b-col align="center">
+              <b-input-group class="w-75">
+                <b-form-input type="number" min="0.00"></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-secondary">Button</b-button>
+                  <b-button variant="outline-primary">Button</b-button>
+                  <b-input-group-text>
+                    <b-icon icon="x" />
+                  </b-input-group-text>
+                </b-input-group-append>
+              </b-input-group>
               <b-input-group class="w-75">
                 <b-form-input 
                   :invalid-feedback="invalidUsername" 
@@ -105,7 +115,7 @@ let app = new Vue({
                   <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
                 </b-input-group-append>
               </b-input-group>
-            </p>
+            </b-col></b-row>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-collapse>
         </template>
