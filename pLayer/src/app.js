@@ -79,7 +79,8 @@ let app = new Vue({
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
               <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
-            <b-button v-if="baseTrackExists" @click="clearBase" class="p-1" variant="danger">clear</b-button>
+            <p v-if="!baseTrackExists"><b-button variant="info" @click="pickBase"><b-icon icon="plus-circle"></b-icon></b-button></p>
+            <p v-if="baseTrackExists"><b-button @click="clearBase" class="p-1" variant="danger">clear</b-button></p>
           </p>
         </b-col></b-row></template>
         <b-tabs pills card end align="center" v-model="tab">
@@ -103,15 +104,7 @@ let app = new Vue({
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
-          <b-tab active :title-link-class="tabClass(1)">
-            <template slot="title">
-              <b-icon icon="music-note-list" font-scale="1"></b-icon>
-            </template>
-            <b-row><b-col align="center">
-              <b-button variant="info" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button>
-            </b-col></b-row>
-          </b-tab>
-          <b-tab :title-link-class="tabClass(2)">
+          <b-tab :title-link-class="tabClass(1)">
             <template slot="title">
               <b-icon icon="wrench" font-scale="1"></b-icon> 
             </template>
