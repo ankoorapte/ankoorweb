@@ -70,7 +70,7 @@ let app = new Vue({
           <b-row><b-col align="center">
             <p v-if="(baseTrackExists || !layer) && !busy">
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+              <b>{{trackName + " by " + artistNames.join(", ")}}</b>
             </p>
             <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
@@ -93,7 +93,7 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <p class="mt-2" v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
+          <p class="mt-2" v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName + " by " + artistNames.join(", ")}}</b></p>
           <b-form-file
             placeholder=""
             accept="audio/wav"
