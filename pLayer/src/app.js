@@ -68,15 +68,15 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-if="(baseTrackExists || !layer) && !busy">
+            <p v-if="layer && layer.name && !baseTrackExists">{{layer.name}}</p>
+            <p v-if="baseTrackExists || !layer">
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
-              <b v-show="trackName.length && artistNames.length">{{trackName + " by " + artistNames.join(", ")}}</b>
+              <b v-show="trackName.length && artistNames.length">{{trackName + " - " + artistNames.join(", ")}}</b>
             </p>
             <audio ref="pLayer" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
-            <p v-if="layer && layer.name">{{layer.name}}</p>
             <p>
               <b-button class="p-1" variant="info" @click="toggleTrack(0)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer"><b-icon icon="plus-circle"></b-icon></b-button>
@@ -93,7 +93,7 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <p class="mt-2" v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName + " by " + artistNames.join(", ")}}</b></p>
+          <p class="m-2" v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName + " - " + artistNames.join(", ")}}</b></p>
           <b-form-file
             placeholder=""
             accept="audio/wav"
