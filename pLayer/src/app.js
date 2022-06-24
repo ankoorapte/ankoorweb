@@ -362,7 +362,10 @@ let app = new Vue({
     },
     async toggleTrack(forward) {
       if(forward) { this.trackIdx++; }
-      else { this.trackIdx--; }
+      else { 
+        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
+        this.trackIdx--;
+      }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       await this.getTrack(Object.keys(tracks)[this.trackIdx]);
     },
