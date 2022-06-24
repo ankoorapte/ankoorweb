@@ -294,7 +294,7 @@ let app = new Vue({
         this.trackURL = URL.createObjectURL(this.newTrack);
         this.$refs.pLayer.load();
       } else {
-        await this.getTrack(this.trackIdx);
+        await this.getTrack(Object.keys(tracks)[this.trackIdx]);
       }
       this.layering = false;
     },
