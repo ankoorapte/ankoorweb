@@ -89,7 +89,6 @@ let app = new Vue({
           </b-col></b-row>
           <b-collapse v-model="showSettings" class="m-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-            <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
             <p align="center">
               <b-input-group class="w-75">
                 <b-form-input 
@@ -107,6 +106,7 @@ let app = new Vue({
                 </b-input-group-append>
               </b-input-group>
             </p>
+            <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-collapse>
         </template>
         <b-row><b-col align="center">
