@@ -106,7 +106,7 @@ let app = new Vue({
               <b-icon icon="music-note-list" font-scale="1"></b-icon>
             </template>
             <b-row><b-col align="center">
-              <b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button>
+              <b-button variant="info" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
@@ -115,7 +115,7 @@ let app = new Vue({
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-form-input :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input></p>
-            <p align="center"><b-button variant="primary" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
+            <p align="center"><b-button variant="info" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-tab>
         </b-tabs>
