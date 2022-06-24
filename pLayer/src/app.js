@@ -185,7 +185,7 @@ let app = new Vue({
   },
   computed: {
     postDisabled() {
-      if(this.newTrack && this.newTrackName.length && !this.busy) {
+      if(this.newTrackName.length && !this.busy) {
         return false;
       }
       return true;
