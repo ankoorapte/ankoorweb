@@ -79,7 +79,7 @@ let app = new Vue({
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
-            <p>
+            <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer"><b-icon icon="plus-circle"></b-icon></b-button>
               <b-button class="p-1" variant="danger" @click="clearBase" v-if="baseTrackExists"><b-icon icon="dash-circle"></b-icon></b-button>
