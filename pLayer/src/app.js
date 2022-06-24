@@ -73,7 +73,7 @@ let app = new Vue({
               Your browser does not support the <code>audio</code> element.
             </audio>
             <p v-if="layer && layer.name">{{layer.name}}</p>
-            <p>
+            <p v-show="!busy">
               <p v-if="baseTrackExists || !layer">
                 {{ baseTrackExists ? "mix with" : ""}}
                 <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
