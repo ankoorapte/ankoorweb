@@ -71,12 +71,14 @@ let app = new Vue({
             <source :src="trackURL" type="audio/wav">
             Your browser does not support the <code>audio</code> element.
           </audio>
+          <p v-if="layer && layer.name">{{layer.name}}</p>
           <p>
-            <p v-if="layer && layer.name">{{layer.name}}</p>
             <p v-if="baseTrackExists">mix with</p>
-            <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-            <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <p v-if="baseTrackExists || !layer">
+              <b-button v-if="!layer" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+              <b-button v-if="!layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            </p>
             <b-button v-if="baseTrackExists" @click="clearBase" class="p-1" variant="danger">clear</b-button>
           </p>
         </b-col></b-row></template>
