@@ -83,7 +83,7 @@ let app = new Vue({
               <p>
                 <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
                 <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
-                <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon>settings</b-button>
+                <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon></b-button>
               </p>
             </p>
           </b-col></b-row>
