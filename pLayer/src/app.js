@@ -79,7 +79,6 @@ let app = new Vue({
             </template>
             <b-row><b-col align="center">
               <p v-if="baseTrackExists" class="m-2">layer over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
-              <b class="m-2">upload</b>
               <br>
               <b-form-file
                 placeholder=""
@@ -87,9 +86,9 @@ let app = new Vue({
                 @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
-              <hr>
-              <b class="m-2">name</b>
-              <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
+              <b-input-group size="lg" append="name">
+                <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
+              </b-input-group>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
