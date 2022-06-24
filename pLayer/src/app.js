@@ -68,7 +68,7 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-if="baseTrackExists || !layer">
+            <p v-if="(baseTrackExists || !layer) && !busy">
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
@@ -77,7 +77,7 @@ let app = new Vue({
               Your browser does not support the <code>audio</code> element.
             </audio>
             <p v-if="layer && layer.name">{{layer.name}}</p>
-            <p v-show="!busy">
+            <p>
               <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
               <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
