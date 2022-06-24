@@ -73,11 +73,11 @@ let app = new Vue({
           </audio>
           <p>
             <p v-if="layer && layer.name">{{layer.name}}</p>
-            <p v-if="baseTrackExists">mix with </p>
-            <b-button v-if="!baseTrackExists" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <p v-if="baseTrackExists">mix with
+            <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-            <b-button v-if="!baseTrackExists" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b-button v-if="baseTrackExists" @click="clearBase" class="p-1" variant="danger">clear</b-button>
+            <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button v-if="baseTrackExists" @click="clearBase" class="p-1" variant="danger">clear</b-button></p>
           </p>
         </b-col></b-row></template>
         <b-tabs pills card end align="center" v-model="tab">
@@ -273,7 +273,6 @@ let app = new Vue({
       await this.refreshLayer(this.layer);
     },
     async refreshLayer(layer) {
-      console.log(layer);
       if(this.layering) return;
       this.layering = true;
       this.layer = layer;
