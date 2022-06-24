@@ -72,7 +72,7 @@ let app = new Vue({
               {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
               <b>{{trackName + " by " + artistNames.join(", ")}}</b>
             </p>
-            <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
+            <audio ref="pLayer" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
