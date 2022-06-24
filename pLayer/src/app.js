@@ -290,8 +290,12 @@ let app = new Vue({
       } else { 
         this.newTrack = this.layer; 
       }
-      this.trackURL = this.newTrack ? URL.createObjectURL(this.newTrack) : null;
-      this.$refs.pLayer.load();
+      if(this.newTrack) {
+        this.trackURL = URL.createObjectURL(this.newTrack);
+        this.$refs.pLayer.load();
+      } else {
+        await this.getTrack(this.trackIdx);
+      }
       this.layering = false;
     },
     async mixBuffers(audioBuffers) {
