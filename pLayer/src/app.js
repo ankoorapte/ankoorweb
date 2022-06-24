@@ -68,23 +68,21 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
+            <p v-if="baseTrackExists || !layer">
+              {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+            </p>
             <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
             <p v-if="layer && layer.name">{{layer.name}}</p>
             <p v-show="!busy">
-              <p v-if="baseTrackExists || !layer">
-                {{ baseTrackExists ? "mix with" : ""}}
-                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-              </p>
-              <p>
-                <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
-                <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
-                <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon></b-button>
-                <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </p>
+              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
+              <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
+              <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon></b-button>
+              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
           <b-collapse v-model="showSettings">
@@ -95,7 +93,7 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <br>
+          <p v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
           <b-form-file
             placeholder=""
             accept="audio/wav"
