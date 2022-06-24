@@ -86,7 +86,7 @@ let app = new Vue({
                 @input="refreshLayer"
                 class="m-2 w-75"
               ></b-form-file>
-              <b-input-group size="lg" append="name">
+              <b-input-group append="name">
                 <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
               </b-input-group>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
