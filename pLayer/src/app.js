@@ -78,11 +78,11 @@ let app = new Vue({
             </audio>
             <p v-if="layer && layer.name">{{layer.name}}</p>
             <p>
-              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
-              <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
-              <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon></b-button>
-              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="toggleTrack(0)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer"><b-icon icon="plus-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="danger" @click="clearBase" v-if="baseTrackExists"><b-icon icon="dash-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="toggleTrack(1)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
           <b-collapse v-model="showSettings">
