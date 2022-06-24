@@ -101,7 +101,7 @@ let app = new Vue({
             <b-row><b-col align="center">
               <p>
                 <b-button @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <p><b-button variant="info" @click="layerOptions = !layerOptions"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
+                <b-button @click="layerOptions = !layerOptions" variant="info"><b-icon icon="music-note-list"></b-icon> layers</b-button>
                 <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </p>
               <b-collapse v-model="layerOptions">
