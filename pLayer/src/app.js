@@ -87,13 +87,24 @@ let app = new Vue({
               <b-button class="p-1" variant="info" @click="toggleTrack(1)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
-          <b-collapse v-model="showSettings" class="m-1">
+          <b-collapse v-model="showSettings" class="m-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-            <hr>
-            <p align="center"><b-form-input :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input></p>
-            <p align="center"><b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update username</b-button></p>
-            <hr>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+            <b-input-group prepend="Username" class="mt-3">
+              <b-form-input 
+                :invalid-feedback="invalidUsername" 
+                class="w-75" 
+                placeholder="new username" 
+                @keydown.native="usernameKeydownHandler" 
+                v-model="newUsername" 
+                :state="stateUsername" 
+                trim
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+              </b-input-group-append>
+            </b-input-group>
           </b-collapse>
         </template>
         <b-row><b-col align="center">
