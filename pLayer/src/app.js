@@ -145,7 +145,6 @@ let app = new Vue({
     let self = this;
     onAuthStateChanged(auth, async (user) => {
       if(user) { await self.signIn(user); }
-      self.tab = 1;
       if(self.signedIn) {
         let userDocs = await getDocs(collection(db, "users"));
         userDocs.forEach((doc) => {
@@ -260,7 +259,6 @@ let app = new Vue({
     },
     async pickBase() {
       this.baseTrackID = this.trackID;
-      this.tab = 0;
       await this.refreshLayer(this.layer);
     },
     async clearBase() {
