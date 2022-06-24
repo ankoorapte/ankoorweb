@@ -90,7 +90,7 @@ let app = new Vue({
           <b-collapse v-model="showSettings" class="m-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-            <b-input-group prepend="Username" class="mt-3">
+            <b-input-group class="w-75">
               <b-form-input 
                 :invalid-feedback="invalidUsername" 
                 class="w-75" 
