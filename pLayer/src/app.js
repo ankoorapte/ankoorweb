@@ -102,13 +102,10 @@ let app = new Vue({
           </b-tab>
           <b-tab active :title-link-class="tabClass(1)">
             <template slot="title">
-            <b-icon icon="house-door-fill" font-scale="1"></b-icon> 
+              <b-icon icon="music-note-list" font-scale="1"></b-icon>
             </template>
             <b-row><b-col align="center">
-              <p><b-button @click="layerOptions = !layerOptions" variant="info"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
-              <b-collapse v-model="layerOptions">
-                <p><b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button></p>
-              </b-collapse>
+              <b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(2)">
