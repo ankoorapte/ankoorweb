@@ -260,6 +260,7 @@ let app = new Vue({
       await this.refreshLayer(this.layer);
     },
     async clearBase() {
+      this.layer = null;
       this.baseTrackID = null;
       await this.refreshLayer(this.layer);
     },
