@@ -68,11 +68,8 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-if="baseTrackExists || !layer">
-              {{ baseTrackExists && layer ? "layer " + layer.name + " onto ": ""}}
-              <p v-show="trackName.length && artistNames.length">
-                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-              </p>
+            <p v-show="trackName.length && artistNames.length && !layer">
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <audio ref="pLayer" controls controlsList="nodownload noplaybackrate">
               <source :src="trackURL" type="audio/wav">
@@ -117,6 +114,9 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
+          <p class="m-2" v-if="layer && !baseTrackExists">
+            {{ baseTrackExists && layer ? "mix " + layer.name + " with " + {{trackName}} + " by " + artistNames.join(", "): ""}}
+          </p>
           <p class="m-2" v-if="baseTrackExists && !layer && trackName.length && artistNames.length">
             upload new layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
           </p>
