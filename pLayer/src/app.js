@@ -67,7 +67,7 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
-          <audio ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
+          <audio align="center" ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
             <source :src="newTrackURL" type="audio/wav">
             Your browser does not support the <code>audio</code> element.
           </audio>
