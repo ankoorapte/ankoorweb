@@ -93,7 +93,7 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <p v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
+          <p class="mt-2" v-if="baseTrackExists && !layer">upload in order to add a layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></p>
           <b-form-file
             placeholder=""
             accept="audio/wav"
