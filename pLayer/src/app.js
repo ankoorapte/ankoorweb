@@ -95,7 +95,9 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <p class="m-2" v-if="baseTrackExists && !layer">upload new layer for <b>{{trackName + " - " + artistNames.join(", ")}}</b></p>
+          <p class="m-2" v-if="baseTrackExists && !layer && trackName.length && artistNames.length">
+            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+          </p>
           <b-form-file
             placeholder=""
             accept="audio/wav"
