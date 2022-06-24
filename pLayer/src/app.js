@@ -119,7 +119,7 @@ let app = new Vue({
   `,
   data() {
     return {
-      tab: 1,
+      tab: 0,
       user: "",
       signedIn: false,
       email: "",
