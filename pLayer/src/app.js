@@ -50,7 +50,7 @@ let app = new Vue({
   el: '#app',
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon icon="music-note-list"></b-icon> <b>pLayer</b></h1>
+    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon v-show="!busy" icon="music-note-list"></b-icon><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> <b>pLayer</b></h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
@@ -86,7 +86,7 @@ let app = new Vue({
         <b-tabs pills card end align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
-            <b-icon icon="music-note" font-scale="1"></b-icon>  
+            <b-icon icon="music-note-list" font-scale="1"></b-icon>  
             </template>
             <b-row><b-col align="center">
               <br>
@@ -101,7 +101,6 @@ let app = new Vue({
                 <b-form-input v-model="newTrackName"></b-form-input>
               </b-input-group>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
-              <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
             </b-col></b-row>
           </b-tab>
           <b-tab :title-link-class="tabClass(1)">
@@ -110,7 +109,7 @@ let app = new Vue({
             </template>
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-form-input :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input></p>
-            <p align="center"><b-button variant="info" :disabled="posting || !newUsername" @click="changeUsername(0)">update username</b-button></p>
+            <p align="center"><b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update username</b-button></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-tab>
         </b-tabs>
@@ -126,9 +125,8 @@ let app = new Vue({
       email: "",
       password: "",
       newUsername: "",
-      posting: false,
+      busy: false,
       layerOptions: false,
-      layering: false,
       layer: null,
       baseTrackID: "",
       baseTrackExists: false,
@@ -165,7 +163,7 @@ let app = new Vue({
   },
   computed: {
     postDisabled() {
-      if(this.newTrack && this.newTrackName.length && !this.posting && !this.layering) {
+      if(this.newTrack && this.newTrackName.length && !this.busy) {
         return false;
       }
       return true;
@@ -237,7 +235,7 @@ let app = new Vue({
     },
     async changeUsername(un) {
       let self = this;
-      self.posting = true;
+      self.busy = true;
       if(!un) {
         un = self.newUsername;
       }
@@ -245,7 +243,7 @@ let app = new Vue({
       await setDoc(doc(db, "users", self.user.uid), {
         displayName: un
       });
-      self.posting = false;
+      self.busy = false;
     },
     signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
@@ -266,8 +264,8 @@ let app = new Vue({
       await this.refreshLayer(this.layer);
     },
     async refreshLayer(layer) {
-      if(this.layering) return;
-      this.layering = true;
+      if(this.busy) return;
+      this.busy = true;
       this.layer = layer;
       this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
       if(this.baseTrackExists) {
@@ -287,7 +285,7 @@ let app = new Vue({
       } else {
         await this.getTrack(Object.keys(tracks)[this.trackIdx]);
       }
-      this.layering = false;
+      this.busy = false;
     },
     async mixBuffers(audioBuffers) {
       let ended = [false, false];
@@ -332,7 +330,7 @@ let app = new Vue({
     },
     async postTrack() {
       let self = this;
-      self.posting = true;
+      self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, 'layers/'+uid);
       const trackPath = ref(storage, 'tracks/'+uid);
@@ -349,7 +347,7 @@ let app = new Vue({
       self.newTrackName = "";
       self.layer = null;
       self.clearBase();
-      self.posting = false;
+      self.busy = false;
       
     },
     async toggleTrack(forward) {
