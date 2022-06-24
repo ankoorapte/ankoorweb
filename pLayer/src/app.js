@@ -66,53 +66,48 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-3">
-        <template #header><b-row><b-col align="center">
-          <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
-            <source :src="trackURL" type="audio/wav">
-            Your browser does not support the <code>audio</code> element.
-          </audio>
-          <p v-if="layer && layer.name">{{layer.name}}</p>
-          <p>
-            <p v-if="baseTrackExists">mix with</p>
-            <p v-if="baseTrackExists || !layer">
-              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-              <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        <template #header>
+          <b-row><b-col align="center">
+            <audio ref="pLayer" class="m-2" controls controlsList="nodownload noplaybackrate">
+              <source :src="trackURL" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
+            <p v-if="layer && layer.name">{{layer.name}}</p>
+            <p>
+              <p v-if="baseTrackExists">mix with</p>
+              <p v-if="baseTrackExists || !layer">
+                <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+                <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </p>
+              <p>
+                <b-button v-if="!baseTrackExists && !layer" variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button>
+                <b-button v-if="baseTrackExists" variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button>
+                <b-button variant="info" @click="showSettings = !showSettings" class="p-1"><b-icon icon="wrench"></b-icon>settings</b-button>
+              </p>
             </p>
-            <p v-if="!baseTrackExists && !layer"><b-button variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button></p>
-            <p v-if="baseTrackExists"><b-button variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button></p>
-          </p>
-        </b-col></b-row></template>
-        <b-tabs pills card end align="center" v-model="tab">
-          <b-tab :title-link-class="tabClass(0)">
-            <template slot="title">
-            <b-icon icon="music-note-list" font-scale="1"></b-icon>  
-            </template>
-            <b-row><b-col align="center">
-              <br>
-              <b-form-file
-                placeholder=""
-                accept="audio/wav"
-                @input="refreshLayer"
-                browse-text="upload"
-                class="m-2 w-75"
-              ></b-form-file>
-              <b-input-group append="name" class="m-2 w-75">
-                <b-form-input v-model="newTrackName"></b-form-input>
-              </b-input-group>
-              <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
-            </b-col></b-row>
-          </b-tab>
-          <b-tab :title-link-class="tabClass(1)">
-            <template slot="title">
-              <b-icon icon="wrench" font-scale="1"></b-icon> 
-            </template>
+          </b-col></b-row>
+          <b-collapse v-model="showSettings">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <p align="center"><b-form-input :invalid-feedback="invalidUsername" class="w-75" placeholder="new username" @keydown.native="usernameKeydownHandler" v-model="newUsername" :state="stateUsername" trim></b-form-input></p>
             <p align="center"><b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update username</b-button></p>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-          </b-tab>
-        </b-tabs>
+          </b-collapse>
+        </template>
+        <b-row><b-col align="center">
+          <br>
+          <b-form-file
+            placeholder=""
+            accept="audio/wav"
+            @input="refreshLayer"
+            browse-text="upload"
+            class="m-2 w-75"
+          ></b-form-file>
+          <b-input-group append="name" class="m-2 w-75">
+            <b-form-input v-model="newTrackName"></b-form-input>
+          </b-input-group>
+          <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
+        </b-col></b-row>
       </b-card>
     </b-collapse>
   </b-container>
@@ -126,7 +121,7 @@ let app = new Vue({
       password: "",
       newUsername: "",
       busy: true,
-      layerOptions: false,
+      showSettings: false,
       layer: null,
       baseTrackID: "",
       baseTrackExists: false,
