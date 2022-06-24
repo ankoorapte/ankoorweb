@@ -79,8 +79,8 @@ let app = new Vue({
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
               <b-button v-if="!baseTrackExists && !layer" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
-            <p v-if="!baseTrackExists"><b-button variant="info" @click="pickBase"><b-icon icon="plus-circle"></b-icon></b-button></p>
-            <p v-if="baseTrackExists"><b-button @click="clearBase" class="p-1" variant="danger">clear</b-button></p>
+            <p v-if="!baseTrackExists"><b-button variant="info" @click="pickBase" class="p-1"><b-icon icon="plus-circle"></b-icon></b-button></p>
+            <p v-if="baseTrackExists"><b-button variant="danger" @click="clearBase" class="p-1"><b-icon icon="dash-circle"></b-icon></b-button></p>
           </p>
         </b-col></b-row></template>
         <b-tabs pills card end align="center" v-model="tab">
