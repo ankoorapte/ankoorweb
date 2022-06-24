@@ -115,7 +115,7 @@ let app = new Vue({
         </template>
         <b-row><b-col align="center">
           <p class="m-2" v-if="layer && !baseTrackExists">
-            {{ baseTrackExists && layer ? "mix " + layer.name + " with " + {{trackName}} + " by " + artistNames.join(", "): ""}}
+            {{ baseTrackExists && layer ? "mix " + layer.name + " with " + trackName + " by " + artistNames.join(", "): ""}}
           </p>
           <p class="m-2" v-if="baseTrackExists && !layer && trackName.length && artistNames.length">
             upload new layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
