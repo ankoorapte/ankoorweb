@@ -355,6 +355,7 @@ let app = new Vue({
       
     },
     async toggleTrack(forward) {
+      this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -362,6 +363,7 @@ let app = new Vue({
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       await this.getTrack(Object.keys(tracks)[this.trackIdx]);
+      this.busy = false;
     },
     async getTrack(uuid) {
       let url = await getDownloadURL(ref(storage, 'tracks/'+uuid));
