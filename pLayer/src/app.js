@@ -87,20 +87,18 @@ let app = new Vue({
               <b-button class="p-1" variant="info" @click="toggleTrack(1)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
-          <b-collapse v-model="showSettings" class="m-2">
+          <b-collapse v-model="showSettings" class="mt-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <b-row><b-col align="center">
-              <b-input-group class="w-75">
-                <b-form-input type="number" min="0.00"></b-form-input>
+              <b-input-group class="m-2 w-75">
+                <b-form-input type="number" min="0"></b-form-input>
                 <b-input-group-append>
-                  <b-button variant="outline-secondary">Button</b-button>
-                  <b-button variant="outline-primary">Button</b-button>
                   <b-input-group-text>
-                    <b-icon icon="x" />
+                    layers
                   </b-input-group-text>
                 </b-input-group-append>
               </b-input-group>
-              <b-input-group class="w-75">
+              <b-input-group class="m-2 w-75">
                 <b-form-input 
                   :invalid-feedback="invalidUsername" 
                   class="w-75" 
