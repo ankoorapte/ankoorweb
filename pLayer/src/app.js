@@ -79,7 +79,6 @@ let app = new Vue({
             </template>
             <b-row><b-col align="center">
               <p v-if="baseTrackExists" class="m-2">layer over <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>  <b-button variant="danger" @click="clearBase" class="p-1">clear</b-button></p>
-              <hr>
               <b class="m-2">upload</b>
               <br>
               <b-form-file
