@@ -87,8 +87,8 @@ let app = new Vue({
                 browse-text="upload"
                 class="m-2 w-75"
               ></b-form-file>
-              <b-input-group append="name">
-                <b-form-input class="m-2 w-75" v-model="newTrackName" :state="stateTrackName"></b-form-input>
+              <b-input-group append="name" class="m-2 w-75">
+                <b-form-input v-model="newTrackName" :state="stateTrackName"></b-form-input>
               </b-input-group>
               <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
               <p align="center"><b-spinner v-show="posting || layering" variant="dark" type="grow"></b-spinner></p>
