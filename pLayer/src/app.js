@@ -66,6 +66,12 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-card bg-variant="light" no-body class="m-3">
+        <template #header>
+          <audio ref="newTrack" class="m-2" controls controlsList="nodownload noplaybackrate">
+            <source :src="newTrackURL" type="audio/wav">
+            Your browser does not support the <code>audio</code> element.
+          </audio>
+        </template>
         <b-tabs pills card align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
             <template slot="title">
