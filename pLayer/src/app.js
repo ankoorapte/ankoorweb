@@ -71,7 +71,13 @@ let app = new Vue({
             <source :src="trackURL" type="audio/wav">
             Your browser does not support the <code>audio</code> element.
           </audio>
-          <p><p v-if="baseTrackExists">layer over </p><b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b><b-button variant="danger" @click="clearBase" class="p-1" v-if="baseTrackExists">clear</b-button></p>
+          <p>
+            <p v-if="baseTrackExists">layer over </p>
+            <b-button v-if="!baseTrackExists" @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+            <b-button v-if="!baseTrackExists" @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button v-if="baseTrackExists" @click="clearBase" class="p-1" variant="danger">clear</b-button>
+          </p>
         </b-col></b-row></template>
         <b-tabs pills card end align="center" v-model="tab">
           <b-tab :title-link-class="tabClass(0)">
@@ -99,11 +105,7 @@ let app = new Vue({
             <b-icon icon="house-door-fill" font-scale="1"></b-icon> 
             </template>
             <b-row><b-col align="center">
-              <p>
-                <b-button @click="toggleTrack(0)" class="m-2 p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-                <b-button @click="layerOptions = !layerOptions" variant="info"><b-icon icon="music-note-list"></b-icon> layers</b-button>
-                <b-button @click="toggleTrack(1)" class="m-2 p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              </p>
+              <p><b-button @click="layerOptions = !layerOptions" variant="info"><b-icon icon="music-note-list"></b-icon> layers</b-button></p>
               <b-collapse v-model="layerOptions">
                 <p><b-button variant="primary" @click="pickBase"><b-icon icon="plus-circle"></b-icon> add layer</b-button></p>
               </b-collapse>
