@@ -125,7 +125,7 @@ let app = new Vue({
       email: "",
       password: "",
       newUsername: "",
-      busy: false,
+      busy: true,
       layerOptions: false,
       layer: null,
       baseTrackID: "",
@@ -142,6 +142,7 @@ let app = new Vue({
   async created() {
     let self = this;
     onAuthStateChanged(auth, async (user) => {
+      self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         let userDocs = await getDocs(collection(db, "users"));
@@ -159,7 +160,9 @@ let app = new Vue({
             self.getTrack(Object.keys(tracks)[0]).then(() => {});
         });
       }
+      self.busy = false;
     });
+    self.busy = false;
   },
   computed: {
     postDisabled() {
