@@ -296,7 +296,7 @@ let app = new Vue({
       if(this.busy) return;
       this.busy = true;
       this.layer = layer;
-      this.baseTrackExists = Object.keys(tracks).includes(this.baseTrackID);
+      this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
       if(this.baseTrackExists) {
         let baseTrack = await fetch(await getDownloadURL(
           ref(storage, 'tracks/'+this.baseTrackID)
@@ -312,7 +312,7 @@ let app = new Vue({
         this.trackURL = URL.createObjectURL(this.newTrack);
         this.$refs.pLayer.load();
       } else {
-        await this.getTrack(Object.keys(tracks)[this.trackIdx]);
+        await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
       }
       this.busy = false;
     },
@@ -383,11 +383,11 @@ let app = new Vue({
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
-        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
+        if(!this.trackIdx) this.trackIdx = Object.keys(this.tracks).length;
         this.trackIdx--;
       }
-      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
-      await this.getTrack(Object.keys(tracks)[this.trackIdx]);
+      this.trackIdx = this.trackIdx % Object.keys(this.tracks).length;
+      await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
       this.busy = false;
     },
     async getTrack(uuid) {
@@ -395,8 +395,8 @@ let app = new Vue({
       let response = await fetch(url);
       if(response.status === 200) {
         this.trackID = uuid;
-        this.trackName = tracks[uuid]['name'];
-        this.artistNames = [users[tracks[uuid]['user']]['displayName']];
+        this.trackName = this.tracks[uuid]['name'];
+        this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
         this.trackURL = window.URL.createObjectURL(await response.blob());
         this.$refs.pLayer.load();
       } else {
@@ -405,11 +405,8 @@ let app = new Vue({
     },
     filterTracks() {
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
-      console.log(baseList);
       for(const id in tracks) {
-        console.log(baseList.includes(id));
         if(this.layerCount && baseList.includes(id)) continue;
-        console.log(tracks[id]);
         this.tracks[id] = tracks[id];
       }
     }
