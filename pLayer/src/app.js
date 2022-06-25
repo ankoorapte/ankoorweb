@@ -408,6 +408,7 @@ let app = new Vue({
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
         if(this.layerCount && baseList.includes(id)) continue;
+        console.log(tracks[id]);
         this.tracks[id] = tracks[id];
       }
     }
