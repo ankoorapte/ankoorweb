@@ -407,8 +407,7 @@ let app = new Vue({
       console.log('filter');
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
-        console.log(this.layerCount);
-        if(this.layerCount && baseList.includes(id)) continue;
+        if((this.layerCount > 0) && baseList.includes(id)) continue;
         this.tracks[id] = tracks[id];
       }
     }
