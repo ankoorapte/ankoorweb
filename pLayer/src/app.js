@@ -404,7 +404,7 @@ let app = new Vue({
         console.log('Looks like there was a problem. Status Code: ' + response.status);
       }
     },
-    filterTracks() {
+    async filterTracks() {
       this.busy = true;
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
@@ -415,6 +415,7 @@ let app = new Vue({
         console.log(tracks[id]);
         this.tracks[id] = tracks[id];
       }
+      await refreshLayer(this.layer);
       this.busy = false;
     }
   }
