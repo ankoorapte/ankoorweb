@@ -404,12 +404,17 @@ let app = new Vue({
       }
     },
     filterTracks() {
-      console.log('filter');
+      this.busy = true;
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
+        console.log(this.layerCount);
+        console.log(baseList.includes(id));
         if((this.layerCount > 0) && baseList.includes(id)) continue;
+        console.log(id);
+        console.log(tracks[id]);
         this.tracks[id] = tracks[id];
       }
+      this.busy = false;
     }
   }
 });
