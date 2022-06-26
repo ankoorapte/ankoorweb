@@ -380,6 +380,7 @@ let app = new Vue({
       
     },
     async toggleTrack(forward) {
+      this.filterTracks();
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
