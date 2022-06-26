@@ -415,7 +415,7 @@ let app = new Vue({
         console.log(tracks[id]);
         this.tracks[id] = tracks[id];
       }
-      await refreshLayer(this.layer);
+      await this.refreshLayer(this.layer);
       this.busy = false;
     }
   }
