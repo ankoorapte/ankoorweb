@@ -71,7 +71,7 @@ let app = new Vue({
             <p v-show="trackName.length && artistNames.length && !layer">
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
-            <audio ref="pLayer" controls controlsList="nodownload noplaybackrate">
+            <audio ref="pLayer" controls controlsList="noplaybackrate">
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
