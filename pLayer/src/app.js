@@ -378,9 +378,8 @@ let app = new Vue({
       await uploadBytes(layerPath, self.layer, metadata);
       await uploadBytes(trackPath, self.newTrack, metadata);
       self.newTrackName = "";
-      self.layer = null;
-      self.baseTrackID = null;
       self.busy = false;
+      self.clearBase();
       
     },
     async toggleTrack(forward=true) {
