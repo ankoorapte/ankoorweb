@@ -88,14 +88,6 @@ let app = new Vue({
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <b-row><b-col align="center">
               <b-input-group class="m-2 w-75">
-                <b-form-input type="number" min="0" v-model="layerCount" @change="toggleTrack()"></b-form-input>
-                <b-input-group-append>
-                  <b-input-group-text>
-                    layers
-                  </b-input-group-text>
-                </b-input-group-append>
-              </b-input-group>
-              <b-input-group class="m-2 w-75">
                 <b-form-input 
                   :invalid-feedback="invalidUsername" 
                   class="w-75" 
@@ -108,6 +100,14 @@ let app = new Vue({
                 </b-form-input>
                 <b-input-group-append>
                   <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+                </b-input-group-append>
+              </b-input-group>
+              <b-input-group class="m-2 w-75">
+                <b-form-input type="number" min="0" v-model="layerCount" @change="toggleTrack()" :disabled="busy"></b-form-input>
+                <b-input-group-append>
+                  <b-input-group-text>
+                    layers
+                  </b-input-group-text>
                 </b-input-group-append>
               </b-input-group>
             </b-col></b-row>
