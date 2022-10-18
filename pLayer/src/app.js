@@ -78,8 +78,8 @@ let app = new Vue({
             </audio>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer"><b-icon icon="plus-circle"></b-icon></b-button>
-              <b-button class="p-1" variant="danger" @click="clearBase" v-if="baseTrackExists"><b-icon icon="dash-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer" :disabled="busy"><b-icon icon="plus-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="danger" @click="clearBase" v-if="baseTrackExists" :disabled="busy"><b-icon icon="dash-circle"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="toggleTrack(1)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
