@@ -116,10 +116,10 @@ let app = new Vue({
         </template>
         <b-row><b-col align="center">
           <p class="m-2" v-if="layer && !baseTrackExists">
-            {{ baseTrackExists && layer ? "mix " + layer.name + " with " + trackName + " by " + artistNames.join(", "): ""}}
+            upload new track
           </p>
-          <p class="m-2" v-if="baseTrackExists && !layer && trackName.length && artistNames.length">
-            upload new layer to <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+          <p class="m-2" v-if="baseTrackExists && trackName.length && artistNames.length">
+            layer onto <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
           </p>
           <b-form-file
             placeholder=""
