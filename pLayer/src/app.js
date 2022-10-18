@@ -68,7 +68,7 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-show="trackName.length && artistNames.length && !layer">
+            <p v-show="trackName.length && artistNames.length && !layer && !busy">
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <audio ref="pLayer" controls controlsList="noplaybackrate">
@@ -410,9 +410,9 @@ let app = new Vue({
       for(const id in tracks) {
         console.log(this.layerCount);
         console.log(baseList.includes(id));
-        if((this.layerCount > 0) && baseList.includes(id)) continue;
         console.log(id);
         console.log(tracks[id]);
+        if((this.layerCount > 0) && baseList.includes(id)) continue;
         this.tracks[id] = tracks[id];
       }
       await this.refreshLayer(this.layer);
