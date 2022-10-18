@@ -127,6 +127,7 @@ let app = new Vue({
             @input="refreshLayer"
             browse-text="upload"
             class="m-2 w-75"
+            :disabled="busy"
           ></b-form-file>
           <b-input-group append="name" class="m-2 w-75">
             <b-form-input v-model="newTrackName"></b-form-input>
