@@ -88,7 +88,7 @@ let app = new Vue({
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <b-row><b-col align="center">
               <b-input-group class="m-2 w-75">
-                <b-form-input type="number" min="0" v-model="layerCount" @change="filterTracks"></b-form-input>
+                <b-form-input type="number" min="0" v-model="layerCount" @change="toggleTrack()"></b-form-input>
                 <b-input-group-append>
                   <b-input-group-text>
                     layers
@@ -382,7 +382,7 @@ let app = new Vue({
       self.busy = false;
       
     },
-    async toggleTrack(forward) {
+    async toggleTrack(forward=true) {
       this.filterTracks();
       this.busy = true;
       if(forward) { this.trackIdx++; }
@@ -412,10 +412,6 @@ let app = new Vue({
       this.tracks = {};
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
-        console.log(this.layerCount);
-        console.log(baseList.includes(id));
-        console.log(id);
-        console.log(tracks[id]);
         if((this.layerCount > 0) && baseList.includes(id)) continue;
         this.tracks[id] = tracks[id];
       }
