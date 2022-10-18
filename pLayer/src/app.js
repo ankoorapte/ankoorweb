@@ -406,6 +406,7 @@ let app = new Vue({
     },
     async filterTracks() {
       this.busy = true;
+      this.tracks = {};
       let baseList = Object.keys(tracks).map((id) => tracks[id].base);
       for(const id in tracks) {
         console.log(this.layerCount);
