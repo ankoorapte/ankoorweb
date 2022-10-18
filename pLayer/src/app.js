@@ -44,7 +44,8 @@ const auth = getAuth(firebaseApp);
 
 let tracks = {};
 let users = {};
-let unsubscribe = () => {};
+let unsubscribe_tracks = () => {};
+let unsubscribe_users = () => {};
 
 let app = new Vue({
   el: '#app',
@@ -166,12 +167,13 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        let userDocs = await getDocs(collection(db, "users"));
-        userDocs.forEach((doc) => {
-          users[doc.id] = doc.data();
+        unsubscribe_tracks = onSnapshot(collection(db, "users"), (userDocs) => {
+          userDocs.forEach((doc) => {
+            users[doc.id] = doc.data();
+          });
         });
-
-        unsubscribe = onSnapshot(collection(db, "tracks"), (trackDocs) => {
+        
+        unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {}
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
@@ -254,7 +256,8 @@ let app = new Vue({
       }
     },
     async signOut() {
-      unsubscribe();
+      unsubscribe_tracks();
+      unsubscribe_users();
       this.signedIn = false;
       this.user = null;
       this.email = "";
