@@ -300,10 +300,15 @@ let app = new Vue({
       await this.refreshPlayer(this.layer);
     },
     loadPlayer() {
-      this.$refs.pLayer.load();
-      this.$refs.pLayer.playbackRate = 1000;
-      this.$refs.pLayer.muted = true;
-      this.$refs.pLayer.play();
+      let self = this;
+      self.$refs.pLayer.load();
+      self.$refs.pLayer.playbackRate = 1000;
+      self.$refs.pLayer.muted = true;
+      self.$refs.pLayer.play();
+      self.$refs.pLayer.onended = function() {
+        self.$refs.pLayer.playbackRate = 1;
+        self.$refs.pLayer.muted = false;
+      };
     },
     async getTrack(uuid) {
       let track = await fetch(await getDownloadURL(
