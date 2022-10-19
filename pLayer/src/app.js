@@ -400,7 +400,7 @@ let app = new Vue({
       this.layer = layer;
       this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
       if(this.baseTrackExists) {
-        let baseTrack = await getTrack(this.baseTrackID);
+        let baseTrack = await this.getTrack(this.baseTrackID);
         this.newTrack = this.layer ? await this.mixLayers([
           await baseTrack.arrayBuffer(), 
           await this.layer.arrayBuffer()
