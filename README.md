@@ -1,9 +1,9 @@
 # ankoorapte.com
-## home
-Promotes music projects and socials
+Two sites
+- ankoor's artist homepage to promote music and socials (ankoorapte.com)
+- pLayer, a social music app (ankoorapte.com/pLayer)
 
-## pLayer
-social music app (ankoorapte.com/pLayer)
+Architecture
 - developed on Firebase
 - hosted on GitHub Pages
 - domain name registered with GoDaddy
