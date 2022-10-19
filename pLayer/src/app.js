@@ -303,13 +303,11 @@ let app = new Vue({
       let track = await fetch(await getDownloadURL(
         ref(storage, 'tracks/'+uuid)
       ));
-      let result = track;
       this.trackID = uuid;
       this.trackName = this.tracks[uuid]['name'];
       this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
       this.trackURL = window.URL.createObjectURL(await track.blob());
       this.$refs.pLayer.load();
-      return result;
     },
     async mixLayers(audioBuffers) {
       let ended = [false, false];
@@ -401,7 +399,9 @@ let app = new Vue({
       this.layer = layer;
       this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
       if(this.baseTrackExists) {
-        let baseTrack = await this.getTrack(this.baseTrackID);
+        let baseTrack = await fetch(await getDownloadURL(
+          ref(storage, 'tracks/'+baseTrackID)
+        ));
         this.newTrack = this.layer ? await this.mixLayers([
           await baseTrack.arrayBuffer(), 
           await this.layer.arrayBuffer()
