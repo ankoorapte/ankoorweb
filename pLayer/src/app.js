@@ -303,14 +303,9 @@ let app = new Vue({
       let self = this;
       self.busy = true;
       self.$refs.pLayer.load();
-      self.$refs.pLayer.playbackRate = 16;
-      self.$refs.pLayer.muted = true;
-      self.$refs.pLayer.play();
-      self.$refs.pLayer.onended = function() {
-        self.$refs.pLayer.playbackRate = 1;
-        self.$refs.pLayer.muted = false;
-        self.busy = false;
-      };
+      self.$refs.pLayer.oncanplaythrough = () => {
+        console.log('hi');
+      }
     },
     async getTrack(uuid) {
       let track = await fetch(await getDownloadURL(
