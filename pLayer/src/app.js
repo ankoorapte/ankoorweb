@@ -400,7 +400,7 @@ let app = new Vue({
       this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
       if(this.baseTrackExists) {
         let baseTrack = await fetch(await getDownloadURL(
-          ref(storage, 'tracks/'+baseTrackID)
+          ref(storage, 'tracks/'+this.baseTrackID)
         ));
         this.newTrack = this.layer ? await this.mixLayers([
           await baseTrack.arrayBuffer(), 
