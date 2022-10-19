@@ -299,6 +299,12 @@ let app = new Vue({
       this.baseTrackID = null;
       await this.refreshPlayer(this.layer);
     },
+    loadPlayer() {
+      this.$refs.pLayer.load();
+      this.$refs.pLayer.playbackRate = 1000;
+      this.$refs.pLayer.muted = true;
+      this.$refs.pLayer.play();
+    },
     async getTrack(uuid) {
       let track = await fetch(await getDownloadURL(
         ref(storage, 'tracks/'+uuid)
@@ -307,7 +313,7 @@ let app = new Vue({
       this.trackName = this.tracks[uuid]['name'];
       this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
       this.trackURL = window.URL.createObjectURL(await track.blob());
-      this.$refs.pLayer.load();
+      this.loadPlayer()
     },
     async mixLayers(audioBuffers) {
       let ended = [false, false];
@@ -411,7 +417,7 @@ let app = new Vue({
       }
       if(this.newTrack) {
         this.trackURL = URL.createObjectURL(this.newTrack);
-        this.$refs.pLayer.load();
+        this.loadPlayer()
       } else {
         await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
       }
