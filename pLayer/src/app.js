@@ -75,7 +75,7 @@ let app = new Vue({
             <p v-show="trackName.length && artistNames.length && !layer && !busy">
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
-            <audio ref="pLayer" controls controlsList="noplaybackrate">
+            <audio v-show="!busy" ref="pLayer" controls controlsList="noplaybackrate">
               <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
@@ -301,6 +301,7 @@ let app = new Vue({
     },
     loadPlayer() {
       let self = this;
+      self.busy = true;
       self.$refs.pLayer.load();
       self.$refs.pLayer.playbackRate = 16;
       self.$refs.pLayer.muted = true;
@@ -308,6 +309,7 @@ let app = new Vue({
       self.$refs.pLayer.onended = function() {
         self.$refs.pLayer.playbackRate = 1;
         self.$refs.pLayer.muted = false;
+        self.busy = false;
       };
     },
     async getTrack(uuid) {
