@@ -302,7 +302,7 @@ let app = new Vue({
     loadPlayer() {
       let self = this;
       self.$refs.pLayer.load();
-      self.$refs.pLayer.playbackRate = 1000;
+      self.$refs.pLayer.playbackRate = 16;
       self.$refs.pLayer.muted = true;
       self.$refs.pLayer.play();
       self.$refs.pLayer.onended = function() {
