@@ -1,3 +1,4 @@
+// IMPORTS
 import { 
   initializeApp 
 } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
@@ -26,7 +27,7 @@ import {
   setDoc,
   onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
-
+// FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
   authDomain: "player-76353.firebaseapp.com",
@@ -36,19 +37,21 @@ const firebaseConfig = {
   appId: "1:954598460815:web:52ae341cbaf40a1c6e8ffa",
   measurementId: "G-VK3H3Y1430"
 };
-
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
+// CACHES
 let tracks = {};
 let users = {};
 let unsubscribe_tracks = () => {};
 let unsubscribe_users = () => {};
 
+// APP
 let app = new Vue({
   el: '#app',
+  // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon v-show="!busy" icon="music-note-list"></b-icon><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> <b>pLayer</b></h1>
@@ -124,7 +127,7 @@ let app = new Vue({
           <b-form-file
             placeholder=""
             accept="audio/wav"
-            @input="refreshLayer"
+            @input="refreshPlayer"
             browse-text="upload"
             class="m-2 w-75"
             :disabled="busy"
@@ -289,38 +292,25 @@ let app = new Vue({
     },
     async pickBase() {
       this.baseTrackID = this.trackID;
-      await this.refreshLayer(this.layer);
+      await this.refreshPlayer(this.layer);
     },
     async clearBase() {
       this.layer = null;
       this.baseTrackID = null;
-      await this.refreshLayer(this.layer);
+      await this.refreshPlayer(this.layer);
     },
-    async refreshLayer(layer) {
-      if(this.busy) return;
-      this.busy = true;
-      this.layer = layer;
-      this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
-      if(this.baseTrackExists) {
-        let baseTrack = await fetch(await getDownloadURL(
-          ref(storage, 'tracks/'+this.baseTrackID)
-        ));
-        this.newTrack = this.layer ? await this.mixBuffers([
-          await baseTrack.arrayBuffer(), 
-          await this.layer.arrayBuffer()
-        ]) : await baseTrack.blob();
-      } else { 
-        this.newTrack = this.layer; 
-      }
-      if(this.newTrack) {
-        this.trackURL = URL.createObjectURL(this.newTrack);
-        this.$refs.pLayer.load();
-      } else {
-        await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
-      }
-      this.busy = false;
+    async getTrack(uuid) {
+      let track = await fetch(await getDownloadURL(
+        ref(storage, 'tracks/'+uuid)
+      ));
+      this.trackID = uuid;
+      this.trackName = this.tracks[uuid]['name'];
+      this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
+      this.trackURL = window.URL.createObjectURL(await track.blob());
+      this.$refs.pLayer.load();
+      return track;
     },
-    async mixBuffers(audioBuffers) {
+    async mixLayers(audioBuffers) {
       let ended = [false, false];
       let chunks = [];
       let channels = [[0, 1],[1, 0]];
@@ -380,10 +370,20 @@ let app = new Vue({
       self.newTrackName = "";
       self.busy = false;
       self.clearBase();
-      
+    },
+    async filterTracks() {
+      this.busy = true;
+      this.tracks = {};
+      let baseList = Object.keys(tracks).map((id) => tracks[id].base);
+      for(const id in tracks) {
+        if((this.layerCount > 0) && baseList.includes(id)) continue;
+        this.tracks[id] = tracks[id];
+      }
+      await this.refreshPlayer(this.layer);
+      this.busy = false;
     },
     async toggleTrack(forward=true) {
-      this.filterTracks();
+      await this.filterTracks();
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
@@ -394,28 +394,26 @@ let app = new Vue({
       await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
       this.busy = false;
     },
-    async getTrack(uuid) {
-      let url = await getDownloadURL(ref(storage, 'tracks/'+uuid));
-      let response = await fetch(url);
-      if(response.status === 200) {
-        this.trackID = uuid;
-        this.trackName = this.tracks[uuid]['name'];
-        this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
-        this.trackURL = window.URL.createObjectURL(await response.blob());
+    async refreshPlayer(layer) {
+      if(this.busy) return;
+      this.busy = true;
+      this.layer = layer;
+      this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
+      if(this.baseTrackExists) {
+        let baseTrack = await getTrack(this.baseTrackID);
+        this.newTrack = this.layer ? await this.mixLayers([
+          await baseTrack.arrayBuffer(), 
+          await this.layer.arrayBuffer()
+        ]) : await baseTrack.blob();
+      } else { 
+        this.newTrack = this.layer;
+      }
+      if(this.newTrack) {
+        this.trackURL = URL.createObjectURL(this.newTrack);
         this.$refs.pLayer.load();
       } else {
-        console.log('Looks like there was a problem. Status Code: ' + response.status);
+        await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
       }
-    },
-    async filterTracks() {
-      this.busy = true;
-      this.tracks = {};
-      let baseList = Object.keys(tracks).map((id) => tracks[id].base);
-      for(const id in tracks) {
-        if((this.layerCount > 0) && baseList.includes(id)) continue;
-        this.tracks[id] = tracks[id];
-      }
-      await this.refreshLayer(this.layer);
       this.busy = false;
     }
   }
