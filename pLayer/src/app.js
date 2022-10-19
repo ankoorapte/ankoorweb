@@ -303,12 +303,13 @@ let app = new Vue({
       let track = await fetch(await getDownloadURL(
         ref(storage, 'tracks/'+uuid)
       ));
+      let result = track;
       this.trackID = uuid;
       this.trackName = this.tracks[uuid]['name'];
       this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
       this.trackURL = window.URL.createObjectURL(await track.blob());
       this.$refs.pLayer.load();
-      return track;
+      return result;
     },
     async mixLayers(audioBuffers) {
       let ended = [false, false];
