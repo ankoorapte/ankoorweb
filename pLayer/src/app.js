@@ -76,7 +76,7 @@ let app = new Vue({
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <audio v-show="!busy" ref="pLayer" controls controlsList="noplaybackrate">
-              <source :src="trackURL" type="audio/ogg; codecs=opus">
+              <source :src="trackURL" type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
             <p class="m-0">
@@ -126,7 +126,7 @@ let app = new Vue({
           </p>
           <b-form-file
             placeholder=""
-            accept="audio/ogg; codecs=opus"
+            accept="audio/wav"
             @input="refreshPlayer"
             browse-text="upload"
             class="m-2 w-75"
@@ -346,7 +346,7 @@ let app = new Vue({
           chunks.push(event.data);
         };
         recorder.onstop = () => {
-          resolve(new Blob(chunks, {"type": "audio/ogg; codecs=opus"}));
+          resolve(new Blob(chunks, {"type": "audio/wav"}));
         };
         recorder.start(0);
         audioNodes.forEach((node, index) => {
@@ -370,7 +370,7 @@ let app = new Vue({
           'user': self.user.uid,
           'base': self.baseTrackID
         },
-        contentType: 'audio/ogg; codecs=opus',
+        contentType: 'audio/wav',
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
       await uploadBytes(trackPath, self.newTrack, metadata);
