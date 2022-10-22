@@ -77,8 +77,8 @@ let app = new Vue({
             </p>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info"><b-icon icon="plus-circle"></b-icon></b-button>
-              <b-button class="p-1" variant="danger"><b-icon icon="dash-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
@@ -135,9 +135,9 @@ let app = new Vue({
       showSettings: false,
       layer: null,
       newTrackName: "",
-      baseID: "",
       trackID: "",
       trackIdx: 0,
+      layering: false,
     }
   },
   async created() {
@@ -273,14 +273,13 @@ let app = new Vue({
         customMetadata: {
           'name': self.newTrackName,
           'user': self.user.uid,
-          'base': self.baseID
+          'base': self.layering ? self.trackID : ""
         },
         contentType: 'audio/wav'
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
       self.newTrackName = "";
       self.layer = null;
-      self.baseID = "";
       self.busy = false;
     }
   }
