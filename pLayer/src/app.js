@@ -114,7 +114,7 @@ let app = new Vue({
           <b-input-group append="name" class="m-2 w-75">
             <b-form-input v-model="newTrackName"></b-form-input>
           </b-input-group>
-          <b-button class="m-2" variant="info" @click="post()">post</b-button>
+          <b-button variant="info" @click="post()">post</b-button>
         </b-col></b-row>
       </b-card>
     </b-collapse>
