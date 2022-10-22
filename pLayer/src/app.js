@@ -117,19 +117,7 @@ let app = new Vue({
       password: "",
       newUsername: "",
       busy: true,
-      showSettings: false,
-      layer: null,
-      baseTrackID: "",
-      baseTrackExists: false,
-      newTrack: null,
-      newTrackName: "",
-      trackIdx: 0,
-      trackID: "",
-      trackName: "",
-      trackURL: null,
-      artistNames: [],
-      layerCount: 1,
-      tracks: {}
+      showSettings: false
     }
   },
   async created() {
