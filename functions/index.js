@@ -10,15 +10,26 @@ const layers = db.collection("layers");
 // --trigger-resource player-76353.appspot.com
 // --trigger-event google.storage.object.finalize
 exports.updateDB = async (file, context) => {
-  const collection = file.name.includes("layers") ? layers : tracks;
-  const uid = file.name.split("/")[1];
-  const data = {
-    bucket: file.name,
-    timestamp: file.updated,
-    name: file.metadata.name,
-    user: file.metadata.user,
-    base: file.metadata.base,
-  };
+  const uid = file.name;
+  const base = file.metadata.base;
+  const name = file.metadata.name;
 
-  await collection.doc(uid).set(data);
+  await layers.doc(uid).set({
+    bucket: uid,
+    name: name,
+    base: base,
+    user: file.metadata.user,
+    timestamp: file.updated,
+  });
+
+  if (base) {
+    await tracks.doc(base).set({
+      layers: admin.firestore.FieldValue.arrayUnion(uid),
+    }, {merge: true});
+  } else {
+    await tracks.doc(uid).set({
+      layers: [uid],
+      name: file.metadata.name,
+    });
+  }
 };

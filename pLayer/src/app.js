@@ -103,6 +103,15 @@ let app = new Vue({
           </b-collapse>
         </template>
         <b-row><b-col align="center">
+          <b-form-file
+            placeholder=""
+            accept="audio/wav"
+            v-model="layer"
+            browse-text="upload"
+            class="m-2 w-75"
+            :disabled="busy"
+          ></b-form-file>
+          <b-button class="m-2" variant="info" @click="post()">post</b-button>
         </b-col></b-row>
       </b-card>
     </b-collapse>
@@ -117,7 +126,9 @@ let app = new Vue({
       password: "",
       newUsername: "",
       busy: true,
-      showSettings: false
+      showSettings: false,
+      layer: null,
+      baseID: ""
     }
   },
   async created() {
@@ -231,6 +242,23 @@ let app = new Vue({
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername(0);
       }
+    },
+    async post() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const layerPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.newTrackName,
+          'user': self.user.uid,
+          'base': self.baseID
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(layerPath, self.layer, metadata);
+      self.newTrackName = "";
+      self.busy = false;
     }
   }
 });
