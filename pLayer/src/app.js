@@ -72,19 +72,12 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-show="trackName.length && artistNames.length && !layer && !busy">
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-            </p>
-            <audio v-show="!busy" ref="pLayer" controls controlsList="noplaybackrate">
-              <source :src="trackURL" type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
             <p class="m-0">
-              <b-button class="p-1" variant="info" @click="toggleTrack(0)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="pickBase" v-if="!baseTrackExists && !layer" :disabled="busy"><b-icon icon="plus-circle"></b-icon></b-button>
-              <b-button class="p-1" variant="danger" @click="clearBase" v-if="baseTrackExists" :disabled="busy"><b-icon icon="dash-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info"><b-icon icon="plus-circle"></b-icon></b-button>
+              <b-button class="p-1" variant="danger"><b-icon icon="dash-circle"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="toggleTrack(1)" v-if="!baseTrackExists && !layer"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
           <b-collapse v-model="showSettings" class="mt-2">
@@ -105,37 +98,11 @@ let app = new Vue({
                   <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
                 </b-input-group-append>
               </b-input-group>
-              <b-input-group class="m-2 w-75">
-                <b-form-input type="number" min="0" v-model="layerCount" @change="toggleTrack()" :disabled="busy"></b-form-input>
-                <b-input-group-append>
-                  <b-input-group-text>
-                    layers
-                  </b-input-group-text>
-                </b-input-group-append>
-              </b-input-group>
             </b-col></b-row>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-collapse>
         </template>
         <b-row><b-col align="center">
-          <p class="m-2" v-if="layer && !baseTrackExists">
-            upload new track
-          </p>
-          <p class="m-2" v-if="baseTrackExists && trackName.length && artistNames.length">
-            layer onto <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-          </p>
-          <b-form-file
-            placeholder=""
-            accept="audio/wav"
-            @input="refreshPlayer"
-            browse-text="upload"
-            class="m-2 w-75"
-            :disabled="busy"
-          ></b-form-file>
-          <b-input-group append="name" class="m-2 w-75">
-            <b-form-input v-model="newTrackName"></b-form-input>
-          </b-input-group>
-          <b-button class="m-2" :disabled="postDisabled" variant="info" @click="postTrack()">post</b-button>
         </b-col></b-row>
       </b-card>
     </b-collapse>
@@ -182,13 +149,6 @@ let app = new Vue({
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
           });
-
-          self.filterTracks();
-
-          if(Object.keys(self.tracks).length) 
-            self.getTrack(Object.keys(self.tracks)[0]).then(() => {
-              self.busy = false;
-            });
         });
       }
       self.busy = false;
@@ -196,12 +156,6 @@ let app = new Vue({
     self.busy = false;
   },
   computed: {
-    postDisabled() {
-      if(this.newTrackName.length && !this.busy) {
-        return false;
-      }
-      return true;
-    },
     stateCredentials() {
       return this.password.length >= 6 && this.email.includes("@");
     },
@@ -289,141 +243,6 @@ let app = new Vue({
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername(0);
       }
-    },
-    async pickBase() {
-      this.baseTrackID = this.trackID;
-      await this.refreshPlayer(this.layer);
-    },
-    async clearBase() {
-      this.layer = null;
-      this.baseTrackID = null;
-      await this.refreshPlayer(this.layer);
-    },
-    loadPlayer() {
-      let self = this;
-      self.busy = true;
-      self.$refs.pLayer.load();
-      self.$refs.pLayer.oncanplaythrough = () => {
-        console.log('hi');
-      }
-    },
-    async getTrack(uuid) {
-      let track = await fetch(await getDownloadURL(
-        ref(storage, 'tracks/'+uuid)
-      ));
-      this.trackID = uuid;
-      this.trackName = this.tracks[uuid]['name'];
-      this.artistNames = [users[this.tracks[uuid]['user']]['displayName']];
-      this.trackURL = window.URL.createObjectURL(await track.blob());
-      this.loadPlayer()
-    },
-    async mixLayers(audioBuffers) {
-      let ended = [false, false];
-      let chunks = [];
-      let channels = [[0, 1],[1, 0]];
-      let audio = new AudioContext();
-      let merger = audio.createChannelMerger(2);
-      let splitter = audio.createChannelSplitter(2);
-      let mixedAudio = audio.createMediaStreamDestination();
-      merger.connect(mixedAudio);
-      merger.connect(audio.destination);
-
-      let audioSetup = async (buffer, index) => {
-        let bufferSource = await audio.decodeAudioData(buffer);
-        let channel = channels[index];
-        let source = audio.createBufferSource();
-        source.buffer = bufferSource;
-        source.connect(splitter);
-        splitter.connect(merger, channel[0], channel[1]);          
-        return source;
-      }
-
-      let audioNodes = await Promise.all(audioBuffers.map(audioSetup));
-      let recorder = new MediaRecorder(mixedAudio.stream);
-
-      return new Promise((resolve, reject) => {
-        recorder.ondataavailable = (event) => {
-          chunks.push(event.data);
-        };
-        recorder.onstop = () => {
-          resolve(new Blob(chunks, {"type": "audio/wav"}));
-        };
-        recorder.start(0);
-        audioNodes.forEach((node, index) => {
-          node.onended = () => {
-            ended[index] = true;
-            if(ended.every((e) => e)) recorder.stop();
-          }
-          node.start(0);
-        });
-      });
-    },
-    async postTrack() {
-      let self = this;
-      self.busy = true;
-      const uid = uuidv4();
-      const layerPath = ref(storage, 'layers/'+uid);
-      const trackPath = ref(storage, 'tracks/'+uid);
-      const metadata = {
-        customMetadata: {
-          'name': self.newTrackName,
-          'user': self.user.uid,
-          'base': self.baseTrackID
-        },
-        contentType: 'audio/wav',
-      }; 
-      await uploadBytes(layerPath, self.layer, metadata);
-      await uploadBytes(trackPath, self.newTrack, metadata);
-      self.newTrackName = "";
-      self.busy = false;
-      self.clearBase();
-    },
-    async filterTracks() {
-      this.busy = true;
-      this.tracks = {};
-      let baseList = Object.keys(tracks).map((id) => tracks[id].base);
-      for(const id in tracks) {
-        if((this.layerCount > 0) && baseList.includes(id)) continue;
-        this.tracks[id] = tracks[id];
-      }
-      await this.refreshPlayer(this.layer);
-      this.busy = false;
-    },
-    async toggleTrack(forward=true) {
-      await this.filterTracks();
-      this.busy = true;
-      if(forward) { this.trackIdx++; }
-      else { 
-        if(!this.trackIdx) this.trackIdx = Object.keys(this.tracks).length;
-        this.trackIdx--;
-      }
-      this.trackIdx = this.trackIdx % Object.keys(this.tracks).length;
-      await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
-      this.busy = false;
-    },
-    async refreshPlayer(layer) {
-      if(this.busy) return;
-      this.busy = true;
-      this.layer = layer;
-      this.baseTrackExists = Object.keys(this.tracks).includes(this.baseTrackID);
-      if(this.baseTrackExists) {
-        let baseTrack = await fetch(await getDownloadURL(
-          ref(storage, 'tracks/'+this.baseTrackID)
-        ));
-        this.newTrack = this.layer ? await this.mixLayers([
-          await baseTrack.arrayBuffer(), 
-          await this.layer.arrayBuffer()
-        ]) : await baseTrack.blob();
-      } else { 
-        this.newTrack = this.layer;
-      }
-      if(this.newTrack) {
-        this.trackURL = URL.createObjectURL(this.newTrack);
-        this.loadPlayer()
-      } else {
-        await this.getTrack(Object.keys(this.tracks)[this.trackIdx]);
-      }
-      this.busy = false;
     }
   }
 });
