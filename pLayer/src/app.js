@@ -72,12 +72,15 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
+            <p>
+              <b>{{trackID}}</b>
+            </p>
             <p class="m-0">
-              <b-button class="p-1" variant="info"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info"><b-icon icon="plus-circle"></b-icon></b-button>
               <b-button class="p-1" variant="danger"><b-icon icon="dash-circle"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
-              <b-button class="p-1" variant="info"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col></b-row>
           <b-collapse v-model="showSettings" class="mt-2">
@@ -132,7 +135,9 @@ let app = new Vue({
       showSettings: false,
       layer: null,
       newTrackName: "",
-      baseID: ""
+      baseID: "",
+      trackID: "",
+      trackIdx: 0,
     }
   },
   async created() {
@@ -247,6 +252,17 @@ let app = new Vue({
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername(0);
       }
+    },
+    toggleTrack(forward) {
+      this.busy = true;
+      if(forward) { this.trackIdx++; }
+      else { 
+        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
+        this.trackIdx--;
+      }
+      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
+      this.trackID = Object.keys(tracks)[this.trackIdx]
+      this.busy = false;
     },
     async post() {
       let self = this;
