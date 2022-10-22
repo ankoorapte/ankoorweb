@@ -128,6 +128,7 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       layer: null,
+      newTrackName: "",
       baseID: ""
     }
   },
