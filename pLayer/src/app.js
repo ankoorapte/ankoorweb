@@ -111,6 +111,9 @@ let app = new Vue({
             class="m-2 w-75"
             :disabled="busy"
           ></b-form-file>
+          <b-input-group append="name" class="m-2 w-75">
+            <b-form-input v-model="newTrackName"></b-form-input>
+          </b-input-group>
           <b-button class="m-2" variant="info" @click="post()">post</b-button>
         </b-col></b-row>
       </b-card>
@@ -138,7 +141,7 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        unsubscribe_tracks = onSnapshot(collection(db, "users"), (userDocs) => {
+        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
           });
@@ -149,6 +152,7 @@ let app = new Vue({
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
           });
+          console.log(tracks);
         });
       }
       self.busy = false;
@@ -259,6 +263,8 @@ let app = new Vue({
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
       self.newTrackName = "";
+      self.layer = null;
+      self.baseID = "";
       self.busy = false;
     }
   }
