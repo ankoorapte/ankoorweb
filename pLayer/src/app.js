@@ -76,7 +76,7 @@ let app = new Vue({
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p>
+            <p v-show="!busy">
               <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <div ref="pLayer"></div>
@@ -293,6 +293,7 @@ let app = new Vue({
       this.paused = !this.paused;
       var layers = this.$refs.pLayer.childNodes;
       layers.forEach(function(layer){
+        console.log(layer);
         layer.paused = this.paused;
       });
     },
