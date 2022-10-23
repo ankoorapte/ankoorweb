@@ -75,7 +75,7 @@ let app = new Vue({
             <p>
               <b>{{trackID}}</b>
             </p>
-            <audio ref="pLayer" controls=False controlsList="noplaybackrate">
+            <audio ref="pLayer" controlsList="noplaybackrate">
               <source type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
