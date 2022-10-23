@@ -167,6 +167,7 @@ let app = new Vue({
         self.mixedAudio = self.audioContext.createMediaStreamDestination();
         self.merger.connect(self.mixedAudio);
         self.merger.connect(self.audioContext.destination);
+
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
@@ -309,32 +310,20 @@ let app = new Vue({
       this.artistNames = [];
       this.trackName = "";
       this.layers = [];
-      let audioBuffers = [];
 
       for(const layerID of tracks[this.trackID].layers) {
-        this.artistNames.push(users[layers[layerID]['user']]['displayName']);
-        audioBuffers.push(await (await fetch(await getDownloadURL(
-          ref(storage, layerID)
-        ))).arrayBuffer());
-      }
-
-      for(const idx in audioBuffers) {
-        let bufferSource = await this.audioContext.decodeAudioData(audioBuffers[idx]);
+        let layer = await this.audioContext.decodeAudioData(await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer());
         let source = this.audioContext.createBufferSource();
-        source.buffer = bufferSource;
+        source.buffer = layer;
         source.connect(this.merger, 0, 0);
         source.connect(this.merger, 0, 1);
         this.layers.push(source);
+        this.artistNames.push(users[layers[layerID]['user']]['displayName']);
       }
-      
+
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
-    },
-    async getLayers(audioBuffers) {
-      let res = [];
-      
-      return res;
     },
     async post() {
       let self = this;
