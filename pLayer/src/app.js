@@ -75,7 +75,7 @@ let app = new Vue({
             <p>
               <b>{{trackID}}</b>
             </p>
-            <audio ref="pLayer" controlsList="noplaybackrate">
+            <audio ref="pLayer">
               <source type="audio/wav">
               Your browser does not support the <code>audio</code> element.
             </audio>
@@ -118,10 +118,10 @@ let app = new Vue({
             class="m-2 w-75"
             :disabled="busy"
           ></b-form-file>
-          <b-input-group append="name" class="m-2 w-75">
+          <b-input-group append="name" class="w-75">
             <b-form-input v-model="newTrackName"></b-form-input>
           </b-input-group>
-          <b-button variant="info" @click="post()">post</b-button>
+          <b-button class="m-2" variant="info" @click="post()">post</b-button>
         </b-col></b-row>
       </b-card>
     </b-collapse>
