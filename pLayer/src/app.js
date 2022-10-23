@@ -263,7 +263,7 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
-    toggleTrack(forward) {
+    async toggleTrack(forward) {
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
