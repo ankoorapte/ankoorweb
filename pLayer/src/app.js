@@ -344,7 +344,7 @@ let app = new Vue({
     async getLayers(audioBuffers) {
       console.log(audioBuffers);
       let audio = new AudioContext();
-      let merger = audio.createChannelMerger(2 );
+      let merger = audio.createChannelMerger(2);
       let mixedAudio = audio.createMediaStreamDestination();
       merger.connect(mixedAudio);
       merger.connect(audio.destination);
@@ -354,8 +354,7 @@ let app = new Vue({
         let bufferSource = await audio.decodeAudioData(audioBuffers[idx]);
         let source = audio.createBufferSource();
         source.buffer = bufferSource;
-        source.connect(merger, 0, 0);
-        source.connect(merger, 0, 1);
+        source.connect(mixedAudio);
         res.push(source);
       }
       return res;
