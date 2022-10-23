@@ -77,7 +77,7 @@ let app = new Vue({
         <template #header>
           <b-row><b-col align="center">
             <p>
-              <b>{{trackID}}</b>
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <div ref="pLayer"></div>
             <p class="m-0">
