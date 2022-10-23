@@ -325,7 +325,7 @@ let app = new Vue({
         source.connect(this.merger, 0, 0);
         source.connect(this.merger, 0, 1);
         this.layers.push(source);
-        this.artistNames.push(users[layers[layerID]['user']]['displayName']);
+        this.artistNames.push(users[layers[trackLayers[idx]]['user']]['displayName']);
       }
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
