@@ -151,7 +151,7 @@ let app = new Vue({
       trackID: "",
       trackIdx: 0,
       layering: false,
-      paused: false,
+      paused: true,
     }
   },
   async created() {
@@ -292,10 +292,11 @@ let app = new Vue({
     togglePlay() {
       this.paused = !this.paused;
       var layers = this.$refs.pLayer.childNodes;
-      layers.forEach(function(layer){
-        console.log(layer);
-        layer.paused = this.paused;
-      });
+      if(this.paused) {
+        layers.forEach((layer) => layer.pause());
+      } else {
+        layers.forEach((layer) => layer.play());
+      }
     },
     async getLayerURL(layerID) {
       let blob = await (await fetch(await getDownloadURL(
