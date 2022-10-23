@@ -308,6 +308,7 @@ let app = new Vue({
       let audioBuffers = [];
 
       for(const layerID of tracks[this.trackID].layers) {
+        console.log(layerID);
         this.artistNames.push(users[layers[layerID]['user']]['displayName']);
         let newBuffer = await (await fetch(await getDownloadURL(
           ref(storage, layerID)
@@ -315,7 +316,7 @@ let app = new Vue({
         console.log(newBuffer);
         audioBuffers.push(newBuffer);
       }
-
+      console.log(audioBuffers);
       this.layers = await this.getLayers(audioBuffers);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
