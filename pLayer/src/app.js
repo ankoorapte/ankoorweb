@@ -349,14 +349,18 @@ let app = new Vue({
 
       let audioSetup = async (buffer, index) => {
         let bufferSource = await audio.decodeAudioData(buffer);
+        console.log(channels);
         let channel = channels[index];
         let source = audio.createBufferSource();
         source.buffer = bufferSource;
         source.connect(splitter);
+        console.log(channel);
         splitter.connect(merger, channel[0], channel[1]);          
         return source;
       }
-      return await Promise.all(audioBuffers.map(audioSetup));
+      
+      let res = await Promise.all(audioBuffers.map(audioSetup));
+      return res;
     }
   }
 });
