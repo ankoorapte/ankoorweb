@@ -168,6 +168,8 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
             self.trackID = doc.id;
           });
+
+          self.getTrack().then(() => {});
           console.log(tracks);
         });
       }
@@ -302,7 +304,7 @@ let app = new Vue({
 
       for(const layerID of tracks[this.trackID].layers) {
         let layer = document.createElement('audio');
-        layer.src      = await getTrackURL(layerID);
+        layer.src      = await this.getLayerURL(layerID);
         layer.type     = 'audio/wav';
         pLayer.appendChild(layer);
       }
