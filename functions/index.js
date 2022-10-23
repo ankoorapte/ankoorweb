@@ -24,7 +24,7 @@ exports.updateDB = async (file, context) => {
 
   if (base) {
     await tracks.doc(base).set({
-      layers: admin.firestore.FieldValue.arrayUnion(uid),
+      layers: admin.firestore.FieldValue.arrayUnion(base),
     }, {merge: true});
   } else {
     await tracks.doc(uid).set({
