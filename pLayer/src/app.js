@@ -317,21 +317,23 @@ let app = new Vue({
           ref(storage, layerID)
         ))).arrayBuffer());
       }
-      this.layers = await this.getLayers(audioBuffers);
-      this.artistNames = [...new Set(this.artistNames)];
-      this.trackName = tracks[this.trackID]['name'];
-      this.busy = false;
-    },
-    async getLayers(audioBuffers) {
-      let res = [];
+
       for(const idx in audioBuffers) {
         let bufferSource = await this.audioContext.decodeAudioData(audioBuffers[idx]);
         let source = this.audioContext.createBufferSource();
         source.buffer = bufferSource;
         source.connect(this.merger, 0, 0);
         source.connect(this.merger, 0, 1);
-        res.push(source);
+        this.layers.push(source);
       }
+      
+      this.artistNames = [...new Set(this.artistNames)];
+      this.trackName = tracks[this.trackID]['name'];
+      this.busy = false;
+    },
+    async getLayers(audioBuffers) {
+      let res = [];
+      
       return res;
     },
     async post() {
