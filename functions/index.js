@@ -22,9 +22,9 @@ exports.updateDB = async (file, context) => {
     timestamp: file.updated,
   });
 
-  if (base) {
+  if (base.length) {
     await tracks.doc(base).set({
-      layers: admin.firestore.FieldValue.arrayUnion(base),
+      layers: admin.firestore.FieldValue.arrayUnion(uid),
     }, {merge: true});
   } else {
     await tracks.doc(uid).set({
