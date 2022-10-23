@@ -154,7 +154,8 @@ let app = new Vue({
       paused: true,
       audioContext: new AudioContext(),
       merger: null,
-      mixedAudio: null
+      mixedAudio: null,
+      seeker: 0
     }
   },
   async created() {
@@ -300,9 +301,10 @@ let app = new Vue({
       }
       this.paused = !this.paused;
       if(this.paused) {
+        this.seeker = this.audioContext.currentTime;
         this.layers.forEach((node) => node.stop());
       } else {
-        this.layers.forEach((node) => node.start(0));
+        this.layers.forEach((node) => node.start(0, this.seeker));
       }
     },
     async layerAudioData(layerID) {
