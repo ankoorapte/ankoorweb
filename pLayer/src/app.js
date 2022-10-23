@@ -75,6 +75,10 @@ let app = new Vue({
             <p>
               <b>{{trackID}}</b>
             </p>
+            <audio ref="pLayer" controls=False controlsList="noplaybackrate">
+              <source :src="trackURL" type="audio/wav">
+              Your browser does not support the <code>audio</code> element.
+            </audio>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon></b-button>
