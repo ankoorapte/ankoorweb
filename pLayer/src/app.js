@@ -290,7 +290,7 @@ let app = new Vue({
     },
     async togglePlay() {
       if(!this.layers.length) {
-        await self.getTrack().then(() => {});
+        await this.getTrack();
       }
       this.paused = !this.paused;
       if(this.paused) {
