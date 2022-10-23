@@ -185,7 +185,6 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
             self.trackID = doc.id;
           });
-          console.log(tracks);
         });
       }
       self.busy = false;
@@ -329,8 +328,8 @@ let app = new Vue({
         let bufferSource = await this.audioContext.decodeAudioData(audioBuffers[idx]);
         let source = this.audioContext.createBufferSource();
         source.buffer = bufferSource;
-        source.connect(merger, 0, 0);
-        source.connect(merger, 0, 1);
+        source.connect(this.merger, 0, 0);
+        source.connect(this.merger, 0, 1);
         res.push(source);
       }
       return res;
