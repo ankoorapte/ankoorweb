@@ -288,6 +288,7 @@ let app = new Vue({
       this.busy = false;
     },
     togglePlay(play) {
+      this.playing = !this.playing;
       var layers = this.$refs.pLayer.childNodes;
       this.$refs
       layers.forEach(function(layer){
