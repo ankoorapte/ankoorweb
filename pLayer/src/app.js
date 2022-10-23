@@ -51,7 +51,7 @@ let unsubscribe_layers = () => {};
 let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
-
+let audio = new AudioContext();
 // APP
 let app = new Vue({
   el: '#app',
@@ -317,6 +317,23 @@ let app = new Vue({
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
     },
+    async getLayers(audioBuffers) {
+      let merger = audio.createChannelMerger(2);
+      let mixedAudio = audio.createMediaStreamDestination();
+      merger.connect(mixedAudio);
+      merger.connect(audio.destination);
+
+      let res = [];
+      for(const idx in audioBuffers) {
+        let bufferSource = await audio.decodeAudioData(audioBuffers[idx]);
+        let source = audio.createBufferSource();
+        source.buffer = bufferSource;
+        source.connect(merger, 0, 0);
+        source.connect(merger, 0, 1);
+        res.push(source);
+      }
+      return res;
+    },
     async post() {
       let self = this;
       self.busy = true;
@@ -335,24 +352,6 @@ let app = new Vue({
       self.layer = null;
       self.layering = false;
       self.busy = false;
-    },
-    async getLayers(audioBuffers) {
-      let audio = new AudioContext();
-      let merger = audio.createChannelMerger(2);
-      let mixedAudio = audio.createMediaStreamDestination();
-      merger.connect(mixedAudio);
-      merger.connect(audio.destination);
-
-      let res = [];
-      for(const idx in audioBuffers) {
-        let bufferSource = await audio.decodeAudioData(audioBuffers[idx]);
-        let source = audio.createBufferSource();
-        source.buffer = bufferSource;
-        source.connect(merger, 0, 0);
-        source.connect(merger, 0, 1);
-        res.push(source);
-      }
-      return res;
     }
   }
 });
