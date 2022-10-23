@@ -309,9 +309,11 @@ let app = new Vue({
 
       for(const layerID of tracks[this.trackID].layers) {
         this.artistNames.push(users[layers[layerID]['user']]['displayName']);
-        audioBuffers.push(await (await fetch(await getDownloadURL(
+        let newBuffer = await (await fetch(await getDownloadURL(
           ref(storage, layerID)
-        ))).arrayBuffer());
+        ))).arrayBuffer();
+        console.log(newBuffer);
+        audioBuffers.push(newBuffer);
       }
 
       this.layers = await this.getLayers(audioBuffers);
