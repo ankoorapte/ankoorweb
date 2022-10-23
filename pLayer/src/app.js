@@ -344,25 +344,19 @@ let app = new Vue({
     async getLayers(audioBuffers) {
       console.log(audioBuffers);
       let audio = new AudioContext();
-      let merger = audio.createChannelMerger(2);
-      let splitter = audio.createChannelSplitter(2);
+      let merger = audio.createChannelMerger(audioBuffers.length);
       let mixedAudio = audio.createMediaStreamDestination();
       merger.connect(mixedAudio);
       merger.connect(audio.destination);
 
-      let audioSetup = async (buffer, index) => {
+      let res = [];
+      for(const idx in audioBuffers) {
         let bufferSource = await audio.decodeAudioData(buffer);
-        console.log(channels);
-        let channel = channels[index];
         let source = audio.createBufferSource();
         source.buffer = bufferSource;
-        source.connect(splitter);
-        console.log(channel);
-        splitter.connect(merger, channel[0], channel[1]);          
-        return source;
+        source.connect(merger, 0, idx);
+        res.push(source);
       }
-      
-      let res = await Promise.all(audioBuffers.map(audioSetup));
       return res;
     }
   }
