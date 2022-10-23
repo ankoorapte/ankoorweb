@@ -51,6 +51,7 @@ let unsubscribe_layers = () => {};
 let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
+let channels = [[0, 1],[1, 0]];
 
 // APP
 let app = new Vue({
@@ -339,7 +340,6 @@ let app = new Vue({
     },
     async getLayers(audioBuffers) {
       console.log(audioBuffers);
-      let channels = [[0, 1],[1, 0]];
       let audio = new AudioContext();
       let merger = audio.createChannelMerger(2);
       let splitter = audio.createChannelSplitter(2);
