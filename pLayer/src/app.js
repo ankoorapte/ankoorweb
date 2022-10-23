@@ -80,11 +80,11 @@ let app = new Vue({
             <div id="pLayer"></div>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(0)"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(1)"><b-icon icon="play-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="playing"><b-icon icon="pause-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="!playing"><b-icon icon="play-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
-            <p class="m-0">
+            <p class="m-0 mt-3">
               <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon>layer</b-button>
               <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon>layering</b-button>
             </p>
@@ -147,6 +147,7 @@ let app = new Vue({
       trackID: "",
       trackIdx: 0,
       layering: false,
+      playing: false,
     }
   },
   async created() {
