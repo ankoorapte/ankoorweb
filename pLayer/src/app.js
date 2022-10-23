@@ -82,8 +82,8 @@ let app = new Vue({
             <div ref="pLayer"></div>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="playing"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="!playing"><b-icon icon="play-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
             <p class="m-0 mt-3">
@@ -149,7 +149,7 @@ let app = new Vue({
       trackID: "",
       trackIdx: 0,
       layering: false,
-      playing: false,
+      paused: false,
     }
   },
   async created() {
@@ -287,15 +287,11 @@ let app = new Vue({
       await this.getTrack();
       this.busy = false;
     },
-    togglePlay(play) {
-      this.playing = !this.playing;
+    togglePlay() {
+      this.paused = !this.paused;
       var layers = this.$refs.pLayer.childNodes;
       layers.forEach(function(layer){
-        if(play) {
-          layer.play();
-        } else {
-          layer.pause();
-        }
+        layer.paused = this.paused;
       });
     },
     async getLayerURL(layerID) {
