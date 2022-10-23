@@ -277,7 +277,8 @@ let app = new Vue({
       this.busy = false;
     },
     togglePlay(play) {
-      var layers = document.getElementById("pLayer").childNodes;
+      var layers = this.$refs.pLayer.childNodes;
+      this.$refs
       layers.forEach(function(layer){
         if(play) {
           layer.play();
@@ -294,7 +295,7 @@ let app = new Vue({
     },
     async getTrack() {
       this.busy = true;
-      const pLayer = document.getElementById("pLayer");
+      const pLayer = this.$refs.pLayer;
       while (pLayer.firstChild) {
         pLayer.removeChild(pLayer.lastChild);
       }
