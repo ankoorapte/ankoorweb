@@ -145,6 +145,7 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       layer: null,
+      layers: [],
       trackName: "",
       artistNames: [],
       newTrackName: "",
@@ -291,36 +292,25 @@ let app = new Vue({
     },
     togglePlay() {
       this.paused = !this.paused;
-      var layers = this.$refs.pLayer.childNodes;
       if(this.paused) {
-        layers.forEach((layer) => layer.pause());
+        this.layers.forEach((node) => node.stop());
       } else {
-        layers.forEach((layer) => layer.play());
+        this.layers.forEach((node) => node.start(0));
       }
-    },
-    async getLayerURL(layerID) {
-      let blob = await (await fetch(await getDownloadURL(
-        ref(storage, layerID)
-      ))).blob();
-      return window.URL.createObjectURL(blob);
     },
     async getTrack() {
       this.busy = true;
-      const pLayer = this.$refs.pLayer;
-      while (pLayer.firstChild) {
-        pLayer.removeChild(pLayer.lastChild);
-      }
-
       this.artistNames = [];
+      let audioBuffers = [];
 
       for(const layerID of tracks[this.trackID].layers) {
-        this.artistNames.push(users[layers[layerID]['user']]['displayName'])
-        let layer = document.createElement('audio');
-        layer.src      = await this.getLayerURL(layerID);
-        layer.type     = 'audio/wav';
-        pLayer.appendChild(layer);
+        this.artistNames.push(users[layers[layerID]['user']]['displayName']);
+        audioBuffers.push(await (await fetch(await getDownloadURL(
+          ref(storage, layerID)
+        ))).arrayBuffer());
       }
 
+      this.layers = await this.getLayers(audioBuffers);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
@@ -343,6 +333,26 @@ let app = new Vue({
       self.layer = null;
       self.layering = false;
       self.busy = false;
+    },
+    async getLayers(audioBuffers) {
+      let channels = [[0, 1],[1, 0]];
+      let audio = new AudioContext();
+      let merger = audio.createChannelMerger(2);
+      let splitter = audio.createChannelSplitter(2);
+      let mixedAudio = audio.createMediaStreamDestination();
+      merger.connect(mixedAudio);
+      merger.connect(audio.destination);
+
+      let audioSetup = async (buffer, index) => {
+        let bufferSource = await audio.decodeAudioData(buffer);
+        let channel = channels[index];
+        let source = audio.createBufferSource();
+        source.buffer = bufferSource;
+        source.connect(splitter);
+        splitter.connect(merger, channel[0], channel[1]);          
+        return source;
+      }
+      return Promise.all(audioBuffers.map(audioSetup));
     }
   }
 });
