@@ -355,6 +355,7 @@ let app = new Vue({
         let source = audio.createBufferSource();
         source.buffer = bufferSource;
         source.connect(merger, 0, 0);
+        source.connect(merger, 1, 1);
         res.push(source);
       }
       return res;
