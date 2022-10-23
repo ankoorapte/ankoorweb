@@ -77,7 +77,7 @@ let app = new Vue({
             <p>
               <b>{{trackID}}</b>
             </p>
-            <div id="pLayer"></div>
+            <div ref="pLayer"></div>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="playing"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -85,8 +85,8 @@ let app = new Vue({
               <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
             <p class="m-0 mt-3">
-              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon>layer</b-button>
-              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon>layering</b-button>
+              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
             </p>
           </b-col></b-row>
         </template>
