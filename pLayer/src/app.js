@@ -317,17 +317,16 @@ let app = new Vue({
       this.artistNames = [];
       this.trackName = "";
       this.layers = [];
-
       const trackLayers = tracks[this.trackID].layers;
       const layersData = await Promise.all(trackLayers.map((layerID) => this.layerAudioData(layerID)));
-      for(const layer of layersData) {
+      for(const idx in layersData) {
         let source = this.audioContext.createBufferSource();
-        source.buffer = layer;
+        source.buffer = layersData[idx];
         source.connect(this.merger, 0, 0);
         source.connect(this.merger, 0, 1);
         this.layers.push(source);
+        this.artistNames.push(users[layers[layerID]['user']]['displayName']);
       }
-      this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName'])
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
