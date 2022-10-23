@@ -321,6 +321,7 @@ let app = new Vue({
       let merger = this.audioContext.createChannelMerger(2);
       let mixedAudio = this.audioContext.createMediaStreamDestination();
       merger.connect(mixedAudio);
+      merger.connect(this.audioContext.destination);
 
       let res = [];
       for(const idx in audioBuffers) {
