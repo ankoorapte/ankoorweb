@@ -179,8 +179,6 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
             self.trackID = doc.id;
           });
-
-          self.getTrack().then(() => {});
           console.log(tracks);
         });
       }
@@ -290,7 +288,10 @@ let app = new Vue({
       await this.getTrack();
       this.busy = false;
     },
-    togglePlay() {
+    async togglePlay() {
+      if(!this.layers.length) {
+        await self.getTrack().then(() => {});
+      }
       this.paused = !this.paused;
       if(this.paused) {
         this.layers.forEach((node) => node.stop());
@@ -301,6 +302,8 @@ let app = new Vue({
     async getTrack() {
       this.busy = true;
       this.artistNames = [];
+      this.trackName = "";
+      this.layers = [];
       let audioBuffers = [];
 
       for(const layerID of tracks[this.trackID].layers) {
