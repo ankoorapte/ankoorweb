@@ -305,14 +305,22 @@ let app = new Vue({
         this.layers.forEach((node) => node.start(0));
       }
     },
+    async layerAudioData(layerID) {
+      return this.audioContext.decodeAudioData(
+        await (
+          await fetch(await getDownloadURL(ref(storage, layerID)))
+        ).arrayBuffer()
+      );
+    },
     async getTrack() {
       this.busy = true;
       this.artistNames = [];
       this.trackName = "";
       this.layers = [];
 
-      for(const layerID of tracks[this.trackID].layers) {
-        let layer = await this.audioContext.decodeAudioData(await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer());
+      const trackLayers = tracks[this.trackID].layers;
+      const layers = await Promise.all(trackLayers.map((uid) => this.layerAudioData(uid)));
+      for(const layer of layers) {
         let source = this.audioContext.createBufferSource();
         source.buffer = layer;
         source.connect(this.merger, 0, 0);
