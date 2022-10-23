@@ -51,7 +51,6 @@ let unsubscribe_layers = () => {};
 let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
-let audio = new AudioContext();
 // APP
 let app = new Vue({
   el: '#app',
@@ -153,6 +152,7 @@ let app = new Vue({
       trackIdx: 0,
       layering: false,
       paused: true,
+      audioContext: new AudioContext()
     }
   },
   async created() {
@@ -318,15 +318,14 @@ let app = new Vue({
       this.busy = false;
     },
     async getLayers(audioBuffers) {
-      let merger = audio.createChannelMerger(2);
-      let mixedAudio = audio.createMediaStreamDestination();
+      let merger = this.audioContext.createChannelMerger(2);
+      let mixedAudio = this.audioContext.createMediaStreamDestination();
       merger.connect(mixedAudio);
-      merger.connect(audio.destination);
 
       let res = [];
       for(const idx in audioBuffers) {
-        let bufferSource = await audio.decodeAudioData(audioBuffers[idx]);
-        let source = audio.createBufferSource();
+        let bufferSource = await this.audioContext.decodeAudioData(audioBuffers[idx]);
+        let source = this.audioContext.createBufferSource();
         source.buffer = bufferSource;
         source.connect(merger, 0, 0);
         source.connect(merger, 0, 1);
