@@ -44,8 +44,10 @@ const auth = getAuth(firebaseApp);
 
 // CACHES
 let tracks = {};
+let layers = {};
 let users = {};
 let unsubscribe_tracks = () => {};
+let unsubscribe_layers = () => {};
 let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
@@ -156,6 +158,12 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
+        unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
+          layerDocs.forEach((doc) => {
+            layers[doc.id] = doc.data();
+          });
+        });
+
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
@@ -237,6 +245,7 @@ let app = new Vue({
     },
     async signOut() {
       unsubscribe_tracks();
+      unsubscribe_layers();
       unsubscribe_users();
       this.signedIn = false;
       this.user = null;
@@ -302,15 +311,18 @@ let app = new Vue({
         pLayer.removeChild(pLayer.lastChild);
       }
 
+      this.artistNames = [];
+
       for(const layerID of tracks[this.trackID].layers) {
+        this.artistNames.push(users[layers[layerID]['user']]['displayName'])
         let layer = document.createElement('audio');
         layer.src      = await this.getLayerURL(layerID);
         layer.type     = 'audio/wav';
         pLayer.appendChild(layer);
       }
-      
+
+      this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
-      this.artistNames = [users[tracks[this.trackID]['user']]['displayName']]; // todo needs all names
       this.busy = false;
     },
     async post() {
