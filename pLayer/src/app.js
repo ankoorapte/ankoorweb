@@ -351,7 +351,7 @@ let app = new Vue({
 
       let res = [];
       for(const idx in audioBuffers) {
-        let bufferSource = await audio.decodeAudioData(buffer);
+        let bufferSource = await audio.decodeAudioData(audioBuffers[idx]);
         let source = audio.createBufferSource();
         source.buffer = bufferSource;
         source.connect(merger, 0, idx);
