@@ -145,6 +145,8 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       layer: null,
+      trackName: "",
+      artistNames: [],
       newTrackName: "",
       trackID: "",
       trackIdx: 0,
