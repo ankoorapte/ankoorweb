@@ -338,6 +338,7 @@ let app = new Vue({
       self.busy = false;
     },
     async getLayers(audioBuffers) {
+      console.log(audioBuffers);
       let channels = [[0, 1],[1, 0]];
       let audio = new AudioContext();
       let merger = audio.createChannelMerger(2);
@@ -355,7 +356,7 @@ let app = new Vue({
         splitter.connect(merger, channel[0], channel[1]);          
         return source;
       }
-      return Promise.all(audioBuffers.map(audioSetup));
+      return await Promise.all(audioBuffers.map(audioSetup));
     }
   }
 });
