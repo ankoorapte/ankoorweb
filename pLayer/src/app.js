@@ -48,6 +48,8 @@ let users = {};
 let unsubscribe_tracks = () => {};
 let unsubscribe_users = () => {};
 
+NodeList.prototype.forEach = Array.prototype.forEach;
+
 // APP
 let app = new Vue({
   el: '#app',
@@ -75,18 +77,35 @@ let app = new Vue({
             <p>
               <b>{{trackID}}</b>
             </p>
-            <audio ref="pLayer">
-              <source type="audio/wav">
-              Your browser does not support the <code>audio</code> element.
-            </audio>
+            <div id="pLayer"></div>
             <p class="m-0">
               <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon></b-button>
-              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(0)"><b-icon icon="pause-fill"></b-icon></b-button>
+              <b-button class="p-1" variant="info" @click="togglePlay(1)"><b-icon icon="play-fill"></b-icon></b-button>
               <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
+            <p class="m-0">
+              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon>layer</b-button>
+              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon>layering</b-button>
+            </p>
           </b-col></b-row>
+        </template>
+        <b-row><b-col align="center">
+          <b-form-file
+            placeholder=""
+            accept="audio/wav"
+            v-model="layer"
+            browse-text="upload"
+            class="m-2 w-75"
+            :disabled="busy"
+          ></b-form-file>
+          <b-input-group append="name" class="w-75">
+            <b-form-input v-model="newTrackName"></b-form-input>
+          </b-input-group>
+          <b-button class="m-2" variant="info" @click="post()">post</b-button>
+          <br>
+          <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+          <br>
           <b-collapse v-model="showSettings" class="mt-2">
             <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
             <b-row><b-col align="center">
@@ -108,20 +127,6 @@ let app = new Vue({
             </b-col></b-row>
             <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           </b-collapse>
-        </template>
-        <b-row><b-col align="center">
-          <b-form-file
-            placeholder=""
-            accept="audio/wav"
-            v-model="layer"
-            browse-text="upload"
-            class="m-2 w-75"
-            :disabled="busy"
-          ></b-form-file>
-          <b-input-group append="name" class="w-75">
-            <b-form-input v-model="newTrackName"></b-form-input>
-          </b-input-group>
-          <b-button class="m-2" variant="info" @click="post()">post</b-button>
         </b-col></b-row>
       </b-card>
     </b-collapse>
@@ -266,7 +271,42 @@ let app = new Vue({
         this.trackIdx--;
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
-      this.trackID = Object.keys(tracks)[this.trackIdx]
+      this.trackID = Object.keys(tracks)[this.trackIdx];
+      await this.getTrack();
+      this.busy = false;
+    },
+    togglePlay(play) {
+      var layers = document.getElementById("pLayer").childNodes;
+      layers.forEach(function(layer){
+        if(play) {
+          layer.play();
+        } else {
+          layer.pause();
+        }
+      });
+    },
+    async getLayerURL(layerID) {
+      let blob = await (await fetch(await getDownloadURL(
+        ref(storage, layerID)
+      ))).blob();
+      return window.URL.createObjectURL(blob);
+    },
+    async getTrack() {
+      this.busy = true;
+      const pLayer = document.getElementById("pLayer");
+      while (pLayer.firstChild) {
+        pLayer.removeChild(pLayer.lastChild);
+      }
+
+      for(const layerID of tracks[this.trackID].layers) {
+        let layer = document.createElement('audio');
+        layer.src      = await getTrackURL(layerID);
+        layer.type     = 'audio/wav';
+        pLayer.appendChild(layer);
+      }
+      
+      this.trackName = tracks[this.trackID]['name'];
+      this.artistNames = [users[tracks[this.trackID]['user']]['displayName']]; // todo needs all names
       this.busy = false;
     },
     async post() {
