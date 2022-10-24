@@ -304,6 +304,7 @@ let app = new Vue({
           source.buffer = layerBuffer;
           source.connect(this.merger, 0, 0);
           source.connect(this.merger, 0, 1);
+          console.log(this.seeker);
           source.start(0, this.seeker);
           this.layers.push(source);
           source.onended = () => {
@@ -312,6 +313,7 @@ let app = new Vue({
         }
       } else {
         this.seeker = this.audioContext.currentTime;
+        console.log(this.seeker);
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
