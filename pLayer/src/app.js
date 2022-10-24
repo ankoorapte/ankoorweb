@@ -287,6 +287,7 @@ let app = new Vue({
     },
     async toggleTrack(forward) {
       this.busy = true;
+      await this.togglePlay();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
