@@ -187,6 +187,7 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
             self.trackID = doc.id;
           });
+          self.getTrack();
         });
       }
       self.busy = false;
@@ -296,10 +297,6 @@ let app = new Vue({
       this.busy = false;
     },
     async togglePlay() {
-      if(!this.layers.length) {
-        await this.getTrack();
-      }
-      
       if(this.paused) {
         this.layers.forEach((node) => node.start(0, this.seeker));
       } else {
