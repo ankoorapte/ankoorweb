@@ -299,13 +299,15 @@ let app = new Vue({
       if(!this.layers.length) {
         await this.getTrack();
       }
-      this.paused = !this.paused;
+      
       if(this.paused) {
-        this.seeker = this.audioContext.currentTime;
-        this.layers.forEach((node) => node.stop());
-      } else {
         this.layers.forEach((node) => node.start(0, this.seeker));
+      } else {
+        this.seeker = this.audioContext.currentTime;
+        console.log("stop");
+        this.layers.forEach((node) => node.stop());
       }
+      this.paused = !this.paused;
     },
     async layerAudioData(layerID) {
       return this.audioContext.decodeAudioData(
