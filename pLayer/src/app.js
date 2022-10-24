@@ -307,9 +307,6 @@ let app = new Vue({
           console.log(this.seeker);
           source.start(0, this.seeker);
           this.layers.push(source);
-          source.onended = () => {
-            this.seeker = 0;
-          }
         }
       } else {
         this.seeker = this.audioContext.currentTime;
