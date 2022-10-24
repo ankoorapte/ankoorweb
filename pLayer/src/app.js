@@ -83,14 +83,15 @@ let app = new Vue({
         <p v-show="!busy">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
-        <p class="m-1">
-          <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-          <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-        </p>
       </b-col></b-row>
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
+            <p class="m-1">
+              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              {{layering ? "" : " or upload a new track"}}
+            </p>
             <b-form-file
               placeholder=""
               accept="audio/wav"
@@ -304,13 +305,11 @@ let app = new Vue({
           source.buffer = layerBuffer;
           source.connect(this.merger, 0, 0);
           source.connect(this.merger, 0, 1);
-          console.log(this.seeker);
           source.start(0, this.seeker);
           this.layers.push(source);
         }
       } else {
         this.seeker = this.audioContext.currentTime;
-        console.log(this.seeker);
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
