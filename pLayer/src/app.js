@@ -72,63 +72,62 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
+      <b-row><b-col align="center">
+        <div ref="pLayer"></div>
+        <p class="m-0">
+          <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        </p>
+        <p v-show="!busy">
+          <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+        </p>
+        <p class="m-0 mt-3">
+          <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+          <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+        </p>
+      </b-col></b-row>
       <b-card bg-variant="light" no-body class="m-3">
         <template #header>
           <b-row><b-col align="center">
-            <p v-show="!busy">
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-            </p>
-            <div ref="pLayer"></div>
-            <p class="m-0">
-              <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            </p>
-            <p class="m-0 mt-3">
-              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-            </p>
+            <b-form-file
+              placeholder=""
+              accept="audio/wav"
+              v-model="layer"
+              browse-text="upload"
+              class="m-2 w-75"
+              :disabled="busy"
+            ></b-form-file>
+            <b-input-group append="name" class="w-75">
+              <b-form-input v-model="newTrackName"></b-form-input>
+            </b-input-group>
+            <b-button class="m-2" variant="info" @click="post()">post</b-button>
+            <br>
+            <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
           </b-col></b-row>
         </template>
-        <b-row><b-col align="center">
-          <b-form-file
-            placeholder=""
-            accept="audio/wav"
-            v-model="layer"
-            browse-text="upload"
-            class="m-2 w-75"
-            :disabled="busy"
-          ></b-form-file>
-          <b-input-group append="name" class="w-75">
-            <b-form-input v-model="newTrackName"></b-form-input>
-          </b-input-group>
-          <b-button class="m-2" variant="info" @click="post()">post</b-button>
-          <br>
-          <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
-          <br>
-          <b-collapse v-model="showSettings" class="mt-2">
-            <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-            <b-row><b-col align="center">
-              <b-input-group class="m-2 w-75">
-                <b-form-input 
-                  :invalid-feedback="invalidUsername" 
-                  class="w-75" 
-                  placeholder="new username" 
-                  @keydown.native="usernameKeydownHandler" 
-                  v-model="newUsername" 
-                  :state="stateUsername" 
-                  trim
-                >
-                </b-form-input>
-                <b-input-group-append>
-                  <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
-                </b-input-group-append>
-              </b-input-group>
-            </b-col></b-row>
-            <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-          </b-collapse>
-        </b-col></b-row>
+        <b-collapse v-model="showSettings" class="mt-2">
+          <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
+          <b-row><b-col align="center">
+            <b-input-group class="m-2 w-75">
+              <b-form-input 
+                :invalid-feedback="invalidUsername" 
+                class="w-75" 
+                placeholder="new username" 
+                @keydown.native="usernameKeydownHandler" 
+                v-model="newUsername" 
+                :state="stateUsername" 
+                trim
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-col></b-row>
+          <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+        </b-collapse>
       </b-card>
     </b-collapse>
   </b-container>
