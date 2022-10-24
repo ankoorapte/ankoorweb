@@ -333,6 +333,7 @@ let app = new Vue({
     },
     async post() {
       let self = this;
+      await self.pause();
       self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, uid);
