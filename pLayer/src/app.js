@@ -74,7 +74,7 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
-        <p class="m-0">
+        <p class="m-2">
           <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
@@ -83,7 +83,7 @@ let app = new Vue({
         <p v-show="!busy">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
-        <p class="m-0 mt-3">
+        <p class="m-1">
           <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
           <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
         </p>
@@ -293,6 +293,7 @@ let app = new Vue({
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       this.trackID = Object.keys(tracks)[this.trackIdx];
+      this.seeker = 0;
       await this.getTrack();
       this.busy = false;
     },
