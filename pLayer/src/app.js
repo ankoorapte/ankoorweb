@@ -287,7 +287,7 @@ let app = new Vue({
     },
     async toggleTrack(forward) {
       this.busy = true;
-      await this.togglePlay();
+      await this.pause();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -349,6 +349,12 @@ let app = new Vue({
       self.layer = null;
       self.layering = false;
       self.busy = false;
+    },
+    async play() {
+      if(this.paused) await this.togglePlay();
+    },
+    async pause() {
+      if(!this.paused) await this.togglePlay();
     }
   }
 });
