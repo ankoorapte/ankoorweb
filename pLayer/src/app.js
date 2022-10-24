@@ -145,6 +145,7 @@ let app = new Vue({
       showSettings: false,
       layer: null,
       layers: [],
+      layerBuffers: [],
       trackName: "",
       artistNames: [],
       newTrackName: "",
@@ -298,15 +299,24 @@ let app = new Vue({
     },
     async togglePlay() {
       if(this.paused) {
-        this.layers.forEach((node) => node.start(0, this.seeker));
+        for(const layerBuffer of this.layerBuffers) {
+          let source = this.audioContext.createBufferSource();
+          source.buffer = layerBuffer;
+          source.connect(this.merger, 0, 0);
+          source.connect(this.merger, 0, 1);
+          source.start(0, this.seeker);
+          this.layers.push(source);
+          source.onended = () => {
+            this.seeker = 0;
+          }
+        }
       } else {
         this.seeker = this.audioContext.currentTime;
-        console.log("stop");
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
     },
-    async layerAudioData(layerID) {
+    async layerBuffer(layerID) {
       return this.audioContext.decodeAudioData(
         await (
           await fetch(await getDownloadURL(ref(storage, layerID)))
@@ -315,19 +325,9 @@ let app = new Vue({
     },
     async getTrack() {
       this.busy = true;
-      this.artistNames = [];
-      this.trackName = "";
-      this.layers = [];
       const trackLayers = tracks[this.trackID].layers;
-      const layersData = await Promise.all(trackLayers.map((layerID) => this.layerAudioData(layerID)));
-      for(const idx in layersData) {
-        let source = this.audioContext.createBufferSource();
-        source.buffer = layersData[idx];
-        source.connect(this.merger, 0, 0);
-        source.connect(this.merger, 0, 1);
-        this.layers.push(source);
-        this.artistNames.push(users[layers[trackLayers[idx]]['user']]['displayName']);
-      }
+      this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
+      this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
