@@ -315,7 +315,7 @@ let app = new Vue({
           this.layers.push(source);
         }
       } else {
-        this.seeker = this.audioContext.currentTime;
+        this.seeker += this.audioContext.currentTime;
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
