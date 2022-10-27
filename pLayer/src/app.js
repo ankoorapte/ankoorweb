@@ -186,9 +186,9 @@ let app = new Vue({
           tracks = {}
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
-            
           });
           self.trackID = Object.keys(tracks)[0];
+          console.log(self.trackID);
           self.getTrack();
         });
       }
