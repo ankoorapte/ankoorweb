@@ -63,8 +63,7 @@ let app = new Vue({
         <b-icon v-show="!busy" icon="music-note-list"></b-icon>
       </b-col>
       <b-col align="center">
-        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
-        <b>pLayer</b>
+        <b><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>pLayer</b>
       </b-col>
       <b-col align="right">
         <b-button variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
