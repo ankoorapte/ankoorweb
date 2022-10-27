@@ -57,14 +57,14 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 class="m-2" align="center" style="font-family:Georgia, serif;">
+    <h1 align="center" style="font-family:Georgia, serif;">
       <b-icon v-show="!busy" icon="music-note-list"></b-icon>
       <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
       <b>pLayer</b>
-      <b-button class="m-1" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+      <b-button variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
     </h1>
     <b-row><b-col align="center">
-      <b-card v-if="!signedIn" align="center" class="w-50">
+      <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
           :invalid-feedback="invalidCredentials"
           :state="stateCredentials"
@@ -80,7 +80,7 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
-          <b-input-group class="m-2 w-75">
+          <b-input-group class="w-75">
             <b-form-input 
               :invalid-feedback="invalidUsername" 
               class="w-75" 
@@ -101,20 +101,20 @@ let app = new Vue({
       <hr>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
-        <p class="m-2">
-          <b-button :disabled="busy" class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button :disabled="busy" class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        <p>
+          <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <p v-show="!busy">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
       </b-col></b-row>
-      <b-card bg-variant="light" no-body class="m-3">
+      <b-card bg-variant="light" no-body>
         <template #header>
           <b-row><b-col align="center">
-            <p class="m-1">
+            <p>
               <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
               <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
               <b-button :disabled="busy" variant="info" @click="post()">post</b-button>
@@ -126,7 +126,7 @@ let app = new Vue({
           accept="audio/wav"
           v-model="layer"
           browse-text="upload"
-          class="m-2 w-75"
+          class="w-75"
           :disabled="busy"
         ></b-form-file>
         <b-input-group append="name" class="w-75">
