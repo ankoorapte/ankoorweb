@@ -182,6 +182,7 @@ let app = new Vue({
           });
         });
         
+        console.log("wtf");
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {}
           trackDocs.forEach((doc) => {
