@@ -90,8 +90,7 @@ let app = new Vue({
         <b-row><b-col align="center">
           <b-input-group class="w-75">
             <b-form-input 
-              :invalid-feedback="invalidUsername" 
-              class="w-75" 
+              :invalid-feedback="invalidUsername"
               placeholder="new username" 
               @keydown.native="usernameKeydownHandler" 
               v-model="newUsername" 
@@ -104,7 +103,7 @@ let app = new Vue({
             </b-input-group-append>
           </b-input-group>
         </b-col></b-row>
-        <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+        <p align="center" class="mt-1"><b-button variant="danger" @click="signOut">sign out</b-button></p>
       </b-collapse>
       <hr>
       <b-row><b-col align="center">
@@ -330,7 +329,6 @@ let app = new Vue({
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
-      console.log(this.seeker);
     },
     async layerBuffer(layerID) {
       return this.audioContext.decodeAudioData(
