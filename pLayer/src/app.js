@@ -88,7 +88,7 @@ let app = new Vue({
         <template #header>
           <b-row><b-col align="center">
             <p class="m-1">
-              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
+              <b-button class="p-1 pt-0" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
               <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
               {{layering ? "" : " or upload a new track"}}
             </p>
@@ -178,7 +178,6 @@ let app = new Vue({
           });
         });
         
-        console.log("wtf");
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {}
           trackDocs.forEach((doc) => {
