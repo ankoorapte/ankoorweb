@@ -57,7 +57,12 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 class="m-2" align="center" style="font-family:Georgia, serif;"><b-icon v-show="!busy" icon="music-note-list"></b-icon><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> <b>pLayer</b></h1>
+    <h1 class="m-2" align="center" style="font-family:Georgia, serif;">
+      <b-icon v-show="!busy" icon="music-note-list"></b-icon>
+      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
+      <b>pLayer</b> 
+      <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+    </h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
         <b-form-group
@@ -72,6 +77,27 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
+      <b-collapse v-model="showSettings" class="mt-2">
+        <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
+        <b-row><b-col align="center">
+          <b-input-group class="m-2 w-75">
+            <b-form-input 
+              :invalid-feedback="invalidUsername" 
+              class="w-75" 
+              placeholder="new username" 
+              @keydown.native="usernameKeydownHandler" 
+              v-model="newUsername" 
+              :state="stateUsername" 
+              trim
+            >
+            </b-form-input>
+            <b-input-group-append>
+              <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-col></b-row>
+        <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+      </b-collapse>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
         <p class="m-2">
@@ -105,30 +131,8 @@ let app = new Vue({
             </b-input-group>
             <b-button class="m-2" variant="info" @click="post()">post</b-button>
             <br>
-            <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
           </b-col></b-row>
         </template>
-        <b-collapse v-model="showSettings" class="mt-2">
-          <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-          <b-row><b-col align="center">
-            <b-input-group class="m-2 w-75">
-              <b-form-input 
-                :invalid-feedback="invalidUsername" 
-                class="w-75" 
-                placeholder="new username" 
-                @keydown.native="usernameKeydownHandler" 
-                v-model="newUsername" 
-                :state="stateUsername" 
-                trim
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col></b-row>
-          <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-        </b-collapse>
       </b-card>
     </b-collapse>
   </b-container>
