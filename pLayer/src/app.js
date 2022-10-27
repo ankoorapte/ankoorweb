@@ -102,10 +102,10 @@ let app = new Vue({
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
         <p class="m-2">
-          <b-button class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" class="p-1" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" class="p-1" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" class="p-1" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" class="p-1" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <p v-show="!busy">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
@@ -115,8 +115,8 @@ let app = new Vue({
         <template #header>
           <b-row><b-col align="center">
             <p class="m-1">
-              <b-button class="p-1 pt-0" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
-              <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              <b-button :disabled="busy" class="p-1 pt-0" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
+              <b-button :disabled="busy" class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
               {{layering ? "" : " or upload a new track"}}
             </p>
             <b-form-file
@@ -130,7 +130,7 @@ let app = new Vue({
             <b-input-group append="name" class="w-75">
               <b-form-input v-model="newTrackName"></b-form-input>
             </b-input-group>
-            <b-button class="m-2" variant="info" @click="post()">post</b-button>
+            <b-button :disabled="busy" class="m-2" variant="info" @click="post()">post</b-button>
             <br>
           </b-col></b-row>
         </template>
