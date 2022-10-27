@@ -57,11 +57,19 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 align="center" style="font-family:Georgia, serif;">
-      <b-icon v-show="!busy" icon="music-note-list"></b-icon>
-      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
-      <b>pLayer</b>
-      <b-button variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+    <h1 style="font-family:Georgia, serif;">
+    <b-row>
+      <b-col align="left">
+        <b-icon v-show="!busy" icon="music-note-list"></b-icon>
+      </b-col>
+      <b-col align="center">
+        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
+        <>pLayer</b>
+      </b-col>
+      <b-col align="right">
+        <b-button variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+      </b-col>
+    </b-row>
     </h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -116,7 +124,7 @@ let app = new Vue({
           <p align="center">
             <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
             <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-            <b-button :disabled="busy" variant="info" @click="post()">post</b-button>
+            <b-button :disabled="busy" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </p>
         </template>
         <b-row><b-col align="center">
