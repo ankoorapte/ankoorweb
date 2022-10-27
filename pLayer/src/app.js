@@ -88,7 +88,7 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
-          <b-input-group class="w-50">
+          <b-input-group>
             <b-form-input 
               :invalid-feedback="invalidUsername"
               placeholder="new username" 
@@ -100,7 +100,7 @@ let app = new Vue({
             >
             </b-form-input>
             <b-input-group-append>
-              <b-button variant="info" :disabled="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-col></b-row>
