@@ -292,7 +292,6 @@ let app = new Vue({
     async toggleTrack(forward) {
       this.busy = true;
       await this.pause();
-      this.resetAudioContext();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -301,10 +300,12 @@ let app = new Vue({
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       this.trackID = Object.keys(tracks)[this.trackIdx];
       await this.getTrack();
+      await this.play();
       this.busy = false;
     },
     async togglePlay() {
       if(this.paused) {
+        this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
           source.buffer = layerBuffer;
