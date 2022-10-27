@@ -88,7 +88,7 @@ let app = new Vue({
         <template #header>
           <b-row><b-col align="center">
             <p class="m-1">
-              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+              <b-button class="p-1" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
               <b-button class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
               {{layering ? "" : " or upload a new track"}}
             </p>
@@ -294,6 +294,8 @@ let app = new Vue({
         this.trackIdx--;
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
+      console.log(tracks);
+      console.log(this.trackIdx)
       this.trackID = Object.keys(tracks)[this.trackIdx];
       this.seeker = 0;
       await this.getTrack();
