@@ -60,8 +60,8 @@ let app = new Vue({
     <h1 class="m-2" align="center" style="font-family:Georgia, serif;">
       <b-icon v-show="!busy" icon="music-note-list"></b-icon>
       <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner> 
-      <b>pLayer</b> 
-      <b-button class="m-2" variant="info" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+      <b>pLayer</b>
+      <b-button class="m-2" variant="outline-info" @click="showSettings = !showSettings"><b-icon icon="wrench-fill"></b-icon></b-button>
     </h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-50">
@@ -98,6 +98,7 @@ let app = new Vue({
         </b-col></b-row>
         <p align="center"><b-button variant="danger" @click="signOut">sign out</b-button></p>
       </b-collapse>
+      <hr>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
         <p class="m-2">
