@@ -282,7 +282,6 @@ let app = new Vue({
       }
     },
     resetAudioContext() {
-      this.seeker = 0;
       this.audioContext = new AudioContext();
       this.merger = this.audioContext.createChannelMerger(2);
       this.mixedAudio = this.audioContext.createMediaStreamDestination();
@@ -299,6 +298,7 @@ let app = new Vue({
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       this.trackID = Object.keys(tracks)[this.trackIdx];
+      this.seeker = 0;
       await this.getTrack();
       await this.play();
       this.busy = false;
