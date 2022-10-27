@@ -88,11 +88,10 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
-          <b-input-group>
+          <b-input-group class="w-50">
             <b-form-input 
               :invalid-feedback="invalidUsername"
-              placeholder="new username" 
-              class="w-50"
+              placeholder="new username"
               @keydown.native="usernameKeydownHandler" 
               v-model="newUsername" 
               :state="stateUsername" 
@@ -104,7 +103,7 @@ let app = new Vue({
             </b-input-group-append>
           </b-input-group>
         </b-col></b-row>
-        <p align="center" class="mt-1"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+        <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
       </b-collapse>
       <hr>
       <b-row><b-col align="center">
