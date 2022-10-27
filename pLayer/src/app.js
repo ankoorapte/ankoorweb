@@ -153,7 +153,7 @@ let app = new Vue({
       trackIdx: 0,
       layering: false,
       paused: true,
-      audioContext: new AudioContext(),
+      audioContext: null,
       merger: null,
       mixedAudio: null,
       seeker: 0
@@ -165,11 +165,7 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        self.merger = self.audioContext.createChannelMerger(2);
-        self.mixedAudio = self.audioContext.createMediaStreamDestination();
-        self.merger.connect(self.mixedAudio);
-        self.merger.connect(self.audioContext.destination);
-
+        self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
@@ -286,6 +282,13 @@ let app = new Vue({
         this.changeUsername(0);
       }
     },
+    resetAudioContext() {
+      this.audioContext = new AudioContext();
+      this.merger = this.audioContext.createChannelMerger(2);
+      this.mixedAudio = this.audioContext.createMediaStreamDestination();
+      this.merger.connect(this.mixedAudio);
+      this.merger.connect(this.audioContext.destination);
+    },
     async toggleTrack(forward) {
       this.busy = true;
       await this.pause();
@@ -302,6 +305,7 @@ let app = new Vue({
     },
     async togglePlay() {
       if(this.paused) {
+        this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
           source.buffer = layerBuffer;
