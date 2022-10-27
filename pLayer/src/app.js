@@ -66,7 +66,7 @@ let app = new Vue({
         <b><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>pLayer</b>
       </b-col>
       <b-col align="right">
-        <b-button variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+        <b-button v-if="signedIn" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
       </b-col>
     </b-row>
     </h1>
@@ -125,20 +125,20 @@ let app = new Vue({
             <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
             <b-button :disabled="busy || !layer" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </p>
+          <b-row><b-col align="center">
+            <b-form-file
+              placeholder=""
+              accept="audio/wav"
+              v-model="layer"
+              browse-text="upload"
+              class="w-75"
+              :disabled="busy"
+            ></b-form-file>
+            <b-input-group append="name" class="w-75">
+              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            </b-input-group>
+          </b-col></b-row>
         </template>
-        <b-row><b-col align="center">
-          <b-form-file
-            placeholder=""
-            accept="audio/wav"
-            v-model="layer"
-            browse-text="upload"
-            class="w-75"
-            :disabled="busy"
-          ></b-form-file>
-          <b-input-group append="name" class="w-75">
-            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
-          </b-input-group>
-        </b-col></b-row>
       </b-card>
     </b-collapse>
   </b-container>
