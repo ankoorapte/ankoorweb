@@ -113,13 +113,11 @@ let app = new Vue({
       </b-col></b-row>
       <b-card bg-variant="light" no-body>
         <template #header>
-          <b-row><b-col align="center">
-            <p>
-              <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-              <b-button :disabled="busy" variant="info" @click="post()">post</b-button>
-            </p>
-          </b-col></b-row>
+          <p align="center">
+            <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+            <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+            <b-button :disabled="busy" variant="info" @click="post()">post</b-button>
+          </p>
         </template>
         <b-row><b-col align="center">
           <b-form-file
@@ -131,7 +129,7 @@ let app = new Vue({
             :disabled="busy"
           ></b-form-file>
           <b-input-group append="name" class="w-75">
-            <b-form-input v-model="newTrackName"></b-form-input>
+            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
           </b-input-group>
         </b-col></b-row>
       </b-card>
