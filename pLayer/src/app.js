@@ -283,6 +283,7 @@ let app = new Vue({
       }
     },
     resetAudioContext() {
+      this.seeker = 0;
       this.audioContext = new AudioContext();
       this.merger = this.audioContext.createChannelMerger(2);
       this.mixedAudio = this.audioContext.createMediaStreamDestination();
@@ -292,6 +293,7 @@ let app = new Vue({
     async toggleTrack(forward) {
       this.busy = true;
       await this.pause();
+      this.resetAudioContext();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -299,13 +301,11 @@ let app = new Vue({
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       this.trackID = Object.keys(tracks)[this.trackIdx];
-      this.seeker = 0;
       await this.getTrack();
       this.busy = false;
     },
     async togglePlay() {
       if(this.paused) {
-        this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
           source.buffer = layerBuffer;
