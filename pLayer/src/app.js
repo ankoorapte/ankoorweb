@@ -189,7 +189,6 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
-          console.log(self.trackID);
           self.getTrack();
         });
       }
@@ -316,6 +315,7 @@ let app = new Vue({
         this.layers.forEach((node) => node.stop());
       }
       this.paused = !this.paused;
+      console.log(this.seeker);
     },
     async layerBuffer(layerID) {
       return this.audioContext.decodeAudioData(
