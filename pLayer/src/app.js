@@ -108,14 +108,14 @@ let app = new Vue({
       <hr>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
+        <p v-show="!busy">
+          <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+        </p>
         <p>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-        </p>
-        <p v-show="!busy">
-          <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
       </b-col></b-row>
       <b-card bg-variant="light" no-body>
