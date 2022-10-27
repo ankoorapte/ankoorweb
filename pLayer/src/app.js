@@ -88,7 +88,7 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
-          <b-input-group class="w-75">
+          <b-input-group class="w-50">
             <b-form-input 
               :invalid-feedback="invalidUsername"
               placeholder="new username" 
