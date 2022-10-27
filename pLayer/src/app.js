@@ -115,25 +115,23 @@ let app = new Vue({
         <template #header>
           <b-row><b-col align="center">
             <p class="m-1">
-              <b-button :disabled="busy" class="p-1 pt-0" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
-              <b-button :disabled="busy" class="p-1" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-              {{layering ? "" : " or upload a new track"}}
+              <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              <b-button :disabled="busy" variant="info" @click="post()">post</b-button>
             </p>
-            <b-form-file
-              placeholder=""
-              accept="audio/wav"
-              v-model="layer"
-              browse-text="upload"
-              class="m-2 w-75"
-              :disabled="busy"
-            ></b-form-file>
-            <b-input-group append="name" class="w-75">
-              <b-form-input v-model="newTrackName"></b-form-input>
-            </b-input-group>
-            <b-button :disabled="busy" class="m-2" variant="info" @click="post()">post</b-button>
-            <br>
           </b-col></b-row>
         </template>
+        <b-form-file
+          placeholder=""
+          accept="audio/wav"
+          v-model="layer"
+          browse-text="upload"
+          class="m-2 w-75"
+          :disabled="busy"
+        ></b-form-file>
+        <b-input-group append="name" class="w-75">
+          <b-form-input v-model="newTrackName"></b-form-input>
+        </b-input-group>
       </b-card>
     </b-collapse>
   </b-container>
