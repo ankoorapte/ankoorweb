@@ -124,7 +124,7 @@ let app = new Vue({
           <p align="center">
             <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
             <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-            <b-button :disabled="busy" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+            <b-button :disabled="busy || !layer" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </p>
         </template>
         <b-row><b-col align="center">
