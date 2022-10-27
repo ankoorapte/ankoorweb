@@ -121,17 +121,19 @@ let app = new Vue({
             </p>
           </b-col></b-row>
         </template>
-        <b-form-file
-          placeholder=""
-          accept="audio/wav"
-          v-model="layer"
-          browse-text="upload"
-          class="w-75"
-          :disabled="busy"
-        ></b-form-file>
-        <b-input-group append="name" class="w-75">
-          <b-form-input v-model="newTrackName"></b-form-input>
-        </b-input-group>
+        <b-row><b-col align="center">
+          <b-form-file
+            placeholder=""
+            accept="audio/wav"
+            v-model="layer"
+            browse-text="upload"
+            class="w-75"
+            :disabled="busy"
+          ></b-form-file>
+          <b-input-group append="name" class="w-75">
+            <b-form-input v-model="newTrackName"></b-form-input>
+          </b-input-group>
+        </b-col></b-row>
       </b-card>
     </b-collapse>
   </b-container>
