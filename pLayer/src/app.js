@@ -92,6 +92,7 @@ let app = new Vue({
             <b-form-input 
               :invalid-feedback="invalidUsername"
               placeholder="new username" 
+              class="w-50"
               @keydown.native="usernameKeydownHandler" 
               v-model="newUsername" 
               :state="stateUsername" 
