@@ -108,7 +108,7 @@ let app = new Vue({
       <hr>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
-        <p v-show="!busy" style="font-size:16px">
+        <p v-show="!busy" style="font-size:36px">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
         <p>
