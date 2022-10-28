@@ -136,7 +136,7 @@ let app = new Vue({
             <b-input-group append="name" class="w-75">
               <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
             </b-input-group>
-            <b-button :disabled="busy || !layer" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+            <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </b-col></b-row>
         </template>
       </b-card>
