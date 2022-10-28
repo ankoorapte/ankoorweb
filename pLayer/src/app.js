@@ -117,14 +117,13 @@ let app = new Vue({
           <b-button :disabled="busy" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
+        <p>
+          <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+          <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+        </p>
       </b-col></b-row>
       <b-card bg-variant="light" no-body>
         <template #header>
-          <p align="center">
-            <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-            <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-            <b-button :disabled="busy || !layer" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
-          </p>
           <b-row><b-col align="center">
             <b-form-file
               placeholder=""
@@ -137,6 +136,7 @@ let app = new Vue({
             <b-input-group append="name" class="w-75">
               <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
             </b-input-group>
+            <b-button :disabled="busy || !layer" variant="info" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </b-col></b-row>
         </template>
       </b-card>
