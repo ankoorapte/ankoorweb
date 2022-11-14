@@ -67,7 +67,7 @@ let app = new Vue({
         <b>pLayer</b>
       </b-col>
       <b-col align="right">
-        <b-button v-if="signedIn" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="person-fill"></b-icon></b-button>
+        <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
       </b-col>
     </b-row>
     </h1>
