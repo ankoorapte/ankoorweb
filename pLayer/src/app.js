@@ -74,12 +74,24 @@ let app = new Vue({
               <template #header>
                 <b>inbox</b>
               </template>
-              <b-list-group>
-                <b-list-group-item button>Button item</b-list-group-item>
-                <b-list-group-item button>I am a button</b-list-group-item>
-                <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                <b-list-group-item button>This is a button too</b-list-group-item>
-              </b-list-group>
+              <b-tabs card>
+                <b-tab title="inbox" active>
+                  <b-list-group>
+                    <b-list-group-item button>Button item</b-list-group-item>
+                    <b-list-group-item button>I am a button</b-list-group-item>
+                    <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                    <b-list-group-item button>This is a button too</b-list-group-item>
+                  </b-list-group>
+                </b-tab>
+                <b-tab title="outbox">
+                  <b-list-group>
+                    <b-list-group-item button>Button item</b-list-group-item>
+                    <b-list-group-item button>I am a button</b-list-group-item>
+                    <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                    <b-list-group-item button>This is a button too</b-list-group-item>
+                  </b-list-group>
+                </b-tab>
+              </b-tabs>
             </b-card>
             <b-input-group>
               <b-form-input 
