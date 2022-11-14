@@ -66,7 +66,7 @@ let app = new Vue({
       </b-col>
       <b-col align="center">
         <b-collapse v-model="showSettings">
-          <h4 style="font-family:Georgia, serif;" align="center" v-if="user" class="mt-2"><b>hello, {{ user.displayName }}</b></h4>
+          <h4 style="font-family:Georgia, serif;" align="center" v-if="user" class="mt-3"><b>hello, {{ user.displayName }}</b></h4>
           <b-row><b-col align="center">
             <b-card class="mb-2">
               <template #header>
