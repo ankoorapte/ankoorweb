@@ -83,11 +83,8 @@ let app = new Vue({
               <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
             </b-input-group-append>
           </b-input-group>
-          <b-card class="mb-2">
-            <template #header>
-              <b>inbox</b>
-            </template>
-            <b-tabs card>
+          <b-card>
+            <b-tabs card align="center">
               <b-tab title="inbox" active>
                 <b-list-group>
                   <b-list-group-item button>Button item</b-list-group-item>
