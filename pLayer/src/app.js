@@ -57,20 +57,18 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <b-sidebar id="sidebar-1" title="Sidebar" shadow>
-      <div class="px-3 py-2">
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        </p>
-        <b-img src="https://picsum.photos/500/500/?image=54" fluid thumbnail></b-img>
-      </div>
-    </b-sidebar>
     <h1 style="font-family:Georgia, serif;">
     <b-row>
-      <b-button v-show="!busy" v-b-toggle.sidebar-1 v-if="signedIn" variant="outline-dark"><b-icon v-show="!busy" icon="music-note-list"></b-icon></b-button>
-      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-      <b>pLayer</b>
+      <b-col align="left">
+        <b-icon v-show="!busy" icon="music-note-list"></b-icon>
+        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+      </b-col>
+      <b-col align="center">
+        <b>pLayer</b>
+      </b-col>
+      <b-col align="right">
+        <b-button v-if="signedIn" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+      </b-col>
     </b-row>
     </h1>
     <b-row><b-col align="center">
