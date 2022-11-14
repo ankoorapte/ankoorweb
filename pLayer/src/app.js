@@ -65,8 +65,10 @@ let app = new Vue({
         </h1>
       </b-col>
       <b-col align="center">
+        <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
         <b-collapse v-model="showSettings">
-          <h4 style="font-family:Georgia, serif;" align="center" v-if="user" class="mt-3"><b>hello, {{ user.displayName }}</b></h4>
+          <b style="font-family:Georgia, serif;" align="center" v-if="user" class="m-2">hello, {{ user.displayName }}</b>
+          <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           <b-row><b-col align="center">
             <b-card class="mb-2">
               <template #header>
@@ -94,10 +96,7 @@ let app = new Vue({
               </b-input-group-append>
             </b-input-group>
           </b-col></b-row>
-          <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-          <hr>
         </b-collapse>
-        <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
         <h1 style="font-family:Georgia, serif;">
@@ -105,6 +104,7 @@ let app = new Vue({
         </h1>    
       </b-col>
     </b-row>
+    <hr>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
