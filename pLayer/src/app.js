@@ -57,14 +57,14 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <h1 style="font-family:Georgia, serif;">
     <b-row>
       <b-col align="left">
-        <b-icon v-show="!busy" icon="music-note-list"></b-icon>
-        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+        <h1 style="font-family:Georgia, serif;">
+          <b-icon v-show="!busy" icon="music-note-list"></b-icon>
+          <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+        </h1>
       </b-col>
       <b-col align="center">
-        <b>pLayer</b>
         <b-collapse v-model="showSettings">
           <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
           <b-row><b-col align="center">
@@ -96,12 +96,14 @@ let app = new Vue({
           </b-col></b-row>
           <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
         </b-collapse>
+        <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
+        <h1 style="font-family:Georgia, serif;">
+          <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
+        </h1>    
       </b-col>
     </b-row>
-    </h1>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
