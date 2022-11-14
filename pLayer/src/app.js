@@ -67,47 +67,45 @@ let app = new Vue({
       <b-col align="center">
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
         <b-collapse v-model="showSettings">
-          <b style="font-family:Georgia, serif;" align="center" v-if="user" class="m-2">hello, {{ user.displayName }}</b>
+          <b align="center" v-if="user" class="m-2">hello, {{ user.displayName }}</b>
           <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-          <b-row><b-col align="center">
-            <b-card class="mb-2">
-              <template #header>
-                <b>inbox</b>
-              </template>
-              <b-tabs card>
-                <b-tab title="inbox" active>
-                  <b-list-group>
-                    <b-list-group-item button>Button item</b-list-group-item>
-                    <b-list-group-item button>I am a button</b-list-group-item>
-                    <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                    <b-list-group-item button>This is a button too</b-list-group-item>
-                  </b-list-group>
-                </b-tab>
-                <b-tab title="outbox">
-                  <b-list-group>
-                    <b-list-group-item button>Button item</b-list-group-item>
-                    <b-list-group-item button>I am a button</b-list-group-item>
-                    <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                    <b-list-group-item button>This is a button too</b-list-group-item>
-                  </b-list-group>
-                </b-tab>
-              </b-tabs>
-            </b-card>
-            <b-input-group>
-              <b-form-input 
-                :invalid-feedback="invalidUsername"
-                placeholder="new username"
-                @keydown.native="usernameKeydownHandler" 
-                v-model="newUsername" 
-                :state="stateUsername" 
-                trim
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col></b-row>
+          <b-input-group>
+            <b-form-input 
+              :invalid-feedback="invalidUsername"
+              placeholder="new username"
+              @keydown.native="usernameKeydownHandler" 
+              v-model="newUsername" 
+              :state="stateUsername" 
+              trim
+            >
+            </b-form-input>
+            <b-input-group-append>
+              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+            </b-input-group-append>
+          </b-input-group>
+          <b-card class="mb-2">
+            <template #header>
+              <b>inbox</b>
+            </template>
+            <b-tabs card>
+              <b-tab title="inbox" active>
+                <b-list-group>
+                  <b-list-group-item button>Button item</b-list-group-item>
+                  <b-list-group-item button>I am a button</b-list-group-item>
+                  <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                  <b-list-group-item button>This is a button too</b-list-group-item>
+                </b-list-group>
+              </b-tab>
+              <b-tab title="outbox">
+                <b-list-group>
+                  <b-list-group-item button>Button item</b-list-group-item>
+                  <b-list-group-item button>I am a button</b-list-group-item>
+                  <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                  <b-list-group-item button>This is a button too</b-list-group-item>
+                </b-list-group>
+              </b-tab>
+            </b-tabs>
+          </b-card>
         </b-collapse>
       </b-col>
       <b-col align="right">
