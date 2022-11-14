@@ -68,8 +68,8 @@ let app = new Vue({
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
         <b-collapse v-model="showSettings">
           <b align="center" v-if="user" class="m-2">hello, {{ user.displayName }}</b>
-          <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-          <b-input-group>
+          <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+          <b-input-group class="m-2">
             <b-form-input 
               :invalid-feedback="invalidUsername"
               placeholder="new username"
@@ -83,26 +83,24 @@ let app = new Vue({
               <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
             </b-input-group-append>
           </b-input-group>
-          <b-card>
-            <b-tabs card align="center">
-              <b-tab title="inbox" active>
-                <b-list-group>
-                  <b-list-group-item button>Button item</b-list-group-item>
-                  <b-list-group-item button>I am a button</b-list-group-item>
-                  <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                  <b-list-group-item button>This is a button too</b-list-group-item>
-                </b-list-group>
-              </b-tab>
-              <b-tab title="outbox">
-                <b-list-group>
-                  <b-list-group-item button>Button item</b-list-group-item>
-                  <b-list-group-item button>I am a button</b-list-group-item>
-                  <b-list-group-item button disabled>Disabled button</b-list-group-item>
-                  <b-list-group-item button>This is a button too</b-list-group-item>
-                </b-list-group>
-              </b-tab>
-            </b-tabs>
-          </b-card>
+          <b-tabs card align="center">
+            <b-tab title="inbox" active>
+              <b-list-group>
+                <b-list-group-item button>Button item</b-list-group-item>
+                <b-list-group-item button>I am a button</b-list-group-item>
+                <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                <b-list-group-item button>This is a button too</b-list-group-item>
+              </b-list-group>
+            </b-tab>
+            <b-tab title="outbox">
+              <b-list-group>
+                <b-list-group-item button>Button item</b-list-group-item>
+                <b-list-group-item button>I am a button</b-list-group-item>
+                <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                <b-list-group-item button>This is a button too</b-list-group-item>
+              </b-list-group>
+            </b-tab>
+          </b-tabs>
         </b-collapse>
       </b-col>
       <b-col align="right">
