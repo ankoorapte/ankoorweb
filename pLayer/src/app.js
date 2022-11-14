@@ -67,7 +67,7 @@ let app = new Vue({
         <b>pLayer</b>
       </b-col>
       <b-col align="right">
-        <b-button v-if="signedIn" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench"></b-icon></b-button>
+        <b-button v-if="signedIn" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="person-fill"></b-icon></b-button>
       </b-col>
     </b-row>
     </h1>
@@ -88,6 +88,14 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
+          <b-card>
+            <template #header>
+              <b>inbox</b>
+            </template>
+            <div style="overflow-y: scroll; height:300px">
+              
+            </div>
+          </b-card>
           <b-input-group class="w-50">
             <b-form-input 
               :invalid-feedback="invalidUsername"
