@@ -88,13 +88,16 @@ let app = new Vue({
       <b-collapse v-model="showSettings">
         <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
         <b-row><b-col align="center">
-          <b-card>
+          <b-card class="mb-2">
             <template #header>
               <b>inbox</b>
             </template>
-            <div style="overflow-y: scroll; height:300px">
-              
-            </div>
+            <b-list-group>
+              <b-list-group-item button>Button item</b-list-group-item>
+              <b-list-group-item button>I am a button</b-list-group-item>
+              <b-list-group-item button disabled>Disabled button</b-list-group-item>
+              <b-list-group-item button>This is a button too</b-list-group-item>
+            </b-list-group>
           </b-card>
           <b-input-group class="w-50">
             <b-form-input 
