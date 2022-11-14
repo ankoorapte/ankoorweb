@@ -79,7 +79,7 @@ let app = new Vue({
                 <b-list-group-item button>This is a button too</b-list-group-item>
               </b-list-group>
             </b-card>
-            <b-input-group class="w-50">
+            <b-input-group>
               <b-form-input 
                 :invalid-feedback="invalidUsername"
                 placeholder="new username"
