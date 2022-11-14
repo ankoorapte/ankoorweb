@@ -65,6 +65,37 @@ let app = new Vue({
       </b-col>
       <b-col align="center">
         <b>pLayer</b>
+        <b-collapse v-model="showSettings">
+          <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
+          <b-row><b-col align="center">
+            <b-card class="mb-2">
+              <template #header>
+                <b>inbox</b>
+              </template>
+              <b-list-group>
+                <b-list-group-item button>Button item</b-list-group-item>
+                <b-list-group-item button>I am a button</b-list-group-item>
+                <b-list-group-item button disabled>Disabled button</b-list-group-item>
+                <b-list-group-item button>This is a button too</b-list-group-item>
+              </b-list-group>
+            </b-card>
+            <b-input-group class="w-50">
+              <b-form-input 
+                :invalid-feedback="invalidUsername"
+                placeholder="new username"
+                @keydown.native="usernameKeydownHandler" 
+                v-model="newUsername" 
+                :state="stateUsername" 
+                trim
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-col></b-row>
+          <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
+        </b-collapse>
       </b-col>
       <b-col align="right">
         <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
@@ -85,37 +116,7 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
-      <b-collapse v-model="showSettings">
-        <p align="center" v-if="user"><b>hello, {{ user.displayName }}</b></p>
-        <b-row><b-col align="center">
-          <b-card class="mb-2">
-            <template #header>
-              <b>inbox</b>
-            </template>
-            <b-list-group>
-              <b-list-group-item button>Button item</b-list-group-item>
-              <b-list-group-item button>I am a button</b-list-group-item>
-              <b-list-group-item button disabled>Disabled button</b-list-group-item>
-              <b-list-group-item button>This is a button too</b-list-group-item>
-            </b-list-group>
-          </b-card>
-          <b-input-group class="w-50">
-            <b-form-input 
-              :invalid-feedback="invalidUsername"
-              placeholder="new username"
-              @keydown.native="usernameKeydownHandler" 
-              v-model="newUsername" 
-              :state="stateUsername" 
-              trim
-            >
-            </b-form-input>
-            <b-input-group-append>
-              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-col></b-row>
-        <p align="center" class="mt-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-      </b-collapse>
+      
       <hr>
       <b-row><b-col align="center">
         <div ref="pLayer"></div>
