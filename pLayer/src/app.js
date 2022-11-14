@@ -67,8 +67,6 @@ let app = new Vue({
       <b-col align="center">
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
         <b-collapse v-model="showSettings">
-          <b align="center" v-if="user" class="m-2">hello, {{ user.displayName }}</b>
-          <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
           <b-input-group class="m-2">
             <b-form-input 
               :invalid-feedback="invalidUsername"
@@ -80,7 +78,7 @@ let app = new Vue({
             >
             </b-form-input>
             <b-input-group-append>
-              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update</b-button>
+              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
             </b-input-group-append>
           </b-input-group>
           <b-tabs card align="center">
@@ -101,6 +99,7 @@ let app = new Vue({
               </b-list-group>
             </b-tab>
           </b-tabs>
+          <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
         </b-collapse>
       </b-col>
       <b-col align="right">
@@ -232,7 +231,6 @@ let app = new Vue({
     stateUsername() {
       return this.user
         && !Object.keys(users).includes(this.newUsername)
-        && (this.user.displayname != this.newUsername)
         && Boolean(this.newUsername.length);
     }
   },
@@ -256,6 +254,7 @@ let app = new Vue({
       try {
         if(user) {
           this.user = user;
+          this.newUsername = user.displayName;
         } else {
           this.user = (await signInWithEmailAndPassword(
             auth, 
