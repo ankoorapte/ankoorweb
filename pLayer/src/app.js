@@ -114,12 +114,8 @@ let app = new Vue({
           <b-button :disabled="busy" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <p>
-          <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-          <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-        </p>
       </b-col></b-row>
-      <b-tabs card align="center" end pills>
+      <b-tabs card align="center">
         <b-tab title="inbox" active>
           <b-list-group>
             <b-list-group-item button>Button item</b-list-group-item>
@@ -129,6 +125,11 @@ let app = new Vue({
           </b-list-group>
         </b-tab>
         <b-tab title="create">
+          <p>
+            <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+            <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+          </p>
           <b-row><b-col align="center">
             <b-form-file
               placeholder=""
