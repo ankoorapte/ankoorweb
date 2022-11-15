@@ -125,12 +125,12 @@ let app = new Vue({
           </b-list-group>
         </b-tab>
         <b-tab title="create">
-          <p>
-            <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
-            <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-          </p>
           <b-row><b-col align="center">
+            <p>
+              <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> layer</b-button>
+              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+            </p>
             <b-form-file
               placeholder=""
               accept="audio/wav"
