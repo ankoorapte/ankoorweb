@@ -119,7 +119,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
         </p>
       </b-col></b-row>
-      <b-tabs card align="center" end pill>
+      <b-tabs card align="center" end pills>
         <b-tab title="inbox" active>
           <b-list-group>
             <b-list-group-item button>Button item</b-list-group-item>
@@ -128,17 +128,7 @@ let app = new Vue({
             <b-list-group-item button>This is a button too</b-list-group-item>
           </b-list-group>
         </b-tab>
-        <b-tab title="outbox">
-          <b-list-group>
-            <b-list-group-item button>Button item</b-list-group-item>
-            <b-list-group-item button>I am a button</b-list-group-item>
-            <b-list-group-item button disabled>Disabled button</b-list-group-item>
-            <b-list-group-item button>This is a button too</b-list-group-item>
-          </b-list-group>
-        </b-tab>
-      </b-tabs>
-      <b-card bg-variant="light" no-body>
-        <template #header>
+        <b-tab title="create">
           <b-row><b-col align="center">
             <b-form-file
               placeholder=""
@@ -153,8 +143,16 @@ let app = new Vue({
             </b-input-group>
             <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </b-col></b-row>
-        </template>
-      </b-card>
+        </b-tab>
+        <b-tab title="outbox">
+          <b-list-group>
+            <b-list-group-item button>Button item</b-list-group-item>
+            <b-list-group-item button>I am a button</b-list-group-item>
+            <b-list-group-item button disabled>Disabled button</b-list-group-item>
+            <b-list-group-item button>This is a button too</b-list-group-item>
+          </b-list-group>
+        </b-tab>
+      </b-tabs>
     </b-collapse>
   </b-container>
   `,
