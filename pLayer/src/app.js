@@ -185,7 +185,9 @@ let app = new Vue({
   },
   async created() {
     let self = this;
+    console.log('line 188');
     onAuthStateChanged(auth, async (user) => {
+      console.log('auth state changed');
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
