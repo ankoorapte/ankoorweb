@@ -194,6 +194,7 @@ let app = new Vue({
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
           });
+          console.log('layers');
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
@@ -209,6 +210,7 @@ let app = new Vue({
           });
           self.trackID = Object.keys(tracks)[0];
           self.getTrack();
+          console.log('tracks');
         });
       }
       self.busy = false;
