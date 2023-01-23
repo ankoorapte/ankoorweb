@@ -357,6 +357,7 @@ let app = new Vue({
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
+      console.log('hi')
     },
     async post() {
       let self = this;
