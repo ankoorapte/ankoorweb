@@ -213,8 +213,11 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
-          self.getTrack();
-          console.log('tracks');
+          console.log(tracks.length);
+          self.getTrack().then(() => {
+            console.log('tracks');
+          })
+          
         });
       }
       self.busy = false;
