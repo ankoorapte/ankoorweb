@@ -185,9 +185,7 @@ let app = new Vue({
   },
   async created() {
     let self = this;
-    console.log('line 188');
     onAuthStateChanged(auth, async (user) => {
-      console.log('auth state changed');
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
@@ -196,7 +194,6 @@ let app = new Vue({
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
           });
-          console.log('layers');
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
@@ -208,16 +205,10 @@ let app = new Vue({
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {}
           trackDocs.forEach((doc) => {
-            console.log(doc.id);
-            console.log(doc.data());
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
-          console.log(tracks.length);
-          self.getTrack().then(() => {
-            console.log('tracks');
-          })
-          
+          self.getTrack();
         });
       }
       self.busy = false;
@@ -358,7 +349,7 @@ let app = new Vue({
       );
     },
     async getTrack() {
-      if(!tracks.length) return;
+      if(!Object.keys(tracks).length) return;
       this.busy = true;
       const trackLayers = tracks[this.trackID].layers;
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
@@ -366,7 +357,6 @@ let app = new Vue({
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
-      console.log('hi')
     },
     async post() {
       let self = this;
