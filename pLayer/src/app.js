@@ -208,6 +208,8 @@ let app = new Vue({
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {}
           trackDocs.forEach((doc) => {
+            console.log(doc.id);
+            console.log(doc.data());
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
