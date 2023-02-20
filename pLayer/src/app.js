@@ -127,9 +127,9 @@ let app = new Vue({
         <b-tab title="create">
           <b-row><b-col align="center" v-show="!busy">
             <p>
-              <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
-              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-              <b>    {{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+              <b-button class="mr-3" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
+              <b-button class="mr-3" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <p v-if="!layering">OR, upload a new track</p>
             <b-form-file
