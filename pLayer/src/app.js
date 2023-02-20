@@ -126,12 +126,6 @@ let app = new Vue({
         </b-tab>
         <b-tab title="create">
           <b-row><b-col align="center" v-show="!busy">
-            <p>
-              <b-button class="mr-3" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
-              <b-button class="mr-3" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-            </p>
-            <p v-if="!layering">OR, upload a new track</p>
             <b-form-file
               placeholder=""
               accept="audio/wav"
@@ -143,6 +137,11 @@ let app = new Vue({
             <b-input-group append="name" class="w-75">
               <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
             </b-input-group>
+            <p>
+              <b-button class="mr-2" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
+              <b-button class="mr-2" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
+              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+            </p>
             <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </b-col></b-row>
         </b-tab>
