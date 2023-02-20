@@ -125,7 +125,7 @@ let app = new Vue({
           </b-list-group>
         </b-tab>
         <b-tab title="create">
-          <b-row><b-col align="center">
+          <b-row><b-col align="center" v-show="!busy">
             <p>
               <b-button :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
               <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
