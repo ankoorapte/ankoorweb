@@ -11,25 +11,30 @@ const layers = db.collection("layers");
 // --trigger-event google.storage.object.finalize
 exports.updateDB = async (file, context) => {
   const uid = file.name;
-  const base = file.metadata.base;
   const name = file.metadata.name;
+  const user = file.metadata.user;
+  const base = file.metadata.base;
+  const isBase = !base.length; // empty string means isBase
 
   await layers.doc(uid).set({
     bucket: uid,
     name: name,
     base: base,
-    user: file.metadata.user,
+    user: user,
+    resolved: isBase, // if isBase, resolved!
     timestamp: file.updated,
   });
 
-  if (base.length) {
-    await tracks.doc(base).set({
-      submissions: admin.firestore.FieldValue.arrayUnion(uid),
-    }, {merge: true});
-  } else {
+  if (isBase) {
     await tracks.doc(uid).set({
       layers: [uid],
-      name: file.metadata.name,
+      name: name,
     });
   }
+
+  // if (base.length) {
+  //   await tracks.doc(base).set({
+  //     layers: admin.firestore.FieldValue.arrayUnion(uid),
+  //   }, {merge: true});
+  // }
 };

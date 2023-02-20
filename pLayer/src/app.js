@@ -134,7 +134,7 @@ let app = new Vue({
               class="w-75 mb-1"
               :disabled="busy"
             ></b-form-file>
-            <b-input-group append="name" class="w-75">
+            <b-input-group append="name" class="w-75 mb-1">
               <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
             </b-input-group>
             <p>
