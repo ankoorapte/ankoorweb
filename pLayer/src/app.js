@@ -117,11 +117,8 @@ let app = new Vue({
       </b-col></b-row>
       <b-tabs card align="center">
         <b-tab title="inbox" active>
-          <b-list-group>
-            <b-list-group-item button>Button item</b-list-group-item>
-            <b-list-group-item button>I am a button</b-list-group-item>
-            <b-list-group-item button disabled>Disabled button</b-list-group-item>
-            <b-list-group-item button>This is a button too</b-list-group-item>
+          <b-list-group v-for="(item, index) in inbox">
+            <b-list-group-item button>{{ index }}: {{ item.message }}</b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create">
@@ -180,7 +177,8 @@ let app = new Vue({
       audioContext: null,
       merger: null,
       mixedAudio: null,
-      seeker: 0
+      seeker: 0,
+      inbox: [{ message: 'Foo' }, { message: 'Bar' }]
     }
   },
   async created() {
