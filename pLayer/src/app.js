@@ -117,7 +117,7 @@ let app = new Vue({
       </b-col></b-row>
       <b-tabs card align="center">
         <b-tab title="inbox" active>
-          <b-list-group v-for="(item, index) in inbox">
+          <b-list-group v-for="(item, index) in inbox" v-bind:key="item.message">
             <b-list-group-item button>{{ index }}: {{ item.message }}</b-list-group-item>
           </b-list-group>
         </b-tab>
