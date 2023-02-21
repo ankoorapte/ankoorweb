@@ -371,7 +371,7 @@ let app = new Vue({
     async getTrack(draftLayer=null) {
       if(!Object.keys(tracks).length) return;
       this.busy = true;
-      let trackLayers = tracks[this.trackID].layers;
+      let trackLayers = tracks[this.trackID].layers.slice();
       console.log(trackLayers);
       if(draftLayer) trackLayers.push(draftLayer);
       console.log(trackLayers);
