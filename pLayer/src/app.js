@@ -118,7 +118,7 @@ let app = new Vue({
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item button>{{ index }}: {{ getLayerName(inbox_item.layerID) }}, {{ getUserName(inbox_item.userID) }}, {{ getLayerName(inbox_item.baseID) }}</b-list-group-item>
+            <b-list-group-item button>{{ getUserName(inbox_item.userID) }} wants to layer {{ getLayerName(inbox_item.layerID) }} on {{ getLayerName(inbox_item.baseID) }}</b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create" active>
@@ -144,7 +144,7 @@ let app = new Vue({
         </b-tab>
         <b-tab title="outbox">
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item button>{{ index }}: {{ getLayerName(outbox_item.layerID) }}, {{ getUserName(outbox_item.userID) }}, {{ getLayerName(outbox_item.baseID) }}</b-list-group-item>
+            <b-list-group-item button>You posted the layer {{ getLayerName(outbox_item.layerID) }} to {{ getLayerName(outbox_item.baseID) }}</b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
@@ -404,7 +404,7 @@ let app = new Vue({
         return {
           layerID: layer.bucket,
           userID: layer.user,
-          baseID: layer.baseID
+          baseID: layer.base
         }
       });
 
