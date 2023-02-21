@@ -232,14 +232,16 @@ let app = new Vue({
         ['bg-light', 'text-dark'];
     },
     getLayerName(uid) {
+      if(!uid || !Object.keys(layers).length) return;
       console.log(uid);
       console.log(layers);
       return layers[uid].name;
     },
     getUserName(uid) {
+      if(!uid || !Object.keys(users).length) return;
       console.log(uid);
       console.log(users);
-      return users[uid].name;
+      return users[uid].displayName;
     },
     async createUser() {
       try {
