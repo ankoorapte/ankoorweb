@@ -372,9 +372,7 @@ let app = new Vue({
       if(!Object.keys(tracks).length) return;
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
-      console.log(trackLayers);
       if(draftLayer) trackLayers.push(draftLayer);
-      console.log(trackLayers);
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
@@ -426,6 +424,7 @@ let app = new Vue({
     },
     async playDraft(index, whichbox) {
       if(!this.paused) await this.togglePlay();
+      this.seeker = 0;
       await this.getTrack(this[whichbox][index].layerID);
       await this.togglePlay();
     }
