@@ -123,9 +123,9 @@ let app = new Vue({
                 <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
               </p>
               <p>
-                <b-badge variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
-                <b-badge variant="success" href="#">accept</b-badge>
-                <b-badge variant="danger" href="#">reject</b-badge>
+                <b-badge href="#" variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
+                <b-badge href="#" variant="success">accept</b-badge>
+                <b-badge href="#" variant="danger">reject</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
@@ -155,9 +155,9 @@ let app = new Vue({
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
               <p>
-                <b-badge variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
-                <b-badge variant="success" href="#">accept</b-badge>
-                <b-badge variant="danger" href="#">reject</b-badge>
+                <b-badge href="#" variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
+                <b-badge href="#" variant="success">accept</b-badge>
+                <b-badge href="#" variant="danger">reject</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
@@ -424,8 +424,8 @@ let app = new Vue({
     },
     async playDraft(index, whichbox) {
       if(!this.paused) await this.togglePlay();
-      await getTrack(layers[this[whichbox][index].layerID]);
-      this.togglePlay();
+      await this.getTrack(layers[this[whichbox][index].layerID]);
+      await this.togglePlay();
     }
   }
 });
