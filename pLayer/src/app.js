@@ -231,6 +231,13 @@ let app = new Vue({
       return this.user
         && !Object.keys(users).includes(this.newUsername)
         && Boolean(this.newUsername.length);
+    }
+  },
+  methods: {
+    tabClass(idx) {
+      return (this.tab === idx) ? 
+        ['bg-info', 'text-light'] : 
+        ['bg-light', 'text-dark'];
     },
     getLayerName(uid) {
       console.log(uid);
@@ -241,13 +248,6 @@ let app = new Vue({
       console.log(uid);
       console.log(users);
       return users[uid].name;
-    }
-  },
-  methods: {
-    tabClass(idx) {
-      return (this.tab === idx) ? 
-        ['bg-info', 'text-light'] : 
-        ['bg-light', 'text-dark'];
     },
     async createUser() {
       try {
