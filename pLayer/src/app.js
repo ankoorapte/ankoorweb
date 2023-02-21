@@ -118,7 +118,7 @@ let app = new Vue({
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item button><b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on <b>{{ getLayerName(inbox_item.baseID) }}</b></b-list-group-item>
+            <b-list-group-item button><b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b></b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create" active>
@@ -137,14 +137,14 @@ let app = new Vue({
             <p>
               <b-button class="mr-2" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer</b-button>
               <b-button class="mr-2" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering</b-button>
-              <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+              on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
             </p>
             <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
           </b-col></b-row>
         </b-tab>
         <b-tab title="outbox">
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item button>You posted the layer <b>{{ getLayerName(outbox_item.layerID) }}</b> to <b>{{ getLayerName(outbox_item.baseID) }}</b></b-list-group-item>
+            <b-list-group-item button>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
