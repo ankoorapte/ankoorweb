@@ -233,9 +233,13 @@ let app = new Vue({
         && Boolean(this.newUsername.length);
     },
     getLayerName(uid) {
+      console.log(uid);
+      console.log(layers);
       return layers[uid].name;
     },
     getUserName(uid) {
+      console.log(uid);
+      console.log(users);
       return users[uid].name;
     }
   },
