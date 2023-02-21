@@ -118,7 +118,7 @@ let app = new Vue({
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item><b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b><b-badge href="#">listen</b-badge></b-list-group-item>
+            <b-list-group-item class="d-flex justify-content-between align-items-center"><b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b><b-badge href="#">listen</b-badge></b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create" active>
@@ -144,7 +144,7 @@ let app = new Vue({
         </b-tab>
         <b-tab title="outbox">
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b><b-badge href="#">listen</b-badge></b-list-group-item>
+            <b-list-group-item class="d-flex justify-content-between align-items-center">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b><b-badge href="#">listen</b-badge></b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
