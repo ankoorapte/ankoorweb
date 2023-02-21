@@ -175,16 +175,8 @@ let app = new Vue({
       merger: null,
       mixedAudio: null,
       seeker: 0,
-      inbox: [{ 
-        layerID: '', 
-        userID: '',
-        baseID: ''
-      }],
-      outbox: [{ 
-        layerID: '', 
-        userID: '',
-        baseID: ''
-      }],
+      inbox: [],
+      outbox: [],
     }
   },
   async created() {
