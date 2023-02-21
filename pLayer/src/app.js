@@ -180,6 +180,11 @@ let app = new Vue({
         userID: '',
         baseID: ''
       }],
+      outbox: [{ 
+        layerID: '', 
+        userID: '',
+        baseID: ''
+      }],
     }
   },
   async created() {
