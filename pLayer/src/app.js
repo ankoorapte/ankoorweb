@@ -412,7 +412,7 @@ let app = new Vue({
         return {
           layerID: layer.bucket,
           userID: layer.user,
-          baseID: layer.baseID
+          baseID: layer.base
         }  
       });
     }
