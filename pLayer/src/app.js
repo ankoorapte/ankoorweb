@@ -110,8 +110,8 @@ let app = new Vue({
         </p>
         <p>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="info" @click="togglePlay(0)" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="info" @click="togglePlay(1)" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
       </b-col></b-row>
@@ -123,7 +123,7 @@ let app = new Vue({
                 <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
               </p>
               <p>
-                <b-badge variant="info" href="#">listen</b-badge>
+                <b-badge variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
                 <b-badge variant="success" href="#">accept</b-badge>
                 <b-badge variant="danger" href="#">reject</b-badge>
               </p>
@@ -155,7 +155,7 @@ let app = new Vue({
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
               <p>
-                <b-badge variant="info" href="#">listen</b-badge>
+                <b-badge variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
                 <b-badge variant="success" href="#">accept</b-badge>
                 <b-badge variant="danger" href="#">reject</b-badge>
               </p>
@@ -331,7 +331,7 @@ let app = new Vue({
     },
     async toggleTrack(forward) {
       this.busy = true;
-      await this.pause();
+      if(!this.paused) await this.togglePlay();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -341,7 +341,7 @@ let app = new Vue({
       this.trackID = Object.keys(tracks)[this.trackIdx];
       this.seeker = 0;
       await this.getTrack();
-      await this.play();
+      await this.togglePlay();
       this.busy = false;
     },
     async togglePlay() {
@@ -368,10 +368,11 @@ let app = new Vue({
         ).arrayBuffer()
       );
     },
-    async getTrack() {
+    async getTrack(draftLayer=null) {
       if(!Object.keys(tracks).length) return;
       this.busy = true;
-      const trackLayers = tracks[this.trackID].layers;
+      let trackLayers = tracks[this.trackID].layers;
+      if(draftLayer) trackLayers.push(draftLayer);
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
@@ -398,12 +399,6 @@ let app = new Vue({
       self.layering = false;
       self.busy = false;
     },
-    async play() {
-      if(this.paused) await this.togglePlay();
-    },
-    async pause() {
-      if(!this.paused) await this.togglePlay();
-    },
     updateBoxes() {
       let self = this;
       let layersArray = Object.keys(layers).map((layerID) => layers[layerID]);
@@ -426,6 +421,11 @@ let app = new Vue({
           baseID: layer.base
         }  
       });
+    },
+    async playDraft(index, whichbox) {
+      if(!this.paused) await this.togglePlay();
+      await getTrack(layers[this[whichbox][index].layerID]);
+      this.togglePlay();
     }
   }
 });
