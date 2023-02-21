@@ -144,7 +144,7 @@ let app = new Vue({
         </b-tab>
         <b-tab title="outbox">
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item button>{{ index }}: {{ outbox_item.layerID }}, {{ outbox_item.userID }}, {{ outbox_item.baseID }}</b-list-group-item>
+            <b-list-group-item button>{{ index }}: {{ getLayerName(outbox_item.layerID) }}, {{ getUserName(outbox_item.userID) }}, {{ getLayerName(outbox_item.baseID) }}</b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
