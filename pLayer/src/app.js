@@ -118,7 +118,7 @@ let app = new Vue({
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item button>{{ getUserName(inbox_item.userID) }} wants to layer {{ getLayerName(inbox_item.layerID) }} on {{ getLayerName(inbox_item.baseID) }}</b-list-group-item>
+            <b-list-group-item button><b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on <b>{{ getLayerName(inbox_item.baseID) }}</b></b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create" active>
@@ -144,7 +144,7 @@ let app = new Vue({
         </b-tab>
         <b-tab title="outbox">
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item button>You posted the layer {{ getLayerName(outbox_item.layerID) }} to {{ getLayerName(outbox_item.baseID) }}</b-list-group-item>
+            <b-list-group-item button>You posted the layer <b>{{ getLayerName(outbox_item.layerID) }}</b> to <b>{{ getLayerName(outbox_item.baseID) }}</b></b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
@@ -233,14 +233,10 @@ let app = new Vue({
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
-      console.log(uid);
-      console.log(layers);
       return layers[uid].name;
     },
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
-      console.log(uid);
-      console.log(users);
       return users[uid].displayName;
     },
     async createUser() {
