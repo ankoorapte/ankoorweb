@@ -426,7 +426,7 @@ let app = new Vue({
     },
     async playDraft(index, whichbox) {
       if(!this.paused) await this.togglePlay();
-      await this.getTrack(layers[this[whichbox][index].layerID]);
+      await this.getTrack(this[whichbox][index].layerID);
       await this.togglePlay();
     }
   }
