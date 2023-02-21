@@ -116,12 +116,12 @@ let app = new Vue({
         </p>
       </b-col></b-row>
       <b-tabs card align="center">
-        <b-tab title="inbox" active>
-          <b-list-group v-for="(item, index) in inbox" v-bind:key="item.message">
-            <b-list-group-item button>{{ index }}: {{ item.message }}</b-list-group-item>
+        <b-tab title="inbox">
+          <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
+            <b-list-group-item button>{{ index }}: {{ inbox_item.layerID }}, {{ inbox_item.userID }}, {{ inbox_item.baseID }}</b-list-group-item>
           </b-list-group>
         </b-tab>
-        <b-tab title="create">
+        <b-tab title="create" active>
           <b-row><b-col align="center" v-show="!busy">
             <b-form-file
               placeholder=""
@@ -143,11 +143,8 @@ let app = new Vue({
           </b-col></b-row>
         </b-tab>
         <b-tab title="outbox">
-          <b-list-group>
-            <b-list-group-item button>Button item</b-list-group-item>
-            <b-list-group-item button>I am a button</b-list-group-item>
-            <b-list-group-item button disabled>Disabled button</b-list-group-item>
-            <b-list-group-item button>This is a button too</b-list-group-item>
+          <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
+            <b-list-group-item button>{{ index }}: {{ outbox_item.layerID }}, {{ outbox_item.userID }}, {{ outbox_item.baseID }}</b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
@@ -178,7 +175,11 @@ let app = new Vue({
       merger: null,
       mixedAudio: null,
       seeker: 0,
-      inbox: [{ message: 'Foo' }, { message: 'Bar' }]
+      inbox: [{ 
+        layerID: '', 
+        userID: '',
+        baseID: ''
+      }],
     }
   },
   async created() {
@@ -192,6 +193,7 @@ let app = new Vue({
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
           });
+          self.updateBoxes();
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
@@ -381,6 +383,29 @@ let app = new Vue({
     },
     async pause() {
       if(!this.paused) await this.togglePlay();
+    },
+    updateBoxes() {
+      let self = this;
+      let layersArray = Object.keys(layers).map((layerID) => layers[layerID]);
+      let myLayers = layersArray.filter((layer) => layer.user === self.user.uid);
+      let myBaseIDs = myLayers.filter((layer) => !layer.base.length).map((layer) => layer.bucket);
+      let submissions = myLayers.filter((layer) => !layer.resolved);
+
+      self.inbox = layersArray.filter((layer) => myBaseIDs.includes(layer.base) && !layer.resolved).map((layer) => {
+        return {
+          layerID: layer.bucket,
+          userID: layer.user,
+          baseID: layer.baseID
+        }
+      });
+
+      self.outbox = submissions.map((layer) => { 
+        return {
+          layerID: layer.bucket,
+          userID: layer.user,
+          baseID: layer.baseID
+        }  
+      });
     }
   }
 });
