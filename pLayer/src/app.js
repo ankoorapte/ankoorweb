@@ -108,6 +108,9 @@ let app = new Vue({
         <p v-show="!busy" style="font-size:20px">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
+        <p v-show="!busy && draft" style="font-size:20px">
+          <i><b>(draft)</b></i>
+        </p>
         <p>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -368,11 +371,12 @@ let app = new Vue({
         ).arrayBuffer()
       );
     },
-    async getTrack(draftLayer=null) {
+    async getTrack(draftLayer="") {
       if(!Object.keys(tracks).length) return;
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
-      if(draftLayer) trackLayers.push(draftLayer);
+      if(draftLayer.length) trackLayers.push(draftLayer);
+      this.draft = draftLayer.length;
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
