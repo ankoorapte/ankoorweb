@@ -195,6 +195,7 @@ let app = new Vue({
       seeker: 0,
       inbox: [],
       outbox: [],
+      draft: false,
     }
   },
   async created() {
