@@ -118,7 +118,7 @@ let app = new Vue({
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item button>{{ index }}: {{ inbox_item.layerID }}, {{ inbox_item.userID }}, {{ inbox_item.baseID }}</b-list-group-item>
+            <b-list-group-item button>{{ index }}: {{ inbox_item.layerID }}, {{ users[inbox_item.userID].displayName }}, {{ inbox_item.baseID }}</b-list-group-item>
           </b-list-group>
         </b-tab>
         <b-tab title="create" active>
