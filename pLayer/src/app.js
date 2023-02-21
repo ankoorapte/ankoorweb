@@ -159,6 +159,7 @@ let app = new Vue({
                 <b-badge variant="success" href="#">accept</b-badge>
                 <b-badge variant="danger" href="#">reject</b-badge>
               </p>
+            </b-list-group-item>
           </b-list-group>
         </b-tab>
       </b-tabs>
