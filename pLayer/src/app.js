@@ -73,6 +73,7 @@ let app = new Vue({
         </h1>    
       </b-col>
     </b-row>
+    <hr>
     <b-collapse v-model="showSettings">
       <b-row>
         <b-col align="center">
@@ -156,6 +157,8 @@ let app = new Vue({
               <b-button class="p-1" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
             </p>
             <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+            <hr>
+            <h3>Discography</h3>
           </b-col></b-row>
         </b-tab>
         <b-tab title="outbox">
