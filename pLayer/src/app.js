@@ -24,7 +24,7 @@ import {
   collection,
   setDoc,
   onSnapshot,
-  FieldValue  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+  arrayUnion  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 // FIREBASE
 const firebaseConfig = {
@@ -108,7 +108,7 @@ let app = new Vue({
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
         <p v-show="!busy && draft.length" style="font-size:14px">
-          <i>draft version with new layer <b>{{draft}}</b></i>
+          <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
         <p>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
@@ -438,7 +438,7 @@ let app = new Vue({
       }, {merge: true});
       if(accept) {
         await setDoc(doc(db, "tracks", baseID), {
-          layers: FieldValue.arrayUnion(layerID),
+          layers: arrayUnion(layerID),
         }, {merge: true});
       }
     }
