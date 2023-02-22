@@ -75,7 +75,7 @@ let app = new Vue({
     </b-row>
     <b-collapse v-model="showSettings">
       <b-row>
-        <b-col>
+        <b-col align="center">
           <b-input-group class="m-2 w-75">
             <b-form-input
               placeholder="new username"
