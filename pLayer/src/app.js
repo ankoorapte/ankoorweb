@@ -23,6 +23,7 @@ import {
   doc,
   collection,
   setDoc,
+  updateDoc,
   onSnapshot,
   arrayUnion  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
@@ -437,7 +438,10 @@ let app = new Vue({
         resolved: true
       }, {merge: true});
       if(accept) {
-        await setDoc(doc(db, "tracks", baseID), {
+        console.log("updating tracks");
+        console.log(baseID);
+        console.log(layerID);
+        await updateDoc(doc(db, "tracks", baseID), {
           layers: arrayUnion(layerID),
         }, {merge: true});
       }
