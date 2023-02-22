@@ -16,16 +16,15 @@ import {
   getStorage, 
   ref, 
   uploadBytes, 
-  getDownloadURL,
-  getMetadata } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
+  getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 
 import { 
   getFirestore, 
   doc,
-  collection, 
-  getDocs,
+  collection,
   setDoc,
-  onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+  onSnapshot,
+  FieldValue  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 // FIREBASE
 const firebaseConfig = {
@@ -108,8 +107,8 @@ let app = new Vue({
         <p v-show="!busy" style="font-size:20px">
           <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
         </p>
-        <p v-show="!busy && draft" style="font-size:20px">
-          <i><b>(draft)</b></i>
+        <p v-show="!busy && draft.length" style="font-size:14px">
+          <i>draft version with new layer <b>{{draft}}</b></i>
         </p>
         <p>
           <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
@@ -127,8 +126,8 @@ let app = new Vue({
               </p>
               <p>
                 <b-badge href="#" variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
-                <b-badge href="#" variant="success">accept</b-badge>
-                <b-badge href="#" variant="danger">reject</b-badge>
+                <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
+                <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
@@ -159,8 +158,6 @@ let app = new Vue({
               <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
               <p>
                 <b-badge href="#" variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
-                <b-badge href="#" variant="success">accept</b-badge>
-                <b-badge href="#" variant="danger">reject</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
@@ -195,7 +192,7 @@ let app = new Vue({
       seeker: 0,
       inbox: [],
       outbox: [],
-      draft: false,
+      draft: "",
     }
   },
   async created() {
@@ -377,7 +374,7 @@ let app = new Vue({
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
-      this.draft = draftLayer.length;
+      this.draft = draftLayer;
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
@@ -432,6 +429,18 @@ let app = new Vue({
       this.seeker = 0;
       await this.getTrack(this[whichbox][index].layerID);
       await this.togglePlay();
+    },
+    async resolveDraft(index, accept) {
+      let layerID = this.inbox[index].layerID;
+      let baseID = this.inbox[index].baseID;
+      await setDoc(doc(db, "layers", layerID), {
+        resolved: true
+      }, {merge: true});
+      if(accept) {
+        await setDoc(doc(db, "tracks", baseID), {
+          layers: FieldValue.arrayUnion(layerID),
+        }, {merge: true});
+      }
     }
   }
 });
