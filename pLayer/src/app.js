@@ -66,8 +66,17 @@ let app = new Vue({
       </b-col>
       <b-col align="center">
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+      </b-col>
+      <b-col align="right">
+        <h1 style="font-family:Georgia, serif;">
+          <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
+        </h1>    
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
         <b-collapse v-model="showSettings">
-          <b-input-group class="m-2 w-100">
+          <b-input-group class="m-2">
             <b-form-input
               placeholder="new username"
               @keydown.native="usernameKeydownHandler" 
@@ -82,11 +91,6 @@ let app = new Vue({
           </b-input-group>
           <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
         </b-collapse>
-      </b-col>
-      <b-col align="right">
-        <h1 style="font-family:Georgia, serif;">
-          <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
-        </h1>    
       </b-col>
     </b-row>
     <b-row><b-col align="center">
