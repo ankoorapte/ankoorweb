@@ -76,7 +76,7 @@ let app = new Vue({
     <b-row>
       <b-col>
         <b-collapse v-model="showSettings">
-          <b-input-group class="m-2">
+          <b-input-group class="m-2 w-75">
             <b-form-input
               placeholder="new username"
               @keydown.native="usernameKeydownHandler" 
