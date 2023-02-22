@@ -120,6 +120,7 @@ let app = new Vue({
       </b-col></b-row>
       <b-tabs card align="center">
         <b-tab title="inbox">
+          <p v-if="!inbox.length">You have no new layer requests.</p>
           <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>
@@ -154,6 +155,7 @@ let app = new Vue({
           </b-col></b-row>
         </b-tab>
         <b-tab title="outbox">
+          <p v-if="!outbox.length">You have not submitted any new layers.</p>
           <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
