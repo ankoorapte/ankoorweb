@@ -73,9 +73,9 @@ let app = new Vue({
         </h1>    
       </b-col>
     </b-row>
-    <b-row>
-      <b-col>
-        <b-collapse v-model="showSettings">
+    <b-collapse v-model="showSettings">
+      <b-row>
+        <b-col>
           <b-input-group class="m-2 w-75">
             <b-form-input
               placeholder="new username"
@@ -90,9 +90,9 @@ let app = new Vue({
             </b-input-group-append>
           </b-input-group>
           <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
-        </b-collapse>
-      </b-col>
-    </b-row>
+        </b-col>
+      </b-row>
+    </b-collapse>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
