@@ -130,7 +130,7 @@ let app = new Vue({
         <b-tabs card align="center">
           <b-tab title="inbox">
             <b-row><b-col align="center">
-              <p v-if="!inbox.length">You have no new layer requests.</p>
+              <p v-if="!inbox.length">you have no new layer requests...</p>
             </b-col></b-row>
             <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
@@ -177,7 +177,7 @@ let app = new Vue({
           </b-tab>
           <b-tab title="outbox">
             <b-row><b-col align="center">
-              <p v-if="!outbox.length">You have not submitted any new layers.</p>
+              <p v-if="!outbox.length">you have not submitted any new layers...</p>
             </b-col></b-row>
             <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
