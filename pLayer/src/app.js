@@ -72,7 +72,7 @@ let app = new Vue({
           <template #button-content>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </template>
-          <b-dropdown-item>update username</b-dropdown-item>
+          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
