@@ -225,6 +225,7 @@ let app = new Vue({
       if(self.signedIn) {
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
+          layers = {};
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
           });
@@ -232,13 +233,15 @@ let app = new Vue({
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
+          console.log("users changed")
+          users = {};
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
           });
         });
         
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          tracks = {}
+          tracks = {};
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
           });
