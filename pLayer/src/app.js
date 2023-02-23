@@ -69,7 +69,7 @@ let app = new Vue({
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-dropdown split right split-variant="outline-danger" @click="signOut" v-if="signedIn" variant="outline-dark" class="m-md-2">
+        <b-dropdown split right split-variant="outline-danger" @click="signOut" v-if="signedIn" variant="outline-dark">
           <template #button-content>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </template>
