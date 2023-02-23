@@ -69,9 +69,9 @@ let app = new Vue({
       </b-col>
       <b-col align="right">
         <b-dropdown split @click="signOut" v-if="signedIn" variant="outline-dark" class="m-md-2">
-          <b-dropdown-text>
+          <template #button-content>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
-          </b-dropdown-text>
+          </template>
           <b-dropdown-item>update username</b-dropdown-item>
         </b-dropdown> 
       </b-col>
