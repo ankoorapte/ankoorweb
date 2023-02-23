@@ -161,7 +161,7 @@ let app = new Vue({
                 <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
               </b-input-group>
               <p class="mt-2">
-                <b-button class="p-1" :disabled="busy" variant="dark" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                <b-button class="p-1" :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
                 <b-button class="p-1" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
               <b-button :disabled="busy || !layer" variant="success" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
