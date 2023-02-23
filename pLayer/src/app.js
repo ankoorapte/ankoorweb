@@ -160,7 +160,7 @@ let app = new Vue({
             </p>
             <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
             <hr>
-            <h5 style="font-family:Georgia, serif;">Discography</h5>
+            <h5 style="font-family:Georgia, serif;"><b>Discography</b></h5>
           </b-col></b-row>
         </b-tab>
         <b-tab title="outbox">
