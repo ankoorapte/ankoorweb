@@ -73,7 +73,6 @@ let app = new Vue({
         </h1>    
       </b-col>
     </b-row>
-    <hr>
     <b-collapse v-model="showSettings">
       <b-row>
         <b-col align="center">
@@ -94,6 +93,7 @@ let app = new Vue({
         </b-col>
       </b-row>
     </b-collapse>
+    <hr>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
