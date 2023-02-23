@@ -313,6 +313,8 @@ let app = new Vue({
       }
     },
     async signOut() {
+      if(!this.paused) await this.togglePlay();
+      this.resetAudioContext();
       unsubscribe_tracks();
       unsubscribe_layers();
       unsubscribe_users();
