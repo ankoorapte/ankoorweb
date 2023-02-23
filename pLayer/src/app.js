@@ -72,28 +72,26 @@ let app = new Vue({
           <b-dropdown-text>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </b-dropdown-text>
-          <b-dropdown-item disabled>
-            <b-input-group class="m-2 w-75">
-              <b-form-input
-                placeholder="new username"
-                @keydown.native="usernameKeydownHandler" 
-                v-model="newUsername" 
-                :state="stateUsername" 
-                trim
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-dropdown-item>
+          <b-dropdown-item>update username</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
     <b-collapse v-model="showSettings">
       <b-row>
         <b-col align="center">
-          
+          <b-input-group class="m-2 w-75">
+            <b-form-input
+              placeholder="new username"
+              @keydown.native="usernameKeydownHandler" 
+              v-model="newUsername" 
+              :state="stateUsername" 
+              trim
+            >
+            </b-form-input>
+            <b-input-group-append>
+              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+            </b-input-group-append>
+          </b-input-group>
         </b-col>
       </b-row>
     </b-collapse>
