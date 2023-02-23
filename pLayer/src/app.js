@@ -239,6 +239,7 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
+          self.getTrack();
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
