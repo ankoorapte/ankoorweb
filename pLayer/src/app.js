@@ -72,8 +72,8 @@ let app = new Vue({
           <template #button-content>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </template>
-          <b-dropdown-item @click="showSettings = !showSettings" active-class="bg-variant:dark">update username</b-dropdown-item>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools" active-class="bg-variant:dark">creator tools</b-dropdown-item>
+          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
+          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">creator tools</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
@@ -112,7 +112,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card v-show="!busy" class="w-75 mb-3 pb-1" border-variant="dark" bg-variant="transparent">
+        <b-card v-show="!busy" class="w-75 mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
           <p style="font-size:20px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
