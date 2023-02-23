@@ -60,7 +60,7 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row>
       <b-col align="left">
-        <h1 style="font-family:Georgia, serif;">
+        <h1 style="font-family:Georgia, serif; font-size:26px">
           <b-icon v-show="!busy" icon="music-note-list"></b-icon>
           <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         </h1>
@@ -115,7 +115,7 @@ let app = new Vue({
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="w-75 mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
-          <p style="font-size:20px">
+          <p style="font-size:22px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
           </p>
           <p v-show="draft.length" style="font-size:14px">
