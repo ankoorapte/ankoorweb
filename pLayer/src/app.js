@@ -167,7 +167,7 @@ let app = new Vue({
               </p>
               <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
               <hr>
-              <h5><b>Discography</b></h5>
+              <h6><b>DISC<b-icon icon="disc-fill"></b-icon>GRAPHY</b></h6>
             </b-col></b-row>
           </b-tab>
           <b-tab title="outbox">
