@@ -397,7 +397,7 @@ let app = new Vue({
     },
     async post() {
       let self = this;
-      if(self.paused) await self.togglePlay();
+      if(!self.paused) await self.togglePlay();
       self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, uid);
@@ -451,9 +451,6 @@ let app = new Vue({
         resolved: true
       }, {merge: true});
       if(accept) {
-        console.log("updating tracks");
-        console.log(baseID);
-        console.log(layerID);
         await updateDoc(doc(db, "tracks", baseID), {
           layers: arrayUnion(layerID),
         }, {merge: true});
