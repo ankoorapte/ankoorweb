@@ -69,7 +69,7 @@ let app = new Vue({
         </b-dropdown>
       </b-col>
       <b-col align="center">
-        <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
         <b-button v-show="!busy" variant="outline-danger" @click="signOut" v-if="signedIn"><b-icon icon="box-arrow-right" aria-hidden="true"></b-icon></b-button>
