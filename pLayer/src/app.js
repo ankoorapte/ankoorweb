@@ -41,6 +41,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
+var AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // CACHES
 let tracks = {};
@@ -241,7 +242,6 @@ let app = new Vue({
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          console.log("users changed")
           users = {};
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
