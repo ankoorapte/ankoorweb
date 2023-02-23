@@ -41,7 +41,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+//var AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // CACHES
 let tracks = {};
