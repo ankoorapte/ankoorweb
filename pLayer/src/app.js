@@ -69,7 +69,7 @@ let app = new Vue({
       </b-col>
       <b-col align="right">
         <b-dropdown split @click="signOut" v-if="signedIn" variant="outline-dark" text="sign out" class="m-md-2">
-          <b-dropdown-item>
+          <b-dropdown-item disabled>
             <b-input-group class="m-2 w-75">
               <b-form-input
                 placeholder="new username"
