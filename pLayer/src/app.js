@@ -74,7 +74,7 @@ let app = new Vue({
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </template>
           <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">creator tools</b-dropdown-item>
+          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
