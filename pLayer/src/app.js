@@ -397,7 +397,7 @@ let app = new Vue({
     },
     async post() {
       let self = this;
-      await self.pause();
+      if(self.paused) await self.togglePlay();
       self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, uid);
