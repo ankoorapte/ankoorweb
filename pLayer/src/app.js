@@ -238,6 +238,7 @@ let app = new Vue({
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
           });
+          self.getTrack();
         });
         
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
