@@ -164,7 +164,7 @@ let app = new Vue({
                 <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
                 <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
-              <b-button class="mt-1" :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
+              <b-button class="mt-0" :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
               <hr>
               <h5><b>Discography</b></h5>
             </b-col></b-row>
