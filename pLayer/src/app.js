@@ -76,7 +76,7 @@ let app = new Vue({
       </b-col>
     </b-row>
     <b-collapse v-model="showSettings">
-      <b-row>
+      <b-row v-if="signedIn">
         <b-col align="center">
           <b-input-group class="m-2">
             <b-form-input
@@ -262,7 +262,7 @@ let app = new Vue({
   },
   computed: {
     stateCredentials() {
-      return this.password.length >= 6 && this.email.includes("@");
+      return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
     },
     invalidCredentials() {
       return 'enter a valid email ID and password with minimum 6 characters.'
