@@ -175,7 +175,7 @@ let app = new Vue({
             </b-col></b-row>
             <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
-                <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
+                <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
                 <p>
                   <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">listen</b-badge>
                 </p>
@@ -267,6 +267,10 @@ let app = new Vue({
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].name;
+    },
+    getBaseUser(uid) {
+      if(!uid || !Object.keys(layers).length) return;
+      return layers[uid].user;
     },
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
