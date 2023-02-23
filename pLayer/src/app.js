@@ -90,7 +90,7 @@ let app = new Vue({
             >
             </b-form-input>
             <b-input-group-append>
-              <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+              <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-col>
@@ -121,10 +121,10 @@ let app = new Vue({
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
           <p>
-            <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           </b-card>
         </b-col></b-row>
@@ -140,7 +140,7 @@ let app = new Vue({
                   <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
                 </p>
                 <p>
-                  <b-badge href="#" variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
+                  <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">listen</b-badge>
                   <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
                   <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
                 </p>
@@ -161,10 +161,10 @@ let app = new Vue({
                 <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
               </b-input-group>
               <p class="mt-2">
-                <b-button class="p-1" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                <b-button class="p-1" :disabled="busy" variant="dark" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
                 <b-button class="p-1" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
-              <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+              <b-button :disabled="busy || !layer" variant="success" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
               <hr>
               <h5><b>Discography</b></h5>
             </b-col></b-row>
@@ -177,7 +177,7 @@ let app = new Vue({
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
                 <p>
-                  <b-badge href="#" variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
+                  <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">listen</b-badge>
                 </p>
               </b-list-group-item>
             </b-list-group>
@@ -264,11 +264,6 @@ let app = new Vue({
     }
   },
   methods: {
-    tabClass(idx) {
-      return (this.tab === idx) ? 
-        ['bg-info', 'text-light'] : 
-        ['bg-light', 'text-dark'];
-    },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].name;
