@@ -108,21 +108,23 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
-      <b-row><b-col align="center">
-        <div ref="pLayer"></div>
-        <p v-show="!busy" style="font-size:20px">
-          <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
-        </p>
-        <p v-show="!busy && draft.length" style="font-size:14px">
-          <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-        </p>
-        <p>
-          <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-        </p>
-      </b-col></b-row>
+      <b-card border-variant="info" bg-variant="transparent">
+        <b-row><b-col align="center">
+          <div ref="pLayer"></div>
+          <p v-show="!busy" style="font-size:20px">
+            <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
+          </p>
+          <p v-show="!busy && draft.length" style="font-size:14px">
+            <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
+          </p>
+          <p>
+            <b-button :disabled="busy" variant="info" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="info" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="info" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+          </p>
+        </b-col></b-row>
+      </b-card>
       <b-tabs card align="center">
         <b-tab title="inbox">
           <b-row><b-col align="center">
