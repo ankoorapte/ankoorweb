@@ -160,11 +160,11 @@ let app = new Vue({
               <b-input-group append="name" class="w-75 mb-1">
                 <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
               </b-input-group>
-              <p class="mt-2 mb-1">
+              <p class="mt-2 mb-0">
                 <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
                 <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
-              <b-button class="mt-0" :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
+              <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
               <hr>
               <h5><b>Discography</b></h5>
             </b-col></b-row>
