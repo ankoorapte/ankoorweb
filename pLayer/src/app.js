@@ -68,7 +68,10 @@ let app = new Vue({
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-dropdown split @click="signOut" v-if="signedIn" variant="outline-dark" text="sign out" class="m-md-2">
+        <b-dropdown split @click="signOut" v-if="signedIn" variant="outline-dark" class="m-md-2">
+          <b-dropdown-text>
+            <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
+          </b-dropdown-text>
           <b-dropdown-item disabled>
             <b-input-group class="m-2 w-75">
               <b-form-input
