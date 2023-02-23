@@ -68,9 +68,9 @@ let app = new Vue({
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <h1 style="font-family:Georgia, serif;">
-          <b-button v-if="signedIn" :pressed.sync="showSettings" variant="outline-dark"><b-icon icon="person-fill"></b-icon></b-button>
-        </h1>    
+        <b-dropdown v-if="signedIn" variant="outline-dark" text="sign out" class="m-md-2">
+          <b-dropdown-item :pressed.sync="showSettings">change username</b-dropdown-item>
+        </b-dropdown> 
       </b-col>
     </b-row>
     <b-collapse v-model="showSettings">
