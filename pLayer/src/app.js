@@ -59,8 +59,8 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="left">
-        <b-dropdown v-show="!busy" split left v-if="signedIn" variant="outline-dark">
-          <template #button-content disabled>
+        <b-dropdown v-show="!busy" split left disabled v-if="signedIn" variant="outline-dark">
+          <template #button-content>
             <b-icon v-show="!busy" icon="music-note-list"></b-icon>
             <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
           </template>
