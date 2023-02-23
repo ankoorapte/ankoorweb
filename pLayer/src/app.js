@@ -81,7 +81,7 @@ let app = new Vue({
     <b-collapse v-model="showSettings">
       <b-row>
         <b-col align="center">
-          <b-input-group class="m-2 w-75">
+          <b-input-group class="m-2">
             <b-form-input
               placeholder="new username"
               @keydown.native="usernameKeydownHandler" 
@@ -113,7 +113,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card v-show="!busy" class="w-75 mb-3 pb-0" border-variant="dark" bg-variant="transparent">
+        <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
           <p style="font-size:22px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
@@ -155,10 +155,10 @@ let app = new Vue({
                 accept="audio/wav"
                 v-model="layer"
                 browse-text="upload"
-                class="w-75 mb-1"
+                class="mb-1"
                 :disabled="busy"
               ></b-form-file>
-              <b-input-group append="name" class="w-75 mb-1">
+              <b-input-group append="name" class="mb-1">
                 <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
               </b-input-group>
               <p class="mt-2 mb-2">
