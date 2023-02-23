@@ -59,10 +59,10 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="left">
-        <b-dropdown left v-if="signedIn" variant="outline-dark">
+        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+        <b-dropdown left v-show="!busy" v-if="signedIn" variant="outline-dark">
           <template #button-content>
-            <b-icon v-show="!busy" icon="music-note-list"></b-icon>
-            <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+            <b-icon icon="music-note-list"></b-icon>
           </template>
           <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
           <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
