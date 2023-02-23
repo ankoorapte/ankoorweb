@@ -41,7 +41,6 @@ const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
-//var AudioContext = window.AudioContext || window.webkitAudioContext;
 
 // CACHES
 let tracks = {};
@@ -141,7 +140,7 @@ let app = new Vue({
                   <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
                 </p>
                 <p>
-                  <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">listen</b-badge>
+                  <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
                   <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
                   <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
                 </p>
@@ -168,6 +167,16 @@ let app = new Vue({
               <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
               <hr>
               <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+                <b-list-group-item class="d-flex justify-content-between align-items-center">
+                  <p>
+                    <b>{{ getTrackName(disco_item.trackID) }}</b>
+                  </p>
+                  <p>
+                    <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                  </p>
+                </b-list-group-item>
+              </b-list-group>
             </b-col></b-row>
           </b-tab>
           <b-tab title="outbox">
@@ -178,7 +187,7 @@ let app = new Vue({
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
                 <p>
-                  <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">listen</b-badge>
+                  <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
                 </p>
               </b-list-group-item>
             </b-list-group>
@@ -215,6 +224,7 @@ let app = new Vue({
       seeker: 0,
       inbox: [],
       outbox: [],
+      discography: [],
       draft: "",
     }
   },
@@ -239,6 +249,7 @@ let app = new Vue({
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
+          self.updateDiscography();
           self.getTrack();
         });
 
@@ -247,7 +258,6 @@ let app = new Vue({
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
           });
-          self.getTrack();
         });
       }
       self.busy = false;
@@ -275,6 +285,10 @@ let app = new Vue({
     getBaseUser(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].user;
+    },
+    getTrackName(uid) {
+      if(!uid || !Object.keys(tracks).length) return;
+      return tracks[uid].name;
     },
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
@@ -468,6 +482,16 @@ let app = new Vue({
           layers: arrayUnion(layerID),
         }, {merge: true});
       }
+    },
+    updateDiscography() {
+      // there has to be a better way
+      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
+    },
+    async playDiscography(index) {
+      if (!this.paused) await this.togglePlay();
+      this.trackID = this.discography[index].trackID;
+      await this.getTrack();
+      await this.togglePlay();
     }
   }
 });
