@@ -58,9 +58,9 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <b-row>
+    <b-row style="font-size:40px">
       <b-col align="left">
-        <h1 style="font-family:Georgia, serif; font-size:26px">
+        <h1 style="font-family:Georgia, serif;">
           <b-icon v-show="!busy" icon="music-note-list"></b-icon>
           <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         </h1>
