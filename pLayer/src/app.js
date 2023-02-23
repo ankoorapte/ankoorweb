@@ -68,8 +68,8 @@ let app = new Vue({
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-dropdown v-if="signedIn" variant="outline-dark" text="sign out" class="m-md-2">
-          <b-dropdown-item :pressed.sync="showSettings">change username</b-dropdown-item>
+        <b-dropdown split @click="signOut" v-if="signedIn" variant="outline-dark" text="sign out" class="m-md-2">
+          <b-dropdown-item @click="showSettings = !showSettings">change username</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
@@ -89,7 +89,6 @@ let app = new Vue({
               <b-button variant="info" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
             </b-input-group-append>
           </b-input-group>
-          <p align="center" class="m-2"><b-button variant="danger" @click="signOut">sign out</b-button></p>
         </b-col>
       </b-row>
     </b-collapse>
@@ -108,7 +107,7 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
-      <b-card border-variant="info" bg-variant="transparent">
+      <b-card class="w-75 mb-2" border-variant="info" bg-variant="transparent">
         <b-row><b-col align="center">
           <div ref="pLayer"></div>
           <p v-show="!busy" style="font-size:20px">
