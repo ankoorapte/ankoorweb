@@ -112,15 +112,15 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card class="w-75 mb-3" border-variant="dark" bg-variant="transparent">
+        <b-card v-show="!busy" class="w-75 mb-3" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
-          <p v-show="!busy" style="font-size:20px">
+          <p style="font-size:20px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
           </p>
-          <p v-show="!busy && draft.length" style="font-size:14px">
+          <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <p v-show="!busy">
+          <p>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
