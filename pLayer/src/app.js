@@ -112,7 +112,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card v-show="!busy" class="w-75 mb-3" border-variant="dark" bg-variant="transparent">
+        <b-card v-show="!busy" class="w-75 mb-3 pb-1" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
           <p style="font-size:20px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
@@ -126,8 +126,8 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
-          </b-card>
-        </b-col></b-row>
+        </b-card>
+      </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center">
           <b-tab title="inbox">
