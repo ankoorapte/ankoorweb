@@ -232,21 +232,20 @@ let app = new Vue({
           self.updateBoxes();
         });
 
-        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          console.log("users changed")
-          users = {};
-          userDocs.forEach((doc) => {
-            users[doc.id] = doc.data();
-          });
-          self.getTrack();
-        });
-        
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           tracks = {};
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
           });
           self.trackID = Object.keys(tracks)[0];
+        });
+
+        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
+          console.log("users changed")
+          users = {};
+          userDocs.forEach((doc) => {
+            users[doc.id] = doc.data();
+          });
           self.getTrack();
         });
       }
