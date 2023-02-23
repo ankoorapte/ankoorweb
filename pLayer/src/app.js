@@ -112,7 +112,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card class="w-75 mb-2" border-variant="info" bg-variant="transparent">
+        <b-card class="w-75 mb-3" border-variant="info" bg-variant="transparent">
           <div ref="pLayer"></div>
           <p v-show="!busy" style="font-size:20px">
             <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b>
