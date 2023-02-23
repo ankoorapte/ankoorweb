@@ -59,22 +59,22 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="left">
-        <h1 style="font-family:Georgia, serif;">
-          <b-icon v-show="!busy" icon="music-note-list"></b-icon>
-          <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        </h1>
+        <b-dropdown v-show="!busy" class="mt-0" split right split-variant="outline-danger" @click="signOut" v-if="signedIn" variant="outline-dark">
+          <template #button-content>
+            <h1 style="font-family:Georgia, serif;">
+              <b-icon v-show="!busy" icon="music-note-list"></b-icon>
+              <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+            </h1>
+          </template>
+          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
+          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
+        </b-dropdown>
       </b-col>
       <b-col align="center">
         <h1 style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-dropdown v-show="!busy" class="mt-0" split right split-variant="outline-danger" @click="signOut" v-if="signedIn" variant="outline-dark">
-          <template #button-content>
-            <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
-          </template>
-          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
-        </b-dropdown> 
+        <b-button v-show="!busy" variant="outline-danger" @click="signOut" v-if="signedIn"><b-icon icon="box-arrow-right" aria-hidden="true"></b-icon></b-button>
       </b-col>
     </b-row>
     <b-collapse v-model="showSettings">
