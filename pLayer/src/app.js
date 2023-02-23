@@ -72,8 +72,8 @@ let app = new Vue({
           <template #button-content>
             <b-icon icon="box-arrow-right" aria-hidden="true"></b-icon>
           </template>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">creator tools</b-dropdown-item>
           <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
+          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">creator tools</b-dropdown-item>
         </b-dropdown> 
       </b-col>
     </b-row>
@@ -128,60 +128,62 @@ let app = new Vue({
           </p>
           </b-card>
         </b-col></b-row>
-      <b-tabs card align="center">
-        <b-tab title="inbox">
-          <b-row><b-col align="center">
-            <p v-if="!inbox.length">You have no new layer requests.</p>
-          </b-col></b-row>
-          <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-            <b-list-group-item class="d-flex justify-content-between align-items-center">
-              <p>
-                <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
+      <b-collapse v-model="showCreatorTools">
+        <b-tabs card align="center">
+          <b-tab title="inbox">
+            <b-row><b-col align="center">
+              <p v-if="!inbox.length">You have no new layer requests.</p>
+            </b-col></b-row>
+            <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
+              <b-list-group-item class="d-flex justify-content-between align-items-center">
+                <p>
+                  <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
+                </p>
+                <p>
+                  <b-badge href="#" variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
+                  <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
+                  <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+          </b-tab>
+          <b-tab title="create" active>
+            <b-row><b-col align="center" v-show="!busy">
+              <b-form-file
+                placeholder=""
+                accept="audio/wav"
+                v-model="layer"
+                browse-text="upload"
+                class="w-75 mb-1"
+                :disabled="busy"
+              ></b-form-file>
+              <b-input-group append="name" class="w-75 mb-1">
+                <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+              </b-input-group>
+              <p class="mt-2">
+                <b-button class="p-1" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                <b-button class="p-1" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
-              <p>
-                <b-badge href="#" variant="info" @click="playDraft(index, 'inbox')">listen</b-badge>
-                <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
-                <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-tab>
-        <b-tab title="create" active>
-          <b-row><b-col align="center" v-show="!busy">
-            <b-form-file
-              placeholder=""
-              accept="audio/wav"
-              v-model="layer"
-              browse-text="upload"
-              class="w-75 mb-1"
-              :disabled="busy"
-            ></b-form-file>
-            <b-input-group append="name" class="w-75 mb-1">
-              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
-            </b-input-group>
-            <p class="mt-2">
-              <b-button class="p-1" :disabled="busy" variant="info" @click="layering = !layering" v-if="!layering"><b-icon icon="plus-circle"></b-icon> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-              <b-button class="p-1" :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"><b-icon icon="dash-circle"></b-icon> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-            </p>
-            <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
-            <hr>
-            <h5><b>Discography</b></h5>
-          </b-col></b-row>
-        </b-tab>
-        <b-tab title="outbox">
-          <b-row><b-col align="center">
-            <p v-if="!outbox.length">You have not submitted any new layers.</p>
-          </b-col></b-row>
-          <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-            <b-list-group-item class="d-flex justify-content-between align-items-center">
-              <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
-              <p>
-                <b-badge href="#" variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-tab>
-      </b-tabs>
+              <b-button :disabled="busy || !layer" variant="info" class="m-1" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+              <hr>
+              <h5><b>Discography</b></h5>
+            </b-col></b-row>
+          </b-tab>
+          <b-tab title="outbox">
+            <b-row><b-col align="center">
+              <p v-if="!outbox.length">You have not submitted any new layers.</p>
+            </b-col></b-row>
+            <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
+              <b-list-group-item class="d-flex justify-content-between align-items-center">
+                <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b></p>
+                <p>
+                  <b-badge href="#" variant="info" @click="playDraft(index, 'outbox')">listen</b-badge>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+          </b-tab>
+        </b-tabs>
+      </b-collapse>
     </b-collapse>
   </b-container>
   `,
