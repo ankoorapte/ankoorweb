@@ -420,7 +420,9 @@ let app = new Vue({
       let trackLayers = tracks[this.trackID].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
+      console.log("start Promise all")
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
+      console.log("end Promise all")
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
