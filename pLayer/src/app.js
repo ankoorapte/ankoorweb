@@ -64,8 +64,9 @@ let app = new Vue({
           <template #button-content>
             <b-icon icon="music-note-list"></b-icon>
           </template>
-          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
           <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
+          <b-dropdown-item @click="showDiscography = !showDiscography">discography</b-dropdown-item>
+          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
         </b-dropdown>
       </b-col>
       <b-col align="center">
@@ -164,15 +165,17 @@ let app = new Vue({
               </p>
               <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
               <hr>
-              <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
-              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                <b-list-group-item class="d-flex justify-content-between align-items-center">
-                  <p>{{ getTrackName(disco_item.trackID) }}</p>
-                  <p>
-                    <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-                  </p>
-                </b-list-group-item>
-              </b-list-group>
+              <b-collapse v-model="showDiscography">
+                <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+                <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+                  <b-list-group-item class="d-flex justify-content-between align-items-center">
+                    <p>{{ getTrackName(disco_item.trackID) }}</p>
+                    <p>
+                      <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                    </p>
+                  </b-list-group-item>
+                </b-list-group>
+              </b-collapse>
             </b-col></b-row>
           </b-tab>
           <b-tab title="outbox">
@@ -204,6 +207,7 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       showCreatorTools: false,
+      showDiscography: false,
       layer: null,
       layers: [],
       layerBuffers: [],
@@ -407,7 +411,7 @@ let app = new Vue({
       console.log("got fetch response " + layerID.slice(0,5))
       let arrayBuffer = await fetch_url.arrayBuffer();
       console.log("got arrayBuffer " + layerID.slice(0,5))
-      let decodedBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
+      let decodedBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       console.log("got decodedBuffer " + layerID.slice(0,5))
       return decodedBuffer;
       return this.audioContext.decodeAudioData(
