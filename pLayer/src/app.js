@@ -407,7 +407,9 @@ let app = new Vue({
       console.log("got fetch response " + layerID.slice(0,5))
       let arrayBuffer = await fetch_url.arrayBuffer();
       console.log("got arrayBuffer " + layerID.slice(0,5))
-      return arrayBuffer;
+      let decodedBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
+      console.log("got decodedBuffer " + layerID.slice(0,5))
+      return decodedBuffer;
       return this.audioContext.decodeAudioData(
         await (
           await fetch(await getDownloadURL(ref(storage, layerID)))
