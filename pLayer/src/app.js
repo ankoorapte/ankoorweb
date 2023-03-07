@@ -260,6 +260,7 @@ let app = new Vue({
           });
         });
       }
+      console.log("end onAuthStateChanged")
       self.busy = false;
     });
     self.busy = false;
@@ -372,6 +373,7 @@ let app = new Vue({
       this.merger.connect(this.audioContext.destination);
     },
     async toggleTrack(forward) {
+      console.log("start toggleTrack")
       this.busy = true;
       if(!this.paused) await this.togglePlay();
       if(forward) { this.trackIdx++; }
@@ -385,6 +387,7 @@ let app = new Vue({
       await this.getTrack();
       await this.togglePlay();
       this.busy = false;
+      console.log("end toggleTrack")
     },
     async togglePlay() {
       if(this.paused) {
@@ -411,6 +414,7 @@ let app = new Vue({
       );
     },
     async getTrack(draftLayer="") {
+      console.log("start getTrack")
       if(!Object.keys(tracks).length) return;
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
@@ -421,6 +425,7 @@ let app = new Vue({
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
+      console.log("end getTrack")
     },
     async post() {
       let self = this;
