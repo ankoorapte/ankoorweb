@@ -400,7 +400,7 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async layerBuffer(layerID) {
-      console.log("start " + layerID)
+      console.log("start " + layerID.slice(0,5))
       let url = await getDownloadURL(ref(storage, layerID));
       console.log("got download URL " + layerID.slice(0,5))
       let fetch_url = await fetch(url);
@@ -420,9 +420,7 @@ let app = new Vue({
       let trackLayers = tracks[this.trackID].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
-      console.log("culprit start")
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
-      console.log("culprit end")
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
