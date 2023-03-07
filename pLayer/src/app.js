@@ -239,24 +239,24 @@ let app = new Vue({
             layers[doc.id] = doc.data();
           });
           self.updateBoxes();
-        }).then(() => {
+        });
+
+        unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
           console.log("start tracksSnapshot");
-          unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-            tracks = {};
-            trackDocs.forEach((doc) => {
-              tracks[doc.id] = doc.data();
-            });
-            self.trackID = Object.keys(tracks)[0];
-            self.updateDiscography();
-            self.getTrack();
+          tracks = {};
+          trackDocs.forEach((doc) => {
+            tracks[doc.id] = doc.data();
           });
-        }).then(() => {
+          self.trackID = Object.keys(tracks)[0];
+          self.updateDiscography();
+          self.getTrack();
+        });
+
+        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
           console.log("start usersSnapshot");
-          unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-            users = {};
-            userDocs.forEach((doc) => {
-              users[doc.id] = doc.data();
-            });
+          users = {};
+          userDocs.forEach((doc) => {
+            users[doc.id] = doc.data();
           });
         });
       }
