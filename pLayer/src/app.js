@@ -228,31 +228,35 @@ let app = new Vue({
     let self = this;
     onAuthStateChanged(auth, async (user) => {
       self.busy = true;
+      console.log("start onAuthStateChanged");
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
+          console.log("start layersSnapshot");
           layers = {};
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
           });
           self.updateBoxes();
-        });
-
-        unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          tracks = {};
-          trackDocs.forEach((doc) => {
-            tracks[doc.id] = doc.data();
+        }).then(() => {
+          console.log("start tracksSnapshot");
+          unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
+            tracks = {};
+            trackDocs.forEach((doc) => {
+              tracks[doc.id] = doc.data();
+            });
+            self.trackID = Object.keys(tracks)[0];
+            self.updateDiscography();
+            self.getTrack();
           });
-          self.trackID = Object.keys(tracks)[0];
-          self.updateDiscography();
-          self.getTrack();
-        });
-
-        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          users = {};
-          userDocs.forEach((doc) => {
-            users[doc.id] = doc.data();
+        }).then(() => {
+          console.log("start usersSnapshot");
+          unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
+            users = {};
+            userDocs.forEach((doc) => {
+              users[doc.id] = doc.data();
+            });
           });
         });
       }
