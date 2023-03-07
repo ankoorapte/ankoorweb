@@ -183,16 +183,18 @@ let app = new Vue({
       </b-collapse>
       <hr>
       <b-collapse v-model="showDiscography">
-      <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
-      <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-        <b-list-group-item class="d-flex justify-content-between align-items-center">
-          <p>{{ getTrackName(disco_item.trackID) }}</p>
-          <p>
-            <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-          </p>
-        </b-list-group-item>
-      </b-list-group>
-    </b-collapse>
+        <b-row><b-col align="center">
+        <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+          <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+            <b-list-group-item class="d-flex justify-content-between align-items-center">
+              <p>{{ getTrackName(disco_item.trackID) }}</p>
+              <p>
+                <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+              </p>
+            </b-list-group-item>
+          </b-list-group>
+        </b-col></b-row>
+      </b-collapse>
     </b-collapse>
   </b-container>
   `,
