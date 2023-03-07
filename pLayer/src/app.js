@@ -164,18 +164,6 @@ let app = new Vue({
                 <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               </p>
               <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
-              <hr>
-              <b-collapse v-model="showDiscography">
-                <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
-                <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                  <b-list-group-item class="d-flex justify-content-between align-items-center">
-                    <p>{{ getTrackName(disco_item.trackID) }}</p>
-                    <p>
-                      <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-                    </p>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-collapse>
             </b-col></b-row>
           </b-tab>
           <b-tab title="outbox">
@@ -193,6 +181,18 @@ let app = new Vue({
           </b-tab>
         </b-tabs>
       </b-collapse>
+      <hr>
+      <b-collapse v-model="showDiscography">
+      <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+      <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+        <b-list-group-item class="d-flex justify-content-between align-items-center">
+          <p>{{ getTrackName(disco_item.trackID) }}</p>
+          <p>
+            <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+          </p>
+        </b-list-group-item>
+      </b-list-group>
+    </b-collapse>
     </b-collapse>
   </b-container>
   `,
