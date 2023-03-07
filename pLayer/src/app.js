@@ -228,12 +228,10 @@ let app = new Vue({
     let self = this;
     onAuthStateChanged(auth, async (user) => {
       self.busy = true;
-      console.log("start onAuthStateChanged");
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
-          console.log("start layersSnapshot");
           layers = {};
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
@@ -242,7 +240,6 @@ let app = new Vue({
         });
 
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          console.log("start tracksSnapshot");
           tracks = {};
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
@@ -253,14 +250,12 @@ let app = new Vue({
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          console.log("start usersSnapshot");
           users = {};
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
           });
         });
       }
-      console.log("end onAuthStateChanged")
       self.busy = false;
     });
     self.busy = false;
@@ -373,7 +368,6 @@ let app = new Vue({
       this.merger.connect(this.audioContext.destination);
     },
     async toggleTrack(forward) {
-      console.log("start toggleTrack")
       this.busy = true;
       if(!this.paused) await this.togglePlay();
       if(forward) { this.trackIdx++; }
@@ -387,7 +381,6 @@ let app = new Vue({
       await this.getTrack();
       await this.togglePlay();
       this.busy = false;
-      console.log("end toggleTrack")
     },
     async togglePlay() {
       if(this.paused) {
@@ -407,6 +400,7 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async layerBuffer(layerID) {
+      console.log("layerBuffer start layerID")
       return this.audioContext.decodeAudioData(
         await (
           await fetch(await getDownloadURL(ref(storage, layerID)))
@@ -414,20 +408,18 @@ let app = new Vue({
       );
     },
     async getTrack(draftLayer="") {
-      console.log("start getTrack")
       if(!Object.keys(tracks).length) return;
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
-      console.log("start Promise all")
+      console.log("culprit start")
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
-      console.log("end Promise all")
+      console.log("culprit end")
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
-      console.log("end getTrack")
     },
     async post() {
       let self = this;
