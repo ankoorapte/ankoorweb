@@ -141,11 +141,11 @@ let app = new Vue({
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
           <b-collapse v-model="showLayers">
-            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+            <b-list-group v-for="(layer_item, index) in layerList" v-bind:key="index">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <b-col>
-                  <p> layer name by artist </p>
-                  <audio controls src="" controlslist="nodownload noplaybackrate"></audio>
+                  <p> {{ getLayerName(layer_item.layerID) }} by {{ getUserName(layer_item.userID)}} </p>
+                  <audio controls src="layerBuffers(index)" controlslist="nodownload noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
@@ -235,6 +235,7 @@ let app = new Vue({
       layer: null,
       layers: [],
       layerBuffers: [],
+      layerList: [],
       trackName: "",
       artistNames: [],
       newTrackName: "",
@@ -455,6 +456,7 @@ let app = new Vue({
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
+      this.layerList = trackLayers.map((x) => {return {layerID:x, userID:layers[x].user}})
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
