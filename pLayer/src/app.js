@@ -436,7 +436,7 @@ let app = new Vue({
         this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
-          source.buffer = layerBuffer.data;
+          source.buffer = await this.audioContext.decodeAudioData(layerBuffer.data);
           source.connect(this.merger, 0, 0);
           source.connect(this.merger, 0, 1);
           source.start(0, this.seeker);
@@ -452,11 +452,11 @@ let app = new Vue({
       return {
         id: layerID,
         user: layers[layerID].user,
-        data: await this.audioContext.decodeAudioData(
+        data: 
           await (
             await fetch(await getDownloadURL(ref(storage, layerID)))
           ).arrayBuffer()
-        )
+        
       }
     }, 
     async getTrack(draftLayer="") {
