@@ -61,21 +61,52 @@ let app = new Vue({
     <b-row style="font-size:40px">
       <b-col align="left">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-dropdown left v-show="!busy" v-if="signedIn" variant="outline-dark">
-          <template #button-content>
-            <b-icon icon="music-note-list"></b-icon>
-          </template>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create</b-dropdown-item>
-          <b-dropdown-item @click="showSettings = !showSettings">you</b-dropdown-item>
-        </b-dropdown>
+        <b-button v-show="!busy" v-if="signedIn" variant="outline-dark" @click="showCreatorTools = !showCreatorTools"><b-icon icon="music-note-list"></b-icon></b-button>
       </b-col>
       <b-col align="center">
         <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-button v-show="!busy" variant="outline-danger" @click="signOut" v-if="signedIn"><b-icon icon="box-arrow-right" aria-hidden="true"></b-icon></b-button>
+        <b-button v-show="!busy" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench" aria-hidden="true"></b-icon></b-button>
       </b-col>
     </b-row>
+    <b-collapse v-model="showSettings" v-show="signedIn">
+      <b-row><b-col align="center">
+        <h5><b>ACCOUNT</b></h5>
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new username"
+            @keydown.native="usernameKeydownHandler" 
+            v-model="newUsername" 
+            :state="stateUsername" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-col></b-row>
+      <b-row><b-col align="center">
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new password"
+            @keydown.native="passwordKeydownHandler" 
+            v-model="newPassword" 
+            type="password" 
+            :state="statePassword" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-col></b-row>
+      <b-row><b-col>
+        <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
+      </b-col></b-row>
+    </b-collapse>
     <hr>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -110,24 +141,43 @@ let app = new Vue({
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center" border-variant="dark">
-          <b-tab title="inbox">
-            <b-row><b-col align="center">
-              <p v-if="!inbox.length">you have no new layer requests...</p>
-            </b-col></b-row>
-            <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-              <b-list-group-item class="d-flex justify-content-between align-items-center">
-                <p>
-                  <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
-                </p>
-                <p>
-                  <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
-                  <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
-                  <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
-                </p>
-              </b-list-group-item>
-            </b-list-group>
+          <b-tab title="in progress">
+            <b-card no-body>
+              <b-tabs pills card vertical nav-wrapper-class="w-50">
+                <b-tab title="inbox" active>
+                  <b-row><b-col align="center">
+                    <p v-if="!inbox.length">you have no new layer requests...</p>
+                  </b-col></b-row>
+                  <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
+                    <b-list-group-item class="d-flex justify-content-between align-items-center">
+                      <p>
+                        <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
+                      </p>
+                      <p>
+                        <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
+                        <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
+                        <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
+                      </p>
+                    </b-list-group-item>
+                  </b-list-group>
+                </b-tab>
+                <b-tab title="outbox">
+                  <b-row><b-col align="center">
+                    <p v-if="!outbox.length">you have not submitted any new layers...</p>
+                  </b-col></b-row>
+                  <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
+                    <b-list-group-item class="d-flex justify-content-between align-items-center">
+                      <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
+                      <p>
+                        <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
+                      </p>
+                    </b-list-group-item>
+                  </b-list-group>
+                </b-tab>
+              </b-tabs>
+            </b-card>
           </b-tab>
-          <b-tab title="create" active>
+          <b-tab title="new" active>
             <b-row><b-col align="center" v-show="!busy">
               <b-form-file
                 placeholder=""
@@ -147,70 +197,17 @@ let app = new Vue({
               </p>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="outbox">
-            <b-row><b-col align="center">
-              <p v-if="!outbox.length">you have not submitted any new layers...</p>
-            </b-col></b-row>
-            <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
+          <b-tab title="released">
+            <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
-                <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
+                <p>{{ getTrackName(disco_item.trackID) }}</p>
                 <p>
-                  <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
+                  <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
                 </p>
               </b-list-group-item>
             </b-list-group>
           </b-tab>
         </b-tabs>
-      </b-collapse>
-      <hr>
-      <b-collapse v-model="showSettings">
-        <b-row v-if="signedIn">
-          <b-col align="center">
-            <h5><b>ACCOUNT</b></h5>
-            <b-input-group class="m-2">
-              <b-form-input
-                placeholder="new username"
-                @keydown.native="usernameKeydownHandler" 
-                v-model="newUsername" 
-                :state="stateUsername" 
-                trim
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col>
-        </b-row>
-        <b-row v-if="signedIn">
-          <b-col align="center">
-            <b-input-group class="m-2">
-              <b-form-input
-                placeholder="new password"
-                @keydown.native="passwordKeydownHandler" 
-                v-model="newPassword" 
-                type="password" 
-                :state="statePassword" 
-                trim
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col>
-        </b-row>
-        <b-row><b-col align="center">
-          <h5><b>DISC<b-icon class="mt-1 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
-          <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-            <b-list-group-item class="d-flex justify-content-between align-items-center">
-              <p>{{ getTrackName(disco_item.trackID) }}</p>
-              <p>
-                <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-col></b-row>
       </b-collapse>
     </b-collapse>
   </b-container>
