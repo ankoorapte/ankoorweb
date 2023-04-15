@@ -136,6 +136,13 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
+          <p>
+            <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = !showLayers"><b-icon icon="arrow-down-circle"></b-icon></b-button>
+            <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = !showLayers"><b-icon icon="arrow-up-circle"></b-icon></b-button>
+          </p>
+          <b-collapse v-model="showLayers">
+            
+          </b-collapse>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
