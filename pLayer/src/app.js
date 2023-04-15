@@ -229,6 +229,7 @@ let app = new Vue({
       newPassword: "",
       busy: true,
       showSettings: false,
+      showLayers: false,
       showCreatorTools: false,
       layer: null,
       layers: [],
