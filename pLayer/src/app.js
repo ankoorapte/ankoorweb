@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword, 
   sendEmailVerification, 
   updateProfile, 
+  updatePassword,
   onAuthStateChanged, 
   signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
@@ -90,6 +91,24 @@ let app = new Vue({
             </b-form-input>
             <b-input-group-append>
               <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-col>
+      </b-row>
+      <b-row v-if="signedIn">
+        <b-col align="center">
+          <b-input-group class="m-2">
+            <b-form-input
+              placeholder="new password"
+              @keydown.native="passwordKeydownHandler" 
+              v-model="newPassword" 
+              type="password" 
+              :state="statePassword" 
+              trim
+            >
+            </b-form-input>
+            <b-input-group-append>
+              <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-col>
@@ -206,6 +225,7 @@ let app = new Vue({
       email: "",
       password: "",
       newUsername: "",
+      newPassword: "",
       busy: true,
       showSettings: false,
       showCreatorTools: false,
@@ -277,6 +297,9 @@ let app = new Vue({
       return this.user
         && !Object.keys(users).includes(this.newUsername)
         && Boolean(this.newUsername.length);
+    },
+    statePassword() {
+      return this.newPassword.length >= 6;
     }
   },
   methods: {
@@ -356,6 +379,12 @@ let app = new Vue({
       });
       self.busy = false;
     },
+    async changePassword() {
+      let self = this;
+      self.busy = true;
+      await updatePassword(auth.currentUser, self.newPassword);
+      self.busy = false;
+    },
     signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
         this.signIn();
@@ -364,6 +393,11 @@ let app = new Vue({
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername(0);
+      }
+    },
+    passwordKeydownHandler(event) {
+      if (event.which === 13 && this.statePassword) {
+        this.changePassword();
       }
     },
     resetAudioContext() {
