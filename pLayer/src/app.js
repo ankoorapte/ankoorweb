@@ -137,8 +137,8 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           <p>
-            <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = 1"><b-icon icon="arrow-down-circle"></b-icon></b-button>
-            <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = 0"><b-icon icon="arrow-up-circle"></b-icon></b-button>
+            <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
+            <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
           <b-collapse v-model="showLayers">
             <audio controls autoplay src=""></audio>
