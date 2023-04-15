@@ -310,6 +310,7 @@ let app = new Vue({
       return layers[uid].name;
     },
     getLayerURL(buffer) {
+      console.log(window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" })))
       return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }))
     },
     getBaseUser(uid) {
