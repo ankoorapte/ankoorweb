@@ -439,16 +439,6 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async layerBuffer(layerID) {
-      console.log("start " + layerID.slice(0,5))
-      let url = await getDownloadURL(ref(storage, layerID));
-      console.log("got download URL " + layerID.slice(0,5))
-      let fetch_url = await fetch(url);
-      console.log("got fetch response " + layerID.slice(0,5))
-      let arrayBuffer = await fetch_url.arrayBuffer();
-      console.log("got arrayBuffer " + layerID.slice(0,5))
-      let decodedBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-      console.log("got decodedBuffer " + layerID.slice(0,5))
-      return decodedBuffer;
       return this.audioContext.decodeAudioData(
         await (
           await fetch(await getDownloadURL(ref(storage, layerID)))
