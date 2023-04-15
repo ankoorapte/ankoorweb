@@ -145,7 +145,7 @@ let app = new Vue({
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <b-col>
                   <p> {{ getLayerName(layer_item.layerID) }} by {{ getUserName(layer_item.userID)}} </p>
-                  <audio controls src="layerBuffers(index)" controlslist="nodownload noplaybackrate"></audio>
+                  <audio controls :src="layerBuffers(index)" controlslist="nodownload noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
