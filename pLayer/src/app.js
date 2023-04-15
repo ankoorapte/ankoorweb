@@ -164,9 +164,9 @@ let app = new Vue({
       </b-collapse>
       <hr>
       <b-collapse v-model="showSettings">
-        <h5><b>ACCOUNT</b></h5>
         <b-row v-if="signedIn">
           <b-col align="center">
+            <h5><b>ACCOUNT</b></h5>
             <b-input-group class="m-2">
               <b-form-input
                 placeholder="new username"
