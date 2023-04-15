@@ -142,7 +142,7 @@ let app = new Vue({
         <b-tabs card align="center" border-variant="dark">
           <b-tab title="in progress">
             <b-card no-body>
-              <b-tabs pills card vertical nav-wrapper-class="w-50">
+              <b-tabs pills card vertical nav-wrapper-class="w-25">
                 <b-tab title="inbox" active>
                   <b-row><b-col align="center">
                     <p v-if="!inbox.length">you have no new layer requests...</p>
