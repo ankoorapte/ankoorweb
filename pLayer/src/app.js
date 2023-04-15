@@ -109,7 +109,7 @@ let app = new Vue({
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
-        <b-tabs card align="center" border-variant="primary">
+        <b-tabs card align="center" border-variant="dark">
           <b-tab title="inbox">
             <b-row><b-col align="center">
               <p v-if="!inbox.length">you have no new layer requests...</p>
