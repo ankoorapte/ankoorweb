@@ -353,6 +353,9 @@ let app = new Vue({
         if(e.code == "auth/user-not-found") {
           await this.createUser();
         }
+        if(e.code == "auth/wrong-password") {
+          alert("Wrong password!")
+        }
       }
     },
     async signOut() {
