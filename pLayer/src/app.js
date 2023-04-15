@@ -142,6 +142,14 @@ let app = new Vue({
           </p>
           <b-collapse v-model="showLayers">
             <audio controls autoplay src=""></audio>
+            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+              <b-list-group-item class="d-flex justify-content-between align-items-center">
+                <b-row><b-col>
+                  <p> layer name by artist </p>
+                  <audio src=""></audio>
+                </b-col></b-row>
+              </b-list-group-item>
+            </b-list-group>
           </b-collapse>
         </b-card>
       </b-col></b-row>
@@ -171,9 +179,6 @@ let app = new Vue({
             <b-card no-body>
               <b-tabs pills card vertical nav-wrapper-class="w-25">
                 <b-tab title="inbox" active>
-                  <b-row><b-col align="center">
-                    <p v-if="!inbox.length">you have no new layer requests...</p>
-                  </b-col></b-row>
                   <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                     <b-list-group-item class="d-flex justify-content-between align-items-center">
                       <p>
@@ -188,9 +193,6 @@ let app = new Vue({
                   </b-list-group>
                 </b-tab>
                 <b-tab title="outbox">
-                  <b-row><b-col align="center">
-                    <p v-if="!outbox.length">you have not submitted any new layers...</p>
-                  </b-col></b-row>
                   <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                     <b-list-group-item class="d-flex justify-content-between align-items-center">
                       <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
@@ -431,7 +433,7 @@ let app = new Vue({
         this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
-          source.buffer = layerBuffer;
+          source.buffer = await this.audioContext.decodeAudioData(layerBuffer);
           source.connect(this.merger, 0, 0);
           source.connect(this.merger, 0, 1);
           source.start(0, this.seeker);
@@ -444,12 +446,9 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async layerBuffer(layerID) {
-      return this.audioContext.decodeAudioData(
-        await (
-          await fetch(await getDownloadURL(ref(storage, layerID)))
-        ).arrayBuffer()
-      );
-    },
+      let res = await fetch(await getDownloadURL(ref(storage, layerID))); 
+      return res.arrayBuffer();
+    }, 
     async getTrack(draftLayer="") {
       if(!Object.keys(tracks).length) return;
       this.busy = true;
