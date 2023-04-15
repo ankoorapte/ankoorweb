@@ -143,10 +143,10 @@ let app = new Vue({
           <b-collapse v-model="showLayers">
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
-                <b-row><b-col>
+                <b-col>
                   <p> layer name by artist </p>
                   <audio controls src=""></audio>
-                </b-col></b-row>
+                </b-col>
               </b-list-group-item>
             </b-list-group>
           </b-collapse>
