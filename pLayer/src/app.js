@@ -140,7 +140,7 @@ let app = new Vue({
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center" border-variant="dark">
-          <b-tab title="in progress">
+          <b-tab title="ongoing">
             <b-card no-body>
               <b-tabs pills card vertical nav-wrapper-class="w-25">
                 <b-tab title="inbox" active>
