@@ -145,7 +145,7 @@ let app = new Vue({
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <b-col>
                   <p> layer name by artist </p>
-                  <audio controls src=""></audio>
+                  <audio controls src="" controlslist="nodownload noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
