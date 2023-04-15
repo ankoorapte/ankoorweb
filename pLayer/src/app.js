@@ -201,7 +201,7 @@ let app = new Vue({
           </b-col>
         </b-row>
         <b-row><b-col align="center">
-          <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+          <h5><b>DISC<b-icon class="mt-1 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
           <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>{{ getTrackName(disco_item.trackID) }}</p>
