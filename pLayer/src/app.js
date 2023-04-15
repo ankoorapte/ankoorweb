@@ -65,9 +65,8 @@ let app = new Vue({
           <template #button-content>
             <b-icon icon="music-note-list"></b-icon>
           </template>
-          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create layers</b-dropdown-item>
-          <b-dropdown-item @click="showDiscography = !showDiscography">discography</b-dropdown-item>
-          <b-dropdown-item @click="showSettings = !showSettings">update username</b-dropdown-item>
+          <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create</b-dropdown-item>
+          <b-dropdown-item @click="showSettings = !showSettings">account</b-dropdown-item>
         </b-dropdown>
       </b-col>
       <b-col align="center">
@@ -199,11 +198,9 @@ let app = new Vue({
             </b-list-group>
           </b-tab>
         </b-tabs>
-      </b-collapse>
-      <hr>
-      <b-collapse v-model="showDiscography">
+        <hr>
         <b-row><b-col align="center">
-        <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
+          <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
           <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
             <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p>{{ getTrackName(disco_item.trackID) }}</p>
@@ -229,7 +226,6 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       showCreatorTools: false,
-      showDiscography: false,
       layer: null,
       layers: [],
       layerBuffers: [],
