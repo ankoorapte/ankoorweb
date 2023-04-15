@@ -140,7 +140,27 @@ let app = new Vue({
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center" border-variant="dark">
-          <b-tab title="ongoing">
+          <b-tab title="new" active>
+            <b-row><b-col align="center" v-show="!busy">
+              <b-form-file
+                placeholder=""
+                accept="audio/wav"
+                v-model="layer"
+                browse-text="upload"
+                class="mb-1"
+                :disabled="busy"
+              ></b-form-file>
+              <b-input-group append="name" class="mb-1">
+                <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+              </b-input-group>
+              <p class="mt-2">
+                <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
+              </p>
+            </b-col></b-row>
+          </b-tab>
+          <b-tab title="drafts">
             <b-card no-body>
               <b-tabs pills card vertical nav-wrapper-class="w-25">
                 <b-tab title="inbox" active>
@@ -176,27 +196,7 @@ let app = new Vue({
               </b-tabs>
             </b-card>
           </b-tab>
-          <b-tab title="new" active>
-            <b-row><b-col align="center" v-show="!busy">
-              <b-form-file
-                placeholder=""
-                accept="audio/wav"
-                v-model="layer"
-                browse-text="upload"
-                class="mb-1"
-                :disabled="busy"
-              ></b-form-file>
-              <b-input-group append="name" class="mb-1">
-                <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
-              </b-input-group>
-              <p class="mt-2">
-                <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-                <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-                <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
-              </p>
-            </b-col></b-row>
-          </b-tab>
-          <b-tab title="released">
+          <b-tab title="releases">
             <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <p>{{ getTrackName(disco_item.trackID) }}</p>
