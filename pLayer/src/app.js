@@ -141,12 +141,11 @@ let app = new Vue({
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
           <b-collapse v-model="showLayers">
-            <audio controls autoplay src=""></audio>
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <b-row><b-col>
                   <p> layer name by artist </p>
-                  <audio src=""></audio>
+                  <audio controls src=""></audio>
                 </b-col></b-row>
               </b-list-group-item>
             </b-list-group>
