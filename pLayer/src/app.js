@@ -177,11 +177,13 @@ let app = new Vue({
               <b-input-group append="name" class="mb-1">
                 <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
               </b-input-group>
-              <p class="mt-2 mb-2">
-                <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-                <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-              </p>
-              <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
+              <b-row><b-col align="center">
+                <p class="mt-2 mb-2">
+                  <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                  <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+                </p>
+                <b-button :disabled="busy || !layer" variant="success" @click="post()">post</b-button>
+              </b-col></b-row>
             </b-col></b-row>
           </b-tab>
           <b-tab title="outbox">
