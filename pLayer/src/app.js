@@ -66,7 +66,7 @@ let app = new Vue({
             <b-icon icon="music-note-list"></b-icon>
           </template>
           <b-dropdown-item @click="showCreatorTools = !showCreatorTools">create</b-dropdown-item>
-          <b-dropdown-item @click="showSettings = !showSettings">account</b-dropdown-item>
+          <b-dropdown-item @click="showSettings = !showSettings">you</b-dropdown-item>
         </b-dropdown>
       </b-col>
       <b-col align="center">
@@ -76,43 +76,6 @@ let app = new Vue({
         <b-button v-show="!busy" variant="outline-danger" @click="signOut" v-if="signedIn"><b-icon icon="box-arrow-right" aria-hidden="true"></b-icon></b-button>
       </b-col>
     </b-row>
-    <b-collapse v-model="showSettings">
-      <b-row v-if="signedIn">
-        <b-col align="center">
-          <b-input-group class="m-2">
-            <b-form-input
-              placeholder="new username"
-              @keydown.native="usernameKeydownHandler" 
-              v-model="newUsername" 
-              :state="stateUsername" 
-              trim
-            >
-            </b-form-input>
-            <b-input-group-append>
-              <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-col>
-      </b-row>
-      <b-row v-if="signedIn">
-        <b-col align="center">
-          <b-input-group class="m-2">
-            <b-form-input
-              placeholder="new password"
-              @keydown.native="passwordKeydownHandler" 
-              v-model="newPassword" 
-              type="password" 
-              :state="statePassword" 
-              trim
-            >
-            </b-form-input>
-            <b-input-group-append>
-              <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-col>
-      </b-row>
-    </b-collapse>
     <hr>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -198,7 +161,44 @@ let app = new Vue({
             </b-list-group>
           </b-tab>
         </b-tabs>
-        <hr>
+      </b-collapse>
+      <hr>
+      <b-collapse v-model="showSettings">
+        <b-row v-if="signedIn">
+          <b-col align="center">
+            <b-input-group class="m-2">
+              <b-form-input
+                placeholder="new username"
+                @keydown.native="usernameKeydownHandler" 
+                v-model="newUsername" 
+                :state="stateUsername" 
+                trim
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-col>
+        </b-row>
+        <b-row v-if="signedIn">
+          <b-col align="center">
+            <b-input-group class="m-2">
+              <b-form-input
+                placeholder="new password"
+                @keydown.native="passwordKeydownHandler" 
+                v-model="newPassword" 
+                type="password" 
+                :state="statePassword" 
+                trim
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-col>
+        </b-row>
         <b-row><b-col align="center">
           <h5><b>DISC<b-icon class="mt-0 mb-1" icon="disc-fill"></b-icon>GRAPHY</b></h5>
           <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
