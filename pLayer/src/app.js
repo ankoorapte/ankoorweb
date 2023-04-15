@@ -141,11 +141,11 @@ let app = new Vue({
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
           <b-collapse v-model="showLayers">
-            <b-list-group v-for="(layer_item, index) in layerList" v-bind:key="index">
+            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item class="d-flex justify-content-between align-items-center">
                 <b-col>
-                  <p> {{ getLayerName(layer_item.layerID) }} by {{ getUserName(layer_item.userID)}} </p>
-                  <audio controls :src="layerBuffers[index]" controlslist="nodownload noplaybackrate"></audio>
+                  <p> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
+                  <audio controls :src="getLayerURL(layer_item.data)" controlslist="nodownload noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
@@ -235,7 +235,6 @@ let app = new Vue({
       layer: null,
       layers: [],
       layerBuffers: [],
-      layerList: [],
       trackName: "",
       artistNames: [],
       newTrackName: "",
@@ -309,6 +308,9 @@ let app = new Vue({
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].name;
+    },
+    getLayerURL(buffer) {
+      return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }))
     },
     getBaseUser(uid) {
       if(!uid || !Object.keys(layers).length) return;
@@ -433,7 +435,7 @@ let app = new Vue({
         this.resetAudioContext();
         for(const layerBuffer of this.layerBuffers) {
           let source = this.audioContext.createBufferSource();
-          source.buffer = await this.audioContext.decodeAudioData(layerBuffer);
+          source.buffer = layerBuffer.data;
           source.connect(this.merger, 0, 0);
           source.connect(this.merger, 0, 1);
           source.start(0, this.seeker);
@@ -446,8 +448,15 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async layerBuffer(layerID) {
-      let res = await fetch(await getDownloadURL(ref(storage, layerID))); 
-      return res.arrayBuffer();
+      return {
+        id: layerID,
+        user: layers[layerID].user,
+        data: await this.audioContext.decodeAudioData(
+          await (
+            await fetch(await getDownloadURL(ref(storage, layerID)))
+          ).arrayBuffer()
+        )
+      }
     }, 
     async getTrack(draftLayer="") {
       if(!Object.keys(tracks).length) return;
@@ -456,7 +465,6 @@ let app = new Vue({
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
       this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
-      this.layerList = trackLayers.map((x) => {return {layerID:x, userID:layers[x].user}})
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
