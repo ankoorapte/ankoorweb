@@ -124,8 +124,8 @@ let app = new Vue({
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
-          <p style="font-size:22px"><b>{{trackName}}</b></p>
-          <p style="font-size:16px"><b>{{artistNames.join(", ")}}</b></p>
+          <p style="font-size:22px" class="mb-0"><b>{{trackName}}</b></p>
+          <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
