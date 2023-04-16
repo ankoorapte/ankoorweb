@@ -207,8 +207,8 @@ let app = new Vue({
           <b-tab title="releases">
             <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p>{{ getTrackName(disco_item.trackID) }}</p>
-                <p>
+                <p class="ml-2">{{ getTrackName(disco_item.trackID) }}</p>
+                <p class="mr-2">
                   <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
                 </p>
               </b-list-group-item>
