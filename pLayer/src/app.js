@@ -140,14 +140,16 @@ let app = new Vue({
             <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
-          <b-list-group v-show="showLayers" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <b-col>
-                <p class="mb-0"> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
-                <audio class="p-0" controls :src="getLayerURL(layer_item.data)" controlslist="nodownload noplaybackrate"></audio>
-              </b-col>
-            </b-list-group-item>
-          </b-list-group>
+          <b-collapse v-if="false" v-model="showLayers">
+            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                <b-col>
+                  <p class="mb-0"> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
+                  <audio class="p-0" controls :src="getLayerURL(layer_item.data)" controlslist="nodownload noplaybackrate"></audio>
+                </b-col>
+              </b-list-group-item>
+            </b-list-group>
+          </b-collapse>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
