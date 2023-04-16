@@ -67,7 +67,7 @@ let app = new Vue({
         <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
       <b-col align="right">
-        <b-button v-show="!busy" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench" aria-hidden="true"></b-icon></b-button>
+        <b-button v-if="signedIn" v-show="!busy" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench" aria-hidden="true"></b-icon></b-button>
       </b-col>
     </b-row>
     <b-collapse v-model="showSettings" v-show="signedIn">
