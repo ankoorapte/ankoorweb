@@ -371,6 +371,7 @@ let app = new Vue({
       this.user = null;
       this.email = "";
       this.password = "";
+      this.showSettings = false;
       await signOut(auth);
     },
     async changeUsername(un) {
