@@ -332,6 +332,7 @@ let app = new Vue({
       }
     },
     async signIn(user) {
+      this.showSettings = false;
       try {
         if(user) {
           this.user = user;
