@@ -142,7 +142,7 @@ let app = new Vue({
           </p>
           <b-collapse v-model="showLayers">
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-              <b-list-group-item class="d-flex justify-content-between align-items-center">
+              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
                   <p> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
                   <audio controls :src="getLayerURL(layer_item.data)" controlslist="nodownload noplaybackrate"></audio>
@@ -193,9 +193,9 @@ let app = new Vue({
                 </b-tab>
                 <b-tab title="outbox">
                   <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-                    <b-list-group-item class="d-flex justify-content-between align-items-center">
-                      <p>You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
-                      <p>
+                    <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                      <p class="ml-1">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
+                      <p class="mr-1">
                         <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
                       </p>
                     </b-list-group-item>
