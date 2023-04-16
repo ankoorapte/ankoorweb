@@ -178,10 +178,10 @@ let app = new Vue({
                 <b-tab title="inbox" active>
                   <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                     <b-list-group-item class="d-flex justify-content-between align-items-center">
-                      <p>
+                      <p class="ml-1 mb-0">
                         <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
                       </p>
-                      <p>
+                      <p class="mr-1 mb-0">
                         <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
                         <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
                         <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
@@ -192,8 +192,8 @@ let app = new Vue({
                 <b-tab title="outbox">
                   <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                     <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                      <p class="ml-1">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
-                      <p class="mr-1">
+                      <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
+                      <p class="mr-1 mb-0">
                         <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
                       </p>
                     </b-list-group-item>
