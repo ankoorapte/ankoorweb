@@ -333,6 +333,7 @@ let app = new Vue({
     },
     async signIn(user) {
       this.showSettings = false;
+      this.showCreatorTools = false;
       try {
         if(user) {
           this.user = user;
@@ -372,6 +373,7 @@ let app = new Vue({
       this.email = "";
       this.password = "";
       this.showSettings = false;
+      this.showCreatorTools = false;
       await signOut(auth);
     },
     async changeUsername(un) {
