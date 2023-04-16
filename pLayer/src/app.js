@@ -178,7 +178,7 @@ let app = new Vue({
             <b-tabs card align="center">
               <b-tab title="inbox" active>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-                  <b-list-group-item class="d-flex justify-content-between align-items-center">
+                  <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                     <p class="ml-1 mb-0">
                       <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
                     </p>
