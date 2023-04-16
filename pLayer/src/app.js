@@ -425,7 +425,6 @@ let app = new Vue({
       this.trackID = Object.keys(tracks)[this.trackIdx];
       this.seeker = 0;
       await this.getTrack();
-      await this.togglePlay();
       this.busy = false;
     },
     async togglePlay() {
