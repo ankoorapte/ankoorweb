@@ -140,7 +140,7 @@ let app = new Vue({
             <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
-          <b-collapse v-if="false" v-model="showLayers">
+          <b-collapse v-model="showLayers">
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
@@ -452,7 +452,7 @@ let app = new Vue({
       return {
         id: layerID,
         user: layers[layerID].user,
-        data: data,
+        data: data.slice(),
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
     }, 
