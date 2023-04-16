@@ -354,7 +354,7 @@ let app = new Vue({
       } catch(e) {
         console.log(e.code + ": " + e.message);
         if(e.code == "auth/user-not-found") {
-          await this.createUser();
+          alert('oops')
         }
         if(e.code == "auth/wrong-password") {
           alert("Wrong password!")
