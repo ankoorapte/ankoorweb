@@ -143,7 +143,7 @@ let app = new Vue({
           <b-list-group v-show="showLayers" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <b-col>
-                <p> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
+                <p class="mb-0"> {{ getLayerName(layer_item.id) }} by {{ getUserName(layer_item.user)}} </p>
                 <audio class="p-0" controls :src="getLayerURL(layer_item.data)" controlslist="nodownload noplaybackrate"></audio>
               </b-col>
             </b-list-group-item>
