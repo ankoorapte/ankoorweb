@@ -153,7 +153,7 @@ let app = new Vue({
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
-        <b-tabs card align="center" border-variant="dark">
+        <b-tabs card align="center">
           <b-tab title="new" active>
             <b-row><b-col align="center" v-show="!busy">
               <b-form-file
@@ -176,7 +176,7 @@ let app = new Vue({
           </b-tab>
           <b-tab title="drafts">
             <b-card no-body>
-              <b-tabs pills variant="dark" card vertical nav-wrapper-class="w-25">
+              <b-tabs card align="center">
                 <b-tab title="inbox" active>
                   <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                     <b-list-group-item class="d-flex justify-content-between align-items-center">
