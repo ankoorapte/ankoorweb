@@ -512,7 +512,6 @@ let app = new Vue({
       if(!this.paused) await this.togglePlay();
       this.seeker = 0;
       await this.getTrack(this[whichbox][index].layerID);
-      await this.togglePlay();
     },
     async resolveDraft(index, accept) {
       let layerID = this.inbox[index].layerID;
@@ -534,7 +533,6 @@ let app = new Vue({
       if (!this.paused) await this.togglePlay();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
-      await this.togglePlay();
     }
   }
 });
