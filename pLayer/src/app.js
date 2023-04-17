@@ -119,6 +119,9 @@ let app = new Vue({
         </b-input-group>
       </b-col></b-row>
       <b-row><b-col align="center">
+        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
+      </b-col></b-row>
+      <b-row><b-col align="center">
         <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
       </b-col></b-row>
     </b-collapse>
@@ -567,7 +570,6 @@ let app = new Vue({
       }
     },
     updateDiscography() {
-      // there has to be a better way
       this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
     },
     async playDiscography(index) {
