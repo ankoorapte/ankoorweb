@@ -514,6 +514,7 @@ let app = new Vue({
     async playDraft(index, whichbox) {
       if(!this.paused) await this.togglePlay();
       this.seeker = 0;
+      this.trackID = this[whichbox][index].baseID
       await this.getTrack(this[whichbox][index].layerID);
     },
     async resolveDraft(index, accept) {
