@@ -10,6 +10,7 @@ import {
   sendEmailVerification, 
   updateProfile, 
   updatePassword,
+  updateEmail,
   onAuthStateChanged, 
   signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
@@ -99,6 +100,21 @@ let app = new Vue({
           </b-form-input>
           <b-input-group-append>
             <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-col></b-row>
+      <b-row><b-col align="center">
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new email"
+            @keydown.native="emailKeydownHandler" 
+            v-model="newEmail"
+            :state="stateEmail" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
           </b-input-group-append>
         </b-input-group>
       </b-col></b-row>
@@ -225,6 +241,7 @@ let app = new Vue({
       password: "",
       newUsername: "",
       newPassword: "",
+      newEmail: "",
       busy: true,
       showSettings: false,
       showLayers: false,
@@ -299,6 +316,9 @@ let app = new Vue({
     },
     statePassword() {
       return this.newPassword.length >= 6;
+    },
+    stateEmail() {
+      return this.newEmail.includes("@") && this.email.includes(".");
     }
   },
   methods: {
@@ -394,6 +414,13 @@ let app = new Vue({
       await updatePassword(auth.currentUser, self.newPassword);
       self.busy = false;
     },
+    async changeEmail() {
+      let self = this;
+      self.busy = true;
+      await updateEmail(auth.currentUser, self.newEmail);
+      await self.signOut();
+      self.busy = false;
+    },
     signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
         this.signIn();
@@ -407,6 +434,11 @@ let app = new Vue({
     passwordKeydownHandler(event) {
       if (event.which === 13 && this.statePassword) {
         this.changePassword();
+      }
+    },
+    emailKeydownHandler(event) {
+      if (event.which === 13 && this.stateEmail) {
+        this.changeEmail();
       }
     },
     resetAudioContext() {
