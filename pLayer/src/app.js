@@ -417,7 +417,12 @@ let app = new Vue({
     async changeEmail() {
       let self = this;
       self.busy = true;
-      await updateEmail(auth.currentUser, self.newEmail);
+
+      try {
+        await updateEmail(auth.currentUser, self.newEmail);
+      } catch(e) {
+        console.log(e);
+      }
       await self.signOut();
       self.busy = false;
     },
