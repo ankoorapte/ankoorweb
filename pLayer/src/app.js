@@ -558,6 +558,7 @@ let app = new Vue({
       await this.getTrack(this[whichbox][index].layerID);
     },
     async resolveDraft(index, accept) {
+      if (!this.paused) await this.togglePlay();
       let layerID = this.inbox[index].layerID;
       let baseID = this.inbox[index].baseID;
       await setDoc(doc(db, "layers", layerID), {
