@@ -7,6 +7,7 @@ const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
   res.send("Hello");
 });
 
@@ -36,10 +37,4 @@ exports.updateDB = async (file, context) => {
       name: name,
     });
   }
-
-  // if (base.length) {
-  //   await tracks.doc(base).set({
-  //     layers: admin.firestore.FieldValue.arrayUnion(uid),
-  //   }, {merge: true});
-  // }
 };
