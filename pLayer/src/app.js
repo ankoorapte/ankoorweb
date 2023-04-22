@@ -276,6 +276,7 @@ let app = new Vue({
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         let idToken = await user.getIdToken(/* forceRefresh */ true);
+        console.log(idToken);
         let data = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
           method: "POST",  
           body: {

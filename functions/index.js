@@ -2,13 +2,14 @@ const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 admin.initializeApp();
 
+const auth = admin.auth();
 const db = admin.firestore();
 const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
-  admin.auth().verifyIdToken(req.body.id).then((decodedToken) => {
+  auth.verifyIdToken(req.body.id).then((decodedToken) => {
     // const uid = decodedToken.uid;
     res.send("Pass");
   }).catch((error) => {
