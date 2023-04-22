@@ -280,6 +280,7 @@ let app = new Vue({
         let data = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
           method: "POST",
           headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           },  
