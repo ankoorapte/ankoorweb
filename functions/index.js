@@ -1,5 +1,6 @@
 const admin = require("firebase-admin");
 const functions = require("firebase-functions");
+const cors = require('cors')({origin: true});
 admin.initializeApp();
 
 const auth = admin.auth();
@@ -8,14 +9,16 @@ const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
-  console.log(Object.keys(req).includes("body"));
-  console.log(Object.keys(req.body));
-  auth.verifyIdToken(data.id).then((decodedToken) => {
-    // const uid = decodedToken.uid;
-    res.status(200);
-  }).catch((error) => {
-    res.send(error);
+  return cors(request, response, async () => {
+    console.log(Object.keys(req).includes("body"));
+    console.log(Object.keys(req.body));
+    console.log(JSON.stringify(req.body));
+    auth.verifyIdToken(req.body.id).then((decodedToken) => {
+      // const uid = decodedToken.uid;
+      res.status(200);
+    }).catch((error) => {
+      res.send(error);
+    });
   });
 });
 
