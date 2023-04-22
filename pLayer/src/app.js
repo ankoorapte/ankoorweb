@@ -275,6 +275,8 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
+        let data = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI');
+        console.log(await data.text());
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};

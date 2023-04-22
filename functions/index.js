@@ -1,9 +1,14 @@
 const admin = require("firebase-admin");
+const functions = require("firebase-functions");
 admin.initializeApp();
 
 const db = admin.firestore();
 const tracks = db.collection("tracks");
 const layers = db.collection("layers");
+
+exports.pLayerAPI = functions.https.onRequest((req, res) => {
+  res.send("Hello");
+});
 
 // To deploy, run in "functions" directory:
 // gcloud functions deploy updateDB --runtime nodejs16
