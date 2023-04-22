@@ -8,6 +8,7 @@ const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
   console.log(req);
   auth.verifyIdToken(req.body.id).then((decodedToken) => {
     // const uid = decodedToken.uid;
