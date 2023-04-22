@@ -275,23 +275,8 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        let idToken = await user.getIdToken(/* forceRefresh */ true);
-        console.log(idToken);
-        console.log(JSON.stringify({
-          id: idToken
-        }))
-        let data = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
-          method: "POST",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          },  
-          body: JSON.stringify({
-            id: idToken
-          })
-        });
-        console.log(await data.text());
+        let user = await pLayerAPI();
+        console.log(user);
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};
@@ -342,6 +327,19 @@ let app = new Vue({
     }
   },
   methods: {
+    async pLayerAPI(endpoint = "", arg = {}) {
+      arg['id'] = await user.getIdToken(/* forceRefresh */ true);
+      arg['endpoint_name'] = endpoint;
+      let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(arg)
+      });
+      return res.json();
+    },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].name;
