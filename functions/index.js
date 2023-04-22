@@ -8,7 +8,12 @@ const layers = db.collection("layers");
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
-  res.send("Hello");
+  admin.auth().verifyIdToken(req.body.id).then((decodedToken) => {
+    // const uid = decodedToken.uid;
+    res.send("Pass");
+  }).catch((error) => {
+    res.send(error);
+  });
 });
 
 // To deploy, run in "functions" directory:
