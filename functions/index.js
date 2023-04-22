@@ -12,7 +12,7 @@ exports.pLayerAPI = functions.https.onRequest((req, res) => {
   console.log(req);
   auth.verifyIdToken(req.body.id).then((decodedToken) => {
     // const uid = decodedToken.uid;
-    res.send("Pass");
+    res.status(200);
   }).catch((error) => {
     res.send(error);
   });
