@@ -11,7 +11,7 @@ const layers = db.collection("layers");
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
   return cors(req, res, async () => {
     const decodedToken = await auth.verifyIdToken(req.body.id);
-    let user = await auth.getUser(decodedToken.uid);
+    const user = await auth.getUser(decodedToken.uid);
     res.status(200).send(user);
   });
 });
