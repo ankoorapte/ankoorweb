@@ -10,9 +10,7 @@ const layers = db.collection("layers");
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   console.log(Object.keys(req).includes("body"));
-  console.log(req.body);
-  const data = JSON.parse(req.body);
-  console.log(data);
+  console.log(Object.keys(req.body));
   auth.verifyIdToken(data.id).then((decodedToken) => {
     // const uid = decodedToken.uid;
     res.status(200);
