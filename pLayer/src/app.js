@@ -278,10 +278,13 @@ let app = new Vue({
         let idToken = await user.getIdToken(/* forceRefresh */ true);
         console.log(idToken);
         let data = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
-          method: "POST",  
-          body: {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },  
+          body: JSON.stringify({
             id: idToken
-          }
+          })
         });
         console.log(await data.text());
         self.resetAudioContext();
