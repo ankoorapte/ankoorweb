@@ -14,4 +14,12 @@ module.exports = {
   rules: {
     quotes: ["error", "double"],
   },
+  overrides: [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "require-jsdoc": ["off"],
+      },
+    },
+  ],
 };
