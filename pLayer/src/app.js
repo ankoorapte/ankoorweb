@@ -275,7 +275,7 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        let user = await self.pLayerAPI();
+        let user = await self.changeUsername();
         console.log(user);
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
@@ -327,9 +327,11 @@ let app = new Vue({
     }
   },
   methods: {
-    async pLayerAPI(endpoint = "", arg = {}) {
+    async pLayerAPI(endpoint = "", params = {}) {
+      let arg = {};
       arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
+      arg['params'] = params;
       let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
         method: "POST",
         headers: {
@@ -417,12 +419,9 @@ let app = new Vue({
     async changeUsername(un) {
       let self = this;
       self.busy = true;
-      if(!un) {
-        un = self.newUsername;
-      }
-      await updateProfile(auth.currentUser, { displayName: un });
-      await setDoc(doc(db, "users", self.user.uid), {
-        displayName: un
+      if(!un) un = self.newUsername;
+      await self.pLayerAPI("updateUsername",{
+        new_username: un
       });
       self.busy = false;
     },

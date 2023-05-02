@@ -10,15 +10,30 @@ class Player {
   validateArg(arg) {
     return arg;
   }
+  async updateUsername(arg) {
+    this.validateArg(arg);
+    // await updateProfile(this.user, { displayName: arg.user_name });
+    // await setDoc(doc(db, "users", self.user.uid), {
+    //   displayName: un
+    // });
+    return {pass: true};
+  }
   async authenticate(id) {
     const decodedToken = await auth.verifyIdToken(id);
     return auth.getUser(decodedToken.uid);
   }
   async process(arg) {
-    const user = await this.authenticate(arg.id);
-    console.log(user);
-    this.validateArg(arg);
-    return {};
+    try {
+      this.user = await this.authenticate(arg.id);
+      console.log(user);
+      console.log(arg.endpoint_name);
+      console.log(arg.params);
+      const res = await this[arg.endpoint_name](arg.params);
+      console.log(res);
+      return res;
+    } catch (e) {
+      return e;
+    }
   }
 }
 
