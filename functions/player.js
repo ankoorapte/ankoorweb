@@ -25,7 +25,7 @@ class Player {
   async process(arg) {
     try {
       this.user = await this.authenticate(arg.id);
-      console.log(user);
+      console.log(this.user);
       console.log(arg.endpoint_name);
       console.log(arg.params);
       const res = await this[arg.endpoint_name](arg.params);

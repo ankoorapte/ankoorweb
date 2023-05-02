@@ -275,8 +275,7 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        let user = await self.changeUsername();
-        console.log(user);
+        await self.changeUsername();
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};
@@ -420,9 +419,10 @@ let app = new Vue({
       let self = this;
       self.busy = true;
       if(!un) un = self.newUsername;
-      await self.pLayerAPI("updateUsername",{
+      let res = await self.pLayerAPI("updateUsername",{
         new_username: un
       });
+      console.log(res);
       self.busy = false;
     },
     async changePassword() {
