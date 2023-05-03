@@ -5,6 +5,7 @@ const auth = admin.auth();
 const db = admin.firestore();
 const tracks = db.collection("tracks");
 const layers = db.collection("layers");
+const users = db.collection("users");
 
 class Player {
   constructor() {
@@ -12,33 +13,30 @@ class Player {
       updateUsername: ["new_username"],
     };
   }
-  validateParams(endpoint, params) {
-    const valid = this.api_params[endpoint].every((p) => {
-      return Object.keys(params).includes(p);
-    });
-    if (valid) {
-      console.log("valid params");
-      return;
-    } else {
-      throw new Error("invalid params");
-    }
-  }
-  async updateUsername(params) {
-    // await updateProfile(this.user, { displayName: arg.user_name });
-    // await setDoc(doc(db, "users", self.user.uid), {
-    //   displayName: un
-    // });
-    return {pass: true};
-  }
   async authenticate(id) {
     const decodedToken = await auth.verifyIdToken(id);
     return auth.getUser(decodedToken.uid);
   }
+  validateArg(arg, params) {
+    const valid = params.every((p) => {
+      return Object.keys(arg).includes(p);
+    });
+    if (!valid) {
+      throw new Error("invalid params");
+    }
+  }
+  async updateUsername(arg) {
+    this.validateArg(arg, ["new_username"]);
+    await auth.updateUser(this.user.uid, { displayName: arg.user_name });
+    await users.doc(this.user.uid).update({
+      displayName: arg.user_name      
+    });
+    return {status: "pass"};
+  }
+  
   async process(arg) {
     this.user = await this.authenticate(arg.id);
-    this.validateParams(arg.endpoint_name, arg.params);
-    const res = await this[arg.endpoint_name](arg.params);
-    return res;
+    return this[arg.endpoint_name](arg);
   }
 }
 

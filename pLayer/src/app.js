@@ -325,11 +325,9 @@ let app = new Vue({
     }
   },
   methods: {
-    async pLayerAPI(endpoint = "", params = {}) {
-      let arg = {};
+    async pLayerAPI(endpoint = "", arg = {}) {
       arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
-      arg['params'] = params;
       let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
         method: "POST",
         headers: {
@@ -424,7 +422,7 @@ let app = new Vue({
       self.busy = true;
       if(!un) un = self.newUsername;
       await self.pLayerAPI("updateUsername",{
-        //new_username: un
+        new_username: un
       });
       self.busy = false;
     },
