@@ -8,11 +8,6 @@ const layers = db.collection("layers");
 const users = db.collection("users");
 
 class Player {
-  constructor() {
-    this.api_params = {
-      updateUsername: ["new_username"],
-    };
-  }
   async authenticate(id) {
     const decodedToken = await auth.verifyIdToken(id);
     return auth.getUser(decodedToken.uid);
@@ -27,9 +22,9 @@ class Player {
   }
   async updateUsername(arg) {
     this.validateArg(arg, ["new_username"]);
-    await auth.updateUser(this.user.uid, {displayName: arg.user_name});
+    await auth.updateUser(this.user.uid, {displayName: arg.new_username});
     await users.doc(this.user.uid).update({
-      displayName: arg.user_name,
+      displayName: arg.new_username,
     });
     return {status: "pass"};
   }

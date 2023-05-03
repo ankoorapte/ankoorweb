@@ -419,13 +419,12 @@ let app = new Vue({
       await signOut(auth);
     },
     async changeUsername(un) {
-      let self = this;
-      self.busy = true;
-      if(!un) un = self.newUsername;
-      await self.pLayerAPI("updateUsername",{
+      this.busy = true;
+      if(!un) un = this.newUsername;
+      await this.pLayerAPI("updateUsername",{
         new_username: un
       });
-      self.busy = false;
+      this.busy = false;
     },
     async changePassword() {
       let self = this;
