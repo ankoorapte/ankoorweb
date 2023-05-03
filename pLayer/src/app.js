@@ -275,7 +275,6 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        await self.changeUsername();
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};
@@ -327,10 +326,10 @@ let app = new Vue({
   },
   methods: {
     async pLayerAPI(endpoint = "", params = {}) {
-        let arg = {};
-        arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
-        arg['endpoint_name'] = endpoint;
-        arg['params'] = params;
+      let arg = {};
+      arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
+      arg['endpoint_name'] = endpoint;
+      arg['params'] = params;
       try {
         let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
           method: "POST",
@@ -340,10 +339,14 @@ let app = new Vue({
           },
           body: JSON.stringify(arg)
         });
-        return res.json();
+        let res_json = await res.json();
+        console.log(res_json);
+        return res_json;
       } catch (e) {
+        console.log("ankoor error");
         console.log(e);
       }
+      
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
@@ -423,10 +426,9 @@ let app = new Vue({
       let self = this;
       self.busy = true;
       if(!un) un = self.newUsername;
-      let res = await self.pLayerAPI("updateUsername",{
-        // new_username: un
+      await self.pLayerAPI("updateUsername",{
+        new_username: un
       });
-      console.log(res);
       self.busy = false;
     },
     async changePassword() {
