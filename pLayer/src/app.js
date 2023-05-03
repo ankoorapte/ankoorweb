@@ -164,7 +164,7 @@ let app = new Vue({
                     v-on:pause="layerPaused(index)"
                     v-on:play="layerPlayed(index)"
                     v-on:seeking="layerSeeking(index)"
-                    v-on:seeked="layedSeeked(index)"
+                    v-on:seeked="layerSeeked(index)"
                   >
                   </audio>
                 </b-col>
@@ -460,15 +460,23 @@ let app = new Vue({
     },
     layerPaused(index) {
       console.log(index);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
     },
     layerPlayed(index) {
       console.log(index);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
     },
     layerSeeking(index) {
       console.log(index);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
     },
     layerSeeked(index) {
       console.log(index);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
     },
     tieAudio(trackLayers) {
       for(const layerID of trackLayers) {
