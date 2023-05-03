@@ -459,57 +459,33 @@ let app = new Vue({
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
     },
-    layerPaused(index) {
-      console.log(index);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
+    layerPaused() {
+      let self = this;
+      let trackLayers = tracks[self.trackID].layers.slice();
+      trackLayers.forEach((l) => {
+        if(!self.$refs[l].paused) self.$refs[l].pause();
+      });
     },
-    layerPlayed(index) {
-      console.log(index);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
+    layerPlayed() {
+      let self = this;
+      let trackLayers = tracks[self.trackID].layers.slice();
+      trackLayers.forEach((l) => {
+        if(this.$refs[l].paused) this.$refs[l].play();
+      });
     },
-    layerSeeking(index) {
-      console.log(index);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
+    layerSeeking() {
+      let self = this;
+      let trackLayers = tracks[self.trackID].layers.slice();
+      trackLayers.forEach((l) => {
+        this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+      });
     },
-    layerSeeked(index) {
-      console.log(index);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
-    },
-    tieAudio(trackLayers) {
-      for(const layerID of trackLayers) {
-        console.log(this.$refs);
-        console.log(Object.keys(this.$refs));
-        console.log(layerID);
-        console.log(this.$refs);
-        console.log(Object.keys(this.$refs));
-        console.log(this.$refs[layerID]);
-        console.log(this.$refs);
-        console.log(Object.keys(this.$refs));
-        this.$refs[layerID].addEventListener('pause', (e) => {
-          trackLayers.forEach((l) => {
-            if(!this.$refs[l].paused) this.$refs[l].pause();
-          });
-        });
-        this.$refs[layerID].addEventListener('play', (e) => {
-          trackLayers.forEach((l) => {
-            if(this.$refs[l].paused) this.$refs[l].play();
-          });
-        });
-        this.$refs[layerID].addEventListener('seeking', (e) => {
-          trackLayers.forEach((l) => {
-            this.$refs[l].currentTime = this.$refs[layerID].currentTime;
-          });
-        });
-        this.$refs[layerID].addEventListener('seeked', (e) => {
-          trackLayers.forEach((l) => {
-            this.$refs[l].currentTime = this.$refs[layerID].currentTime;
-          });
-        });
-      }
+    layerSeeked() {
+      let self = this;
+      let trackLayers = tracks[self.trackID].layers.slice();
+      trackLayers.forEach((l) => {
+        this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+      });
     },
     async togglePlay() {
       if(this.paused) {
