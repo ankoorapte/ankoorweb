@@ -330,8 +330,9 @@ let app = new Vue({
       arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
       arg['params'] = params;
+      let res;
       try {
-        let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
+        res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
           method: "POST",
           headers: {
             'Content-Type': 'application/json',
@@ -339,13 +340,14 @@ let app = new Vue({
           },
           body: JSON.stringify(arg)
         });
-        let res_json = await res.json();
-        console.log(res_json);
-        return res_json;
       } catch (e) {
         console.log("ankoor error");
         console.log(e);
       }
+      let res_json = await res.json();
+      console.log(res_json);
+      return res_json;
+
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
