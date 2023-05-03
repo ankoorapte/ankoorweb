@@ -19,12 +19,8 @@ import {
 
 import { 
   getFirestore, 
-  doc,
   collection,
-  setDoc,
-  updateDoc,
-  onSnapshot,
-  arrayUnion  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+  onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 // FIREBASE
 const firebaseConfig = {
@@ -274,6 +270,7 @@ let app = new Vue({
       if(self.signedIn) {
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
+          console.log("update layers");
           layers = {};
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
@@ -282,6 +279,7 @@ let app = new Vue({
         });
 
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
+          console.log("update tracks");
           tracks = {};
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
@@ -292,6 +290,7 @@ let app = new Vue({
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
+          console.log("update users");
           users = {};
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
@@ -323,6 +322,7 @@ let app = new Vue({
   },
   methods: {
     async pLayerAPI(endpoint = "", arg = {}) {
+      this.busy = true;
       arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
       let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
@@ -338,8 +338,8 @@ let app = new Vue({
       if(res_json['stack'] && res_json['stack'].slice(0,5) == "Error") {
         throw new Error(res_json.message);
       }
+      this.busy = false;
       return res_json;
-
     },
     async createUser() {
       try {
@@ -397,32 +397,26 @@ let app = new Vue({
       await signOut(auth);
     },
     async changeUsername(un) {
-      this.busy = true;
       if(!un) un = this.newUsername;
       await this.pLayerAPI("updateUser",{
         field: "username",
         value: un
       });
-      this.busy = false;
     },
     async changePassword() {
-      let self = this;
-      self.busy = true;
-      await self.pLayerAPI("updateUser",{
+      let pw = this.newPassword;
+      await this.pLayerAPI("updateUser",{
         field: "password",
-        value: self.newPassword
+        value: pw
       });
-      self.busy = false;
     },
     async changeEmail() {
-      let self = this;
-      self.busy = true;
-      await self.pLayerAPI("updateUser",{
+      let email = this.newEmail;
+      await this.pLayerAPI("updateUser",{
         field: "email",
-        value: self.newEmail
+        value: email
       });
-      await self.signOut();
-      self.busy = false;
+      await this.signOut();
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -431,18 +425,25 @@ let app = new Vue({
       this.merger.connect(this.mixedAudio);
       this.merger.connect(this.audioContext.destination);
     },
-    async toggleTrack(forward) {
-      this.busy = true;
-      if(!this.paused) await this.togglePlay();
-      if(forward) { this.trackIdx++; }
-      else { 
-        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
-        this.trackIdx--;
+    async getLayerBuffer(layerID) {
+      let data = await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer()
+      return {
+        id: layerID,
+        user: layers[layerID].user,
+        data: data.slice(),
+        decoded_data: await this.audioContext.decodeAudioData(data)
       }
-      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
-      this.trackID = Object.keys(tracks)[this.trackIdx];
-      this.seeker = 0;
-      await this.getTrack();
+    }, 
+    async getTrack(draftLayer="") {
+      if(!Object.keys(tracks).length) return;
+      this.busy = true;
+      let trackLayers = tracks[this.trackID].layers.slice();
+      if(draftLayer.length) trackLayers.push(draftLayer);
+      this.draft = draftLayer;
+      this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
+      this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
+      this.artistNames = [...new Set(this.artistNames)];
+      this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
     },
     async togglePlay() {
@@ -462,25 +463,18 @@ let app = new Vue({
       }
       this.paused = !this.paused;
     },
-    async layerBuffer(layerID) {
-      let data = await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer()
-      return {
-        id: layerID,
-        user: layers[layerID].user,
-        data: data.slice(),
-        decoded_data: await this.audioContext.decodeAudioData(data)
-      }
-    }, 
-    async getTrack(draftLayer="") {
-      if(!Object.keys(tracks).length) return;
+    async toggleTrack(forward) {
       this.busy = true;
-      let trackLayers = tracks[this.trackID].layers.slice();
-      if(draftLayer.length) trackLayers.push(draftLayer);
-      this.draft = draftLayer;
-      this.layerBuffers = await Promise.all(trackLayers.map(this.layerBuffer));
-      this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
-      this.artistNames = [...new Set(this.artistNames)];
-      this.trackName = tracks[this.trackID]['name'];
+      if(!this.paused) await this.togglePlay();
+      if(forward) { this.trackIdx++; }
+      else { 
+        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
+        this.trackIdx--;
+      }
+      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
+      this.trackID = Object.keys(tracks)[this.trackIdx];
+      this.seeker = 0;
+      await this.getTrack();
       this.busy = false;
     },
     async post() {
@@ -526,6 +520,14 @@ let app = new Vue({
         }  
       });
     },
+    updateDiscography() {
+      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
+    },
+    async playDiscography(index) {
+      if (!this.paused) await this.togglePlay();
+      this.trackID = this.discography[index].trackID;
+      await this.getTrack();
+    },
     async playDraft(index, whichbox) {
       if(!this.paused) await this.togglePlay();
       this.seeker = 0;
@@ -536,22 +538,11 @@ let app = new Vue({
       if (!this.paused) await this.togglePlay();
       let layerID = this.inbox[index].layerID;
       let baseID = this.inbox[index].baseID;
-      await setDoc(doc(db, "layers", layerID), {
-        resolved: true
-      }, {merge: true});
-      if(accept) {
-        await updateDoc(doc(db, "tracks", baseID), {
-          layers: arrayUnion(layerID),
-        }, {merge: true});
-      }
-    },
-    updateDiscography() {
-      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
-    },
-    async playDiscography(index) {
-      if (!this.paused) await this.togglePlay();
-      this.trackID = this.discography[index].trackID;
-      await this.getTrack();
+      await this.pLayerAPI("resolveLayer",{
+        layerID: layerID,
+        baseID: baseID,
+        accept: accept
+      });s
     },
     signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {

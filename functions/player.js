@@ -22,14 +22,29 @@ class Player {
   }
   async updateUser(arg) {
     this.validateArg(arg, ["field", "value"]);
-    if(!(["username", "password", "email"].includes(arg.field))) {
+    if (!(["username", "password", "email"].includes(arg.field))) {
       throw new Error("field must be username, password, or email");
     }
     const update = {};
     update[arg.field] = arg.value;
-    await auth.updateUser(this.user.uid, update);
     if (arg.field === "displayName") {
       await users.doc(this.user.uid).update(update);
+    }
+    if (arg.field === "email") {
+      update["emailVerified"] = false;
+    }
+    await auth.updateUser(this.user.uid, update);
+    return {status: "ok"};
+  }
+  async resolveLayer(arg) {
+    this.validateArg(arg, ["layerID", "baseID", "accept"]);
+    await layers.doc(arg.layerID).update({
+      resolved: true,
+    });
+    if (arg.accept) {
+      await tracks.doc(arg.baseID).update({
+        layers: admin.firestore.FieldValue.arrayUnion(arg.layerID),
+      });
     }
     return {status: "ok"};
   }
