@@ -135,6 +135,7 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
+          <div ref="pLayer"></div>  
           <p style="font-size:22px" class="mb-0"><b>{{trackName}}</b></p>
           <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
