@@ -274,6 +274,7 @@ let app = new Vue({
       outbox: [],
       discography: [],
       draft: "",
+      block: false,
     }
   },
   async created() {
@@ -462,34 +463,48 @@ let app = new Vue({
     layerPaused(layerID) {
       console.log("pause " + layerID);
       let self = this;
+      if(self.block) return;
+      self.block = true;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        if(!self.$refs[l][0].paused) self.$refs[l][0].pause();
+        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
+        self.$refs[l][0].pause();
       });
+      self.block = false;
     },
     layerPlayed(layerID) {
       console.log("play " + layerID);
       let self = this;
+      if(self.block) return;
+      self.block = true;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        if(self.$refs[l][0].paused) self.$refs[l][0].play();
+        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
+        self.$refs[l][0].play();
       });
+      self.block = false;
     },
     layerSeeking(layerID) {
       console.log("seeking " + layerID);
       let self = this;
+      if(self.block) return;
+      self.block = true;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
+      self.block = false;
     },
     layerSeeked(layerID) {
       console.log("seeked " + layerID);
       let self = this;
+      if(self.block) return;
+      self.block = true;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
+      self.block = false;
     },
     async togglePlay() {
       if(this.paused) {
