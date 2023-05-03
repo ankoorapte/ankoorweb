@@ -346,7 +346,6 @@ let app = new Vue({
         console.log("ankoor error");
         console.log(e);
       }
-      
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
@@ -427,7 +426,7 @@ let app = new Vue({
       self.busy = true;
       if(!un) un = self.newUsername;
       await self.pLayerAPI("updateUsername",{
-        new_username: un
+        //new_username: un
       });
       self.busy = false;
     },
