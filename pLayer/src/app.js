@@ -45,6 +45,16 @@ let unsubscribe_layers = () => {};
 let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
+
+document.addEventListener('play', function(e){
+  var audios = document.getElementsByTagName('audio');
+  for(var i = 0, len = audios.length; i < len;i++){
+      if(audios[i] != e.target){
+          audios[i].pause();
+      }
+  }
+}, true);
+
 // APP
 let app = new Vue({
   el: '#app',
@@ -155,7 +165,7 @@ let app = new Vue({
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
                   <p class="mb-0"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
-                  <audio class="p-0" style="height:30px" controls :src="getLayerURL(layer_item.data)" controlslist="noplaybackrate"></audio>
+                  <audio class="p-0" style="height:30px" controls :ref="layer_item.id" :src="getLayerURL(layer_item.data)" controlslist="noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
@@ -445,6 +455,7 @@ let app = new Vue({
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
+      console.log(this.$refs);
       this.busy = false;
     },
     async togglePlay() {
