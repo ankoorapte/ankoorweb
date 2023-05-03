@@ -161,7 +161,7 @@ let app = new Vue({
                     style="height:30px" 
                     controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
-                    @mousedown="activeLayer = layer_item.id"
+                    @mousedown="set"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
@@ -462,6 +462,10 @@ let app = new Vue({
       this.block = {};
       trackLayers.forEach((l) => this.block[l] = false);
       this.busy = false;
+    },
+    set() {
+      console.log("mousedown");
+      activeLayer = layer_item.id;
     },
     layerPaused(layerID) {
       let self = this;
