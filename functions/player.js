@@ -20,7 +20,7 @@ class Player {
       console.log("valid params");
       return;
     } else {
-      throw new Error({status: 404, message: "invalid params"});
+      throw new Error("invalid params");
     }
   }
   async updateUsername(params) {

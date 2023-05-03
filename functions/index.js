@@ -8,7 +8,7 @@ exports.pLayerAPI = functions.https.onRequest((req, res) => {
       const data = await pLayer.api(req.body);
       res.status(200).send(data);
     } catch (e) {
-      res.status(e.status).send(e.message);
+      res.status(404).send(JSON.stringify(e, Object.getOwnPropertyNames(e)));
       throw e;
     }
   });

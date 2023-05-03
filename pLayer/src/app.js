@@ -342,7 +342,7 @@ let app = new Vue({
         });
         return res.json();
       } catch (e) {
-        console.log(await e.text());
+        console.log(e);
       }
     },
     getLayerName(uid) {
