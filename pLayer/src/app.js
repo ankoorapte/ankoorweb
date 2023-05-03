@@ -151,16 +151,14 @@ let app = new Vue({
             <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
           </p>
-          <b-collapse v-model="showLayers">
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
                   <p class="mb-0"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
-                  <audio class="p-0" style="height:30px" controls ref="{{layer_item.id}}" :src="getLayerURL(layer_item.data)" controlslist="noplaybackrate"></audio>
+                  <audio class="p-0" style="height:30px" controls :ref="layer_item.id" :src="getLayerURL(layer_item.data)" controlslist="noplaybackrate"></audio>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
-          </b-collapse>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
