@@ -542,7 +542,7 @@ let app = new Vue({
         layerID: layerID,
         baseID: baseID,
         accept: accept
-      });s
+      });
     },
     signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
