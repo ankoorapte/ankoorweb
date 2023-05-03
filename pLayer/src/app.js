@@ -337,6 +337,7 @@ let app = new Vue({
         body: JSON.stringify(arg)
       });
       let res_json = await res.json();
+      console.log(res_json);
       if(res_json['stack'] && res_json['stack'].slice(0,5) == "Error") {
         throw new Error(res_json.message);
       }

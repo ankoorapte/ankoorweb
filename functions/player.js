@@ -27,13 +27,12 @@ class Player {
   }
   async updateUsername(arg) {
     this.validateArg(arg, ["new_username"]);
-    await auth.updateUser(this.user.uid, { displayName: arg.user_name });
+    await auth.updateUser(this.user.uid, {displayName: arg.user_name});
     await users.doc(this.user.uid).update({
-      displayName: arg.user_name      
+      displayName: arg.user_name,
     });
     return {status: "pass"};
   }
-  
   async process(arg) {
     this.user = await this.authenticate(arg.id);
     return this[arg.endpoint_name](arg);
