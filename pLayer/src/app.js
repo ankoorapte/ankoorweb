@@ -46,15 +46,6 @@ let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
 
-document.addEventListener('play', function(e){
-  var audios = document.getElementsByTagName('audio');
-  for(var i = 0, len = audios.length; i < len;i++){
-      if(audios[i] != e.target){
-          audios[i].pause();
-      }
-  }
-}, true);
-
 // APP
 let app = new Vue({
   el: '#app',
@@ -144,7 +135,6 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
-          <div ref="pLayer"></div>
           <p style="font-size:22px" class="mb-0"><b>{{trackName}}</b></p>
           <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
@@ -455,8 +445,32 @@ let app = new Vue({
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
-      console.log(this.$refs);
+      this.tieAudio(trackLayers);
       this.busy = false;
+    },
+    tieAudio(trackLayers) {
+      for(const layerID of trackLayers) {
+        this.$refs[layerID].addEventListener('pause', (e) => {
+          trackLayers.forEach((l) => {
+            if(!this.$refs[l].paused) this.$refs[l].pause();
+          });
+        });
+        this.$refs[layerID].addEventListener('play', (e) => {
+          trackLayers.forEach((l) => {
+            if(this.$refs[l].paused) this.$refs[l].play();
+          });
+        });
+        this.$refs[layerID].addEventListener('seeking', (e) => {
+          trackLayers.forEach((l) => {
+            this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+          });
+        });
+        this.$refs[layerID].addEventListener('seeked', (e) => {
+          trackLayers.forEach((l) => {
+            this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+          });
+        });
+      }
     },
     async togglePlay() {
       if(this.paused) {
