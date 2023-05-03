@@ -460,6 +460,7 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
+      console.log("pause " + layerID);
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
@@ -467,6 +468,7 @@ let app = new Vue({
       });
     },
     layerPlayed(layerID) {
+      console.log("play " + layerID);
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
@@ -474,6 +476,7 @@ let app = new Vue({
       });
     },
     layerSeeking(layerID) {
+      console.log("seeking " + layerID);
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
@@ -481,6 +484,7 @@ let app = new Vue({
       });
     },
     layerSeeked(layerID) {
+      console.log("seeked " + layerID);
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
