@@ -341,25 +341,6 @@ let app = new Vue({
       return res_json;
 
     },
-    getLayerName(uid) {
-      if(!uid || !Object.keys(layers).length) return;
-      return layers[uid].name;
-    },
-    getLayerURL(buffer) {
-      return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
-    },
-    getBaseUser(uid) {
-      if(!uid || !Object.keys(layers).length) return;
-      return layers[uid].user;
-    },
-    getTrackName(uid) {
-      if(!uid || !Object.keys(tracks).length) return;
-      return tracks[uid].name;
-    },
-    getUserName(uid) {
-      if(!uid || !Object.keys(users).length) return;
-      return users[uid].displayName;
-    },
     async createUser() {
       try {
         let self = this;
@@ -442,26 +423,6 @@ let app = new Vue({
       });
       await self.signOut();
       self.busy = false;
-    },
-    signinKeydownHandler(event) {
-      if (event.which === 13 && this.stateCredentials) {
-        this.signIn();
-      }
-    },
-    usernameKeydownHandler(event) {
-      if (event.which === 13 && this.stateUsername) {
-        this.changeUsername(0);
-      }
-    },
-    passwordKeydownHandler(event) {
-      if (event.which === 13 && this.statePassword) {
-        this.changePassword();
-      }
-    },
-    emailKeydownHandler(event) {
-      if (event.which === 13 && this.stateEmail) {
-        this.changeEmail();
-      }
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -591,6 +552,45 @@ let app = new Vue({
       if (!this.paused) await this.togglePlay();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
+    },
+    signinKeydownHandler(event) {
+      if (event.which === 13 && this.stateCredentials) {
+        this.signIn();
+      }
+    },
+    getLayerName(uid) {
+      if(!uid || !Object.keys(layers).length) return;
+      return layers[uid].name;
+    },
+    getLayerURL(buffer) {
+      return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
+    },
+    getBaseUser(uid) {
+      if(!uid || !Object.keys(layers).length) return;
+      return layers[uid].user;
+    },
+    getTrackName(uid) {
+      if(!uid || !Object.keys(tracks).length) return;
+      return tracks[uid].name;
+    },
+    getUserName(uid) {
+      if(!uid || !Object.keys(users).length) return;
+      return users[uid].displayName;
+    },
+    usernameKeydownHandler(event) {
+      if (event.which === 13 && this.stateUsername) {
+        this.changeUsername(0);
+      }
+    },
+    passwordKeydownHandler(event) {
+      if (event.which === 13 && this.statePassword) {
+        this.changePassword();
+      }
+    },
+    emailKeydownHandler(event) {
+      if (event.which === 13 && this.stateEmail) {
+        this.changeEmail();
+      }
     }
   }
 });
