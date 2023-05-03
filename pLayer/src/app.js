@@ -460,9 +460,6 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
-      console.log(layerID);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
@@ -470,33 +467,24 @@ let app = new Vue({
       });
     },
     layerPlayed(layerID) {
-      console.log(layerID);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        if(this.$refs[l][0].paused) this.$refs[l][0].play();
+        if(self.$refs[l][0].paused) self.$refs[l][0].play();
       });
     },
     layerSeeking(layerID) {
-      console.log(layerID);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        this.$refs[l][0].currentTime = this.$refs[layerID][0].currentTime;
+        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
     },
     layerSeeked(layerID) {
-      console.log(layerID);
-      console.log(this.$refs);
-      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        this.$refs[l][0].currentTime = this.$refs[layerID][0].currentTime;
+        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
     },
     async togglePlay() {
