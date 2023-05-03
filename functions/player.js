@@ -22,12 +22,16 @@ class Player {
   }
   async updateUser(arg) {
     this.validateArg(arg, ["field", "value"]);
+    if(!(["username", "password", "email"].includes(arg.field))) {
+      throw new Error("field must be username, password, or email");
+    }
     const update = {};
     update[arg.field] = arg.value;
     await auth.updateUser(this.user.uid, update);
     if (arg.field === "displayName") {
       await users.doc(this.user.uid).update(update);
     }
+    return {status: "ok"};
   }
   async process(arg) {
     this.user = await this.authenticate(arg.id);

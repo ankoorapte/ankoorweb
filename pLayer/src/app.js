@@ -8,8 +8,6 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   sendEmailVerification,
-  updatePassword,
-  updateEmail,
   onAuthStateChanged, 
   signOut } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-auth.js";
 
