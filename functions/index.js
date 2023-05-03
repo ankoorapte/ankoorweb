@@ -4,8 +4,13 @@ const cors = require("cors")({origin: true});
 
 exports.pLayerAPI = functions.https.onRequest((req, res) => {
   return cors(req, res, async () => {
-    const data = await pLayer.api(req.body);
-    res.status(200).send(data);
+    try {
+      const data = await pLayer.api(req.body);
+      res.status(200).send(data);
+    } catch (e) {
+      res.status(e.status).send(e.message);
+      throw e;
+    }
   });
 });
 

@@ -13,17 +13,14 @@ class Player {
     };
   }
   validateParams(endpoint, params) {
-    console.log(Object.keys(params));
     const valid = this.api_params[endpoint].every((p) => {
-      console.log(p);
       return Object.keys(params).includes(p);
     });
     if (valid) {
       console.log("valid params");
       return;
     } else {
-      console.log("invalid params");
-      throw new Error("OOPS");
+      throw new Error({status: 404, message: "invalid params"});
     }
   }
   async updateUsername(params) {
@@ -38,20 +35,10 @@ class Player {
     return auth.getUser(decodedToken.uid);
   }
   async process(arg) {
-    try {
-      this.user = await this.authenticate(arg.id);
-      try {
-        this.validateParams(arg.endpoint_name, arg.params);
-      } catch (e) {
-        console.log(e);
-        return e;
-      }
-      const res = await this[arg.endpoint_name](arg.params);
-      return res;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+    this.user = await this.authenticate(arg.id);
+    this.validateParams(arg.endpoint_name, arg.params);
+    const res = await this[arg.endpoint_name](arg.params);
+    return res;
   }
 }
 

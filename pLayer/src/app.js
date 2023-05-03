@@ -327,19 +327,23 @@ let app = new Vue({
   },
   methods: {
     async pLayerAPI(endpoint = "", params = {}) {
-      let arg = {};
-      arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
-      arg['endpoint_name'] = endpoint;
-      arg['params'] = params;
-      let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify(arg)
-      });
-      return res.json();
+        let arg = {};
+        arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
+        arg['endpoint_name'] = endpoint;
+        arg['params'] = params;
+      try {
+        let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify(arg)
+        });
+        return res.json();
+      } catch (e) {
+        console.log(await e.text());
+      }
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
