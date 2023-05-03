@@ -226,9 +226,7 @@ let app = new Vue({
       </b-collapse>
     </b-collapse>
     <b-navbar variant="faded" fixed="bottom" type="light">
-      <b-col align="center">
-        <b-navbar-nav style="font-size:10px">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-nav>
-      </b-col>
+        <b-navbar-text style="font-size:10px">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-text>
     </b-navbar>
   </b-container>
   `,
