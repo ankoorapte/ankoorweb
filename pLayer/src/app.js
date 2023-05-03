@@ -4,8 +4,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
 
 import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
+  getAuth,
   signInWithEmailAndPassword, 
   sendEmailVerification,
   onAuthStateChanged, 
@@ -226,6 +225,9 @@ let app = new Vue({
         </b-tabs>
       </b-collapse>
     </b-collapse>
+    <b-navbar variant="faded" type="light">
+      <b-navbar-brand>Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
+    </b-navbar>
   </b-container>
   `,
   data() {
@@ -543,11 +545,6 @@ let app = new Vue({
         accept: accept
       });
     },
-    signinKeydownHandler(event) {
-      if (event.which === 13 && this.stateCredentials) {
-        this.signIn();
-      }
-    },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
       return layers[uid].name;
@@ -566,6 +563,11 @@ let app = new Vue({
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
       return users[uid].displayName;
+    },
+    signinKeydownHandler(event) {
+      if (event.which === 13 && this.stateCredentials) {
+        this.signIn();
+      }
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
