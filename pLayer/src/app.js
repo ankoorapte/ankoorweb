@@ -334,11 +334,14 @@ let app = new Vue({
         body: JSON.stringify(arg)
       });
       let res_json = await res.json();
-      console.log(res_json);
+      this.busy = false;
       if(res_json['stack'] && res_json['stack'].slice(0,5) == "Error") {
         throw new Error(res_json.message);
+      } else if(res_json['status'] && res_json['status'] == "ok") {
+        return res_json['data'];
+      } else {
+        throw new Error("No status found in response");
       }
-      this.busy = false;
       return res_json;
     },
     async createUser() {
