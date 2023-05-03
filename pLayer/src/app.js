@@ -156,19 +156,18 @@ let app = new Vue({
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
                   <p class="mb-0"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
-                  <audio 
+                  <div v-on:click="set(layer_item.id)"><audio 
                     class="p-0" 
                     style="height:30px" 
                     controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
-                    v-on:click="set(layer_item.id)"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
                     v-on:seeking="layerSeeking(layer_item.id)"
                     v-on:seeked="layerSeeked(layer_item.id)"
                   >
-                  </audio>
+                  </audio></div>
                 </b-col>
               </b-list-group-item>
             </b-list-group>
