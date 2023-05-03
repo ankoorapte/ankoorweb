@@ -483,7 +483,7 @@ let app = new Vue({
     },
     layerPlayed(layerID) {
       let self = this;
-      if(self.block[layerId]) return;
+      if(self.block[layerID]) return;
       console.log("play " + layerID);
       Object.keys(self.block).forEach((l) => {
         if(l != layerID) {
@@ -502,7 +502,7 @@ let app = new Vue({
     },
     layerSeeking(layerID) {
       let self = this;
-      if(self.block[layerId]) return;
+      if(self.block[layerID]) return;
       console.log("seeking " + layerID);
       Object.keys(self.block).forEach((l) => {
         if(l != layerID) {
@@ -521,7 +521,7 @@ let app = new Vue({
     },
     layerSeeked(layerID) {
       let self = this;
-      if(self.block[layerId]) return;
+      if(self.block[layerID]) return;
       console.log("seeked " + layerID);
       Object.keys(self.block).forEach((l) => {
         if(l != layerID) {
