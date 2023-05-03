@@ -450,6 +450,7 @@ let app = new Vue({
     },
     tieAudio(trackLayers) {
       for(const layerID of trackLayers) {
+        console.log(this.$refs[layerID]);
         this.$refs[layerID].addEventListener('pause', (e) => {
           trackLayers.forEach((l) => {
             if(!this.$refs[l].paused) this.$refs[l].pause();
