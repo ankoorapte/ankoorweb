@@ -20,13 +20,14 @@ class Player {
       throw new Error("invalid params");
     }
   }
-  async updateUsername(arg) {
-    this.validateArg(arg, ["new_username"]);
-    await auth.updateUser(this.user.uid, {displayName: arg.new_username});
-    await users.doc(this.user.uid).update({
-      displayName: arg.new_username,
-    });
-    return {status: "pass"};
+  async updateUser(arg) {
+    this.validateArg(arg, ["field", "value"]);
+    const update = {};
+    update[arg.field] = arg.value;
+    await auth.updateUser(this.user.uid, update);
+    if (arg.field === "displayName") {
+      await users.doc(this.user.uid).update(update);
+    }
   }
   async process(arg) {
     this.user = await this.authenticate(arg.id);

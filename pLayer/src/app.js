@@ -7,8 +7,7 @@ import {
   getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  sendEmailVerification, 
-  updateProfile, 
+  sendEmailVerification,
   updatePassword,
   updateEmail,
   onAuthStateChanged, 
@@ -421,26 +420,28 @@ let app = new Vue({
     async changeUsername(un) {
       this.busy = true;
       if(!un) un = this.newUsername;
-      await this.pLayerAPI("updateUsername",{
-        new_username: un
+      await this.pLayerAPI("updateUser",{
+        field: "username",
+        value: un
       });
       this.busy = false;
     },
     async changePassword() {
       let self = this;
       self.busy = true;
-      await updatePassword(auth.currentUser, self.newPassword);
+      await self.pLayerAPI("updateUser",{
+        field: "password",
+        value: self.newPassword
+      });
       self.busy = false;
     },
     async changeEmail() {
       let self = this;
       self.busy = true;
-
-      try {
-        await updateEmail(auth.currentUser, self.newEmail);
-      } catch(e) {
-        console.log(e);
-      }
+      await self.pLayerAPI("updateUser",{
+        field: "email",
+        value: self.newEmail
+      });
       await self.signOut();
       self.busy = false;
     },
