@@ -161,6 +161,7 @@ let app = new Vue({
                     style="height:30px" 
                     controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
+                    @mousedown="activeLayer = layer_item.id"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
@@ -274,7 +275,7 @@ let app = new Vue({
       outbox: [],
       discography: [],
       draft: "",
-      block: {},
+      activeLayer: "",
     }
   },
   async created() {
@@ -464,91 +465,43 @@ let app = new Vue({
     },
     layerPaused(layerID) {
       let self = this;
-      if(self.block[layerID]) {
-        self.block[layerID] = false;
-        return;
+      if(self.activeLayer == layerID) {
+        console.log("pause " + layerID);
+        let trackLayers = tracks[self.trackID].layers.slice();
+        trackLayers.forEach((l) => {
+          if(l != layerID) self.$refs[l][0].pause();
+        });
       }
-      console.log("pause " + layerID);
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = true;
-        }
-      });
-      let trackLayers = tracks[self.trackID].layers.slice();
-      trackLayers.forEach((l) => {
-        self.$refs[l][0].pause();
-      });
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = false;
-        }
-      });
     },
     layerPlayed(layerID) {
       let self = this;
-      if(self.block[layerID]) {
-        self.block[layerID] = false;
-        return;
+      if(self.activeLayer == layerID) {
+        console.log("play " + layerID);
+        let trackLayers = tracks[self.trackID].layers.slice();
+        trackLayers.forEach((l) => {
+          if(l != layerID) self.$refs[l][0].play();
+        });
       }
-      console.log("play " + layerID);
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = true;
-        }
-      });
-      let trackLayers = tracks[self.trackID].layers.slice();
-      trackLayers.forEach((l) => {
-        self.$refs[l][0].play();
-      });
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = false;
-        }
-      });
     },
     layerSeeking(layerID) {
       let self = this;
-      if(self.block[layerID]) {
-        self.block[layerID] = false;
-        return;
+      if(self.activeLayer == layerID) {
+        console.log("seeking " + layerID);
+        let trackLayers = tracks[self.trackID].layers.slice();
+        trackLayers.forEach((l) => {
+          if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
+        });
       }
-      console.log("seeking " + layerID);
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = true;
-        }
-      });
-      let trackLayers = tracks[self.trackID].layers.slice();
-      trackLayers.forEach((l) => {
-        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
-      });
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = false;
-        }
-      });
     },
     layerSeeked(layerID) {
       let self = this;
-      if(self.block[layerID]) {
-        self.block[layerID] = false;
-        return;
+      if(self.activeLayer == layerID) {
+        console.log("seeked " + layerID);
+        let trackLayers = tracks[self.trackID].layers.slice();
+        trackLayers.forEach((l) => {
+          if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
+        });
       }
-      console.log("seeked " + layerID);
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = false;
-        }
-      });
-      let trackLayers = tracks[self.trackID].layers.slice();
-      trackLayers.forEach((l) => {
-        self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
-      });
-      Object.keys(self.block).forEach((l) => {
-        if(l != layerID) {
-          self.block[layerID] = false;
-        }
-      });
     },
     async togglePlay() {
       if(this.paused) {
