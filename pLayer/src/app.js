@@ -160,6 +160,7 @@ let app = new Vue({
                     class="p-0" 
                     style="height:30px" 
                     controls controlslist="noplaybackrate"
+                    :ref="layer_item.id"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(index)"
                     v-on:play="layerPlayed(index)"
