@@ -164,7 +164,6 @@ let app = new Vue({
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
-                    v-on:seeking="layerSeeking(layer_item.id)"
                     v-on:seeked="layerSeeked(layer_item.id)"
                   >
                   </audio>
