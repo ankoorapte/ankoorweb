@@ -445,6 +445,7 @@ let app = new Vue({
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
+      console.log(this.$refs);
       this.tieAudio(trackLayers);
       this.busy = false;
     },
