@@ -162,10 +162,10 @@ let app = new Vue({
                     controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
                     :src="getLayerURL(layer_item.data)"
-                    v-on:pause="layerPaused(index)"
-                    v-on:play="layerPlayed(index)"
-                    v-on:seeking="layerSeeking(index)"
-                    v-on:seeked="layerSeeked(index)"
+                    v-on:pause="layerPaused(layer_item.id)"
+                    v-on:play="layerPlayed(layer_item.id)"
+                    v-on:seeking="layerSeeking(layer_item.id)"
+                    v-on:seeked="layerSeeked(layer_item.id)"
                   >
                   </audio>
                 </b-col>
@@ -459,28 +459,41 @@ let app = new Vue({
       this.trackName = tracks[this.trackID]['name'];
       this.busy = false;
     },
-    layerPaused() {
+    layerPaused(layerID) {
+      console.log(layerID);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
+
         if(!self.$refs[l].paused) self.$refs[l].pause();
       });
     },
-    layerPlayed() {
+    layerPlayed(layerID) {
+      console.log(layerID);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         if(this.$refs[l].paused) this.$refs[l].play();
       });
     },
-    layerSeeking() {
+    layerSeeking(layerID) {
+      console.log(layerID);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         this.$refs[l].currentTime = this.$refs[layerID].currentTime;
       });
     },
-    layerSeeked() {
+    layerSeeked(layerID) {
+      console.log(layerID);
+      console.log(this.$refs);
+      console.log(Object.keys(this.$refs));
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
