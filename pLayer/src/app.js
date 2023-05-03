@@ -330,22 +330,18 @@ let app = new Vue({
       arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
       arg['params'] = params;
-      let res;
-      try {
-        res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          },
-          body: JSON.stringify(arg)
-        });
-      } catch (e) {
-        console.log("ankoor error");
-        console.log(e);
-      }
+      let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(arg)
+      });
       let res_json = await res.json();
-      console.log(res_json);
+      if(res_json['stack'] && res_json['stack'].slice(0,5) == "Error") {
+        throw new Error(res_json.message);
+      }
       return res_json;
 
     },
