@@ -7,11 +7,26 @@ const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 
 class Player {
-  validateArg(arg) {
-    return arg;
+  constructor() {
+    this.api_params = {
+      updateUsername: ["new_username"],
+    };
   }
-  async updateUsername(arg) {
-    this.validateArg(arg);
+  validateParams(endpoint, params) {
+    console.log(Object.keys(params));
+    const valid = this.api_params[endpoint].every((p) => {
+      console.log(p);
+      return Object.keys(params).includes(p);
+    });
+    if (valid) {
+      console.log("valid params");
+      return;
+    } else {
+      console.log("invalid params");
+      throw new Error("OOPS");
+    }
+  }
+  async updateUsername(params) {
     // await updateProfile(this.user, { displayName: arg.user_name });
     // await setDoc(doc(db, "users", self.user.uid), {
     //   displayName: un
@@ -25,13 +40,16 @@ class Player {
   async process(arg) {
     try {
       this.user = await this.authenticate(arg.id);
-      console.log(this.user);
-      console.log(arg.endpoint_name);
-      console.log(arg.params);
+      try {
+        this.validateParams(arg.endpoint_name, arg.params);
+      } catch (e) {
+        console.log(e);
+        return e;
+      }
       const res = await this[arg.endpoint_name](arg.params);
-      console.log(res);
       return res;
     } catch (e) {
+      console.log(e);
       return e;
     }
   }

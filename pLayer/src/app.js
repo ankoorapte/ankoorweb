@@ -420,7 +420,7 @@ let app = new Vue({
       self.busy = true;
       if(!un) un = self.newUsername;
       let res = await self.pLayerAPI("updateUsername",{
-        new_username: un
+        // new_username: un
       });
       console.log(res);
       self.busy = false;
