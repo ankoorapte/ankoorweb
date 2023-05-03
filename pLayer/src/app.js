@@ -164,6 +164,7 @@ let app = new Vue({
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
+                    v-on:seeking="layerSeeking(layer_item.id)"
                     v-on:seeked="layerSeeked(layer_item.id)"
                   >
                   </audio>
@@ -273,7 +274,7 @@ let app = new Vue({
       outbox: [],
       discography: [],
       draft: "",
-      block: false,
+      block: {},
     }
   },
   async created() {
@@ -457,51 +458,85 @@ let app = new Vue({
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
+      this.block = {};
+      trackLayers.forEach((l) => this.block[l] = false);
       this.busy = false;
     },
     layerPaused(layerID) {
       let self = this;
-      if(self.block) return;
+      if(self.block[layerID]) return;
       console.log("pause " + layerID);
-      self.block = true;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = true;
+        }
+      });
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].pause();
       });
-      self.block = false;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = false;
+        }
+      });
     },
     layerPlayed(layerID) {
       let self = this;
-      if(self.block) return;
+      if(self.block[layerId]) return;
       console.log("play " + layerID);
-      self.block = true;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = true;
+        }
+      });
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].play();
       });
-      self.block = false;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = false;
+        }
+      });
     },
     layerSeeking(layerID) {
       let self = this;
-      if(self.block) return;
+      if(self.block[layerId]) return;
       console.log("seeking " + layerID);
-      self.block = true;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = true;
+        }
+      });
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
-      self.block = false;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = false;
+        }
+      });
     },
     layerSeeked(layerID) {
       let self = this;
-      if(self.block) return;
+      if(self.block[layerId]) return;
       console.log("seeked " + layerID);
-      self.block = true;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = false;
+        }
+      });
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
       });
-      self.block = false;
+      Object.keys(self.block).forEach((l) => {
+        if(l != layerID) {
+          self.block[layerID] = false;
+        }
+      });
     },
     async togglePlay() {
       if(this.paused) {
