@@ -342,17 +342,12 @@ let app = new Vue({
       } else {
         throw new Error("No status found in response");
       }
-      return res_json;
     },
     async createUser() {
-      try {
-        let self = this;
-        let userCredential = await createUserWithEmailAndPassword(auth, self.email, self.password);
-        self.user = userCredential.user;
-        await self.changeUsername(self.user.email);
-      } catch(e) {
-        console.log(e.code + ": " + e.message);
-      }
+      this.user = await this.pLayerAPI("createUser", {
+        email: self.email,
+        password: self.password
+      });
     },
     async signIn(user) {
       this.showSettings = false;
@@ -378,6 +373,7 @@ let app = new Vue({
       } catch(e) {
         console.log(e.code + ": " + e.message);
         if(e.code == "auth/user-not-found") {
+          await this.createUser();
           alert('oops')
         }
         if(e.code == "auth/wrong-password") {

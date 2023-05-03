@@ -20,6 +20,26 @@ class Player {
       throw new Error("invalid params");
     }
   }
+  async createUser(arg) {
+    this.validateArg(arg, ["email", "password"]);
+    try {
+      const userRecord = await auth.createUser({
+        email: arg.email,
+        emailVerified: false,
+        password: arg.password,
+        displayName: arg.email,
+      });
+      console.log(userRecord);
+      this.user = userRecord.user;
+      await users.doc(this.user.uid).set({
+        displayName: arg.email,
+        dateCreated: admin.firestore.Timestamp.now(),
+      });
+      return {status: "ok", data: userRecord.user};
+    } catch (e) {
+      throw new Error(e.code + ": " + e.message);
+    }
+  }
   async updateUser(arg) {
     this.validateArg(arg, ["field", "value"]);
     if (!(["username", "password", "email"].includes(arg.field))) {
