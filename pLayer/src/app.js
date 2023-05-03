@@ -466,8 +466,7 @@ let app = new Vue({
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-
-        if(!self.$refs[l].paused) self.$refs[l].pause();
+        if(!self.$refs[l][0].paused) self.$refs[l][0].pause();
       });
     },
     layerPlayed(layerID) {
@@ -477,7 +476,7 @@ let app = new Vue({
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        if(this.$refs[l].paused) this.$refs[l].play();
+        if(this.$refs[l][0].paused) this.$refs[l][0].play();
       });
     },
     layerSeeking(layerID) {
@@ -487,7 +486,7 @@ let app = new Vue({
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+        this.$refs[l][0].currentTime = this.$refs[layerID][0].currentTime;
       });
     },
     layerSeeked(layerID) {
@@ -497,7 +496,7 @@ let app = new Vue({
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       trackLayers.forEach((l) => {
-        this.$refs[l].currentTime = this.$refs[layerID].currentTime;
+        this.$refs[l][0].currentTime = this.$refs[layerID][0].currentTime;
       });
     },
     async togglePlay() {
