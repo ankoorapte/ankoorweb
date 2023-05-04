@@ -162,7 +162,6 @@ let app = new Vue({
                     controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
                     :src="getLayerURL(layer_item.data)"
-                    v-on:click.native="set(layer_item.id)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
                     v-on:seeking="layerSeeking(layer_item.id)"
