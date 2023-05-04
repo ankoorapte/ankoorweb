@@ -155,7 +155,7 @@ let app = new Vue({
                   <div><audio 
                     class="p-0" 
                     style="height:30px" 
-                    controls controlslist="noplaybackrate"
+                    controls controlslist="noplay noplaybackrate"
                     :ref="layer_item.id"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
