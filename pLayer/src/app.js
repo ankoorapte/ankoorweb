@@ -494,7 +494,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].play();
         });
       } else {
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
         console.log(self.inactiveLayers);
       }
     },
