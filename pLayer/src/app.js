@@ -191,7 +191,10 @@ let app = new Vue({
           </b-tab>
           <b-tab title="drafts">
             <b-tabs card align="center">
-              <b-tab title="inbox" active>
+              <b-tab active>
+                <template #title>
+                  inbox {{inbox.length ? "(" + inbox.length + ")" : ""}}
+                </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                     <p class="ml-1 mb-0">
@@ -205,7 +208,10 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
-              <b-tab title="outbox">
+              <b-tab>
+                <template #title>
+                  outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}
+                </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                     <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
