@@ -9,10 +9,15 @@ const users = db.collection("users");
 
 class Player {
   async authenticate(id) {
-    const decodedToken = await auth.verifyIdToken(id);
-    return auth.getUser(decodedToken.uid);
+    try {
+      const decodedToken = await auth.verifyIdToken(id);
+      return auth.getUser(decodedToken.uid);
+    } catch (e) {
+      throw new Error(e);
+    }
   }
   validateArg(arg, params) {
+    console.log(Object.keys(arg));
     const valid = params.every((p) => {
       return Object.keys(arg).includes(p);
     });
@@ -69,7 +74,10 @@ class Player {
     return {status: "ok"};
   }
   async process(arg) {
-    this.user = await this.authenticate(arg.id);
+    if (arg.endpoint_name != "createUser") {
+      this.user = await this.authenticate(arg.id);
+    }
+    console.log(Object.keys(arg));
     return this[arg.endpoint_name](arg);
   }
 }
