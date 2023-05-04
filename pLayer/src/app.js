@@ -147,26 +147,24 @@ let app = new Vue({
           </p>
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <b-row>  
-                <b-col align="right">
-                  <p style="font-size:14px"> 
-                    {{ getUserName(layer_item.user) }}: 
-                    <i>{{ getLayerName(layer_item.id) }}</i>
-                  </p>
-                </b-col>
-                <b-col align="left">
-                  <audio
-                    style="height:25px" 
-                    controls controlslist="noplaybackrate"
-                    :ref="layer_item.id"
-                    :src="getLayerURL(layer_item.data)"
-                    v-on:pause="layerPaused(layer_item.id)"
-                    v-on:play="layerPlayed(layer_item.id)"
-                    v-on:seeked="layerSeeked(layer_item.id)"
-                  >
-                  </audio>
-                </b-col>
-              </b-row>
+              <b-col align="right">
+                <p style="font-size:14px"> 
+                  {{ getUserName(layer_item.user) }}: 
+                  <i>{{ getLayerName(layer_item.id) }}</i>
+                </p>
+              </b-col>
+              <b-col align="left">
+                <audio
+                  style="height:25px" 
+                  controls controlslist="noplaybackrate"
+                  :ref="layer_item.id"
+                  :src="getLayerURL(layer_item.data)"
+                  v-on:pause="layerPaused(layer_item.id)"
+                  v-on:play="layerPlayed(layer_item.id)"
+                  v-on:seeked="layerSeeked(layer_item.id)"
+                >
+                </audio>
+              </b-col>
             </b-list-group-item>
           </b-list-group>
         </b-card>
