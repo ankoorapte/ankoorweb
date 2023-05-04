@@ -223,12 +223,22 @@ let app = new Vue({
               </b-tab>
             </b-tabs>
           </b-tab>
-          <b-tab title="releases">
+          <b-tab title="your tracks">
             <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
                 <p class="mr-2 mb-0">
                   <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+          </b-tab>
+          <b-tab title="group tracks">
+            <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
+              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                <p class="mr-2 mb-0">
+                  <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
                 </p>
               </b-list-group-item>
             </b-list-group>
@@ -270,6 +280,7 @@ let app = new Vue({
       inbox: [],
       outbox: [],
       discography: [],
+      group_discography: [],
       draft: "",
       activeLayer: "",
       inactiveLayers: [],
@@ -549,10 +560,15 @@ let app = new Vue({
       });
     },
     updateDiscography() {
-      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
+      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}});
+      this.group_discography = Object.keys(tracks).map((t) => {return {trackID:t}});
     },
     async playDiscography(index) {
       this.trackID = this.discography[index].trackID;
+      await this.getTrack();
+    },
+    async playGroupDiscography(index) {
+      this.trackID = this.group_discography[index].trackID;
       await this.getTrack();
     },
     async playDraft(index, whichbox) {
