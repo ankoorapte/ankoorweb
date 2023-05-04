@@ -469,7 +469,7 @@ let app = new Vue({
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
@@ -477,7 +477,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].pause();
         });
       } else {
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
       }
     },
     layerPlayed(layerID) {
@@ -486,7 +486,7 @@ let app = new Vue({
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
@@ -494,7 +494,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].play();
         });
       } else {
-        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
+        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
     },
@@ -504,7 +504,7 @@ let app = new Vue({
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
@@ -512,7 +512,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
         });
       } else {
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
       }
     },
     async togglePlay() {
