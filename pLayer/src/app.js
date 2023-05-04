@@ -155,12 +155,13 @@ let app = new Vue({
                   <div><audio 
                     class="p-0" 
                     style="height:30px" 
-                    controls controlslist="noplay noplaybackrate"
+                    controls controlslist="noplaybackrate"
                     :ref="layer_item.id"
                     :src="getLayerURL(layer_item.data)"
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
                     v-on:seeked="layerSeeked(layer_item.id)"
+                    v-on:timeupdate="layerTimeUpdate(layer_item.id)"
                   >
                   </audio></div>
                 </b-col>
@@ -458,6 +459,9 @@ let app = new Vue({
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
       }
+    },
+    layerTimeUpdate(layerID) {
+      console.log(layerID);
     },
     layerPlayed(layerID) {
       let self = this;
