@@ -34,7 +34,7 @@ class Player {
         displayName: arg.email,
       });
       console.log(userRecord);
-      this.user = userRecord.user;
+      this.user = userRecord;
       await users.doc(this.user.uid).set({
         displayName: arg.email,
         dateCreated: admin.firestore.Timestamp.now(),

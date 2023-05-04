@@ -143,30 +143,26 @@ let app = new Vue({
           </p>
           <p>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
-            <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
-          <b-collapse v-model="showLayers">
-            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <b-col>
-                  <p class="mb-0"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
-                  <div><audio 
-                    class="p-0" 
-                    style="height:30px" 
-                    controls controlslist="noplaybackrate"
-                    :ref="layer_item.id"
-                    :src="getLayerURL(layer_item.data)"
-                    v-on:pause="layerPaused(layer_item.id)"
-                    v-on:play="layerPlayed(layer_item.id)"
-                    v-on:seeked="layerSeeked(layer_item.id)"
-                  >
-                  </audio></div>
-                </b-col>
-              </b-list-group-item>
-            </b-list-group>
-          </b-collapse>
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+              <b-col>
+                <p class="mb-0" style="font-size:13px"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
+                <div><audio 
+                  class="p-0" 
+                  style="height:30px" 
+                  controls controlslist="noplaybackrate"
+                  :ref="layer_item.id"
+                  :src="getLayerURL(layer_item.data)"
+                  v-on:pause="layerPaused(layer_item.id)"
+                  v-on:play="layerPlayed(layer_item.id)"
+                  v-on:seeked="layerSeeked(layer_item.id)"
+                >
+                </audio></div>
+              </b-col>
+            </b-list-group-item>
+          </b-list-group>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
@@ -249,7 +245,6 @@ let app = new Vue({
       newEmail: "",
       busy: true,
       showSettings: false,
-      showLayers: false,
       showCreatorTools: false,
       layer: null,
       layers: [],
