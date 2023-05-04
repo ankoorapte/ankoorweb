@@ -445,7 +445,7 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
-      console.log(layerID + " " + (new Date()).toString());
+      console.log(layerID + " " + Date.now());
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -461,7 +461,7 @@ let app = new Vue({
       }
     },
     layerPlayed(layerID) {
-      console.log(layerID + " " + (new Date()).toString());
+      console.log(layerID + " " + Date.now());
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
