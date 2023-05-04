@@ -136,14 +136,14 @@ let app = new Vue({
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>  
-          <p style="font-size:22px" class="mb-0"><b>{{trackName}}</b></p>
+          <p style="font-size:22px" class="mb-0">
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b>{{trackName}}</b>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+          </p>
           <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-          </p>
-          <p>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
