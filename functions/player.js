@@ -17,7 +17,6 @@ class Player {
     }
   }
   validateArg(arg, params) {
-    console.log(Object.keys(arg));
     const valid = params.every((p) => {
       return Object.keys(arg).includes(p);
     });
@@ -77,7 +76,6 @@ class Player {
     if (arg.endpoint_name != "createUser") {
       this.user = await this.authenticate(arg.id);
     }
-    console.log(Object.keys(arg));
     return this[arg.endpoint_name](arg);
   }
 }
