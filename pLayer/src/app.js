@@ -138,7 +138,7 @@ let app = new Vue({
           <div ref="pLayer"></div>  
           <p style="font-size:22px" class="mb-0">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1 mr-2"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b class="mt-1">{{trackName}}</b>
+            <b class="mt-2">{{trackName}}</b>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 ml-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           <p style="font-size:16px">{{artistNames.join(", ")}}</p>
