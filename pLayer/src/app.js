@@ -478,6 +478,7 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
+        console.log(self.inactiveLayers);
       }
     },
     layerPlayed(layerID) {
@@ -513,6 +514,7 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
+        console.log(self.inactiveLayers);
       }
     },
     async togglePlay() {
