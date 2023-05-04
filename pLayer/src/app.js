@@ -286,7 +286,6 @@ let app = new Vue({
       if(self.signedIn) {
         self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
-          console.log("update layers");
           layers = {};
           layerDocs.forEach((doc) => {
             layers[doc.id] = doc.data();
@@ -295,7 +294,6 @@ let app = new Vue({
         });
 
         unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          console.log("update tracks");
           tracks = {};
           trackDocs.forEach((doc) => {
             tracks[doc.id] = doc.data();
@@ -306,7 +304,6 @@ let app = new Vue({
         });
 
         unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          console.log("update users");
           users = {};
           userDocs.forEach((doc) => {
             users[doc.id] = doc.data();
@@ -465,12 +462,10 @@ let app = new Vue({
     },
     layerPaused(layerID) {
       let self = this;
-      console.log("pause " + layerID);
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
         self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
@@ -478,17 +473,14 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
     },
     layerPlayed(layerID) {
       let self = this;
-      console.log("play " + layerID);
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
         self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
@@ -496,17 +488,14 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
     },
     layerSeeked(layerID) {
       let self = this;
-      console.log("seeked " + layerID);
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
         self.activeLayer = layerID;
         self.inactiveLayers = trackLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
       if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
@@ -514,7 +503,6 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
-        console.log(self.inactiveLayers);
       }
     },
     async togglePlay() {
