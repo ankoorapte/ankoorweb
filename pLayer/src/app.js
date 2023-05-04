@@ -147,13 +147,11 @@ let app = new Vue({
           </p>
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <b-col cols="4" align="right">
-                <p style="font-size:14px" class="mt-1"> 
+              <b-col>
+                <p style="font-size:14px"> 
                   {{ getUserName(layer_item.user) }}: 
                   <i>{{ getLayerName(layer_item.id) }}</i>
                 </p>
-              </b-col>
-              <b-col cols="8" align="left">
                 <audio
                   style="height:25px" 
                   controls controlslist="noplaybackrate"
