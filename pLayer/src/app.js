@@ -143,13 +143,9 @@ let app = new Vue({
           </p>
           <p>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-          </p>
-          <p>
             <b-button v-if="!showLayers" :disabled="busy" variant="dark" @click="showLayers = true"><b-icon icon="arrow-down-circle"></b-icon></b-button>
             <b-button v-if="showLayers" :disabled="busy" variant="dark" @click="showLayers = false"><b-icon icon="arrow-up-circle"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           <b-collapse v-model="showLayers">
             <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
@@ -395,7 +391,6 @@ let app = new Vue({
       }
     },
     async signOut() {
-      if(!this.paused) await this.togglePlay();
       this.resetAudioContext();
       unsubscribe_tracks();
       unsubscribe_layers();
@@ -505,26 +500,8 @@ let app = new Vue({
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
       }
     },
-    async togglePlay() {
-      if(this.paused) {
-        this.resetAudioContext();
-        for(const layerBuffer of this.layerBuffers) {
-          let source = this.audioContext.createBufferSource();
-          source.buffer = layerBuffer.decoded_data;
-          source.connect(this.merger, 0, 0);
-          source.connect(this.merger, 0, 1);
-          source.start(0, this.seeker);
-          this.layers.push(source);
-        }
-      } else {
-        this.seeker += this.audioContext.currentTime;
-        this.layers.forEach((node) => node.stop());
-      }
-      this.paused = !this.paused;
-    },
     async toggleTrack(forward) {
       this.busy = true;
-      if(!this.paused) await this.togglePlay();
       if(forward) { this.trackIdx++; }
       else { 
         if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
@@ -538,7 +515,6 @@ let app = new Vue({
     },
     async post() {
       let self = this;
-      if(!self.paused) await self.togglePlay();
       self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, uid);
@@ -583,18 +559,15 @@ let app = new Vue({
       this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}})
     },
     async playDiscography(index) {
-      if (!this.paused) await this.togglePlay();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
     },
     async playDraft(index, whichbox) {
-      if(!this.paused) await this.togglePlay();
       this.seeker = 0;
       this.trackID = this[whichbox][index].baseID
       await this.getTrack(this[whichbox][index].layerID);
     },
     async resolveDraft(index, accept) {
-      if (!this.paused) await this.togglePlay();
       let layerID = this.inbox[index].layerID;
       let baseID = this.inbox[index].baseID;
       await this.pLayerAPI("resolveLayer",{
