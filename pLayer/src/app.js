@@ -261,7 +261,6 @@ let app = new Vue({
       trackIdx: 0,
       layering: false,
       paused: true,
-      audioContext: null,
       merger: null,
       mixedAudio: null,
       seeker: 0,
@@ -280,7 +279,6 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        self.resetAudioContext();
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};
           layerDocs.forEach((doc) => {
@@ -391,7 +389,6 @@ let app = new Vue({
       }
     },
     async signOut() {
-      this.resetAudioContext();
       unsubscribe_tracks();
       unsubscribe_layers();
       unsubscribe_users();
@@ -425,20 +422,12 @@ let app = new Vue({
       });
       await this.signOut();
     },
-    resetAudioContext() {
-      this.audioContext = new AudioContext();
-      this.merger = this.audioContext.createChannelMerger(2);
-      this.mixedAudio = this.audioContext.createMediaStreamDestination();
-      this.merger.connect(this.mixedAudio);
-      this.merger.connect(this.audioContext.destination);
-    },
     async getLayerBuffer(layerID) {
       let data = await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer()
       return {
         id: layerID,
         user: layers[layerID].user,
-        data: data.slice(),
-        decoded_data: await this.audioContext.decodeAudioData(data)
+        data: data.slice()
       }
     }, 
     async getTrack(draftLayer="") {
