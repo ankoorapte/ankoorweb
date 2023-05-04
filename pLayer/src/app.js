@@ -477,7 +477,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].pause();
         });
       } else {
-        self.inactiveLayers = inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
+        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
     },
@@ -513,7 +513,7 @@ let app = new Vue({
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
         });
       } else {
-        self.inactiveLayers = inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
+        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID).filter(element => typeof element === 'string');
         console.log(self.inactiveLayers);
       }
     },
