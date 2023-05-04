@@ -274,6 +274,8 @@ let app = new Vue({
       discography: [],
       draft: "",
       activeLayer: "",
+      inactiveLayers: [],
+
     }
   },
   async created() {
@@ -464,32 +466,53 @@ let app = new Vue({
     layerPaused(layerID) {
       let self = this;
       console.log("pause " + layerID);
-      //if(self.activeLayer == layerID) {
-        let trackLayers = tracks[self.trackID].layers.slice();
+      let trackLayers = tracks[self.trackID].layers.slice();
+      if(!self.inactiveLayers.length) {
+        self.activeLayer = layerID;
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        console.log(self.inactiveLayers);
+      }
+      if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].pause();
         });
-      //}
+      } else {
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+      }
     },
     layerPlayed(layerID) {
       let self = this;
       console.log("play " + layerID);
-      //if(self.activeLayer == layerID) {
-        let trackLayers = tracks[self.trackID].layers.slice();
+      let trackLayers = tracks[self.trackID].layers.slice();
+      if(!self.inactiveLayers.length) {
+        self.activeLayer = layerID;
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        console.log(self.inactiveLayers);
+      }
+      if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].play();
         });
-      //}
+      } else {
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+      }
     },
     layerSeeked(layerID) {
       let self = this;
       console.log("seeked " + layerID);
-      //if(self.activeLayer == layerID) {
-        let trackLayers = tracks[self.trackID].layers.slice();
+      let trackLayers = tracks[self.trackID].layers.slice();
+      if(!self.inactiveLayers.length) {
+        self.activeLayer = layerID;
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        console.log(self.inactiveLayers);
+      }
+      if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
         });
-      //}
+      } else {
+        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+      }
     },
     async togglePlay() {
       if(this.paused) {
