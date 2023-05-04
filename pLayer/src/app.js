@@ -330,7 +330,7 @@ let app = new Vue({
   methods: {
     async pLayerAPI(endpoint = "", arg = {}) {
       this.busy = true;
-      arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
+      if(endpoint != "createUser") arg['id'] = await this.user.getIdToken(/* forceRefresh */ true);
       arg['endpoint_name'] = endpoint;
       let res = await fetch('https://us-central1-player-76353.cloudfunctions.net/pLayerAPI',{
         method: "POST",
