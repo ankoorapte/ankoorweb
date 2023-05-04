@@ -461,49 +461,35 @@ let app = new Vue({
       trackLayers.forEach((l) => this.block[l] = false);
       this.busy = false;
     },
-    set(id) {
-      console.log("click");
-      this.activeLayer = id;
-    },
     layerPaused(layerID) {
       let self = this;
       console.log("pause " + layerID);
-      if(self.activeLayer == layerID) {
+      //if(self.activeLayer == layerID) {
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].pause();
         });
-      }
+      //}
     },
     layerPlayed(layerID) {
       let self = this;
       console.log("play " + layerID);
-      if(self.activeLayer == layerID) {
+      //if(self.activeLayer == layerID) {
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].play();
         });
-      }
-    },
-    layerSeeking(layerID) {
-      let self = this;
-      console.log("seeking " + layerID);
-      if(self.activeLayer == layerID) {
-        let trackLayers = tracks[self.trackID].layers.slice();
-        trackLayers.forEach((l) => {
-          if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
-        });
-      }
+      //}
     },
     layerSeeked(layerID) {
       let self = this;
       console.log("seeked " + layerID);
-      if(self.activeLayer == layerID) {
+      //if(self.activeLayer == layerID) {
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
         });
-      }
+      //}
     },
     async togglePlay() {
       if(this.paused) {
