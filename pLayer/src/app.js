@@ -464,7 +464,11 @@ let app = new Vue({
       let self = this;
       if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
-          if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
+          if(l != layerID) {
+            if (self.$refs[l][0].currentTime != self.$refs[layerID][0].currentTime) {
+              self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;       
+            }
+          }
         });
       }
     },
