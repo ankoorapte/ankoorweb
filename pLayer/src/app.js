@@ -462,6 +462,7 @@ let app = new Vue({
     },
     layerTimeUpdate(layerID) {
       let self = this;
+      let trackLayers = tracks[self.trackID].layers.slice();
       if(self.activeLayer == layerID) {
         trackLayers.forEach((l) => {
           if(l != layerID) {
