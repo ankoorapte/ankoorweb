@@ -495,6 +495,7 @@ let app = new Vue({
         });
       } else {
         self.inactiveLayers = trackLayers.filter((l) => l != layerID);
+        console.log(self.inactiveLayers);
       }
     },
     layerSeeked(layerID) {
