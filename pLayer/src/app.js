@@ -445,6 +445,7 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
+      console.log(layerID + " " + (new Date()).toString());
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -459,20 +460,8 @@ let app = new Vue({
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
       }
     },
-    layerTimeUpdate(layerID) {
-      // let self = this;
-      // let trackLayers = tracks[self.trackID].layers.slice();
-      // if(self.activeLayer == layerID) {
-      //   trackLayers.forEach((l) => {
-      //     if(l != layerID) {
-      //       if (self.$refs[l][0].currentTime != self.$refs[layerID][0].currentTime) {
-      //         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;       
-      //       }
-      //     }
-      //   });
-      // }
-    },
     layerPlayed(layerID) {
+      console.log(layerID + " " + (new Date()).toString());
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
