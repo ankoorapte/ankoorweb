@@ -469,8 +469,8 @@ let app = new Vue({
     },
     layerPaused(layerID) {
       let self = this;
+      console.log("pause " + layerID);
       if(self.activeLayer == layerID) {
-        console.log("pause " + layerID);
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].pause();
@@ -479,8 +479,8 @@ let app = new Vue({
     },
     layerPlayed(layerID) {
       let self = this;
+      console.log("play " + layerID);
       if(self.activeLayer == layerID) {
-        console.log("play " + layerID);
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].play();
@@ -489,8 +489,8 @@ let app = new Vue({
     },
     layerSeeking(layerID) {
       let self = this;
+      console.log("seeking " + layerID);
       if(self.activeLayer == layerID) {
-        console.log("seeking " + layerID);
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
@@ -499,8 +499,8 @@ let app = new Vue({
     },
     layerSeeked(layerID) {
       let self = this;
+      console.log("seeked " + layerID);
       if(self.activeLayer == layerID) {
-        console.log("seeked " + layerID);
         let trackLayers = tracks[self.trackID].layers.slice();
         trackLayers.forEach((l) => {
           if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
