@@ -161,7 +161,6 @@ let app = new Vue({
                     v-on:pause="layerPaused(layer_item.id)"
                     v-on:play="layerPlayed(layer_item.id)"
                     v-on:seeked="layerSeeked(layer_item.id)"
-                    v-on:timeupdate="layerTimeUpdate(layer_item.id)"
                   >
                   </audio></div>
                 </b-col>
@@ -461,17 +460,17 @@ let app = new Vue({
       }
     },
     layerTimeUpdate(layerID) {
-      let self = this;
-      let trackLayers = tracks[self.trackID].layers.slice();
-      if(self.activeLayer == layerID) {
-        trackLayers.forEach((l) => {
-          if(l != layerID) {
-            if (self.$refs[l][0].currentTime != self.$refs[layerID][0].currentTime) {
-              self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;       
-            }
-          }
-        });
-      }
+      // let self = this;
+      // let trackLayers = tracks[self.trackID].layers.slice();
+      // if(self.activeLayer == layerID) {
+      //   trackLayers.forEach((l) => {
+      //     if(l != layerID) {
+      //       if (self.$refs[l][0].currentTime != self.$refs[layerID][0].currentTime) {
+      //         self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;       
+      //       }
+      //     }
+      //   });
+      // }
     },
     layerPlayed(layerID) {
       let self = this;
