@@ -151,7 +151,7 @@ let app = new Vue({
                 <p class="mb-0" style="font-size:13px"> {{ getLayerName(layer_item.id) }} - <b>{{ getUserName(layer_item.user)}}</b> </p>
                 <div><audio 
                   class="p-0" 
-                  style="height:30px" 
+                  style="height:25px" 
                   controls controlslist="noplaybackrate"
                   :ref="layer_item.id"
                   :src="getLayerURL(layer_item.data)"
