@@ -137,9 +137,9 @@ let app = new Vue({
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>  
           <p style="font-size:22px" class="mb-0">
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b>{{trackName}}</b>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+             <b>{{trackName}}</b> 
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
           <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
