@@ -446,7 +446,6 @@ let app = new Vue({
       }
     }, 
     async getTrack(draftLayer="") {
-      console.log("hi");
       if(!Object.keys(tracks).length) return;
       this.busy = true;
       let trackLayers = tracks[this.trackID].layers.slice();
@@ -591,6 +590,7 @@ let app = new Vue({
       return layers[uid].name;
     },
     getLayerURL(buffer) {
+      console.log("hi");
       return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
     },
     getBaseUser(uid) {
