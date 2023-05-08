@@ -233,7 +233,7 @@ let app = new Vue({
               </b-list-group-item>
             </b-list-group>
           </b-tab>
-          <b-tab title="group tracks">
+          <b-tab title="all tracks">
             <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
