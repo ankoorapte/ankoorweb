@@ -145,11 +145,11 @@ let app = new Vue({
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <p v-if="isMobile">
+          <p v-if="isMobile()">
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           </p>
-          <b-list-group v-if="!isMobile" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+          <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <b-col>
                 <p style="font-size:14px" class="mb-0"> 
