@@ -137,51 +137,50 @@ let app = new Vue({
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
           <b-row class="d-flex justify-content-between align-items-center">
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="showLayers = !showLayers" class="p-1" v-if="!isMobile() && !showLayers"><b-icon icon="arrow-down"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="showLayers = !showLayers" class="p-1" v-if="!isMobile() && showLayers"><b-icon icon="arrow-up"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b style="font-size:20px">{{trackName}}</b>
-            <p class="mt-3">{{artistNames.join(", ")}}</p>
-            <audio
-              v-if="!isMobile() && layerBuffers.length"
-              style="height:25px" 
-              controls controlslist="noplaybackrate"
-              :ref="layerBuffers[0].id"
-              :src="getLayerURL(layerBuffers[0].data)"
-              v-on:pause="layerPaused(layerBuffers[0].id)"
-              v-on:play="layerPlayed(layerBuffers[0].id)"
-              v-on:seeked="layerSeeked(layerBuffers[0].id)"
-            >
-            </audio>
+            <p style="font-size:18px">
+              <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              <b>{{trackName}}</b> {{artistNames.join(", ")}}
+            </p>
+            <p>
+              <audio
+                v-if="!isMobile() && layerBuffers.length"
+                style="height:25px" 
+                controls controlslist="noplaybackrate"
+                :ref="layerBuffers[0].id"
+                :src="getLayerURL(layerBuffers[0].data)"
+                v-on:pause="layerPaused(layerBuffers[0].id)"
+                v-on:play="layerPlayed(layerBuffers[0].id)"
+                v-on:seeked="layerSeeked(layerBuffers[0].id)"
+              >
+              </audio>
+            </p>
           </b-row>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <div hidden>
-            <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-              <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
-                <b-col>
-                  <p style="font-size:14px" class="mb-0"> 
-                    {{ getUserName(layer_item.user) }}: 
-                    <i>{{ getLayerName(layer_item.id) }}</i>
-                  </p>
-                  <audio
-                    style="height:25px" 
-                    controls controlslist="noplaybackrate"
-                    :ref="layer_item.id"
-                    :src="getLayerURL(layer_item.data)"
-                    v-on:pause="layerPaused(layer_item.id)"
-                    v-on:play="layerPlayed(layer_item.id)"
-                    v-on:seeked="layerSeeked(layer_item.id)"
-                  >
-                  </audio>
-                </b-col>
-              </b-list-group-item>
-            </b-list-group>
-          </div>
+          <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+            <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
+              <b-col>
+                <p style="font-size:14px" class="mb-0"> 
+                  {{ getUserName(layer_item.user) }}: 
+                  <i>{{ getLayerName(layer_item.id) }}</i>
+                </p>
+                <audio
+                  style="height:25px" 
+                  controls controlslist="noplaybackrate"
+                  :ref="layer_item.id"
+                  :src="getLayerURL(layer_item.data)"
+                  v-on:pause="layerPaused(layer_item.id)"
+                  v-on:play="layerPlayed(layer_item.id)"
+                  v-on:seeked="layerSeeked(layer_item.id)"
+                >
+                </audio>
+              </b-col>
+            </b-list-group-item>
+          </b-list-group>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
@@ -288,7 +287,6 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       showCreatorTools: false,
-      showLayers: false,
       layer: null,
       layers: [],
       layerBuffers: [],
