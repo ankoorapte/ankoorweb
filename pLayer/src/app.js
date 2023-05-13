@@ -228,8 +228,8 @@ let app = new Vue({
                 <p style="font-size:14px" class="mb-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b> by 
                   {{ getUserName(layer_item.user) }}
-                  <b-badge href="#" v-if="layerGains[index] && layerGains[index].gain.value" variant="info" @click="muteLayer(index)"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                  <b-badge href="#" v-if="layerGains[index] && !layerGains[index].gain.value" variant="danger" @click="unmuteLayer(index)"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                  <b-badge href="#" v-if="layerGains[index] && layerGains[index].gain.value" variant="info" @click="muteLayer(index)" class="mb-1"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" v-if="layerGains[index] && !layerGains[index].gain.value" variant="danger" @click="unmuteLayer(index)" class="mb-1"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
               </b-col>
             </b-list-group-item>
