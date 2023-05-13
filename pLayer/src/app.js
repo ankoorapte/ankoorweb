@@ -461,6 +461,7 @@ let app = new Vue({
             source.buffer = layerBuffer.decoded_data;
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
+            console.log(this.seeker);
             source.start(0, this.seeker);
             this.layers.push(source);
           }
