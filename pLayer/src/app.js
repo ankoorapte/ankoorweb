@@ -145,11 +145,11 @@ let app = new Vue({
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <p v-show="isMobile()">
+          <p>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           </p>
-          <b-list-group v-show="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+          <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <b-col>
                 <p style="font-size:14px" class="mb-0"> 
@@ -500,6 +500,7 @@ let app = new Vue({
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
       }
+      self.paused = true;
     },
     layerPlayed(layerID) {
       let self = this;
@@ -515,6 +516,7 @@ let app = new Vue({
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
       }
+      self.paused = false;
     },
     layerSeeked(layerID) {
       let self = this;
@@ -535,20 +537,27 @@ let app = new Vue({
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
-      if(!this.isMobile()) return;
-      if(this.paused) {
-        this.resetAudioContext();
-        for(const layerBuffer of this.layerBuffers) {
-          let source = this.audioContext.createBufferSource();
-          source.buffer = layerBuffer.decoded_data;
-          source.connect(this.merger, 0, 0);
-          source.connect(this.merger, 0, 1);
-          source.start(0, this.seeker);
-          this.layers.push(source);
+      if(this.isMobile()) {
+        if(this.paused) {
+          this.resetAudioContext();
+          for(const layerBuffer of this.layerBuffers) {
+            let source = this.audioContext.createBufferSource();
+            source.buffer = layerBuffer.decoded_data;
+            source.connect(this.merger, 0, 0);
+            source.connect(this.merger, 0, 1);
+            source.start(0, this.seeker);
+            this.layers.push(source);
+          }
+        } else {
+          this.seeker += this.audioContext.currentTime;
+          this.layers.forEach((node) => node.stop());
         }
       } else {
-        this.seeker += this.audioContext.currentTime;
-        this.layers.forEach((node) => node.stop());
+        if(this.paused) {
+          this.$refs[this.layerbuffers[0].id][0].play();
+        } else {
+          this.$refs[this.layerbuffers[0].id][0].pause();
+        }
       }
       this.paused = !this.paused;
     },
