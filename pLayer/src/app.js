@@ -143,6 +143,7 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2 mr-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             <b style="font-size:22px" class="p-0">{{trackName}}</b> {{artistNames.join(", ")}}
             <audio
+              v-if="!isMobile() && layerBuffers.length"
               style="height:25px" 
               controls controlslist="noplaybackrate"
               :ref="layerBuffers[0].id"
