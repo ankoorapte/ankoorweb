@@ -677,7 +677,7 @@ let app = new Vue({
     },
     getTrackArtists(uid) {
       if(!uid || !Object.keys(tracks).length) return;
-      return [...new Set(tracks[uid].layers.map((layerID) => layers[layerID].user))];
+      return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
     },
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
