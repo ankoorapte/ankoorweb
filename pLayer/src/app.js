@@ -151,7 +151,7 @@ let app = new Vue({
               v-on:pause="layerPaused(layerBuffers[0].id)"
               v-on:play="layerPlayed(layerBuffers[0].id)"
               v-on:seeked="layerSeeked(layerBuffers[0].id)"
-              class="mt-1"
+              class="mt-3"
             >
             </audio>
           </p>
