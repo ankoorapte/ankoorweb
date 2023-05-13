@@ -231,8 +231,8 @@ let app = new Vue({
                 </p>
                 <p>
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)" class="mb-1"><b-icon icon="download"></b-icon></b-badge>
-                  <b-badge href="#" variant="info" @click="muteLayer(index)" class="mb-1" v-if="!layerMute[index]"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" class="mb-1" v-if="layerMute[index]"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="info" @click="muteLayer(index)" class="mb-1" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" class="mb-1" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
             </b-list-group-item>
           </b-list-group>
@@ -457,15 +457,11 @@ let app = new Vue({
     },
     muteLayer(index) {
       this.layerMute[index] = true;
-      if(this.layerGains[index]) {
-        this.layerGains[index].gain.value = 0;
-      }
+      this.layerGains[index].gain.value = 0;
     },
     unmuteLayer(index) {
       this.layerMute[index] = false;
-      if(this.layerGains[index]) {
-        this.layerGains[index].gain.value = 1;
-      }
+      this.layerGains[index].gain.value = 1;
     },
     async downloadLayer(index) {
       this.busy = true;
