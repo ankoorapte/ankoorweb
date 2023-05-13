@@ -141,7 +141,7 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2 mr-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b style="font-size:22px" class="p-0">{{trackName}}</b> {{artistNames.join(", ")}}
+            <b style="font-size:20px" class="p-0">{{trackName}}</b> {{artistNames.join(", ")}}
             <audio
               v-if="!isMobile() && layerBuffers.length"
               style="height:25px" 
@@ -151,6 +151,7 @@ let app = new Vue({
               v-on:pause="layerPaused(layerBuffers[0].id)"
               v-on:play="layerPlayed(layerBuffers[0].id)"
               v-on:seeked="layerSeeked(layerBuffers[0].id)"
+              class="mt-1"
             >
             </audio>
           </p>
