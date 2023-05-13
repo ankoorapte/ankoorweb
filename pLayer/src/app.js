@@ -204,22 +204,22 @@ let app = new Vue({
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
-      <b-col align="center">
-        <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
-        <b-row>
-          <b-col cols=2 align="right">
-            <p>
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            </p>
-          </b-col>
-          <b-col cols=10 align="left>
-            <b-form-input type="range"></b-form-input>
-          </b-col>
-        </b-row>
-      </b-col>
+      <b-row class="d-flex">
+        <p style="font-size:18px" class="m-auto"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
+      </b-row>
+      <b-row>
+        <b-col cols=2 align="right">
+          <p>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+          </p>
+        </b-col>
+        <b-col cols=10 align="left>
+          <b-form-input type="range"></b-form-input>
+        </b-col>
+      </b-row>
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
       </p>
