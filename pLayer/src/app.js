@@ -218,7 +218,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-form-input v-if="!busy" type="range" @input="sliderInput" v-model="slider" min="0" :max="trackDuration" step="0.01"></b-form-input>
+        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="seeker" min="0" :max="trackDuration" step="0.01"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -258,8 +258,8 @@ let app = new Vue({
       inactiveLayers: [],
       tabIndex: 1,
       showLayers: false,
-      slider: 0,
       trackDuration: 0,
+      interval: null,
     }
   },
   async created() {
@@ -445,11 +445,13 @@ let app = new Vue({
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
     },
-    sliderInput(seek) {
-      console.log(this.seeker);
+    seekerInput(seek) {
       this.seeker = parseFloat(seek);
       this.togglePlay();
       this.togglePlay();
+    },
+    updateSeeker() {
+      this.seeker += this.audioContext.currentTime;
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
@@ -462,12 +464,12 @@ let app = new Vue({
             source.buffer = layerBuffer.decoded_data;
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
-            console.log(this.seeker);
             source.start(0, this.seeker);
             this.layers.push(source);
           }
+          this.interval = setInterval(this.updateSeeker, 250);
         } else {
-          this.seeker += this.audioContext.currentTime;
+          clearInterval(this.interval);
           this.layers.forEach((node) => node.stop());
         }
       this.paused = !this.paused;
