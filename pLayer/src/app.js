@@ -115,7 +115,10 @@ let app = new Vue({
             <b-icon icon="person"></b-icon> {{ user.displayName ? user.displayName : "" }}
           </template>
           <b-tabs card align="center">
-            <b-tab active title="tracks" class="p-0">
+            <b-tab active class="p-0">
+              <template #title>
+                <b-icon icon="music-notes-list"></b-icon>
+              </template>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                   <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
