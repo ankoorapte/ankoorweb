@@ -461,7 +461,14 @@ let app = new Vue({
       this.layerGains[index].gain.value = 1;
     },
     downloadLayer(index) {
-      
+      const url = window.URL.createObjectURL(this.layerBuffers[index].blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = this.layerBuffers[index].name + ".mp3";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -474,9 +481,12 @@ let app = new Vue({
       let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
       console.log(fetch_res);
       let data = await fetch_res.arrayBuffer();
+      let blob = await fetch_res.blob();
       return {
         id: layerID,
+        name: layers[layerID].name,
         user: layers[layerID].user,
+        blob: blob,
         data: data.slice(),
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
