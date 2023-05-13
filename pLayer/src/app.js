@@ -461,7 +461,6 @@ let app = new Vue({
       this.seeker = parseFloat(seek);
       this.togglePlay();
       this.togglePlay();
-      this.interval = setInterval(this.updateSlider, 100);
     },
     updateSlider() {
       console.log(this.audioContext.currentTime);
@@ -479,10 +478,6 @@ let app = new Vue({
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
             source.start(0, this.seeker);
-            let self = this;
-            source.onended = () => {
-              clearInterval(self.interval);
-            }
             this.layers.push(source);
           }
           this.interval = setInterval(this.updateSlider, 100);
