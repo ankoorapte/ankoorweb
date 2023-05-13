@@ -111,7 +111,7 @@ let app = new Vue({
           <b-tabs card align="center">
             <b-tab class="p-0">
               <template #title>
-                <p class="m-0">inbox {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
+                <p class="m-0">pending {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
               <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -133,11 +133,6 @@ let app = new Vue({
                   </p>
                 </b-list-group-item>
               </b-list-group>
-            </b-tab>
-            <b-tab class="p-0">
-              <template #title>
-                <p class="m-0">outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
-              </template>
             </b-tab>
             <b-tab active title="done"class="p-0">
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
@@ -204,6 +199,9 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
+        <p v-show="draft.length" style="font-size:12px">
+          <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
+        </p>
         <b-collapse v-model="showLayers">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -221,11 +219,8 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <b-form-input v-if="!busy" type="range"></b-form-input>
-        <p style="font-size:8px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
+        <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
-      <p v-show="draft.length" style="font-size:14px">
-        <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-      </p>
     </b-navbar>
   </b-container>
   `,
