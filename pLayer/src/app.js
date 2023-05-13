@@ -237,7 +237,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-form-input v-if="!busy" type="range" @change="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
