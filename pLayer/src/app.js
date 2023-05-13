@@ -115,9 +115,19 @@ let app = new Vue({
             <b-icon icon="person"></b-icon> {{ user.displayName ? user.displayName : "" }}
           </template>
           <b-tabs card align="center">
+            <b-tab active title="tracks" class="p-0">
+              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                  <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                  <p class="mr-2 mb-0">
+                    <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                  </p>
+                </b-list-group-item>
+              </b-list-group>
+            </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <p class="m-0">pending {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
+                <p class="m-0"><b-icon icon="bell"></b-icon> {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
               <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -140,19 +150,9 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab active title="done"class="p-0">
-              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                  <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
-                  <p class="mr-2 mb-0">
-                    <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-                  </p>
-                </b-list-group-item>
-              </b-list-group>
-            </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <b-icon icon="wrench"></b-icon> account
+                <b-icon icon="wrench"></b-icon>
               </template>
               <b-col align="center">
                 <b-input-group class="m-2">
@@ -463,7 +463,6 @@ let app = new Vue({
       this.togglePlay();
     },
     updateSlider() {
-      console.log(this.audioContext.currentTime);
       this.slider = this.seeker + this.audioContext.currentTime;
       if(this.slider > this.trackDuration) {
         clearInterval(this.interval);
