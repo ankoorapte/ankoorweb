@@ -145,7 +145,7 @@ let app = new Vue({
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <p>
+          <p v-if="isMobile()">
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           </p>
@@ -487,7 +487,6 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
-      console.log("layer pause");
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -501,10 +500,8 @@ let app = new Vue({
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
       }
-      self.paused = true;
     },
     layerPlayed(layerID) {
-      console.log("layer play");
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -518,7 +515,6 @@ let app = new Vue({
       } else {
         self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
       }
-      self.paused = false;
     },
     layerSeeked(layerID) {
       let self = this;
@@ -539,7 +535,6 @@ let app = new Vue({
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
-      console.log("box toggle, paused" + this.paused);
       if(this.isMobile()) {
         if(this.paused) {
           this.resetAudioContext();
@@ -554,12 +549,6 @@ let app = new Vue({
         } else {
           this.seeker += this.audioContext.currentTime;
           this.layers.forEach((node) => node.stop());
-        }
-      } else {
-        if(this.paused) {
-          this.$refs[this.layerBuffers[0].id][0].play();
-        } else {
-          this.$refs[this.layerBuffers[0].id][0].pause();
         }
       }
       this.paused = !this.paused;
