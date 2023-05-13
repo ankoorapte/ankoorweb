@@ -208,7 +208,7 @@ let app = new Vue({
               </b-col>
             </b-tab>
             <template #tabs-end>
-              <b-button variant="danger" @click="signOut" href="#"><b-icon icon="box-arrow-right"></b-icon></b-button>
+              <b-button variant="danger" @click="signOut" href="#" class="p-2"><b-icon icon="box-arrow-right"></b-icon></b-button>
             </template>
           </b-tabs>
         </b-tab>
