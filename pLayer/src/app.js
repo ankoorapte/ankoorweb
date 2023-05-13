@@ -205,10 +205,11 @@ let app = new Vue({
                   </b-input-group-append>
                 </b-input-group>
                 <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
-                <hr>
-                <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
               </b-col>
             </b-tab>
+            <template #tabs-end>
+              <b-button variant="danger" @click="signOut" href="#"><b-icon icon="box-arrow-right"></b-icon></b-button>
+            </template>
           </b-tabs>
         </b-tab>
       </b-tabs>
