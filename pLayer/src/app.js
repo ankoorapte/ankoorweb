@@ -461,6 +461,7 @@ let app = new Vue({
       this.seeker = parseFloat(seek);
       this.togglePlay();
       this.togglePlay();
+      this.interval = setInterval(this.updateSlider, 100);
     },
     updateSlider() {
       console.log(this.audioContext.currentTime);
