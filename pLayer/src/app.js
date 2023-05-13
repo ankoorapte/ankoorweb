@@ -451,7 +451,8 @@ let app = new Vue({
       this.togglePlay();
     },
     updateSeeker() {
-      this.seeker += this.audioContext.currentTime;
+      console.log(this.audioContext.currentTime);
+      this.seeker = this.audioContext.currentTime;
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
