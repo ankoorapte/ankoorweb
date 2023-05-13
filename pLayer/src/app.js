@@ -465,6 +465,9 @@ let app = new Vue({
     updateSlider() {
       console.log(this.audioContext.currentTime);
       this.slider = this.seeker + this.audioContext.currentTime;
+      if(this.slider > this.trackDuration) {
+        clearInterval(this.interval);
+      }
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
