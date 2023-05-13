@@ -209,9 +209,9 @@ let app = new Vue({
               {{ user.displayName ? user.displayName : "" }}
             </template>
             <b-tabs card align="center">
-              <b-tab>
+              <b-tab class="p-0">
                 <template #title>
-                  <p style="font-size:14px" class="m-0">requests {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
+                  <p class="m-0">requests {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -226,9 +226,9 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
-              <b-tab>
+              <b-tab class="p-0">
                 <template #title>
-                  <p style="font-size:14px" class="m-0">submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
+                  <p class="m-0">submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -239,9 +239,9 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
-              <b-tab active>
+              <b-tab active class="p-0">
                 <template #title>
-                  <p style="font-size:14px" class="m-0">done</p>
+                  <p class="m-0">done</p>
                 </template>
                 <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
