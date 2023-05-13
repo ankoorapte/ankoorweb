@@ -226,8 +226,8 @@ let app = new Vue({
       <b-row class="d-flex justify-content-between align-items-center">
         <p style="font-size:18px">
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           <b>{{trackName}}</b> {{artistNames.join(", ")}}
         </p>
@@ -235,7 +235,7 @@ let app = new Vue({
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
       </p>
-      <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+      <b-list-group v-if="false" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
         <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
           <p style="font-size:14px" class="mb-0"> 
             <b>{{ getLayerName(layer_item.id) }}</b>, 
@@ -532,7 +532,6 @@ let app = new Vue({
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
-      if(this.isMobile()) {
         if(this.paused) {
           this.resetAudioContext();
           for(const layerBuffer of this.layerBuffers) {
@@ -547,7 +546,6 @@ let app = new Vue({
           this.seeker += this.audioContext.currentTime;
           this.layers.forEach((node) => node.stop());
         }
-      }
       this.paused = !this.paused;
     },
     async toggleTrack(forward) {
