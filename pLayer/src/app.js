@@ -138,9 +138,9 @@ let app = new Vue({
           <div ref="pLayer"></div>  
           <p style="font-size:14px" class="mb-0">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1 mb-2"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2 mr-5"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2 mr-3"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             <b style="font-size:22px" class="p-0">{{trackName}}</b> {{artistNames.join(", ")}}
           </p>
           <p v-show="draft.length" style="font-size:14px">
