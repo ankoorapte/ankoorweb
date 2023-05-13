@@ -446,6 +446,7 @@ let app = new Vue({
       this.busy = false;
     },
     seekerInput(seek) {
+      clearInterval(this.interval);
       this.seeker = parseFloat(seek);
       this.togglePlay();
       this.togglePlay();
@@ -468,7 +469,7 @@ let app = new Vue({
             source.start(0, this.seeker);
             this.layers.push(source);
           }
-          this.interval = setInterval(this.updateSeeker, 250);
+          this.interval = setInterval(this.updateSeeker, 100);
         } else {
           clearInterval(this.interval);
           this.layers.forEach((node) => node.stop());
