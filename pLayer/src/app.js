@@ -117,7 +117,7 @@ let app = new Vue({
           <b-tabs card align="center">
             <b-tab active class="p-0">
               <template #title>
-                <b-icon icon="music-note-list"></b-icon>
+                <b-icon icon="music-note-list"></b-icon> your tracks
               </template>
               <b-col v-if="!discography || !discography.length" align="center" class="mt-2">
                 <p>use the "post" tab to upload your first track</p>
@@ -134,7 +134,7 @@ let app = new Vue({
             </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <p class="m-0"><b-icon icon="bell"></b-icon> {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
+                <p class="m-0"><b-icon icon="bell"></b-icon> notifs {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
               <b-col v-if="!inbox.length && !outbox.length" align="center" class="mt-2">
                 <p>no new notifications</p>
@@ -162,7 +162,7 @@ let app = new Vue({
             </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <b-icon icon="wrench"></b-icon>
+                <b-icon icon="wrench"></b-icon> settings
               </template>
               <b-col align="center">
                 <b-input-group class="m-2">
