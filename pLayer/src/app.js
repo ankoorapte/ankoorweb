@@ -201,13 +201,12 @@ let app = new Vue({
       </b-tabs>
     </b-collapse>
     <b-row class="d-flex"> 
-      <p style="font-size:8px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light">
-      <b-col v-show="!busy" align="center">
+      <b-col v-if="!busy" align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
       </b-col>
-      <b-col v-show="!busy" align="center">
+      <b-col v-if="!busy" align="center">
         <p style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-collapse v-model="showLayers">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
@@ -226,6 +225,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <b-form-input type="range"></b-form-input>
+        <p style="font-size:8px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
