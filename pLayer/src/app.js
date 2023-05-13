@@ -531,10 +531,13 @@ let app = new Vue({
             source.buffer = this.layerBuffers[idx].decoded_data;
             source.connect(gainNode);
             source.start(0, this.seeker);
-            source.onended = (ev) => {
-              console.log(ev);
-            }
             this.layers.push(source);
+            let self = this;
+            source.onended = () => {
+              if(self.slider == self.trackDuration && !this.paused) {
+                this.paused = true;
+              }
+            }
           }
           this.interval = setInterval(this.updateSlider, 100);
         } else {
