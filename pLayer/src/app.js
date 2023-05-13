@@ -53,11 +53,8 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
-      <b-col align="left">
-        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-      </b-col>
       <b-col align="center">
-        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+        <h1 class="mt-2" style="font-family:Georgia, serif;"><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner><b>pLayer</b></h1>
       </b-col>
     </b-row>
     <b-row><b-col align="center">
