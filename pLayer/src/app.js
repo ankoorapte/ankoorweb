@@ -54,7 +54,7 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="center">
-        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+        <h1 @click="tabIndex = 1" class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
@@ -218,7 +218,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-form-input v-if="!busy" type="range"></b-form-input>
+        <b-form-input v-if="!busy" type="range" @input="sliderInput" v-model="slider" min="0" :max="trackDuration" step="0.01"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -257,7 +257,9 @@ let app = new Vue({
       activeLayer: "",
       inactiveLayers: [],
       tabIndex: 1,
-      showLayers: false
+      showLayers: false,
+      slider: 0,
+      trackDuration: 0,
     }
   },
   async created() {
@@ -439,9 +441,12 @@ let app = new Vue({
       this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
-      this.block = {};
-      trackLayers.forEach((l) => this.block[l] = false);
+      this.seeker = 0;
+      this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
+    },
+    sliderInput(ev) {
+      console.log(ev);
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
