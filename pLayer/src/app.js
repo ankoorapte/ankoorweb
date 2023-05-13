@@ -138,16 +138,16 @@ let app = new Vue({
           <div ref="pLayer"></div>  
           <p style="font-size:22px" class="mb-0">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1 mr-2 mb-2"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b>{{trackName}}</b>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 ml-2 mb-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b>{{trackName}}</b>
+            <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           </p>
-          <p style="font-size:16px">{{artistNames.join(", ")}}</p>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
           <p v-if="isMobile()">
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           </p>
           <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -210,7 +210,7 @@ let app = new Vue({
             </template>
             <b-tabs card align="center">
               <b-tab class="p-0">
-                <template #title class="p-0">
+                <template #title>
                   <p class="m-0">requests {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
@@ -227,7 +227,7 @@ let app = new Vue({
                 </b-list-group>
               </b-tab>
               <b-tab class="p-0">
-                <template #title class="p-0">
+                <template #title>
                   <p class="m-0">submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
@@ -240,7 +240,7 @@ let app = new Vue({
                 </b-list-group>
               </b-tab>
               <b-tab active class="p-0">
-                <template #title class="p-0">
+                <template #title>
                   <p class="m-0">done</p>
                 </template>
                 <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
