@@ -205,7 +205,7 @@ let app = new Vue({
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <b-col align="center">
-        <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
+        <p style="font-size:18px"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <p>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
