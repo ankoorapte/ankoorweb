@@ -180,7 +180,7 @@ let app = new Vue({
                 accept="audio/wav"
                 v-model="layer"
                 browse-text="upload"
-                class="mb-1"
+                class="mb-1 mt-1"
                 :disabled="busy"
               ></b-form-file>
               <b-input-group append="name" class="mb-1">
