@@ -110,7 +110,7 @@ let app = new Vue({
           <b-tabs card align="center">
             <b-tab class="p-0">
               <template #title>
-                <p class="m-0">incoming {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
+                <p class="m-0">inbox {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
               </template>
               <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -127,7 +127,7 @@ let app = new Vue({
             </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <p class="m-0">outgoing {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
+                <p class="m-0">outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
               </template>
               <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -207,7 +207,7 @@ let app = new Vue({
       <b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-row>
-          <b-col cols=3>
+          <b-col cols=2 align="right">
             <p>
               <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -215,7 +215,7 @@ let app = new Vue({
               <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             </p>
           </b-col>
-          <b-col cols=9>
+          <b-col cols=10 align="left>
             <b-form-input type="range"></b-form-input>
           </b-col>
         </b-row>
