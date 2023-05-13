@@ -102,7 +102,10 @@ let app = new Vue({
           </template>
           <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+              <p class="ml-2 mb-0">
+                <b>{{ getTrackName(disco_item.trackID) }}</b> by 
+                {{ getTrackArtists(disco_item.trackID).join(", ") }}
+              </p>
               <p class="mr-2 mb-0">
                 <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
                 <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
@@ -119,12 +122,12 @@ let app = new Vue({
               <template #title>
                 <b-icon icon="music-note-list"></b-icon> posts
               </template>
-              <b-col v-if="!discography || !discography.length" align="center" class="mt-2">
-                <p>go to "post" tab to upload your first track</p>
-              </b-col>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                  <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                  <p class="ml-2 mb-0">
+                    <b>{{ getTrackName(disco_item.trackID) }}</b> by 
+                    {{ getTrackArtists(disco_item.trackID).join(", ") }}
+                  </p>
                   <p class="mr-2 mb-0">
                     <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
                     <b-badge href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
@@ -136,9 +139,6 @@ let app = new Vue({
               <template #title>
                 <p class="m-0"><b-icon icon="bell"></b-icon> notifs {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
-              <b-col v-if="!inbox.length && !outbox.length" align="center" class="mt-2">
-                <p>no new notifications</p>
-              </b-col>
               <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                   <p class="ml-1 mb-0">
@@ -674,6 +674,10 @@ let app = new Vue({
     getTrackName(uid) {
       if(!uid || !Object.keys(tracks).length) return;
       return tracks[uid].name;
+    },
+    getTrackArtists(uid) {
+      if(!uid || !Object.keys(tracks).length) return;
+      return [...new Set(tracks[uid].layers.map((layerID) => layers[layerID].user))];
     },
     getUserName(uid) {
       if(!uid || !Object.keys(users).length) return;
