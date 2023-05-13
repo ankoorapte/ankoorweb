@@ -218,7 +218,8 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <p v-if="!busy" style="font-size:22px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
+        <hr v-if="!busy">
+        <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
         <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mb-1">{{artistNames.join(", ")}}</p>
         <p v-show="draft.length" style="font-size:12px" class="mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
@@ -244,8 +245,8 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <p style="font-size:12px" class="mb-0">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
-        <b-form-input variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+        <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
+        <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -300,6 +301,7 @@ let app = new Vue({
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         self.resetAudioContext();
+        self.showLayers = false;
         unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
           layers = {};
           layerDocs.forEach((doc) => {
@@ -422,6 +424,7 @@ let app = new Vue({
       this.user = null;
       this.email = "";
       this.password = "";
+      this.showLayers = false;
       await signOut(auth);
     },
     async changeUsername(un) {
