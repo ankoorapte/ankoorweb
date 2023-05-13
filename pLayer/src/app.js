@@ -138,8 +138,10 @@ let app = new Vue({
           <div ref="pLayer"></div>
           <b-row class="d-flex justify-content-between align-items-center">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()"  class="p-1"v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()"  class="p-1"v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="showLayers = !showLayers" class="p-1" v-if="!isMobile() && !showLayers"><b-icon icon="arrow-down"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="showLayers = !showLayers" class="p-1" v-if="!isMobile() && showLayers"><b-icon icon="arrow-up"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             <b style="font-size:20px">{{trackName}}</b>
             <p class="mt-3">{{artistNames.join(", ")}}</p>
@@ -158,28 +160,28 @@ let app = new Vue({
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <p v-if="isMobile()">
-          </p>
-          <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
-              <b-col>
-                <p style="font-size:14px" class="mb-0"> 
-                  {{ getUserName(layer_item.user) }}: 
-                  <i>{{ getLayerName(layer_item.id) }}</i>
-                </p>
-                <audio
-                  style="height:25px" 
-                  controls controlslist="noplaybackrate"
-                  :ref="layer_item.id"
-                  :src="getLayerURL(layer_item.data)"
-                  v-on:pause="layerPaused(layer_item.id)"
-                  v-on:play="layerPlayed(layer_item.id)"
-                  v-on:seeked="layerSeeked(layer_item.id)"
-                >
-                </audio>
-              </b-col>
-            </b-list-group-item>
-          </b-list-group>
+          <b-collapse v-model="showLayers">
+            <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+              <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
+                <b-col>
+                  <p style="font-size:14px" class="mb-0"> 
+                    {{ getUserName(layer_item.user) }}: 
+                    <i>{{ getLayerName(layer_item.id) }}</i>
+                  </p>
+                  <audio
+                    style="height:25px" 
+                    controls controlslist="noplaybackrate"
+                    :ref="layer_item.id"
+                    :src="getLayerURL(layer_item.data)"
+                    v-on:pause="layerPaused(layer_item.id)"
+                    v-on:play="layerPlayed(layer_item.id)"
+                    v-on:seeked="layerSeeked(layer_item.id)"
+                  >
+                  </audio>
+                </b-col>
+              </b-list-group-item>
+            </b-list-group>
+          </b-collapse>
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
@@ -286,6 +288,7 @@ let app = new Vue({
       busy: true,
       showSettings: false,
       showCreatorTools: false,
+      showLayers: false,
       layer: null,
       layers: [],
       layerBuffers: [],
