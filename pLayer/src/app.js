@@ -59,65 +59,7 @@ let app = new Vue({
       <b-col align="center">
         <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
-      <b-col align="right">
-        <b-button v-if="signedIn" v-show="!busy" variant="outline-dark" @click="showSettings = !showSettings"><b-icon icon="wrench" aria-hidden="true"></b-icon></b-button>
-      </b-col>
     </b-row>
-    <b-collapse v-model="showSettings" v-show="signedIn">
-      <b-row><b-col align="center">
-        <b-input-group class="m-2">
-          <b-form-input
-            placeholder="new username"
-            @keydown.native="usernameKeydownHandler" 
-            v-model="newUsername" 
-            :state="stateUsername" 
-            trim
-          >
-          </b-form-input>
-          <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-col></b-row>
-      <b-row><b-col align="center">
-        <b-input-group class="m-2">
-          <b-form-input
-            placeholder="new password"
-            @keydown.native="passwordKeydownHandler" 
-            v-model="newPassword" 
-            type="password" 
-            :state="statePassword" 
-            trim
-          >
-          </b-form-input>
-          <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-col></b-row>
-      <b-row><b-col align="center">
-        <b-input-group class="m-2">
-          <b-form-input
-            placeholder="new email"
-            @keydown.native="emailKeydownHandler" 
-            v-model="newEmail"
-            :state="stateEmail" 
-            trim
-          >
-          </b-form-input>
-          <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
-          </b-input-group-append>
-        </b-input-group>
-      </b-col></b-row>
-      <b-row class="mb-2"><b-col align="center">
-        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
-      </b-col></b-row>
-      <b-row><b-col align="center">
-        <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
-      </b-col></b-row>
-    </b-collapse>
-    <hr>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
@@ -199,10 +141,7 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab active class="p-0">
-              <template #title>
-                <p class="m-0">done</p>
-              </template>
+            <b-tab active title="done"class="p-0">
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                   <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
@@ -211,6 +150,60 @@ let app = new Vue({
                   </p>
                 </b-list-group-item>
               </b-list-group>
+            </b-tab>
+            <b-tab title="account" class="p-0">
+              <b-row><b-col align="center">
+                <b-input-group class="m-2">
+                  <b-form-input
+                    placeholder="new username"
+                    @keydown.native="usernameKeydownHandler" 
+                    v-model="newUsername" 
+                    :state="stateUsername" 
+                    trim
+                  >
+                  </b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-col></b-row>
+              <b-row><b-col align="center">
+                <b-input-group class="m-2">
+                  <b-form-input
+                    placeholder="new password"
+                    @keydown.native="passwordKeydownHandler" 
+                    v-model="newPassword" 
+                    type="password" 
+                    :state="statePassword" 
+                    trim
+                  >
+                  </b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-col></b-row>
+              <b-row><b-col align="center">
+                <b-input-group class="m-2">
+                  <b-form-input
+                    placeholder="new email"
+                    @keydown.native="emailKeydownHandler" 
+                    v-model="newEmail"
+                    :state="stateEmail" 
+                    trim
+                  >
+                  </b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-col></b-row>
+              <b-row class="mb-2"><b-col align="center">
+                <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
+              </b-col></b-row>
+              <b-row><b-col align="center">
+                <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
+              </b-col></b-row>
             </b-tab>
           </b-tabs>
         </b-tab>
@@ -247,7 +240,6 @@ let app = new Vue({
       newPassword: "",
       newEmail: "",
       busy: true,
-      showSettings: false,
       layer: null,
       layers: [],
       layerBuffers: [],
@@ -363,7 +355,6 @@ let app = new Vue({
       });
     },
     async signIn(user) {
-      this.showSettings = false;
       try {
         if(user) {
           this.user = user;
@@ -402,7 +393,6 @@ let app = new Vue({
       this.user = null;
       this.email = "";
       this.password = "";
-      this.showSettings = false;
       await signOut(auth);
     },
     async changeUsername(un) {
