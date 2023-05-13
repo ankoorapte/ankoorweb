@@ -206,12 +206,11 @@ let app = new Vue({
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <b-row><b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
-      </b-col</b-row>
+      </b-col></b-row>
       <b-row><b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
-      </b-col</b-row>
+      </b-col></b-row>
       <b-col align="center" v-if=false>
-        
         <b-row>
           <b-col cols=3 align="right">
             <p>
