@@ -263,6 +263,7 @@ let app = new Vue({
       layer: null,
       layers: [],
       layerGains: [],
+      layerMute: [],
       layerBuffers: [],
       trackName: "",
       artistNames: [],
@@ -455,9 +456,11 @@ let app = new Vue({
       }
     },
     muteLayer(index) {
+      this.layerMute[index] = true;
       this.layerGains[index].gain.value = 0;
     },
     unmuteLayer(index) {
+      this.layerMute[index] = false;
       this.layerGains[index].gain.value = 1;
     },
     async downloadLayer(index) {
@@ -514,7 +517,7 @@ let app = new Vue({
           this.resetAudioContext();
           for(const idx in this.layerBuffers) {
             var gainNode = this.audioContext.createGain();
-            gainNode.gain.value = 1.0;
+            gainNode.gain.value = this.layerMute[idx] ? 0 : 1;
             gainNode.connect(this.merger, 0, 0);
             gainNode.connect(this.merger, 0, 1);
             this.layerGains.push(gainNode);
