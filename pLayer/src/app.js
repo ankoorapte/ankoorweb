@@ -216,7 +216,8 @@ let app = new Vue({
     <b-navbar variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
+        <p v-if="!busy" style="font-size:22px" @click="showLayers = !showLayers"><b>{{trackName}}</b></p>
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers">{{artistNames.join(", ")}}</p>
         <p v-show="draft.length" style="font-size:12px">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
