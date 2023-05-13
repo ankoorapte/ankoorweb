@@ -447,7 +447,7 @@ let app = new Vue({
     },
     sliderInput(seek) {
       console.log(this.seeker);
-      this.seeker = seek;
+      this.seeker = parseFloat(seek);
       this.togglePlay();
       this.togglePlay();
     },
