@@ -206,22 +206,13 @@ let app = new Vue({
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
-        <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
-      </b-col>
-      <b-col align="center" v-if=false>
-        <b-row>
-          <b-col cols=3 align="right">
-            <p>
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            </p>
-          </b-col>
-          <b-col cols=9 align="left">
-            <b-form-input type="range"></b-form-input>
-          </b-col>
-        </b-row>
+        <p>
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        </p>
+        <b-form-input type="range"></b-form-input>
       </b-col>
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
