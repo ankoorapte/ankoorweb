@@ -348,7 +348,7 @@ let app = new Vue({
     },
     sliderTimestamp() {
       let minutes = Math.floor(this.slider / 60);
-      let extraSeconds = seconds % 60;
+      let extraSeconds = this.slider % 60;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
       return minutes + ":" + extraSeconds;
