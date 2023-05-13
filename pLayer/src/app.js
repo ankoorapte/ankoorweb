@@ -149,7 +149,7 @@ let app = new Vue({
               </b-list-group>
             </b-tab>
             <b-tab title="account" class="p-0">
-              <b-row><b-col align="center">
+              <b-col align="center">
                 <b-input-group class="m-2">
                   <b-form-input
                     placeholder="new username"
@@ -163,8 +163,6 @@ let app = new Vue({
                     <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
                   </b-input-group-append>
                 </b-input-group>
-              </b-col></b-row>
-              <b-row><b-col align="center">
                 <b-input-group class="m-2">
                   <b-form-input
                     placeholder="new password"
@@ -179,8 +177,6 @@ let app = new Vue({
                     <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
                   </b-input-group-append>
                 </b-input-group>
-              </b-col></b-row>
-              <b-row><b-col align="center">
                 <b-input-group class="m-2">
                   <b-form-input
                     placeholder="new email"
@@ -194,13 +190,9 @@ let app = new Vue({
                     <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
                   </b-input-group-append>
                 </b-input-group>
-              </b-col></b-row>
-              <b-row class="mb-2"><b-col align="center">
                 <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
-              </b-col></b-row>
-              <b-row><b-col align="center">
                 <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
-              </b-col></b-row>
+              </b-col>
             </b-tab>
           </b-tabs>
         </b-tab>
