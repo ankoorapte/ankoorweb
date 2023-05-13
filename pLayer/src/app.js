@@ -117,7 +117,7 @@ let app = new Vue({
           <b-tabs card align="center">
             <b-tab active class="p-0">
               <template #title>
-                <b-icon icon="music-notes-list"></b-icon>
+                <b-icon icon="music-note-list"></b-icon>
               </template>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -214,7 +214,7 @@ let app = new Vue({
         <p v-show="draft.length" style="font-size:12px">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
-        <b-collapse v-model="showLayers">
+        <b-collapse v-model="showLayers" class="mb-2">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <p style="font-size:14px" class="mb-0"> 
