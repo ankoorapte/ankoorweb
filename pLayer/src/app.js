@@ -234,24 +234,6 @@ let app = new Vue({
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
       </p>
-      <b-list-group v-if="false" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-        <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-          <p style="font-size:14px" class="mb-0"> 
-            <b>{{ getLayerName(layer_item.id) }}</b>, 
-            {{ getUserName(layer_item.user) }}
-          </p>
-          <audio
-            style="height:25px" 
-            controls controlslist="noplaybackrate"
-            :ref="layer_item.id"
-            :src="getLayerURL(layer_item.data)"
-            v-on:pause="layerPaused(layer_item.id)"
-            v-on:play="layerPlayed(layer_item.id)"
-            v-on:seeked="layerSeeked(layer_item.id)"
-          >
-          </audio>
-        </b-list-group-item>
-      </b-list-group>
     </b-navbar>
     <b-navbar variant="faded" fixed="bottom" type="light" class="d-flex">
         <b-navbar-brand style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
@@ -479,51 +461,6 @@ let app = new Vue({
       trackLayers.forEach((l) => this.block[l] = false);
       this.busy = false;
     },
-    layerPaused(layerID) {
-      let self = this;
-      let trackLayers = tracks[self.trackID].layers.slice();
-      if(!self.inactiveLayers.length) {
-        self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
-      }
-      if(self.activeLayer == layerID) {
-        trackLayers.forEach((l) => {
-          if(l != layerID) self.$refs[l][0].pause();
-        });
-      } else {
-        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
-      }
-    },
-    layerPlayed(layerID) {
-      let self = this;
-      let trackLayers = tracks[self.trackID].layers.slice();
-      if(!self.inactiveLayers.length) {
-        self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
-      }
-      if(self.activeLayer == layerID) {
-        trackLayers.forEach((l) => {
-          if(l != layerID) self.$refs[l][0].play();
-        });
-      } else {
-        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
-      }
-    },
-    layerSeeked(layerID) {
-      let self = this;
-      let trackLayers = tracks[self.trackID].layers.slice();
-      if(!self.inactiveLayers.length) {
-        self.activeLayer = layerID;
-        self.inactiveLayers = trackLayers.filter((l) => l != layerID);
-      }
-      if(self.activeLayer == layerID) {
-        trackLayers.forEach((l) => {
-          if(l != layerID) self.$refs[l][0].currentTime = self.$refs[layerID][0].currentTime;
-        });
-      } else {
-        self.inactiveLayers = self.inactiveLayers.filter((l) => l != layerID);
-      }
-    },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
     },
@@ -533,8 +470,6 @@ let app = new Vue({
           for(const layerBuffer of this.layerBuffers) {
             let source = this.audioContext.createBufferSource();
             source.buffer = layerBuffer.decoded_data;
-            console.log(layerBuffer.decoded_data);
-            console.log(layerBuffer.decoded_data.duration);
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
             source.start(0, this.seeker);
