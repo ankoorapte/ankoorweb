@@ -537,6 +537,8 @@ let app = new Vue({
           for(const layerBuffer of this.layerBuffers) {
             let source = this.audioContext.createBufferSource();
             source.buffer = layerBuffer.decoded_data;
+            console.log(layerBuffer.decoded_data);
+            console.log(layerBuffer.decoded_data.duration);
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
             source.start(0, this.seeker);
