@@ -144,25 +144,12 @@ let app = new Vue({
               <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               <b>{{trackName}}</b> {{artistNames.join(", ")}}
             </p>
-            <p>
-              <audio
-                v-if="!isMobile() && layerBuffers.length"
-                style="height:25px" 
-                controls controlslist="noplaybackrate"
-                :ref="layerBuffers[0].id"
-                :src="getLayerURL(layerBuffers[0].data)"
-                v-on:pause="layerPaused(layerBuffers[0].id)"
-                v-on:play="layerPlayed(layerBuffers[0].id)"
-                v-on:seeked="layerSeeked(layerBuffers[0].id)"
-              >
-              </audio>
-            </p>
           </b-row>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
           <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <b-col>
                 <p style="font-size:14px" class="mb-0"> 
                   {{ getUserName(layer_item.user) }}: 
