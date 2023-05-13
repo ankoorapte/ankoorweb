@@ -226,7 +226,6 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <b-form-input type="range"></b-form-input>
-        <hr>
         <p style="font-size:8px">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
       <p v-show="draft.length" style="font-size:14px">
