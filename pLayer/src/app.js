@@ -205,10 +205,17 @@ let app = new Vue({
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <b-col align="center">
-        <p style="font-size:18px"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
-        <p style="font-size:18px"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
-        <p style="font-size:18px"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
-        <p style="font-size:18px"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
+        <p style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
+        <b-collapse v-model="showLayers">
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+              <p style="font-size:14px" class="mb-0"> 
+                <b>{{ getLayerName(layer_item.id) }}</b>, 
+                {{ getUserName(layer_item.user) }}
+              </p>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
         <p>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -256,6 +263,7 @@ let app = new Vue({
       activeLayer: "",
       inactiveLayers: [],
       tabIndex: 1,
+      showLayers: false
     }
   },
   async created() {
