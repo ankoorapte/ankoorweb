@@ -221,7 +221,7 @@ let app = new Vue({
         </b-tabs>
       </b-collapse>
     </b-collapse>
-    <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy">
+    <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
       <b-row class="d-flex justify-content-between align-items-center">
         <p style="font-size:18px">
