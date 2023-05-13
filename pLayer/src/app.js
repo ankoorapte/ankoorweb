@@ -135,13 +135,13 @@ let app = new Vue({
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
-          <div ref="pLayer"></div>  
-          <p style="font-size:14px" class="mb-0">
+          <div ref="pLayer"></div>
+          <b-row class="p-0 d-flex justify-content-between align-items-center">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1 mb-2"><b-icon icon="skip-backward-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2 mr-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b style="font-size:20px" class="p-0">{{trackName}}</b> {{artistNames.join(", ")}}
+            <b style="font-size:20px" class="p-0">{{trackName}}</b> <p>{{artistNames.join(", ")}}</p>
             <audio
               v-if="!isMobile() && layerBuffers.length"
               style="height:25px" 
@@ -154,7 +154,7 @@ let app = new Vue({
               class="mt-3"
             >
             </audio>
-          </p>
+          </b-row>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
