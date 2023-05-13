@@ -172,8 +172,8 @@ let app = new Vue({
         </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
-        <b-tabs card align="center">
-          <b-tab title="new" active>
+        <b-tabs card align="center" v-model="tabIndex">
+          <b-tab title="new">
             <b-row><b-col align="center" v-show="!busy">
               <b-form-file
                 placeholder=""
@@ -193,12 +193,13 @@ let app = new Vue({
               </p>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="home">
+          <b-tab title="home" active>
             <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
                 <p class="mr-2 mb-0">
                   <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
+                  <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
                 </p>
               </b-list-group-item>
             </b-list-group>
@@ -208,7 +209,7 @@ let app = new Vue({
               {{ user.displayName ? user.displayName : "" }}
             </template>
             <b-tabs card align="center">
-              <b-tab active>
+              <b-tab>
                 <template #title>
                   requests {{inbox.length ? "(" + inbox.length + ")" : ""}}
                 </template>
@@ -238,7 +239,7 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
-              <b-tab title="done">
+              <b-tab title="done" active>
                 <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                     <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
@@ -292,7 +293,7 @@ let app = new Vue({
       draft: "",
       activeLayer: "",
       inactiveLayers: [],
-
+      tabIndex: 1,
     }
   },
   async created() {
@@ -618,6 +619,13 @@ let app = new Vue({
       await this.forcePause();
       this.trackID = this.group_discography[index].trackID;
       await this.getTrack();
+    },
+    async layerGroupDiscography(index) {
+      await this.forcePause();
+      this.trackID = this.group_discography[index].trackID;
+      await this.getTrack();
+      this.layering = true;
+      this.tabIndex = 0;
     },
     async playDraft(index, whichbox) {
       await this.forcePause();
