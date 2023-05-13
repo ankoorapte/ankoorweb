@@ -73,7 +73,10 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-tabs card align="center" v-model="tabIndex" class="mb-3">
-        <b-tab title="new" class="p-0">
+        <b-tab class="p-0">
+          <template #title>
+            <b-icon icon="music-note-list"></b-icon> post
+          </template>
           <b-row><b-col align="center" v-show="!busy">
             <b-form-file
               placeholder=""
@@ -93,7 +96,10 @@ let app = new Vue({
             </p>
           </b-col></b-row>
         </b-tab>
-        <b-tab title="home" active class="p-0">
+        <b-tab active class="p-0">
+          <template #title>
+            <b-icon icon="house"></b-icon> home
+          </template>
           <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
@@ -106,7 +112,7 @@ let app = new Vue({
         </b-tab>
         <b-tab class="p-0">
           <template #title>
-            {{ user.displayName ? user.displayName : "" }}
+            <b-icon icon="person"></b-icon> {{ user.displayName ? user.displayName : "" }}
           </template>
           <b-tabs card align="center">
             <b-tab class="p-0">
@@ -469,7 +475,10 @@ let app = new Vue({
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
             source.start(0, this.seeker);
-            source.onended = clearInterval(this.interval);
+            let self = this;
+            source.onended = () => {
+              clearInterval(self.interval);
+            }
             this.layers.push(source);
           }
           this.interval = setInterval(this.updateSlider, 100);
