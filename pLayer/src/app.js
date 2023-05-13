@@ -243,11 +243,8 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-row>
-          <b-input-group :prepend="sliderTimestamp" :append="trackDurationString"v-if="!busy">
-            <b-form-input type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
-          </b-input-group>
-        </b-row>
+        <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
+        <b-form-input type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -348,16 +345,6 @@ let app = new Vue({
     stateEmail() {
       return this.newEmail.includes("@") && this.email.includes(".");
     },
-    sliderTimestamp() {
-      let minutes = Math.floor(this.slider / 60);
-      let extraSeconds = this.slider % 60;
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
-      return minutes + ":" + extraSeconds.slice(0, 2);
-    },
-    trackDurationString() {
-      return this.trackDuration.toString();
-    }
   },
   methods: {
     isMobile() {
@@ -642,6 +629,13 @@ let app = new Vue({
         baseID: baseID,
         accept: accept
       });
+    },
+    trackTimestamp(seconds) {
+      let minutes = Math.floor(seconds / 60);
+      let extraSeconds = seconds % 60;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
+      return minutes + ":" + extraSeconds.slice(0, 2);
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
