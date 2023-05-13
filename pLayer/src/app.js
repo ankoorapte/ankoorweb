@@ -207,11 +207,17 @@ let app = new Vue({
       <b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-row>
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-          <b-form-input type="range"></b-form-input>
+          <b-col cols=3>
+            <p>
+              <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+              <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            </p>
+          </b-col>
+          <b-col cols=9>
+            <b-form-input type="range"></b-form-input>
+          </b-col>
         </b-row>
       </b-col>
       <p v-show="draft.length" style="font-size:14px">
