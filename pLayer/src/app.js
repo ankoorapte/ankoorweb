@@ -57,6 +57,7 @@ let app = new Vue({
         <h1 class="mt-2" style="font-family:Georgia, serif;"><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner><b>pLayer</b></h1>
       </b-col>
     </b-row>
+    <div ref="pLayer"></div>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
@@ -203,9 +204,14 @@ let app = new Vue({
       <p style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
-      <div ref="pLayer"></div>
-      <b-col align="center">
+      <b-row><b-col align="center">
         <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
+      </b-col</b-row>
+      <b-row><b-col align="center">
+        <p style="font-size:18px"><b>{{trackName}}</b> {{artistNames.join(", ")}}</p>
+      </b-col</b-row>
+      <b-col align="center" v-if=false>
+        
         <b-row>
           <b-col cols=3 align="right">
             <p>
