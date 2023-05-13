@@ -193,11 +193,24 @@ let app = new Vue({
               </p>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="drafts">
+          <b-tab title="home">
+            <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
+              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                <p class="mr-2 mb-0">
+                  <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+          </b-tab>
+          <b-tab>
+            <template #title>
+              {{ user.displayName ? user.displayName : "" }}
+            </template>
             <b-tabs card align="center">
               <b-tab active>
                 <template #title>
-                  inbox {{inbox.length ? "(" + inbox.length + ")" : ""}}
+                  requests {{inbox.length ? "(" + inbox.length + ")" : ""}}
                 </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -214,7 +227,7 @@ let app = new Vue({
               </b-tab>
               <b-tab>
                 <template #title>
-                  outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}
+                  submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}
                 </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -225,33 +238,23 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
+              <b-tab title="done">
+                <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+                  <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                    <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                    <p class="mr-2 mb-0">
+                      <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                    </p>
+                  </b-list-group-item>
+                </b-list-group>
+              </b-tab>
             </b-tabs>
-          </b-tab>
-          <b-tab title="your tracks">
-            <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
-                <p class="mr-2 mb-0">
-                  <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-                </p>
-              </b-list-group-item>
-            </b-list-group>
-          </b-tab>
-          <b-tab title="all tracks">
-            <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
-              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
-                <p class="mr-2 mb-0">
-                  <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
-                </p>
-              </b-list-group-item>
-            </b-list-group>
           </b-tab>
         </b-tabs>
       </b-collapse>
     </b-collapse>
     <b-navbar variant="faded" fixed="bottom" type="light" class="d-flex">
-        <b-navbar-brand style="font-size:12px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
+        <b-navbar-brand style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
     </b-navbar>
   </b-container>
   `,
