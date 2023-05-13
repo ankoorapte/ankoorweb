@@ -201,7 +201,7 @@ let app = new Vue({
     </b-collapse>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
-      <b-row class="d-flex justify-content-between align-items-center">
+      <b-col align="center">
         <p style="font-size:18px">
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -209,7 +209,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           <b>{{trackName}}</b> {{artistNames.join(", ")}}
         </p>
-      </b-row>
+      </b-col>
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
       </p>
