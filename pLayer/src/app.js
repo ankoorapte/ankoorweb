@@ -119,7 +119,7 @@ let app = new Vue({
               <template #title>
                 <b-icon icon="music-note-list"></b-icon>
               </template>
-              <b-col v-if="!discography || !discography.length" align="center">
+              <b-col v-if="!discography || !discography.length" align="center" class="mt-2">
                 <p>You have no tracks yet. Head over to the "post" tab to upload a new track!</p>
               </b-col>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
@@ -135,7 +135,7 @@ let app = new Vue({
               <template #title>
                 <p class="m-0"><b-icon icon="bell"></b-icon> {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
-              <b-col v-if="!inbox.length && !outbox.length" align="center">
+              <b-col v-if="!inbox.length && !outbox.length" align="center" class="mt-2">
                 <p>No new notifications.</p>
               </b-col>
               <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
