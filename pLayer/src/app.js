@@ -125,11 +125,6 @@ let app = new Vue({
                   </p>
                 </b-list-group-item>
               </b-list-group>
-            </b-tab>
-            <b-tab class="p-0">
-              <template #title>
-                <p class="m-0">outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
-              </template>
               <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                   <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
@@ -138,6 +133,11 @@ let app = new Vue({
                   </p>
                 </b-list-group-item>
               </b-list-group>
+            </b-tab>
+            <b-tab class="p-0">
+              <template #title>
+                <p class="m-0">outbox {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
+              </template>
             </b-tab>
             <b-tab active title="done"class="p-0">
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
