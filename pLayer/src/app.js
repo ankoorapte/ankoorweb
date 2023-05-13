@@ -643,14 +643,14 @@ let app = new Vue({
       if (this.tabIndex === index) {
         return ['bg-white', 'text-dark']
       } else {
-        return ['bg-light', 'text-dark']
+        return ['text-dark']
       }
     },
     linkClassSub(index) {
       if (this.subTabIndex === index) {
-        return ['bg-white', 'text-dark', 'p-1']
+        return ['bg-white', 'text-dark', 'p-1', 'm-0']
       } else {
-        return ['bg-light', 'text-dark', 'p-1']
+        return ['text-dark', 'p-1', 'm-0']
       }
     },
     trackTimestamp(seconds) {
