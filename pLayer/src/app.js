@@ -138,11 +138,10 @@ let app = new Vue({
           <div ref="pLayer"></div>  
           <p style="font-size:22px" class="mb-0">
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1 mr-2 mb-2"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 ml-2 mb-2" v-if="isMobile" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 ml-2 mb-2" v-if="isMobile" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 ml-2 mb-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b>{{trackName}}</b>
-            <p style="font-size:16px">{{artistNames.join(", ")}}</p>
+            <b>{{trackName}} <p style="font-size:16px">{{artistNames.join(", ")}}</p></b>
           </p>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
