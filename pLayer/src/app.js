@@ -206,7 +206,7 @@ let app = new Vue({
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
               <p style="font-size:14px" class="mb-0"> 
-                <b>{{ getLayerName(layer_item.id) }}</b>, 
+                <b>{{ getLayerName(layer_item.id) }}</b> by 
                 {{ getUserName(layer_item.user) }}
               </p>
             </b-list-group-item>
@@ -469,6 +469,7 @@ let app = new Vue({
             source.connect(this.merger, 0, 0);
             source.connect(this.merger, 0, 1);
             source.start(0, this.seeker);
+            source.onended = clearInterval(this.interval);
             this.layers.push(source);
           }
           this.interval = setInterval(this.updateSlider, 100);
