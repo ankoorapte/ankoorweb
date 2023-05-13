@@ -200,7 +200,7 @@ let app = new Vue({
       </b-tabs>
     </b-collapse>
     <b-row class="d-flex">
-      <p style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
+      <p style="font-size:10px" class="m-auto mt-2">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
     </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
