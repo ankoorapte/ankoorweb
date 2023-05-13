@@ -225,14 +225,14 @@ let app = new Vue({
         <b-collapse v-model="showLayers" class="mb-2">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p style="font-size:14px" class="mb-0"> 
+                <p style="font-size:14px" class="ml-2 mb-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b> by 
                   {{ getUserName(layer_item.user) }}
                 </p>
-                <p>
-                  <b-badge href="#" variant="dark" @click="downloadLayer(index)" class="mb-1"><b-icon icon="download"></b-icon></b-badge>
-                  <b-badge href="#" variant="info" @click="muteLayer(index)" class="mb-1" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" class="mb-1" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                <p class="mr-2 mb-0">
+                  <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                  <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
             </b-list-group-item>
           </b-list-group>
