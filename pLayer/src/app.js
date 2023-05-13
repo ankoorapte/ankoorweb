@@ -117,7 +117,7 @@ let app = new Vue({
           <b-tabs card align="center">
             <b-tab active class="p-0">
               <template #title>
-                <b-icon icon="music-note-list"></b-icon> your tracks
+                <b-icon icon="music-note-list"></b-icon> posts
               </template>
               <b-col v-if="!discography || !discography.length" align="center" class="mt-2">
                 <p>use the "post" tab to upload your first track</p>
@@ -168,7 +168,7 @@ let app = new Vue({
                 <b-input-group class="m-2">
                   <b-form-input
                     placeholder="new username"
-                    @keydown.native="usernameKeydownHandler" 
+                    @keydown.native="usernameKeydownHandler"
                     v-model="newUsername" 
                     :state="stateUsername" 
                     trim
