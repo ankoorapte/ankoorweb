@@ -55,7 +55,6 @@ let app = new Vue({
     <b-row style="font-size:40px">
       <b-col align="left">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button v-show="!busy" v-if="signedIn" variant="outline-dark" @click="showCreatorTools = !showCreatorTools"><b-icon icon="music-note-list"></b-icon></b-button>
       </b-col>
       <b-col align="center">
         <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
@@ -175,7 +174,7 @@ let app = new Vue({
             <b-tabs card align="center">
               <b-tab class="p-0">
                 <template #title>
-                  <p class="m-0">requests {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
+                  <p class="m-0">incoming {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -192,7 +191,7 @@ let app = new Vue({
               </b-tab>
               <b-tab class="p-0">
                 <template #title>
-                  <p class="m-0">submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
+                  <p class="m-0">outgoing {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -271,7 +270,6 @@ let app = new Vue({
       newEmail: "",
       busy: true,
       showSettings: false,
-      showCreatorTools: false,
       layer: null,
       layers: [],
       layerBuffers: [],
@@ -388,7 +386,6 @@ let app = new Vue({
     },
     async signIn(user) {
       this.showSettings = false;
-      this.showCreatorTools = false;
       try {
         if(user) {
           this.user = user;
@@ -428,7 +425,6 @@ let app = new Vue({
       this.email = "";
       this.password = "";
       this.showSettings = false;
-      this.showCreatorTools = false;
       await signOut(auth);
     },
     async changeUsername(un) {
