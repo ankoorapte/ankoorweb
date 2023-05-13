@@ -218,7 +218,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="seeker" min="0" :max="trackDuration" step="0.01"></b-form-input>
+        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -260,6 +260,7 @@ let app = new Vue({
       showLayers: false,
       trackDuration: 0,
       interval: null,
+      slider: 0,
     }
   },
   async created() {
@@ -442,6 +443,7 @@ let app = new Vue({
       this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.seeker = 0;
+      this.slider = 0;
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
     },
@@ -451,9 +453,9 @@ let app = new Vue({
       this.togglePlay();
       this.togglePlay();
     },
-    updateSeeker() {
+    updateSlider() {
       console.log(this.audioContext.currentTime);
-      this.seeker += this.audioContext.currentTime;
+      this.slider = this.audioContext.currentTime;
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
@@ -469,9 +471,10 @@ let app = new Vue({
             source.start(0, this.seeker);
             this.layers.push(source);
           }
-          this.interval = setInterval(this.updateSeeker, 100);
+          this.interval = setInterval(this.updateSlider, 100);
         } else {
           clearInterval(this.interval);
+          this.seeker += this.audioContext.currentTime;
           this.layers.forEach((node) => node.stop());
         }
       this.paused = !this.paused;
@@ -486,7 +489,6 @@ let app = new Vue({
       }
       this.trackIdx = this.trackIdx % Object.keys(tracks).length;
       this.trackID = Object.keys(tracks)[this.trackIdx];
-      this.seeker = 0;
       await this.getTrack();
       this.busy = false;
     },
@@ -556,7 +558,6 @@ let app = new Vue({
     },
     async playDraft(index, whichbox) {
       await this.forcePause();
-      this.seeker = 0;
       this.trackID = this[whichbox][index].baseID
       await this.getTrack(this[whichbox][index].layerID);
     },
