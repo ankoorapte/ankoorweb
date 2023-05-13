@@ -211,7 +211,7 @@ let app = new Vue({
             <b-tabs card align="center">
               <b-tab>
                 <template #title>
-                  requests {{inbox.length ? "(" + inbox.length + ")" : ""}}
+                  <p style="font-size:10px">requests {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -228,7 +228,7 @@ let app = new Vue({
               </b-tab>
               <b-tab>
                 <template #title>
-                  submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}
+                  <p style="font-size:10px">submissions {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
                 </template>
                 <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -239,7 +239,10 @@ let app = new Vue({
                   </b-list-group-item>
                 </b-list-group>
               </b-tab>
-              <b-tab title="done" active>
+              <b-tab active>
+                <template #title>
+                  <p style="font-size:10px">done</p>
+                </template>
                 <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                   <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                     <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
