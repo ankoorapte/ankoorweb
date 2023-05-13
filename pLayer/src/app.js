@@ -216,7 +216,7 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
           </p>
         </b-col>
-        <b-col cols=10 align="left>
+        <b-col cols=10 align="left">
           <b-form-input type="range"></b-form-input>
         </b-col>
       </b-row>
