@@ -137,11 +137,12 @@ let app = new Vue({
         <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
           <div ref="pLayer"></div>
           <b-row class="d-flex justify-content-between align-items-center">
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="togglePlay()" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b style="font-size:20px">{{trackName}}</b> <p>{{artistNames.join(", ")}}</p>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-0"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()"  class="p-0"v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="togglePlay()"  class="p-0"v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-0"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b style="font-size:20px">{{trackName}}</b>
+            <p class="mt-2">{{artistNames.join(", ")}}</p>
             <audio
               v-if="!isMobile() && layerBuffers.length"
               style="height:25px" 
