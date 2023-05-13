@@ -635,7 +635,7 @@ let app = new Vue({
       let extraSeconds = seconds % 60;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
-      return minutes + ":" + extraSeconds.slice(0, 2);
+      return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
     getLayerName(uid) {
       if(!uid || !Object.keys(layers).length) return;
