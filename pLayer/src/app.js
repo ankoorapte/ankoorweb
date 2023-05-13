@@ -243,7 +243,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-input-group :prepend="sliderTimestamp" v-if="!busy">
+        <b-input-group :prepend="sliderTimestamp" :append="trackDuration"v-if="!busy">
           <b-form-input type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         </b-input-group>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
@@ -351,7 +351,7 @@ let app = new Vue({
       let extraSeconds = this.slider % 60;
       minutes = minutes < 10 ? "0" + minutes : minutes;
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
-      return minutes + ":" + extraSeconds;
+      return minutes + ":" + extraSeconds.slice(0, 2);
     }
   },
   methods: {
