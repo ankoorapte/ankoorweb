@@ -199,6 +199,9 @@ let app = new Vue({
         </b-tab>
       </b-tabs>
     </b-collapse>
+    <b-row class="d-flex">
+      <p style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
+    </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
       <b-col align="center">
@@ -213,9 +216,6 @@ let app = new Vue({
       <p v-show="draft.length" style="font-size:14px">
         <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
       </p>
-    </b-navbar>
-    <b-navbar variant="faded" fixed="bottom" type="light" class="d-flex">
-        <b-navbar-brand style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
     </b-navbar>
   </b-container>
   `,
