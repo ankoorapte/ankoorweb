@@ -534,6 +534,8 @@ let app = new Vue({
             this.layers.push(source);
             let self = this;
             source.onended = () => {
+              console.log(self.slider);
+              console.log(self.trackDuration);
               if(self.slider == self.trackDuration) {
                 self.forcePause();
               }
