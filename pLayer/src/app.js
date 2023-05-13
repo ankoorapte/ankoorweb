@@ -120,7 +120,7 @@ let app = new Vue({
                 <b-icon icon="music-note-list"></b-icon> posts
               </template>
               <b-col v-if="!discography || !discography.length" align="center" class="mt-2">
-                <p>use the "post" tab to upload your first track</p>
+                <p>go to "post" tab to upload your first track</p>
               </b-col>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -162,7 +162,7 @@ let app = new Vue({
             </b-tab>
             <b-tab class="p-0">
               <template #title>
-                <b-icon icon="wrench"></b-icon> settings
+                <b-icon icon="wrench"></b-icon> account
               </template>
               <b-col align="center">
                 <b-input-group class="m-2">
