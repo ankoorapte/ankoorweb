@@ -218,8 +218,8 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <p v-if="!busy" style="font-size:22px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mb-0">{{artistNames.join(", ")}}</p>
-        <p v-show="draft.length" style="font-size:12px" class="mb-0">
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mb-1">{{artistNames.join(", ")}}</p>
+        <p v-show="draft.length" style="font-size:12px" class="mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
         <b-collapse v-model="showLayers" class="mb-2">
