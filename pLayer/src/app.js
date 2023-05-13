@@ -554,11 +554,9 @@ let app = new Vue({
         }
       } else {
         if(this.paused) {
-          console.log(this.layerbuffers);
-          console.log(this.$refs);
-          this.$refs[this.layerbuffers[0].id][0].play();
+          this.$refs[this.layerBuffers[0].id][0].play();
         } else {
-          this.$refs[this.layerbuffers[0].id][0].pause();
+          this.$refs[this.layerBuffers[0].id][0].pause();
         }
       }
       this.paused = !this.paused;
