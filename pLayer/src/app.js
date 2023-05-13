@@ -228,7 +228,8 @@ let app = new Vue({
                 <p style="font-size:14px" class="mb-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b> by 
                   {{ getUserName(layer_item.user) }}
-                  <b-badge href="#" variant="info" @click=""><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" v-if="layerGains[index] && layerGains[index].gain.value" variant="info" @click="muteLayer(index)"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" v-if="layerGains[index] && !layerGains[index].gain.value" variant="danger" @click="unmuteLayer(index)"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
               </b-col>
             </b-list-group-item>
@@ -259,6 +260,7 @@ let app = new Vue({
       busy: true,
       layer: null,
       layers: [],
+      layerGains: [],
       layerBuffers: [],
       trackName: "",
       artistNames: [],
@@ -440,7 +442,7 @@ let app = new Vue({
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
-      this.merger = this.audioContext.createChannelMerger(2);
+      this.merger = this.audioContext.createChannelMerger(2)
       this.mixedAudio = this.audioContext.createMediaStreamDestination();
       this.merger.connect(this.mixedAudio);
       this.merger.connect(this.audioContext.destination);
@@ -481,17 +483,27 @@ let app = new Vue({
         clearInterval(this.interval);
       }
     },
+    muteLayer(index) {
+      this.layerGains[index].gain.value = 0;
+    },
+    unmuteLayer(index) {
+      this.layerGains[index].gain.value = 1;
+    },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
         if(this.paused) {
           this.resetAudioContext();
-          for(const layerBuffer of this.layerBuffers) {
+          for(const idx in this.layerBuffers) {
+            var gainNode = this.audioContext.createGain();
+            gainNode.gain.value = 1.0;
+            gainNode.connect(this.merger, 0, 0);
+            gainNode.connect(this.merger, 0, 1);
+            this.layerGains.push(gainNode);
             let source = this.audioContext.createBufferSource();
-            source.buffer = layerBuffer.decoded_data;
-            source.connect(this.merger, 0, 0);
-            source.connect(this.merger, 0, 1);
+            source.buffer = this.layerBuffers[idx].decoded_data;
+            source.connect(gainNode);
             source.start(0, this.seeker);
             this.layers.push(source);
           }
@@ -500,6 +512,8 @@ let app = new Vue({
           clearInterval(this.interval);
           this.seeker += this.audioContext.currentTime;
           this.layers.forEach((node) => node.stop());
+          this.layers = [];
+          this.layerGains = [];
         }
       this.paused = !this.paused;
     },
