@@ -208,7 +208,7 @@ let app = new Vue({
               </b-col>
             </b-tab>
             <template #tabs-end>
-              <b-button variant="outline-danger" @click="signOut" href="#" class="ml-1 mt-0"><b-icon icon="box-arrow-right"></b-icon></b-button>
+              <b-button variant="outline-danger" @click="signOut" href="#" class="ml-1"><b-icon icon="box-arrow-right"></b-icon></b-button>
             </template>
           </b-tabs>
         </b-tab>
@@ -229,6 +229,7 @@ let app = new Vue({
                 <p style="font-size:14px" class="mb-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b> by 
                   {{ getUserName(layer_item.user) }}
+                  <b-badge href="#" variant="success" @click="downloadLayer(index)" class="mb-1"><b-icon icon="download"></b-icon></b-badge>
                   <b-badge href="#" v-if="layerGains[index] && layerGains[index].gain.value" variant="info" @click="muteLayer(index)" class="mb-1"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                   <b-badge href="#" v-if="layerGains[index] && !layerGains[index].gain.value" variant="danger" @click="unmuteLayer(index)" class="mb-1"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
@@ -441,6 +442,27 @@ let app = new Vue({
       });
       await this.signOut();
     },
+    seekerInput(seek) {
+      clearInterval(this.interval);
+      this.seeker = parseFloat(seek);
+      this.togglePlay();
+      this.togglePlay();
+    },
+    updateSlider() {
+      this.slider = this.seeker + this.audioContext.currentTime;
+      if(this.slider > this.trackDuration) {
+        clearInterval(this.interval);
+      }
+    },
+    muteLayer(index) {
+      this.layerGains[index].gain.value = 0;
+    },
+    unmuteLayer(index) {
+      this.layerGains[index].gain.value = 1;
+    },
+    downloadLayer(index) {
+      
+    },
     resetAudioContext() {
       this.audioContext = new AudioContext();
       this.merger = this.audioContext.createChannelMerger(2)
@@ -449,7 +471,9 @@ let app = new Vue({
       this.merger.connect(this.audioContext.destination);
     },
     async getLayerBuffer(layerID) {
-      let data = await (await fetch(await getDownloadURL(ref(storage, layerID)))).arrayBuffer()
+      let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
+      console.log(fetch_res);
+      let data = await fetch_res.arrayBuffer();
       return {
         id: layerID,
         user: layers[layerID].user,
@@ -471,24 +495,6 @@ let app = new Vue({
       this.slider = 0;
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
-    },
-    seekerInput(seek) {
-      clearInterval(this.interval);
-      this.seeker = parseFloat(seek);
-      this.togglePlay();
-      this.togglePlay();
-    },
-    updateSlider() {
-      this.slider = this.seeker + this.audioContext.currentTime;
-      if(this.slider > this.trackDuration) {
-        clearInterval(this.interval);
-      }
-    },
-    muteLayer(index) {
-      this.layerGains[index].gain.value = 0;
-    },
-    unmuteLayer(index) {
-      this.layerGains[index].gain.value = 1;
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
