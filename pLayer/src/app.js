@@ -134,39 +134,6 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-row><b-col align="center">
-        <b-card v-show="!busy" class="mb-3 pb-0" border-variant="dark" bg-variant="transparent">
-          <div ref="pLayer"></div>
-          <b-row class="d-flex justify-content-between align-items-center">
-            <p style="font-size:18px">
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-              <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              <b>{{trackName}}</b> {{artistNames.join(", ")}}
-            </p>
-          </b-row>
-          <p v-show="draft.length" style="font-size:14px">
-            <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-          </p>
-          <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <p style="font-size:14px" class="mb-0"> 
-                {{ getUserName(layer_item.user) }}: 
-                <i>{{ getLayerName(layer_item.id) }}</i>
-              </p>
-              <audio
-                style="height:25px" 
-                controls controlslist="noplaybackrate"
-                :ref="layer_item.id"
-                :src="getLayerURL(layer_item.data)"
-                v-on:pause="layerPaused(layer_item.id)"
-                v-on:play="layerPlayed(layer_item.id)"
-                v-on:seeked="layerSeeked(layer_item.id)"
-              >
-              </audio>
-            </b-list-group-item>
-          </b-list-group>
-        </b-card>
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center" v-model="tabIndex">
@@ -254,6 +221,39 @@ let app = new Vue({
         </b-tabs>
       </b-collapse>
     </b-collapse>
+    <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy">
+      <div ref="pLayer"></div>
+      <b-row class="d-flex justify-content-between align-items-center">
+        <p style="font-size:18px">
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+          <b>{{trackName}}</b> {{artistNames.join(", ")}}
+        </p>
+      </b-row>
+      <p v-show="draft.length" style="font-size:14px">
+        <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
+      </p>
+      <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+        <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+          <p style="font-size:14px" class="mb-0"> 
+            <b>{{ getLayerName(layer_item.id) }}</b>, 
+            {{ getUserName(layer_item.user) }}
+          </p>
+          <audio
+            style="height:25px" 
+            controls controlslist="noplaybackrate"
+            :ref="layer_item.id"
+            :src="getLayerURL(layer_item.data)"
+            v-on:pause="layerPaused(layer_item.id)"
+            v-on:play="layerPlayed(layer_item.id)"
+            v-on:seeked="layerSeeked(layer_item.id)"
+          >
+          </audio>
+        </b-list-group-item>
+      </b-list-group>
+    </b-navbar>
     <b-navbar variant="faded" fixed="bottom" type="light" class="d-flex">
         <b-navbar-brand style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</b-navbar-brand>
     </b-navbar>
