@@ -228,6 +228,7 @@ let app = new Vue({
                 <p style="font-size:14px" class="mb-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b> by 
                   {{ getUserName(layer_item.user) }}
+                  <b-badge href="#" variant="info" @click=""><b-icon icon="volume-up-fill"></b-icon></b-badge>
                 </p>
               </b-col>
             </b-list-group-item>
