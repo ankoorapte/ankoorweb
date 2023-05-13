@@ -141,7 +141,7 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1 mb-2" v-if="isMobile" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1 mb-2"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b>{{trackName}} <p style="font-size:16px">{{artistNames.join(", ")}}</p></b>
+            <p style="font-size:16px"><b style="font-size:22px">{{trackName}}</b> <p>{{artistNames.join(", ")}}</p>
           </p>
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
