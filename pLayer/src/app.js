@@ -142,7 +142,7 @@ let app = new Vue({
             <b-button :disabled="busy" variant="dark" @click="togglePlay()"  class="p-1"v-if="isMobile()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
             <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
             <b style="font-size:20px">{{trackName}}</b>
-            <p class="mt-4">{{artistNames.join(", ")}}</p>
+            <p class="mt-3">{{artistNames.join(", ")}}</p>
             <audio
               v-if="!isMobile() && layerBuffers.length"
               style="height:25px" 
