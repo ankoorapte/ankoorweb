@@ -470,7 +470,7 @@ let app = new Vue({
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
-      a.download = this.layerBuffers[index].name + ".mp3";
+      a.download = this.layerBuffers[index].name + ".wav";
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
