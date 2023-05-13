@@ -219,9 +219,15 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <hr v-if="!busy">
+        <p v-if="!busy" class="mb-1">
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        </p>
         <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mb-1">{{artistNames.join(", ")}}</p>
-        <p v-show="draft.length" style="font-size:12px" class="mb-1">
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-1 mb-1">{{artistNames.join(", ")}}</p>
+        <p v-show="draft.length" style="font-size:12px" class="mt-1 mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
         <b-collapse v-model="showLayers" class="mb-2">
@@ -239,12 +245,6 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <p v-if="!busy" class="mb-1">
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-        </p>
         <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
         <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
