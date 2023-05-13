@@ -73,7 +73,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-tabs card align="center" v-model="tabIndex" class="mb-3">
-        <b-tab class="p-0">
+        <b-tab class="p-0" :title-link-class="linkClassMain(0)">
           <template #title>
             <b-icon icon="music-note-list"></b-icon> post
           </template>
@@ -96,7 +96,7 @@ let app = new Vue({
             </p>
           </b-col></b-row>
         </b-tab>
-        <b-tab active class="p-0">
+        <b-tab active class="p-0" :title-link-class="linkClassMain(1)">
           <template #title>
             <b-icon icon="house"></b-icon> home
           </template>
@@ -110,12 +110,12 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-tab>
-        <b-tab class="p-0">
+        <b-tab class="p-0"  :title-link-class="linkClassMain(2)">
           <template #title>
             <b-icon icon="person"></b-icon> {{ user && user.displayName ? user.displayName : "" }}
           </template>
-          <b-tabs card align="center">
-            <b-tab active class="p-0">
+          <b-tabs card align="center" v-model="subTabIndex">
+            <b-tab active class="p-0" :title-link-class="linkClassSub(0)">
               <template #title>
                 <b-icon icon="music-note-list"></b-icon> posts
               </template>
@@ -132,7 +132,7 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab class="p-0">
+            <b-tab class="p-0" :title-link-class="linkClassSub(1)">
               <template #title>
                 <p class="m-0"><b-icon icon="bell"></b-icon> notifs {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
@@ -160,7 +160,7 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab class="p-0">
+            <b-tab class="p-0" :title-link-class="linkClassSub(2)">
               <template #title>
                 <b-icon icon="wrench"></b-icon> account
               </template>
@@ -205,7 +205,7 @@ let app = new Vue({
                     <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
                   </b-input-group-append>
                 </b-input-group>
-                <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
+                <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark">Report feedback</a>
               </b-col>
             </b-tab>
             <template #tabs-end>
@@ -245,7 +245,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <p style="font-size:12px" class="mb-0">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
-        <b-form-input type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+        <b-form-input variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -286,6 +286,7 @@ let app = new Vue({
       activeLayer: "",
       inactiveLayers: [],
       tabIndex: 1,
+      subTabIndex: 0,
       showLayers: false,
       trackDuration: 0,
       interval: null,
@@ -637,6 +638,20 @@ let app = new Vue({
         baseID: baseID,
         accept: accept
       });
+    },
+    linkClassMain(index) {
+      if (this.tabIndex === index) {
+        return ['bg-white', 'text-dark']
+      } else {
+        return ['bg-light', 'text-dark']
+      }
+    },
+    linkClassSub(index) {
+      if (this.subTabIndex === index) {
+        return ['bg-white', 'text-dark', 'p-1']
+      } else {
+        return ['bg-light', 'text-dark', 'p-1']
+      }
     },
     trackTimestamp(seconds) {
       let minutes = Math.floor(seconds / 60);
