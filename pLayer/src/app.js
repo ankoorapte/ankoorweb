@@ -201,9 +201,9 @@ let app = new Vue({
       </b-tabs>
     </b-collapse>
     <b-navbar variant="faded" fixed="bottom" type="light">
-      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-      <b-col v-if="!busy" align="center">
-        <p style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
+      <b-col align="center">
+        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-collapse v-model="showLayers">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -214,13 +214,13 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <p>
+        <p v-if="!busy">
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <b-form-input type="range"></b-form-input>
+        <b-form-input v-if="!busy" type="range"></b-form-input>
         <p style="font-size:8px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
       <p v-show="draft.length" style="font-size:14px">
