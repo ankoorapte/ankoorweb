@@ -92,7 +92,7 @@ let app = new Vue({
             <p class="mt-2">
               <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
               <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-              <b-button :disabled="busy || !layer || !newTrackName.length" variant="success" @click="post()">post</b-button>
+              <b-button :disabled="busy || !layer || !newTrackName.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
             </p>
           </b-col></b-row>
         </b-tab>
@@ -150,7 +150,10 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab title="account" class="p-0">
+            <b-tab class="p-0">
+              <template #title>
+                <b-icon icon="wrench"></b-icon> account
+              </template>
               <b-col align="center">
                 <b-input-group class="m-2">
                   <b-form-input
