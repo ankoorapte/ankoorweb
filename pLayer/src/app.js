@@ -127,6 +127,7 @@ let app = new Vue({
                   <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
                   <p class="mr-2 mb-0">
                     <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                    <b-badge href="#" variant="dark" @click="layerDiscography(index)">play</b-badge>
                   </p>
                 </b-list-group-item>
               </b-list-group>
@@ -602,6 +603,13 @@ let app = new Vue({
       await this.forcePause();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
+    },
+    async layerDiscography(index) {
+      await this.forcePause();
+      this.trackID = this.discography[index].trackID;
+      await this.getTrack();
+      this.layering = true;
+      this.tabIndex = 0;
     },
     async playGroupDiscography(index) {
       await this.forcePause();
