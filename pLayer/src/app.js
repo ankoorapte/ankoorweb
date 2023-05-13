@@ -487,6 +487,7 @@ let app = new Vue({
       this.busy = false;
     },
     layerPaused(layerID) {
+      console.log("layer pause");
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -503,6 +504,7 @@ let app = new Vue({
       self.paused = true;
     },
     layerPlayed(layerID) {
+      console.log("layer play");
       let self = this;
       let trackLayers = tracks[self.trackID].layers.slice();
       if(!self.inactiveLayers.length) {
@@ -537,6 +539,7 @@ let app = new Vue({
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
+      console.log("box toggle, paused" + this.paused);
       if(this.isMobile()) {
         if(this.paused) {
           this.resetAudioContext();
