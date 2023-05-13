@@ -160,7 +160,7 @@ let app = new Vue({
           <p v-show="draft.length" style="font-size:14px">
             <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
           </p>
-          <div v-show="showLayers">
+          <div hidden>
             <b-list-group v-if="!isMobile()" v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
               <b-list-group-item v-if="index != 0" class="p-0 d-flex justify-content-between align-items-center">
                 <b-col>
