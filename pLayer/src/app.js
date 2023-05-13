@@ -200,12 +200,8 @@ let app = new Vue({
         </b-tab>
       </b-tabs>
     </b-collapse>
-    <b-row class="d-flex"> 
-    </b-row>
     <b-navbar variant="faded" fixed="bottom" type="light">
-      <b-col v-if="!busy" align="center">
-        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-      </b-col>
+      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
       <b-col v-if="!busy" align="center">
         <p style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-collapse v-model="showLayers">
