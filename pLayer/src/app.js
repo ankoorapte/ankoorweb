@@ -132,93 +132,89 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="signedIn">
-      <b-row><b-col align="center">
-      </b-col></b-row>
-      <b-collapse v-model="showCreatorTools">
-        <b-tabs card align="center" v-model="tabIndex">
-          <b-tab title="new" class="p-0">
-            <b-row><b-col align="center" v-show="!busy">
-              <b-form-file
-                placeholder=""
-                accept="audio/wav"
-                v-model="layer"
-                browse-text="upload"
-                class="mb-1 mt-1"
-                :disabled="busy"
-              ></b-form-file>
-              <b-input-group append="name" class="mb-1">
-                <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
-              </b-input-group>
-              <p class="mt-2">
-                <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-                <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-                <b-button :disabled="busy || !layer || !newTrackName.length" variant="success" @click="post()">post</b-button>
+      <b-tabs card align="center" v-model="tabIndex">
+        <b-tab title="new" class="p-0">
+          <b-row><b-col align="center" v-show="!busy">
+            <b-form-file
+              placeholder=""
+              accept="audio/wav"
+              v-model="layer"
+              browse-text="upload"
+              class="mb-1 mt-1"
+              :disabled="busy"
+            ></b-form-file>
+            <b-input-group append="name" class="mb-1">
+              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <p class="mt-2">
+              <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
+              <b-button :disabled="busy || !layer || !newTrackName.length" variant="success" @click="post()">post</b-button>
+            </p>
+          </b-col></b-row>
+        </b-tab>
+        <b-tab title="home" active class="p-0">
+          <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+              <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+              <p class="mr-2 mb-0">
+                <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
+                <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
               </p>
-            </b-col></b-row>
-          </b-tab>
-          <b-tab title="home" active class="p-0">
-            <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
-              <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
-                <p class="mr-2 mb-0">
-                  <b-badge href="#" variant="dark" @click="playGroupDiscography(index)">play</b-badge>
-                  <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
-                </p>
-              </b-list-group-item>
-            </b-list-group>
-          </b-tab>
-          <b-tab class="p-0">
-            <template #title>
-              {{ user.displayName ? user.displayName : "" }}
-            </template>
-            <b-tabs card align="center">
-              <b-tab class="p-0">
-                <template #title>
-                  <p class="m-0">incoming {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
-                </template>
-                <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-                  <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                    <p class="ml-1 mb-0">
-                      <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
-                    </p>
-                    <p class="mr-1 mb-0">
-                      <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
-                      <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
-                      <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
-                    </p>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-tab>
-              <b-tab class="p-0">
-                <template #title>
-                  <p class="m-0">outgoing {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
-                </template>
-                <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-                  <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                    <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
-                    <p class="mr-1 mb-0">
-                      <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
-                    </p>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-tab>
-              <b-tab active class="p-0">
-                <template #title>
-                  <p class="m-0">done</p>
-                </template>
-                <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                  <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                    <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
-                    <p class="mr-2 mb-0">
-                      <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
-                    </p>
-                  </b-list-group-item>
-                </b-list-group>
-              </b-tab>
-            </b-tabs>
-          </b-tab>
-        </b-tabs>
-      </b-collapse>
+            </b-list-group-item>
+          </b-list-group>
+        </b-tab>
+        <b-tab class="p-0">
+          <template #title>
+            {{ user.displayName ? user.displayName : "" }}
+          </template>
+          <b-tabs card align="center">
+            <b-tab class="p-0">
+              <template #title>
+                <p class="m-0">incoming {{inbox.length ? "(" + inbox.length + ")" : ""}}</p>
+              </template>
+              <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
+                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                  <p class="ml-1 mb-0">
+                    <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
+                  </p>
+                  <p class="mr-1 mb-0">
+                    <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')">play</b-badge>
+                    <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
+                    <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
+                  </p>
+                </b-list-group-item>
+              </b-list-group>
+            </b-tab>
+            <b-tab class="p-0">
+              <template #title>
+                <p class="m-0">outgoing {{outbox.length ? "(" + outbox.length + ")" : ""}}</p>
+              </template>
+              <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
+                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                  <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
+                  <p class="mr-1 mb-0">
+                    <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')">play</b-badge>
+                  </p>
+                </b-list-group-item>
+              </b-list-group>
+            </b-tab>
+            <b-tab active class="p-0">
+              <template #title>
+                <p class="m-0">done</p>
+              </template>
+              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                  <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
+                  <p class="mr-2 mb-0">
+                    <b-badge href="#" variant="dark" @click="playDiscography(index)">play</b-badge>
+                  </p>
+                </b-list-group-item>
+              </b-list-group>
+            </b-tab>
+          </b-tabs>
+        </b-tab>
+      </b-tabs>
     </b-collapse>
     <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
       <div ref="pLayer"></div>
