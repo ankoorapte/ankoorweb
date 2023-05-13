@@ -191,6 +191,7 @@ let app = new Vue({
                   </b-input-group-append>
                 </b-input-group>
                 <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank">Report feedback</a>
+                <hr>
                 <b-button v-show="!busy" variant="danger" @click="signOut">sign out</b-button>
               </b-col>
             </b-tab>
