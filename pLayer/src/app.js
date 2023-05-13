@@ -173,7 +173,7 @@ let app = new Vue({
       </b-col></b-row>
       <b-collapse v-model="showCreatorTools">
         <b-tabs card align="center" v-model="tabIndex">
-          <b-tab title="new">
+          <b-tab title="new" class="p-0">
             <b-row><b-col align="center" v-show="!busy">
               <b-form-file
                 placeholder=""
@@ -193,7 +193,7 @@ let app = new Vue({
               </p>
             </b-col></b-row>
           </b-tab>
-          <b-tab title="home" active>
+          <b-tab title="home" active class="p-0">
             <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
               <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p class="ml-2 mb-0">{{ getTrackName(disco_item.trackID) }}</p>
@@ -204,7 +204,7 @@ let app = new Vue({
               </b-list-group-item>
             </b-list-group>
           </b-tab>
-          <b-tab>
+          <b-tab class="p-0">
             <template #title>
               {{ user.displayName ? user.displayName : "" }}
             </template>
