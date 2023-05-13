@@ -226,7 +226,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-1 mb-1">{{artistNames.join(", ")}}</p>
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-0 mb-1">{{artistNames.join(", ")}}</p>
         <p v-show="draft.length" style="font-size:12px" class="mt-1 mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
