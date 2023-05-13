@@ -447,7 +447,8 @@ let app = new Vue({
     },
     sliderInput(seek) {
       this.seeker = seek;
-      this.layers.forEach((node) => node.start(0, seek));
+      this.togglePlay();
+      this.togglePlay();
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
