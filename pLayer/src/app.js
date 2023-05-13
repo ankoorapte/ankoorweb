@@ -446,6 +446,7 @@ let app = new Vue({
       this.busy = false;
     },
     sliderInput(seek) {
+      console.log(this.seeker);
       this.seeker = seek;
       this.togglePlay();
       this.togglePlay();
