@@ -460,8 +460,10 @@ let app = new Vue({
     unmuteLayer(index) {
       this.layerGains[index].gain.value = 1;
     },
-    downloadLayer(index) {
-      const url = window.URL.createObjectURL(this.layerBuffers[index].blob);
+    async downloadLayer(index) {
+      this.busy = true;
+      let blob = await (await fetch(await getDownloadURL(ref(storage, this.layerBuffers[index].id)))).blob();
+      const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
@@ -469,6 +471,7 @@ let app = new Vue({
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
+      this.busy = false;
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -479,14 +482,11 @@ let app = new Vue({
     },
     async getLayerBuffer(layerID) {
       let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
-      console.log(fetch_res);
       let data = await fetch_res.arrayBuffer();
-      let blob = await fetch_res.blob();
       return {
         id: layerID,
         name: layers[layerID].name,
         user: layers[layerID].user,
-        blob: blob,
         data: data.slice(),
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
