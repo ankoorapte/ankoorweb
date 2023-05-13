@@ -445,8 +445,9 @@ let app = new Vue({
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
     },
-    sliderInput(ev) {
-      console.log(ev);
+    sliderInput(seek) {
+      this.seeker = seek;
+      this.layers.forEach((node) => node.start(0, seek));
     },
     async forcePause() {
       if(!this.paused) await this.togglePlay();
