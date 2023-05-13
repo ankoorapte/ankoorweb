@@ -236,7 +236,7 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <p v-if="!busy">
+        <p v-if="!busy" class="mb-1">
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
