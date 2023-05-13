@@ -112,7 +112,7 @@ let app = new Vue({
         </b-tab>
         <b-tab class="p-0">
           <template #title>
-            <b-icon icon="person"></b-icon> {{ user.displayName ? user.displayName : "" }}
+            <b-icon icon="person"></b-icon> {{ user && user.displayName ? user.displayName : "" }}
           </template>
           <b-tabs card align="center">
             <b-tab active class="p-0">
