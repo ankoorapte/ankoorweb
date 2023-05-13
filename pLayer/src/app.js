@@ -54,7 +54,7 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="center">
-        <h1 class="mt-2" style="font-family:Georgia, serif;"><b-spinner v-show="busy" variant="dark" type="grow"></b-spinner><b>pLayer</b></h1>
+        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
@@ -203,8 +203,9 @@ let app = new Vue({
     <b-row class="d-flex">
       <p style="font-size:10px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
     </b-row>
-    <b-navbar variant="faded" fixed="bottom" type="light" v-if="!busy" height="500px">
-      <b-col align="center">
+    <b-navbar variant="faded" fixed="bottom" type="light">
+      <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+      <b-col v-show="!busy" align="center">
         <p style="font-size:18px" @click="showLayers = !showLayers"><b style="font-size:22px">{{trackName}}</b> {{artistNames.join(", ")}}</p>
         <b-collapse v-model="showLayers">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
