@@ -411,7 +411,7 @@ let app = new Vue({
     },
     async signOut() {
       this.resetAudioContext();
-      await this.forcePause();
+      await this.pause();
       unsubscribe_tracks();
       unsubscribe_layers();
       unsubscribe_users();
@@ -507,7 +507,7 @@ let app = new Vue({
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
       this.busy = false;
     },
-    async forcePause() {
+    async pause() {
       if(!this.paused) await this.togglePlay();
     },
     async togglePlay() {
@@ -527,7 +527,7 @@ let app = new Vue({
             let self = this;
             source.onended = () => {
               if(Math.ceil(self.slider) == Math.ceil(self.trackDuration)) {
-                self.forcePause();
+                self.pause();
               }
             }
           }
@@ -542,7 +542,7 @@ let app = new Vue({
       this.paused = !this.paused;
     },
     async toggleTrack(forward) {
-      await this.forcePause();
+      await this.pause();
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
@@ -556,7 +556,7 @@ let app = new Vue({
     },
     async post() {
       let self = this;
-      await self.forcePause();
+      await self.pause();
       self.busy = true;
       const uid = uuidv4();
       const layerPath = ref(storage, uid);
@@ -602,36 +602,36 @@ let app = new Vue({
       this.group_discography = Object.keys(tracks).map((t) => {return {trackID:t}});
     },
     async playDiscography(index) {
-      await this.forcePause();
+      await this.pause();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
     },
     async layerDiscography(index) {
-      await this.forcePause();
+      await this.pause();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
       this.layering = true;
       this.tabIndex = 0;
     },
     async playGroupDiscography(index) {
-      await this.forcePause();
+      await this.pause();
       this.trackID = this.group_discography[index].trackID;
       await this.getTrack();
     },
     async layerGroupDiscography(index) {
-      await this.forcePause();
+      await this.pause();
       this.trackID = this.group_discography[index].trackID;
       await this.getTrack();
       this.layering = true;
       this.tabIndex = 0;
     },
     async playDraft(index, whichbox) {
-      await this.forcePause();
+      await this.pause();
       this.trackID = this[whichbox][index].baseID
       await this.getTrack(this[whichbox][index].layerID);
     },
     async resolveDraft(index, accept) {
-      await this.forcePause();
+      await this.pause();
       let layerID = this.inbox[index].layerID;
       let baseID = this.inbox[index].baseID;
       await this.pLayerAPI("resolveLayer",{
