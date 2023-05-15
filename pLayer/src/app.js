@@ -87,12 +87,12 @@ let app = new Vue({
               :disabled="busy"
             ></b-form-file>
             <b-input-group append="name" class="mb-1">
-              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+              <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
             </b-input-group>
             <p class="mt-2">
-              <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{artistNames.join(", ")}}</b></b-button>
-              <b-button :disabled="busy || !layer || !newTrackName.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+              <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
+              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
+              <b-button :disabled="busy || !layer || !newLayerName.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
             </p>
           </b-col></b-row>
         </b-tab>
@@ -226,7 +226,7 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
         <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-0 mb-1">{{artistNames.join(", ")}}</p>
+        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-0 mb-1">{{getTrackArtists(trackID).join(", ")}}</p>
         <p v-show="draft.length" style="font-size:12px" class="mt-1 mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
@@ -254,7 +254,6 @@ let app = new Vue({
   `,
   data() {
     return {
-      tab: 0,
       user: "",
       signedIn: false,
       email: "",
@@ -269,23 +268,19 @@ let app = new Vue({
       layerMute: [],
       layerBuffers: [],
       trackName: "",
-      artistNames: [],
-      newTrackName: "",
+      newLayerName: "",
       trackID: "",
       trackIdx: 0,
       layering: false,
       paused: true,
       audioContext: null,
       merger: null,
-      mixedAudio: null,
       seeker: 0,
       inbox: [],
       outbox: [],
       discography: [],
       group_discography: [],
       draft: "",
-      activeLayer: "",
-      inactiveLayers: [],
       tabIndex: 1,
       subTabIndex: 0,
       showLayers: false,
@@ -485,8 +480,7 @@ let app = new Vue({
     resetAudioContext() {
       this.audioContext = new AudioContext();
       this.merger = this.audioContext.createChannelMerger(2)
-      this.mixedAudio = this.audioContext.createMediaStreamDestination();
-      this.merger.connect(this.mixedAudio);
+      this.merger.connect(this.audioContext.createMediaStreamDestination());
       this.merger.connect(this.audioContext.destination);
     },
     async getLayerBuffer(layerID) {
@@ -507,8 +501,6 @@ let app = new Vue({
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
       this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
-      this.artistNames = trackLayers.map((layerID) => users[layers[layerID]['user']]['displayName']);
-      this.artistNames = [...new Set(this.artistNames)];
       this.trackName = tracks[this.trackID]['name'];
       this.seeker = 0;
       this.slider = 0;
@@ -570,14 +562,14 @@ let app = new Vue({
       const layerPath = ref(storage, uid);
       const metadata = {
         customMetadata: {
-          'name': self.newTrackName,
+          'name': self.newLayerName,
           'user': self.user.uid,
           'base': self.layering ? self.trackID : ""
         },
         contentType: 'audio/wav'
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
-      self.newTrackName = "";
+      self.newLayerName = "";
       self.layer = null;
       self.layering = false;
       self.busy = false;
