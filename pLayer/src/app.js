@@ -218,28 +218,19 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <hr v-if="!busy">
-        <p v-if="!busy" class="mb-1">
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(0)" class="p-1"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-          <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-        </p>
-        <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{getTrackName(trackID)}}</b></p>
-        <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-0 mb-1">{{getTrackArtists(trackID).join(", ")}}</p>
-        <p v-show="draft.length" style="font-size:12px" class="mt-1 mb-1">
-          <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-        </p>
-        <b-list-group>
-          <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+        <b-list-group v-if="!busy">
+          <b-list-group-item class="p-0 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b>{{ getLayerName(layer_item.id) }}</b> by 
-                {{ getUserName(layer_item.user) }}
+                <b>{{ getTrackName(trackID) }}</b> by 
+                {{ getTrackArtists(trackID).join(", ") }}
+                <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
               <p class="mr-2 mb-0">
-                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon>/b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon>/b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon>/b-badge>
+                <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon>/b-badge>
+                <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
               </p>
           </b-list-group-item>
         </b-list-group>
