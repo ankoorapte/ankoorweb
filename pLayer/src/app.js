@@ -216,8 +216,51 @@ let app = new Vue({
       </b-tabs>
     </b-collapse>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
-      <b-col cols=6>
-      </b-col>
+    <b-col cols=6 align="center">
+    <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+    <b-list-group v-if="!busy">
+      <b-list-group-item class="p-0">
+        <b-col align="center">
+          <b-button-group>
+            <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-3">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
+          </b-button-group>
+        </b-col>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>   
+      </b-list-group-item>
+      <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
+          <p style="font-size:14px" class="ml-2 mb-0"> 
+            <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
+            {{ getTrackArtists(trackID).join(", ") }}
+            <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
+          </p>
+          <p class="mr-2 mb-0">
+            <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
+          </p>
+      </b-list-group-item>
+    </b-list-group>
+    <b-collapse v-model="showLayers" class="mb-2">
+      <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+        <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+            <p style="font-size:14px" class="ml-2 mb-0"> 
+              <b>{{ getLayerName(layer_item.id) }}</b> by 
+              {{ getUserName(layer_item.user) }}
+            </p>
+            <p class="mr-2 mb-0">
+              <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+              <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+              <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+            </p>
+        </b-list-group-item>
+      </b-list-group>
+    </b-collapse>
+    <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
+  </b-col>
       <b-col cols=6 align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy">
