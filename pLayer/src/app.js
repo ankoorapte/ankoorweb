@@ -245,10 +245,9 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
         <b-container>
           <b-col cols=3>
-            <b-button-group>
+            <b-button-group class="p-1">
               <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
               <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
               <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
@@ -260,6 +259,7 @@ let app = new Vue({
             <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
           </b-col>
         </b-container>
+        <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
   </b-container>
