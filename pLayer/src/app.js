@@ -229,17 +229,19 @@ let app = new Vue({
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
               </p>
           </b-list-group-item>
-          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
-            <p class="m-auto">
-              <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
-              <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
-              <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
-              <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
-            </p>
-          </b-list-group-item>
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center">
-            <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
-            <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+            <b-input-group>
+              <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+              <b-input-group-prepend>
+                <b-button variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+                <b-button variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+                <b-button variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+                <b-button variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+              </b-input-group-prepend>
+              <b-input-group-append>
+                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
+              </b-input-group-append>
+            </b-input-group>
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" class="mb-2">
