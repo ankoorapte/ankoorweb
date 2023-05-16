@@ -236,11 +236,9 @@ let app = new Vue({
                 <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
                 <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
                 <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+                <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
               </template>
               <b-form-input v-if="!busy" class="w-75 ml-2" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
-              <template #append>
-                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
-              </template>
             </b-input-group>
           </b-list-group-item>
         </b-list-group>
