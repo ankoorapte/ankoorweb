@@ -218,7 +218,7 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button-group size="lg" class="mb-2">
+        <b-button-group size="lg" class="mb-2" v-if="!busy">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
@@ -237,7 +237,7 @@ let app = new Vue({
               </p>
           </b-list-group-item>
         </b-list-group>
-        <b-collapse v-model="showLayers" class="mb-2">
+        <b-collapse v-model="showLayers" class="mb-2" v-if="!busy">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p style="font-size:14px" class="ml-2 mb-0"> 
