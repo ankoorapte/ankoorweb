@@ -241,7 +241,7 @@ let app = new Vue({
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p style="font-size:14px" class="ml-2 mb-0"> 
-                  <p style="font-size:16px">{{ getLayerName(layer_item.id) }}</p>
+                  <b style="font-size:14px">{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }}
                 </p>
                 <p class="mr-2 mb-1">
