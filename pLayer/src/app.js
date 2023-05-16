@@ -105,7 +105,7 @@ let app = new Vue({
               <template #title>
                 <b-icon icon="music-note-list"></b-icon> tracks
               </template>
-              <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
+              <b-list-group v-show="!busy" v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-left" @click="playDiscography(index)">
                   <p style="font-size:14px" class="ml-2 mb-0">
                     <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
