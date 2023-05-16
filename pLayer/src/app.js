@@ -241,10 +241,10 @@ let app = new Vue({
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p style="font-size:14px" class="ml-2 mb-0"> 
-                  <b style="font-size:16px">{{ getLayerName(layer_item.id) }}</b>
+                  <p style="font-size:16px">{{ getLayerName(layer_item.id) }}</p>
                   {{ getUserName(layer_item.user) }}
                 </p>
-                <p class="mr-2 mb-0">
+                <p class="mr-2 mb-1">
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
                   <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                   <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
