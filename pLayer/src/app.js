@@ -107,7 +107,7 @@ let app = new Vue({
                 {{ getTrackArtists(disco_item.trackID).join(", ") }}
                 <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
               </p>
-              <p class="mr-2 mb-0">
+              <p class="mr-2 mb-1">
                 <b-badge href="#" variant="dark" @click="playGroupDiscography(index)"><b-icon icon="play-fill"></b-icon></b-badge>
               </p>
             </b-list-group-item>
@@ -129,7 +129,7 @@ let app = new Vue({
                     {{ getTrackArtists(disco_item.trackID).join(", ") }}
                     <b-badge href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
                   </p>
-                  <p class="mr-2 mb-0">
+                  <p class="mr-2 mb-1">
                     <b-badge href="#" variant="dark" @click="playDiscography(index)"><b-icon icon="play-fill"></b-icon></b-badge>
                   </p>
                 </b-list-group-item>
@@ -144,7 +144,7 @@ let app = new Vue({
                   <p class="ml-1 mb-0">
                     <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
                   </p>
-                  <p class="mr-1 mb-0">
+                  <p class="mr-1 mb-1">
                     <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')"><b-icon icon="play-fill"></b-icon></b-badge>
                     <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
                     <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
@@ -154,7 +154,7 @@ let app = new Vue({
               <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                   <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
-                  <p class="mr-1 mb-0">
+                  <p class="mr-1 mb-1">
                     <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')"><b-icon icon="play-fill"></b-icon></b-badge>
                   </p>
                 </b-list-group-item>
@@ -218,7 +218,7 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button-group>
+        <b-button-group size="lg" class="mb-2">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
