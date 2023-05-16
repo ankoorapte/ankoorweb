@@ -227,7 +227,7 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b style="font-size:20px">{{ getTrackName(trackID) }}</b>
+                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
                 {{ getTrackArtists(trackID).join(", ") }}
                 <b-badge v-show="!draft.length" href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
