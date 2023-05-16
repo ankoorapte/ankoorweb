@@ -221,7 +221,7 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b style="font-size:20px">{{ getTrackName(trackID) }}</b>
+                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
                 {{ getTrackArtists(trackID).join(", ") }}
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
@@ -251,10 +251,12 @@ let app = new Vue({
                   <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
             </b-list-group-item>
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+              <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
+              <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+            </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
-        <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
