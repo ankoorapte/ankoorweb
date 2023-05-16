@@ -226,10 +226,10 @@ let app = new Vue({
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
               <p class="mr-2 mb-0">
-                <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon>/b-badge>
-                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon>/b-badge>
-                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon>/b-badge>
-                <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon>/b-badge>
+                <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
               </p>
           </b-list-group-item>
