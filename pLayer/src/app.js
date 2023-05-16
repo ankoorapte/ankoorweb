@@ -216,7 +216,9 @@ let app = new Vue({
       </b-tabs>
     </b-collapse>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
-      <b-col align="center">
+      <b-col cols=6>
+      </b-col>
+      <b-col cols=6 align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-0">
