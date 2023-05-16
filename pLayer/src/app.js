@@ -670,28 +670,28 @@ let app = new Vue({
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
     getLayerName(uid) {
-      if(!uid || !Object.keys(layers).length) return;
+      if(!uid || !Object.keys(layers).length) return [];
       return layers[uid].name;
     },
     getLayerURL(buffer) {
       return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
     },
     getBaseUser(uid) {
-      if(!uid || !Object.keys(layers).length) return;
+      if(!uid || !Object.keys(layers).length) return [];
       return layers[uid].user;
     },
     getTrackName(uid) {
-      if(!uid || !Object.keys(tracks).length) return;
+      if(!uid || !Object.keys(tracks).length) return [];
       return tracks[uid].name;
     },
     getTrackArtists(uid) {
-      if(!uid || !Object.keys(tracks).length) return;
+      if(!uid || !Object.keys(tracks).length) return [];
       console.log(uid);
       console.log([...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))])
       return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
     },
     getUserName(uid) {
-      if(!uid || !Object.keys(users).length) return;
+      if(!uid || !Object.keys(users).length) return [];
       return users[uid].displayName;
     },
     signinKeydownHandler(event) {
