@@ -226,6 +226,10 @@ let app = new Vue({
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
               <p class="mr-2 mb-0">
+                <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
               </p>
           </b-list-group-item>
@@ -246,14 +250,10 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-container class="d-flex justify-content-between align-items-center">
-          <b-button-group class="p-1">
-            <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-            <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-            <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-3">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
-          </b-button-group>
-          <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+
+          <p style="font-size:14px">{{trackTimestamp(slider)}}</p>
+          <b-form-input v-if="!busy" class="w-75" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+          <p style="font-size:14px">{{trackTimestamp(trackDuration)}}</p>
         </b-container>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
