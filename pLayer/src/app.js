@@ -224,7 +224,6 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
-        <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
@@ -234,6 +233,7 @@ let app = new Vue({
               </p>
               <p class="mr-2 mb-0">
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
+                <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
               </p>
           </b-list-group-item>
         </b-list-group>
@@ -252,10 +252,7 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <b-container class="d-flex justify-content-between align-items-center">
-          <b-form-input v-if="!busy" class="w-75" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
-          <p style="font-size:14px">{{trackTimestamp(trackDuration)}}</p>
-        </b-container>
+        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
