@@ -237,6 +237,10 @@ let app = new Vue({
               <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
             </p>
           </b-list-group-item>
+          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center">
+            <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
+            <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+          </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" class="mb-2">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
@@ -250,10 +254,6 @@ let app = new Vue({
                   <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                   <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
-            </b-list-group-item>
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <p style="font-size:12px" class="mb-0" v-if="!busy">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
-              <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
@@ -686,6 +686,8 @@ let app = new Vue({
     },
     getTrackArtists(uid) {
       if(!uid || !Object.keys(tracks).length) return;
+      console.log(uid);
+      console.log([...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))])
       return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
     },
     getUserName(uid) {
