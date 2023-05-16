@@ -110,7 +110,7 @@ let app = new Vue({
                   <p style="font-size:14px" class="ml-2 mb-0">
                     <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
                     {{ getTrackArtists(disco_item.trackID).join(", ") }}
-                    <b-badge href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
+                    <b-badge class="ml-2" href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
                   </p>
                 </b-list-group-item>
               </b-list-group>
@@ -202,7 +202,7 @@ let app = new Vue({
               <p style="font-size:14px" class="ml-2 mb-0">
                 <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b> 
                 {{ getTrackArtists(disco_item.trackID).join(", ") }}
-                <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
+                <b-badge class="ml-2" href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
@@ -223,7 +223,7 @@ let app = new Vue({
               <p style="font-size:14px" class="ml-2 mb-0"> 
                 <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
                 {{ getTrackArtists(trackID).join(", ") }}
-                <b-badge v-show="!draft.length" href="#" variant="info" @click="layering = true; tabIndex = 0; subTabIndex = 0;">layer</b-badge>
+                <b-badge class="ml-2" v-show="!draft.length" href="#" variant="info" @click="layering = true; tabIndex = 0; subTabIndex = 0;">layer</b-badge>
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
               <p class="mr-2 mb-0" style="font-size:14px">
