@@ -78,7 +78,7 @@ let app = new Vue({
             <b-icon icon="person"></b-icon> {{ user && user.displayName ? user.displayName : "" }}
           </template>
           <b-tabs card align="center" v-model="subTabIndex">
-            <b-tab active class="p-0" :title-link-class="linkClassSub(0)">
+            <b-tab class="p-0" :title-link-class="linkClassSub(0)">
               <template #title>
                 <b-icon icon="music-note"></b-icon> new
               </template>
@@ -196,7 +196,7 @@ let app = new Vue({
             </template>
           </b-tabs>
         </b-tab>
-        <b-tab active class="p-0" :title-link-class="linkClassMain(1)">
+        <b-tab class="p-0" :title-link-class="linkClassMain(1)">
           <template #title>
             <b-icon icon="people"></b-icon> all
           </template>
