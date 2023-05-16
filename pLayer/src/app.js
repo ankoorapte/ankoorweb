@@ -231,9 +231,9 @@ let app = new Vue({
                 {{ getTrackArtists(trackID).join(", ") }}
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
-              <p class="mr-2 mb-0">
+              <p class="mr-2 mb-0" style="font-size:14px">
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
-                <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
+                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
               </p>
           </b-list-group-item>
         </b-list-group>
