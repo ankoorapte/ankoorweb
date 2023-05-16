@@ -219,19 +219,23 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy">
-          <b-list-group-item class="p-0 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
+          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
                 <b>{{ getTrackName(trackID) }}</b> by 
                 {{ getTrackArtists(trackID).join(", ") }}
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
               <p class="mr-2 mb-0">
-                <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
                 <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
               </p>
+          </b-list-group-item>
+          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
+            <p class="mb-0">
+              <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
+              <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
+              <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
+              <b-badge href="#" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-badge>
+            </p>
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" class="mb-2">
