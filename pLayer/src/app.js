@@ -101,7 +101,7 @@ let app = new Vue({
                 </p>
               </b-col></b-row>
             </b-tab>
-            <b-tab active class="p-0" :title-link-class="linkClassSub(0)">
+            <b-tab active class="p-0" :title-link-class="linkClassSub(1)">
               <template #title>
                 <b-icon icon="music-note-list"></b-icon> tracks
               </template>
@@ -118,7 +118,7 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab class="p-0" :title-link-class="linkClassSub(1)">
+            <b-tab class="p-0" :title-link-class="linkClassSub(2)">
               <template #title>
                 <p class="m-0"><b-icon icon="bell"></b-icon> notifs {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
               </template>
@@ -143,7 +143,7 @@ let app = new Vue({
                 </b-list-group-item>
               </b-list-group>
             </b-tab>
-            <b-tab class="p-0" :title-link-class="linkClassSub(2)">
+            <b-tab class="p-0" :title-link-class="linkClassSub(3)">
               <template #title>
                 <b-icon icon="wrench"></b-icon> account
               </template>
