@@ -214,8 +214,8 @@ let app = new Vue({
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-button-group size="lg" class="mb-2" v-if="!busy">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-          <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-          <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
         <b-list-group v-if="!busy">
@@ -443,11 +443,11 @@ let app = new Vue({
       });
       await this.signOut();
     },
-    seekerInput(seek) {
+    async seekerInput(seek) {
       clearInterval(this.interval);
       this.seeker = parseFloat(seek);
-      this.togglePlay();
-      this.togglePlay();
+      await this.pause();
+      await this.play();
     },
     updateSlider() {
       this.slider = this.seeker + this.audioContext.currentTime;
@@ -496,6 +496,7 @@ let app = new Vue({
     async getTrack(draftLayer="") {
       if(!Object.keys(tracks).length) return;
       this.busy = true;
+      this.showLayers = false;
       let trackLayers = tracks[this.trackID].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
@@ -507,6 +508,9 @@ let app = new Vue({
     },
     async pause() {
       if(!this.paused) await this.togglePlay();
+    },
+    async play() {
+      if(this.paused) await this.togglePlay();
     },
     async togglePlay() {
         if(this.paused) {
@@ -603,6 +607,7 @@ let app = new Vue({
       await this.pause();
       this.trackID = this.discography[index].trackID;
       await this.getTrack();
+      await this.play();
     },
     async layerDiscography(index) {
       await this.pause();
@@ -616,6 +621,7 @@ let app = new Vue({
       await this.pause();
       this.trackID = this.group_discography[index].trackID;
       await this.getTrack();
+      await this.play();
     },
     async layerGroupDiscography(index) {
       await this.pause();
