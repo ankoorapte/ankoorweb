@@ -221,7 +221,7 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b>{{ getTrackName(trackID) }}</b> by 
+                <b style="font-size:20px">{{ getTrackName(trackID) }}</b>
                 {{ getTrackArtists(trackID).join(", ") }}
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
               </p>
@@ -230,7 +230,7 @@ let app = new Vue({
               </p>
           </b-list-group-item>
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
-            <p class="mb-0">
+            <p class="m-auto">
               <b-badge href="#" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-badge>
               <b-badge href="#" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-badge>
               <b-badge href="#" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-badge>
