@@ -237,7 +237,7 @@ let app = new Vue({
                 <b-button variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
                 <b-button variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
               </template>
-              <b-form-input v-if="!busy" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+              <b-form-input v-if="!busy" class="w-75" variant="dark" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
               <template #append>
                 {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
               </template>
@@ -688,8 +688,6 @@ let app = new Vue({
     },
     getTrackArtists(uid) {
       if(!uid || !Object.keys(tracks).length) return [];
-      console.log(uid);
-      console.log([...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))])
       return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
     },
     getUserName(uid) {
