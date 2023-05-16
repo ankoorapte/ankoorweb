@@ -106,14 +106,11 @@ let app = new Vue({
                 <b-icon icon="music-note-list"></b-icon> tracks
               </template>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                <b-list-group-item class="p-0 d-flex justify-content-between align-items-left" @click="playDiscography(index)">
                   <p style="font-size:14px" class="ml-2 mb-0">
                     <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
                     {{ getTrackArtists(disco_item.trackID).join(", ") }}
                     <b-badge href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
-                  </p>
-                  <p class="mr-2 mb-1">
-                    <b-badge href="#" variant="dark" @click="playDiscography(index)"><b-icon icon="play-fill"></b-icon></b-badge>
                   </p>
                 </b-list-group-item>
               </b-list-group>
@@ -201,14 +198,11 @@ let app = new Vue({
             <b-icon icon="people"></b-icon> all
           </template>
           <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-left" @click="playGroupDiscography(index)">
               <p style="font-size:14px" class="ml-2 mb-0">
                 <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b> 
                 {{ getTrackArtists(disco_item.trackID).join(", ") }}
                 <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
-              </p>
-              <p class="mr-2 mb-1">
-                <b-badge href="#" variant="dark" @click="playGroupDiscography(index)"><b-icon icon="play-fill"></b-icon></b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
