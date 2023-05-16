@@ -102,8 +102,8 @@ let app = new Vue({
           </template>
           <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-              <p class="ml-2 mb-0">
-                <b>{{ getTrackName(disco_item.trackID) }}</b> by 
+              <p style="font-size:14px" class="ml-2 mb-0">
+                <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b> 
                 {{ getTrackArtists(disco_item.trackID).join(", ") }}
                 <b-badge href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
               </p>
@@ -124,8 +124,8 @@ let app = new Vue({
               </template>
               <b-list-group v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
                 <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                  <p class="ml-2 mb-0">
-                    <b>{{ getTrackName(disco_item.trackID) }}</b> by 
+                  <p style="font-size:14px" class="ml-2 mb-0">
+                    <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
                     {{ getTrackArtists(disco_item.trackID).join(", ") }}
                     <b-badge href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
                   </p>
@@ -227,7 +227,7 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
+                <b style="font-size:20px">{{ getTrackName(trackID) }}</b>
                 {{ getTrackArtists(trackID).join(", ") }}
                 <b-badge v-show="!draft.length" href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
                 <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
@@ -241,7 +241,7 @@ let app = new Vue({
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
                 <p style="font-size:14px" class="ml-2 mb-0"> 
-                  <b>{{ getLayerName(layer_item.id) }}</b> by 
+                  <b style="font-size:16px">{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }}
                 </p>
                 <p class="mr-2 mb-0">
