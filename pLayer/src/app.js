@@ -221,17 +221,17 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-0">
             <b-row>
-              <b-col cols=3>
+              <b-col cols=3 align="right">
                 <b-button-group>
                   <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
                   <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
                   <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
                   <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-                  <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-2">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
+                  <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-3">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
                 </b-button-group>
               </b-col>
-              <b-col cols=9>
-                <b-form-input v-if="!busy" class="ml-2 mt-2" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+              <b-col cols=9 align="left">
+                <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
               </b-col>
             </b-row>
           </b-list-group-item>
