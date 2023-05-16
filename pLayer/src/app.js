@@ -224,6 +224,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
+        <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
         <b-list-group v-if="!busy">
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
@@ -252,8 +253,6 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-container class="d-flex justify-content-between align-items-center">
-
-          <p style="font-size:14px">{{trackTimestamp(slider)}}</p>
           <b-form-input v-if="!busy" class="w-75" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
           <p style="font-size:14px">{{trackTimestamp(trackDuration)}}</p>
         </b-container>
