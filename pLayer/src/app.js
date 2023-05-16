@@ -219,16 +219,6 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy">
-          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
-              <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
-                {{ getTrackArtists(trackID).join(", ") }}
-                <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-              </p>
-              <p class="mr-2 mb-0">
-                <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
-              </p>
-          </b-list-group-item>
           <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
             <b-input-group>
               <template #prepend>
@@ -238,8 +228,18 @@ let app = new Vue({
                 <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
                 <p style="font-size:14px">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p>
               </template>
-              <b-form-input v-if="!busy" class="w-75 ml-2" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+              <b-form-input v-if="!busy" class="w-75 ml-2 mt-2" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
             </b-input-group>
+          </b-list-group-item>
+          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
+              <p style="font-size:14px" class="ml-2 mb-0"> 
+                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
+                {{ getTrackArtists(trackID).join(", ") }}
+                <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
+              </p>
+              <p class="mr-2 mb-0">
+                <b-badge href="#" variant="info" @click="layering = true; tabIndex = 0;">layer</b-badge>
+              </p>
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" class="mb-2">
