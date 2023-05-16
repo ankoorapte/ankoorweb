@@ -245,19 +245,15 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
-        <b-container>
-          <b-col cols=3 class="d-flex justify-content-between align-items-left">
-            <b-button-group class="p-1">
-              <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
-              <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-3">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
-            </b-button-group>
-          </b-col>
-          <b-col cols=9 class="d-flex justify-content-between align-items-right">
-            <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
-          </b-col>
+        <b-container class="d-flex justify-content-between align-items-center">
+          <b-button-group class="p-1">
+            <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="togglePlay()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+            <b-button class="p-1" variant="white" disabled><p style="font-size:14px" class="mt-3">{{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}</p></b-button>
+          </b-button-group>
+          <b-form-input v-if="!busy" class="ml-2 mt-3" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         </b-container>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
