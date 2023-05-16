@@ -90,8 +90,8 @@ let app = new Vue({
               <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
             </b-input-group>
             <p class="mt-2">
-              <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{trackName}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
-              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{trackName}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
+              <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
+              <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
               <b-button :disabled="busy || !layer || !newLayerName.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
             </p>
           </b-col></b-row>
@@ -225,11 +225,24 @@ let app = new Vue({
           <b-button :disabled="busy" variant="dark" @click="togglePlay()" class="p-1" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button :disabled="busy" variant="dark" @click="toggleTrack(1)" class="p-1"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </p>
-        <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{trackName}}</b></p>
+        <p v-if="!busy" style="font-size:20px" @click="showLayers = !showLayers" class="mb-0"><b class="mb-0">{{getTrackName(trackID)}}</b></p>
         <p v-if="!busy" style="font-size:18px" @click="showLayers = !showLayers" class="mt-0 mb-1">{{getTrackArtists(trackID).join(", ")}}</p>
         <p v-show="draft.length" style="font-size:12px" class="mt-1 mb-1">
           <i>draft version with new layer <b>{{getLayerName(draft)}}</b></i>
         </p>
+        <b-list-group>
+          <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+              <p style="font-size:14px" class="ml-2 mb-0"> 
+                <b>{{ getLayerName(layer_item.id) }}</b> by 
+                {{ getUserName(layer_item.user) }}
+              </p>
+              <p class="mr-2 mb-0">
+                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+              </p>
+          </b-list-group-item>
+        </b-list-group>
         <b-collapse v-model="showLayers" class="mb-2">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
@@ -267,7 +280,6 @@ let app = new Vue({
       layerGains: [],
       layerMute: [],
       layerBuffers: [],
-      trackName: "",
       newLayerName: "",
       trackID: "",
       trackIdx: 0,
@@ -501,7 +513,6 @@ let app = new Vue({
       if(draftLayer.length) trackLayers.push(draftLayer);
       this.draft = draftLayer;
       this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
-      this.trackName = tracks[this.trackID]['name'];
       this.seeker = 0;
       this.slider = 0;
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
