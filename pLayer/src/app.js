@@ -73,7 +73,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-collapse v-model="signedIn">
       <b-tabs card align="center" v-model="tabIndex" class="mb-3">
-        <b-tab class="p-0"  :title-link-class="linkClassMain(1)">
+        <b-tab class="p-0"  :title-link-class="linkClassMain(0)">
           <template #title>
             <b-icon icon="person"></b-icon> {{ user && user.displayName ? user.displayName : "" }}
           </template>
@@ -192,7 +192,7 @@ let app = new Vue({
             </template>
           </b-tabs>
         </b-tab>
-        <b-tab active class="p-0" :title-link-class="linkClassMain(0)">
+        <b-tab active class="p-0" :title-link-class="linkClassMain(1)">
           <template #title>
             <b-icon icon="people"></b-icon> all
           </template>
