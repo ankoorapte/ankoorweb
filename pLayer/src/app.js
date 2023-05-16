@@ -233,7 +233,7 @@ let app = new Vue({
               <b-col cols=9>
                 <b-form-input v-if="!busy" class="ml-2 mt-2" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
               </b-col>
-            </p>
+            </b-row>
           </b-list-group-item>
           <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
               <p style="font-size:14px" class="ml-2 mb-0"> 
