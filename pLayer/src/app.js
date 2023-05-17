@@ -280,7 +280,7 @@ let app = new Vue({
       discography: [],
       group_discography: [],
       draft: "",
-      tabIndex: 0,
+      tabIndex: 1,
       subTabIndex: 0,
       showLayers: false,
       trackDuration: 0,
