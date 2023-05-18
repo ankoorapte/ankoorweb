@@ -423,6 +423,7 @@ let app = new Vue({
     },
     async changeUsername(un) {
       if(!un) un = this.newUsername;
+      this.user.displayName = this.newUsername;
       await this.pLayerAPI("updateUser",{
         field: "displayName",
         value: un
