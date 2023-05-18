@@ -155,7 +155,7 @@ let app = new Vue({
                   >
                   </b-form-input>
                   <b-input-group-append>
-                    <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername(0)">update username</b-button>
+                    <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
                   </b-input-group-append>
                 </b-input-group>
                 <b-input-group class="m-2">
@@ -424,7 +424,7 @@ let app = new Vue({
     async changeUsername(un) {
       if(!un) un = this.newUsername;
       await this.pLayerAPI("updateUser",{
-        field: "username",
+        field: "displayName",
         value: un
       });
     },
@@ -697,7 +697,7 @@ let app = new Vue({
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
-        this.changeUsername(0);
+        this.changeUsername();
       }
     },
     passwordKeydownHandler(event) {
