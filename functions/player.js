@@ -46,7 +46,7 @@ class Player {
   }
   async updateUser(arg) {
     this.validateArg(arg, ["field", "value"]);
-    if (!(["username", "password", "email"].includes(arg.field))) {
+    if (!(["displayName", "password", "email"].includes(arg.field))) {
       throw new Error("field must be username, password, or email");
     }
     const update = {};
