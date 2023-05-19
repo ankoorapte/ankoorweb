@@ -697,7 +697,7 @@ let app = new Vue({
       if(!uid || !Object.keys(layers).length) return [];
       return layers[uid].user;
     },
-    getTrackBpm(uid) {
+    getTrackBPM(uid) {
       if(!uid || !Object.keys(tracks).length) return [];
       return layers[uid].bpm;
     },
