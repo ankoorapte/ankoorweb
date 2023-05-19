@@ -23,6 +23,9 @@ import {
 
 import bpmDetective from 'https://cdn.jsdelivr.net/npm/bpm-detective@2.0.5/+esm';
 
+
+
+console.log(bpmDetective)
 console.log(bpmDetective.detect([]));
 console.log(detect);
 
