@@ -483,7 +483,7 @@ let app = new Vue({
     async detectBPM() {
       console.log(this.layer);
       let ac = new AudioContext();
-      console.log(bpmDetective(await ac.decodeAudioData(this.layer)));
+      console.log(bpmDetective(await ac.decodeAudioData(readAsArrayBuffer(this.layer))));
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
