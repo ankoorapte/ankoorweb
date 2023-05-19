@@ -93,6 +93,7 @@ exports.updateDB = async (file, context) => {
   const uid = file.name;
   const name = file.metadata.name;
   const user = file.metadata.user;
+  const bpm = file.metadata.bpm;
   const base = file.metadata.base;
   const isBase = !base.length; // empty string means isBase
 
@@ -101,6 +102,7 @@ exports.updateDB = async (file, context) => {
     name: name,
     base: base,
     user: user,
+    bpm: bpm,
     resolved: isBase, // if isBase, resolved!
     timestamp: file.updated,
   });

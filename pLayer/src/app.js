@@ -485,8 +485,10 @@ let app = new Vue({
       this.busy = false;
     },
     async detectBPM() {
-      let ac = new AudioContext();
-      this.newLayerBPM = bpmDetective(await ac.decodeAudioData(await this.layer.arrayBuffer())).toString();
+      if(this.layer) {
+        let ac = new AudioContext();
+        this.newLayerBPM = bpmDetective(await ac.decodeAudioData(await this.layer.arrayBuffer())).toString();  
+      }
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -585,6 +587,7 @@ let app = new Vue({
       }; 
       await uploadBytes(layerPath, self.layer, metadata);
       self.newLayerName = "";
+      self.newLayerBPM = "";
       self.layer = null;
       self.layering = false;
       self.busy = false;
