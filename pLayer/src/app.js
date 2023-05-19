@@ -116,7 +116,7 @@ let app = new Vue({
                   <p style="font-size:14px" class="ml-2 mb-0">
                     <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
                     {{ getTrackArtists(disco_item.trackID).join(", ") }}
-                    <i style="font-size:11px">     {{ getTrackBPM(disco_item.trackID) }}</i>
+                    <i style="font-size:11px" class="ml-1">     {{ getTrackBPM(disco_item.trackID) }} BPM</i>
                     <b-badge class="ml-2" href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
                   </p>
                 </b-list-group-item>
