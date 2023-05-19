@@ -15,5 +15,5 @@ exports.pLayerAPI = functions.https.onRequest((req, res) => {
 });
 
 exports.updateDB = async (file, context) => {
-  await pLayer.updateDB(file);
+  await pLayer.updateDB(file, context);
 };

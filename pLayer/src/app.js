@@ -21,6 +21,9 @@ import {
   collection,
   onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
+console.log(detect([]));
+console.log(detect);
+
 // FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
