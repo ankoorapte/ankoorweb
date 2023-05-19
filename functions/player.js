@@ -85,6 +85,10 @@ exports.api = async (arg) => {
   return player.process(arg);
 };
 
+// To deploy, run in "functions" directory:
+// gcloud functions deploy updateDB --runtime nodejs16
+// --trigger-resource player-76353.appspot.com
+// --trigger-event google.storage.object.finalize
 exports.updateDB = async (file, context) => {
   const uid = file.name;
   const name = file.metadata.name;
