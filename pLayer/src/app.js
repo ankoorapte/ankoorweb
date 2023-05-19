@@ -91,7 +91,7 @@ let app = new Vue({
                   v-model="layer"
                   browse-text="upload"
                   class="mb-1 mt-1"
-                  @change="detectBPM"
+                  @input="detectBPM"
                   :disabled="busy"
                 ></b-form-file>
                 <b-input-group append="name" class="mb-1">
@@ -480,9 +480,10 @@ let app = new Vue({
       window.URL.revokeObjectURL(url);
       this.busy = false;
     },
-    detectBPM() {
+    async detectBPM() {
       console.log(this.layer);
-      console.log(bpmDetective(this.layer));
+      let ac = new AudioContext();
+      console.log(bpmDetective(await ac.decodeAudioData(this.layer)));
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
