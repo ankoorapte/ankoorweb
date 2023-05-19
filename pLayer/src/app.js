@@ -21,7 +21,9 @@ import {
   collection,
   onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
-console.log(detect([]));
+import bpmDetective from 'https://cdn.jsdelivr.net/npm/bpm-detective@2.0.5/+esm';
+
+console.log(bpmDetective.detect([]));
 console.log(detect);
 
 // FIREBASE
