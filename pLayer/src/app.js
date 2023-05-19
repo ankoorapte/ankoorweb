@@ -23,11 +23,6 @@ import {
 
 import bpmDetective from 'https://cdn.jsdelivr.net/npm/bpm-detective@2.0.5/+esm';
 
-
-
-console.log(bpmDetective)
-console.log(bpmDetective([]));
-
 // FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDzJylYhhlw9LVay0OUkAyMmR9vYJsXr8U",
@@ -96,6 +91,7 @@ let app = new Vue({
                   v-model="layer"
                   browse-text="upload"
                   class="mb-1 mt-1"
+                  @change="detectBPM"
                   :disabled="busy"
                 ></b-form-file>
                 <b-input-group append="name" class="mb-1">
@@ -483,6 +479,9 @@ let app = new Vue({
       a.click();
       window.URL.revokeObjectURL(url);
       this.busy = false;
+    },
+    detectBPM() {
+      console.log(bpmDetective(this.layer));
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
