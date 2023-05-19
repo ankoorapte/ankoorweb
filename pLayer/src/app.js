@@ -97,10 +97,13 @@ let app = new Vue({
                 <b-input-group append="name" class="mb-1">
                   <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
                 </b-input-group>
+                <b-input-group append="BPM" class="mb-1">
+                  <b-form-input v-model="newLayerBPM" :disabled="busy"></b-form-input>
+                </b-input-group>
                 <p class="mt-2">
                   <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
                   <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
-                  <b-button :disabled="busy || !layer || !newLayerName.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
+                  <b-button :disabled="busy || !layer || !newLayerName.length || !newLayerBPM.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
                 </p>
               </b-col></b-row>
             </b-tab>
@@ -271,6 +274,7 @@ let app = new Vue({
       layerMute: [],
       layerBuffers: [],
       newLayerName: "",
+      newLayerBPM: "",
       trackID: "",
       trackIdx: 0,
       layering: false,
@@ -481,9 +485,8 @@ let app = new Vue({
       this.busy = false;
     },
     async detectBPM() {
-      console.log(this.layer);
       let ac = new AudioContext();
-      console.log(bpmDetective(await ac.decodeAudioData(await this.layer.arrayBuffer())));
+      this.newLayerBPM = bpmDetective(await ac.decodeAudioData(await this.layer.arrayBuffer())).toString();
     },
     resetAudioContext() {
       this.audioContext = new AudioContext();
@@ -575,7 +578,8 @@ let app = new Vue({
         customMetadata: {
           'name': self.newLayerName,
           'user': self.user.uid,
-          'base': self.layering ? self.trackID : ""
+          'base': self.layering ? self.trackID : "",
+          'bpm': self.newLayerBPM,
         },
         contentType: 'audio/wav'
       }; 
