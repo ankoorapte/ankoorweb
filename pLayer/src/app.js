@@ -481,6 +481,7 @@ let app = new Vue({
       this.busy = false;
     },
     detectBPM() {
+      console.log(this.layer);
       console.log(bpmDetective(this.layer));
     },
     resetAudioContext() {
