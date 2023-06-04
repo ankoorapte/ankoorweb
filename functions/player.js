@@ -30,8 +30,12 @@ class Player {
       throw new Error("invalid params");
     }
   }
-  async getDB(arg) {
-    const db = {};
+  async getDB() {
+    const db = {
+      tracks: {},
+      layers: {},
+      users: {},
+    };
     (await layers.get()).forEach((doc) => {
       db["layers"][doc.id] = doc.data();
     });
