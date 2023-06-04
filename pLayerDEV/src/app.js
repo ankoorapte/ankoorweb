@@ -53,41 +53,43 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
-  <b-container style="background-color:#E1F3F6;">
+  <div>
     <b-sidebar id="sidebar-left" title="Groups" shadow>
       <p>Hello</p>
     </b-sidebar>
-    <b-row style="font-size:40px">
-      <b-col>
-        <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
-      </b-col>
-      <b-col align="center">
-        <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
-      </b-col>
-      <b-col>
-      </b-col>
-    </b-row>
-    <div ref="pLayer"></div>
-    <b-row><b-col align="center">
-      <b-card v-if="!signedIn" align="center" class="w-75">
-        <b-form-group
-          :invalid-feedback="invalidCredentials"
-          :state="stateCredentials"
-          align="center"
-        >
-          <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
-          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
-        </b-form-group>
-        <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
-      </b-card>
-    </b-col></b-row>
-    <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
-      <b-col align="center">
-        <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
-      </b-col>
-    </b-navbar>
-  </b-container>
+    <b-container style="background-color:#E1F3F6;">
+      <b-row style="font-size:40px">
+        <b-col>
+          <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
+        </b-col>
+        <b-col align="center">
+          <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
+        </b-col>
+        <b-col>
+        </b-col>
+      </b-row>
+      <div ref="pLayer"></div>
+      <b-row><b-col align="center">
+        <b-card v-if="!signedIn" align="center" class="w-75">
+          <b-form-group
+            :invalid-feedback="invalidCredentials"
+            :state="stateCredentials"
+            align="center"
+          >
+            <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
+            <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
+          </b-form-group>
+          <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
+        </b-card>
+      </b-col></b-row>
+      <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
+        <b-col align="center">
+          <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+          <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
+        </b-col>
+      </b-navbar>
+    </b-container>
+  </div>
   `,
   data() {
     return {
