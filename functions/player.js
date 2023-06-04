@@ -8,6 +8,10 @@ const layers = db.collection("layers");
 const users = db.collection("users");
 const groups = db.collection("groups");
 
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}
+
 class Player {
   async authenticate(id) {
     try {
@@ -95,7 +99,7 @@ class Player {
     this.validateArg(arg, ["groupID", "users"]);
     arg.users.push(this.user.uid);
     await groups.doc(arg.groupID).set({
-      users: arg.users,
+      users: arg.users.filter(onlyUnique),
     });
     return {status: "ok"};
   }
