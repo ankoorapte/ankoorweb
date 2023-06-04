@@ -54,7 +54,7 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <b-row style="font-size:40px">
+    <b-row style="font-size:35px">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
         <h1 class="mt-3 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
