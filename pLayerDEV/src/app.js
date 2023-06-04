@@ -60,7 +60,7 @@ let app = new Vue({
         <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName"></b-form-input>
         <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
       </b-form-group>
-      <b-button>create group</b-button>
+      <b-button @click="createGroup" :disabled="stateGroup">create group</b-button>
     </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
