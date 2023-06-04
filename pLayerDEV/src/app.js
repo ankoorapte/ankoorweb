@@ -123,7 +123,7 @@ let app = new Vue({
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
     },
     stateGroup() {
-      return this.newGroupName.length && this.newGroupUsers.split(" ").every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
+      return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
     },
     stateUsername() {
       return this.user
