@@ -125,18 +125,7 @@ let app = new Vue({
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
     },
     stateGroup() {
-      return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
-    },
-    stateUsername() {
-      return this.user
-        && !Object.keys(this.users).includes(this.newUsername)
-        && Boolean(this.newUsername.length);
-    },
-    statePassword() {
-      return this.newPassword.length >= 6;
-    },
-    stateEmail() {
-      return this.newEmail.includes("@") && this.email.includes(".");
+      return Boolean(this.newGroupName.length) && this.newGroupUsers.includes(this.user.email) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
     },
   },
   methods: {
