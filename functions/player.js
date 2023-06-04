@@ -32,15 +32,15 @@ class Player {
   }
   async getDB(arg) {
     const db = {};
-    layers.forEach((doc) => {
+    (await layers.get()).forEach((doc) => {
       db["layers"][doc.id] = doc.data();
     });
 
-    tracks.forEach((doc) => {
+    (await tracks.get()).forEach((doc) => {
       db["tracks"][doc.id] = doc.data();
     });
 
-    users.forEach((doc) => {
+    (await users.get()).forEach((doc) => {
       db["users"][doc.id] = doc.data();
     });
     return {status: "ok", data: db};
