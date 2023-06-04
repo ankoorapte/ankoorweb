@@ -55,13 +55,13 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
-      <b-col align="left">
+      <b-col align="left" v-if="signedIn">
         <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
       </b-col>
       <b-col align="center">
-        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
+        <h1 class="mt-3" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
       </b-col>
-      <b-col align="right">
+      <b-col align="right" v-if="signedIn">
         <b-button variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-row>
