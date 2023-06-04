@@ -48,19 +48,21 @@ let app = new Vue({
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close class="p-1">
-      <p>existing groups go here</p>
-      <hr>
-      <b-form-group
-        :invalid-feedback="invalidGroup"
-        :state="stateGroup"
-        align="center"
-        description="enter the email addresses of group members, separated by a space"
-      >
-        <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName"></b-form-input>
-        <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
-      </b-form-group>
-      <b-button @click="createGroup" :disabled="stateGroup" variant="dark">create group</b-button>
+    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
+      <b-col align="center">
+        <p>existing groups go here</p>
+        <hr>
+        <b-form-group
+          :invalid-feedback="invalidGroup"
+          :state="stateGroup"
+          align="center"
+          description=""
+        >
+          <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName"></b-form-input>
+          <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
+        </b-form-group>
+        <b-button @click="createGroup" :disabled="stateGroup" variant="dark">create group</b-button>
+      </b-col>
     </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -117,7 +119,7 @@ let app = new Vue({
       return 'enter a valid email ID and password with minimum 6 characters.'
     },
     invalidGroup() {
-      return 'all group members must be email IDs of existing pLayer users'
+      return 'enter the email addresses of existing pLayer users, separated by a space'
     },
     stateCredentials() {
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
