@@ -53,7 +53,7 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
-  <b-container style="background-color:#E1F3F6;" v-if=false>
+  <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col>
         <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
