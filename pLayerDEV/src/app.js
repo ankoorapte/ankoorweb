@@ -54,10 +54,11 @@ let app = new Vue({
   // GUI
   template: `
   <div>
+    <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
     <b-sidebar id="sidebar-left" title="Groups" shadow>
       <p>Hello</p>
     </b-sidebar>
-    <b-container style="background-color:#E1F3F6;">
+    <b-container style="background-color:#E1F3F6;" v-if=false>
       <b-row style="font-size:40px">
         <b-col>
           <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
