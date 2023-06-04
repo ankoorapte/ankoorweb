@@ -48,19 +48,19 @@ let app = new Vue({
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
+    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close class="p-1">
       <p>existing groups go here</p>
       <hr>
       <b-form-group
         :invalid-feedback="invalidGroup"
-        :state="stateCredentials"
+        :state="stateGroup"
         align="center"
         description="enter the email addresses of group members, separated by a space"
       >
         <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName"></b-form-input>
         <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
       </b-form-group>
-      <b-button @click="createGroup" :disabled="stateGroup">create group</b-button>
+      <b-button @click="createGroup" :disabled="stateGroup" variant="dark">create group</b-button>
     </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
