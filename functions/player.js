@@ -100,6 +100,7 @@ class Player {
     arg.users.push(this.user.uid);
     await groups.doc(arg.groupID).set({
       users: arg.users.filter(onlyUnique),
+      dateCreated: admin.firestore.Timestamp.now(),
     });
     return {status: "ok"};
   }
