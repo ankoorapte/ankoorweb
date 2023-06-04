@@ -16,11 +16,6 @@ import {
   uploadBytes, 
   getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 
-import { 
-  getFirestore, 
-  collection,
-  onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-
 import bpmDetective from 'https://cdn.jsdelivr.net/npm/bpm-detective@2.0.5/+esm';
 
 // FIREBASE
@@ -35,7 +30,6 @@ const firebaseConfig = {
 };
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
-const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
 NodeList.prototype.forEach = Array.prototype.forEach;
@@ -55,8 +49,18 @@ let app = new Vue({
     </b-row>
     <div ref="pLayer"></div>
     <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
-      <p>Hello</p>
+      <p>existing groups go here</p>
       <hr>
+      <b-form-group
+        :invalid-feedback="invalidGroup"
+        :state="stateCredentials"
+        align="center"
+        description="enter the email addresses of group members, separated by a space"
+      >
+        <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName"></b-form-input>
+        <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
+      </b-form-group>
+      <b-button>create group</b-button>
     </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -66,7 +70,7 @@ let app = new Vue({
           align="center"
         >
           <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
-          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
+          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" v-model="password" :state="stateCredentials" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
@@ -81,14 +85,16 @@ let app = new Vue({
   `,
   data() {
     return {
+      busy: true,
+      tracks: {},
+      layers: {},
+      users: {},
       user: "",
       signedIn: false,
       email: "",
       password: "",
-      busy: true,
-      tracks: {},
-      layers: {},
-      users: {}
+      newGroupName: "",
+      newGroupUsers: ""
     }
   },
   async created() {
@@ -101,18 +107,23 @@ let app = new Vue({
         self.tracks = db.tracks;
         self.layers = db.layers;
         self.users = db.users;
-        console.log(db);
       }
       self.busy = false;
     });
     self.busy = false;
   },
   computed: {
+    invalidCredentials() {
+      return 'enter a valid email ID and password with minimum 6 characters.'
+    },
+    invalidGroup() {
+      return 'all group members must be email IDs of existing pLayer users'
+    },
     stateCredentials() {
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
     },
-    invalidCredentials() {
-      return 'enter a valid email ID and password with minimum 6 characters.'
+    stateGroup() {
+      return this.newGroupName.length && this.newGroupUsers.split(" ").every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
     },
     stateUsername() {
       return this.user
@@ -200,9 +211,17 @@ let app = new Vue({
       this.users = {};
       await signOut(auth);
     },
-    signinKeydownHandler(event) {
+    async createGroup() {
+      console.log("create group");
+    },
+    async signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
-        this.signIn();
+        await this.signIn();
+      }
+    },
+    async groupKeydownHandler(event) {
+      if (event.which === 13 && this.stateGroup) {
+        await this.createGroup();
       }
     },
   }
