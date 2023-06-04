@@ -37,16 +37,21 @@ class Player {
       users: {},
     };
     (await layers.get()).forEach((doc) => {
-      db["layers"][doc.id] = doc.data();
+      db.layers[doc.id] = doc.data();
     });
 
     (await tracks.get()).forEach((doc) => {
-      db["tracks"][doc.id] = doc.data();
+      db.tracks[doc.id] = doc.data();
     });
 
     (await users.get()).forEach((doc) => {
-      db["users"][doc.id] = doc.data();
+      db.users[doc.id] = doc.data();
     });
+
+    for (const uid of Object.keys(db.users)) {
+      const userRecord = await auth.getUser(uid);
+      db.users[uid]["email"] = userRecord.email;
+    }
     return {status: "ok", data: db};
   }
   async createUser(arg) {
