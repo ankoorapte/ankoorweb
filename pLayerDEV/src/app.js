@@ -53,6 +53,9 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
+  <b-sidebar id="sidebar-left" title="Groups" shadow>
+    <p>Hello</p>
+  </b-sidebar>
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col>
@@ -78,9 +81,6 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
-    <b-sidebar id="sidebar-left" title="Groups" shadow>
-      <p>Hello</p>
-    </b-sidebar>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
