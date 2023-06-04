@@ -93,8 +93,9 @@ class Player {
   }
   async createGroup(arg) {
     this.validateArg(arg, ["groupID", "users"]);
+    arg.users.push(this.user.uid);
     await groups.doc(arg.groupID).set({
-      users: arg.members,
+      users: arg.users,
     });
     return {status: "ok"};
   }
