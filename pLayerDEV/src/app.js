@@ -59,7 +59,7 @@ let app = new Vue({
         <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
       </b-col>
       <b-col align="center">
-        <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
+        <h1 class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
       </b-col>
       <b-col align="right">
         <b-button variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
@@ -215,7 +215,6 @@ let app = new Vue({
       }
     },
     async signOut() {
-      await this.pause();
       unsubscribe_tracks();
       unsubscribe_layers();
       unsubscribe_users();
