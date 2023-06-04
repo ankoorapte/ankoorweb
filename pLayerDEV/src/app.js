@@ -57,7 +57,7 @@ let app = new Vue({
     <b-row style="font-size:30px">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
-        <b class="mt-3 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
+        <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
         <b-button v-if="signedIn" variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-row>
