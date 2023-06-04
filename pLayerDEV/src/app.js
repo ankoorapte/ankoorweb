@@ -125,7 +125,7 @@ let app = new Vue({
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
     },
     stateGroup() {
-      return Boolean(this.newGroupName.length) && this.newGroupUsers.includes(this.user.email) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
+      return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
     },
   },
   methods: {
