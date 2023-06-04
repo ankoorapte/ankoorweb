@@ -56,7 +56,7 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
       <b-col align="center">
-        <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+        <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
