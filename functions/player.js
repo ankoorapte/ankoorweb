@@ -6,6 +6,7 @@ const db = admin.firestore();
 const tracks = db.collection("tracks");
 const layers = db.collection("layers");
 const users = db.collection("users");
+const groups = db.collection("groups");
 
 class Player {
   async authenticate(id) {
@@ -88,6 +89,13 @@ class Player {
       update["emailVerified"] = false;
     }
     await auth.updateUser(this.user.uid, update);
+    return {status: "ok"};
+  }
+  async createGroup(arg) {
+    this.validateArg(arg, ["groupID", "users"]);
+    await groups.doc(arg.groupID).set({
+      users: arg.members,
+    });
     return {status: "ok"};
   }
   async resolveLayer(arg) {

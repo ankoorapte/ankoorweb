@@ -52,6 +52,7 @@ let app = new Vue({
       <b-col align="center">
         <p>existing groups go here</p>
         <hr>
+        <p>create a new group!</p>
         <b-form-group
           :invalid-feedback="invalidGroup"
           :state="stateGroup"
@@ -203,7 +204,13 @@ let app = new Vue({
       await signOut(auth);
     },
     async createGroup() {
-      console.log("create group");
+      let self = this;
+      const newGroupUserList = self.newGroupUsers.split(" ").filter((s) => s.length);
+      console.log(uuidv4());
+      await self.pLayerAPI("createGroup", {
+        groupID: uuidv4(),
+        users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
+      });
     },
     async signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
