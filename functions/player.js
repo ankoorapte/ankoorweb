@@ -16,6 +16,12 @@ class Player {
       throw new Error(e);
     }
   }
+  async process(arg) {
+    if (arg.endpoint_name != "createUser") {
+      this.user = await this.authenticate(arg.id);
+    }
+    return this[arg.endpoint_name](arg);
+  }
   validateArg(arg, params) {
     const valid = params.every((p) => {
       return Object.keys(arg).includes(p);
@@ -23,6 +29,21 @@ class Player {
     if (!valid) {
       throw new Error("invalid params");
     }
+  }
+  async getDB(arg) {
+    const db = {};
+    layers.forEach((doc) => {
+      db["layers"][doc.id] = doc.data();
+    });
+
+    tracks.forEach((doc) => {
+      db["tracks"][doc.id] = doc.data();
+    });
+
+    users.forEach((doc) => {
+      db["users"][doc.id] = doc.data();
+    });
+    return {status: "ok", data: db};
   }
   async createUser(arg) {
     this.validateArg(arg, ["email", "password"]);
@@ -71,12 +92,6 @@ class Player {
       });
     }
     return {status: "ok"};
-  }
-  async process(arg) {
-    if (arg.endpoint_name != "createUser") {
-      this.user = await this.authenticate(arg.id);
-    }
-    return this[arg.endpoint_name](arg);
   }
 }
 

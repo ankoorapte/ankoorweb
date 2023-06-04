@@ -38,14 +38,6 @@ const storage = getStorage(firebaseApp);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// CACHES
-let tracks = {};
-let layers = {};
-let users = {};
-let unsubscribe_tracks = () => {};
-let unsubscribe_layers = () => {};
-let unsubscribe_users = () => {};
-
 NodeList.prototype.forEach = Array.prototype.forEach;
 
 // APP
@@ -62,8 +54,9 @@ let app = new Vue({
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop>
+    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
       <p>Hello</p>
+      <hr>
     </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
@@ -93,6 +86,9 @@ let app = new Vue({
       email: "",
       password: "",
       busy: true,
+      tracks: {},
+      layers: {},
+      users: {}
     }
   },
   async created() {
@@ -101,27 +97,11 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
-        unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
-          layers = {};
-          layerDocs.forEach((doc) => {
-            layers[doc.id] = doc.data();
-          });
-        });
-
-        unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          tracks = {};
-          trackDocs.forEach((doc) => {
-            tracks[doc.id] = doc.data();
-          });
-          self.trackID = Object.keys(tracks)[0];
-        });
-
-        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          users = {};
-          userDocs.forEach((doc) => {
-            users[doc.id] = doc.data();
-          });
-        });
+        const db = await self.pLayerAPI("getDB");
+        self.tracks = db.tracks;
+        self.layers = db.layers;
+        self.users = db.users;
+        console.log(db);
       }
       self.busy = false;
     });
@@ -136,7 +116,7 @@ let app = new Vue({
     },
     stateUsername() {
       return this.user
-        && !Object.keys(users).includes(this.newUsername)
+        && !Object.keys(this.users).includes(this.newUsername)
         && Boolean(this.newUsername.length);
     },
     statePassword() {
@@ -211,13 +191,13 @@ let app = new Vue({
       }
     },
     async signOut() {
-      unsubscribe_tracks();
-      unsubscribe_layers();
-      unsubscribe_users();
       this.signedIn = false;
       this.user = null;
       this.email = "";
       this.password = "";
+      this.tracks = {};
+      this.layers = {};
+      this.users = {};
       await signOut(auth);
     },
     signinKeydownHandler(event) {
