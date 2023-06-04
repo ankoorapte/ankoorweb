@@ -55,8 +55,13 @@ let app = new Vue({
   template: `
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:40px">
+      <b-col>
+        <b-button v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
+      </b-col>
       <b-col align="center">
         <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayerDEV</b></h1>
+      </b-col>
+      <b-col>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
@@ -73,6 +78,15 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
+    <b-sidebar id="sidebar-left" title="Sidebar" shadow>
+      <div class="px-3 py-2">
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
+          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+        </p>
+        <b-img src="https://picsum.photos/500/500/?image=54" fluid thumbnail></b-img>
+      </div>
+    </b-sidebar>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
