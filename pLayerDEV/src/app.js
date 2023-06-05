@@ -124,7 +124,7 @@ let app = new Vue({
           return {
             uid: uid,
             name: self.groups[uid].name,
-            users: self.groups[uid].users
+            users: self.groups[uid].users.map(this.getUserName)
           }
         });
       }
@@ -229,6 +229,10 @@ let app = new Vue({
         groupID: uuidv4(),
         users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
       });
+    },
+    getUserName(uid) {
+      if(!uid || !Object.keys(this.users).length) return [];
+      return this.users[uid].displayName;
     },
     async signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
