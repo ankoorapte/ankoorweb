@@ -40,13 +40,14 @@ let app = new Vue({
   // GUI
   template: `
   <b-container style="background-color:#E1F3F6;">
-    <b-row style="font-size:30px">
+    <b-row style="font-size:30px" class="mb-1">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
         <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
         <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
+    <hr>
     <div ref="pLayer"></div>
     <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" shadow backdrop no-header-close>
       <b-col align="center">
@@ -141,7 +142,6 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
-    <hr>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
         <b-input-group>
@@ -171,6 +171,7 @@ let app = new Vue({
         <hr>
         <b-collapse v-model="showNewTrack">
           <b-form-file
+            placeholder=""
             accept="audio/wav"
             v-model="newTrack"
             browse-text="upload"
