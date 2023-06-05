@@ -223,11 +223,11 @@ let app = new Vue({
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
             <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
-                <p> 
+                <p class="p-0 m-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }}
                 </p>
-                <p>
+                <p class="p-0 m-0">
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
                   <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                   <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
