@@ -577,6 +577,7 @@ let app = new Vue({
       self.newTrackBPM = "";
       self.newTrack = null;
       self.busy = false;
+      setTimeout(self.updateDB(), 5000)
     },
     async detectBPM() {
       if(this.newTrack) {
