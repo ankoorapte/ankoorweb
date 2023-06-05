@@ -278,7 +278,10 @@ let app = new Vue({
           name: self.tracks[trackID].name,
           layers: self.tracks[trackID].layers
         }
-      })
+      });
+    },
+    activeTrack(newTrack, oldTrack) {
+      this.getTrack();
     }
   },
   async created() {
