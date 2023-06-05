@@ -159,6 +159,13 @@ let app = new Vue({
             </b-input-group-append>
           </b-input-group>
         </b-collapse>
+        <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
+          <b-list-group-item variant="dark" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
+            <p class="p-0 m-0">
+              {{track_item.uid}}
+            </p>
+          </b-list-group-item>
+      </b-list-group>
         <b-list-group flush>
           <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
@@ -223,7 +230,19 @@ let app = new Vue({
       userToAdd: "",
       newTrack: null,
       newTrackName: "",
-      newTrackBPM: ""
+      newTrackBPM: "",
+      activeTrack: "",
+      groupTracks: [],
+    }
+  },
+  watch: {
+    // whenever question changes, this function will run
+    activeGroup(newGroup, oldGroup) {
+      this.groupTracks = Object.keys(this.tracks).filter((trackID) => this.layers[trackID].group === newGroup).map((trackID) => {
+        return {
+          uid: trackID,
+        }
+      })
     }
   },
   async created() {
