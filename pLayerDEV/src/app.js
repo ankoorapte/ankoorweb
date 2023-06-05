@@ -150,7 +150,7 @@ let app = new Vue({
         </b-input-group>
         <b-collapse v-model="showAddUser">
           <b-input-group>
-            <b-form-input placeholder="members" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+            <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
             <b-input-group-append>
               <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
             </b-input-group-append>
