@@ -115,6 +115,7 @@ let app = new Vue({
           </b-input-group-append>
         </b-input-group>
         <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark">Report feedback</a>
+        <br>
         <b-button v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-sidebar>
