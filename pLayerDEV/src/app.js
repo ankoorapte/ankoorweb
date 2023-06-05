@@ -84,7 +84,7 @@ let app = new Vue({
     </b-sidebar>
     <b-sidebar v-if="signedIn" id="sidebar-account" title="account" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
-        <b-input-group class="m-2">
+        <b-input-group>
           <b-form-input
             placeholder="new username"
             @keydown.native="usernameKeydownHandler"
@@ -97,7 +97,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="m-2">
+        <b-input-group>
           <b-form-input
             placeholder="new password"
             @keydown.native="passwordKeydownHandler" 
@@ -111,7 +111,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="m-2">
+        <b-input-group>
           <b-form-input
             placeholder="new email"
             @keydown.native="emailKeydownHandler" 
@@ -210,12 +210,12 @@ let app = new Vue({
         </b-button-group>
         <b-list-group v-if="!busy" flush>
           <b-list-group-item class="d-flex justify-content-between align-items-center">
-              <p> 
+              <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
                 <i>{{ getTrackBPM(activeTrack) }} BPM</i>
               </p>
-              <p>
+              <p class="p-0 m-0">
                 {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
               </p>
           </b-list-group-item>
