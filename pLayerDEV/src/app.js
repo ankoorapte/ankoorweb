@@ -208,7 +208,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
-        <b-list-group v-if="!busy">
+        <b-list-group v-if="!busy" flush>
           <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p> 
                 <b>{{ getTrackName(activeTrack) }}</b>
