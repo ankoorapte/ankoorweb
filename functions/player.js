@@ -8,9 +8,22 @@ const layers = db.collection("layers");
 const users = db.collection("users");
 const groups = db.collection("groups");
 
-function onlyUnique(value, index, array) {
+const onlyUnique = (value, index, array) => {
   return array.indexOf(value) === index;
-}
+};
+
+const groupExists = async (groupID) => {
+  return (await groups.doc(groupID).get()).exists;
+};
+
+const addGroupToClaims = async (uid, groupID) => {
+  const u = await auth.getUser(uid);
+  const groups = u.customClaims && u.customClaims["groups"] ?
+    [...u.customClaims.groups, groupID] : [groupID];
+  await auth.setCustomUserClaims(uid, {
+    groups: groups.filter(groupExists).filter(onlyUnique),
+  });
+};
 
 class Player {
   async authenticate(id) {
@@ -107,12 +120,7 @@ class Player {
 
     // update claims
     for (const uid of arg.users) {
-      const u = await auth.getUser(uid);
-      const groups = u.customClaims && u.customClaims["groups"] ?
-        [...u.customClaims.groups, arg.groupID] : [arg.groupID];
-      await auth.setCustomUserClaims(uid, {
-        groups: groups.filter(onlyUnique),
-      });
+      await addGroupToClaims(uid, arg.groupID);
     }
 
     // update database
@@ -130,12 +138,7 @@ class Player {
       throw new Error("field must be name, or users");
     }
     if (arg.field === "users") {
-      const u = await auth.getUser(arg.value);
-      const groups = u.customClaims && u.customClaims["groups"] ?
-        [...u.customClaims.groups, arg.groupID] : [arg.groupID];
-      await auth.setCustomUserClaims(arg.value, {
-        groups: groups.filter(onlyUnique),
-      });
+      await addGroupToClaims(arg.value, arg.groupID);
       arg.value = admin.firestore.FieldValue.arrayUnion(arg.value);
     }
     const update = {};

@@ -482,8 +482,8 @@ let app = new Vue({
       let data = await fetch_res.arrayBuffer();
       return {
         id: layerID,
-        name: layers[layerID].name,
-        user: layers[layerID].user,
+        name: this.layers[layerID].name,
+        user: this.layers[layerID].user,
         data: data.slice(),
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
