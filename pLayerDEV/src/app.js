@@ -501,7 +501,7 @@ let app = new Vue({
       }
     }, 
     async getTrack() {
-      if(!Object.keys(this.tracks).length) return;
+      if(!this.groupTracks.length || !this.activeTrack.length) return;
       this.busy = true;
       let trackLayers = this.tracks[this.activeTrack].layers.slice();
       this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
