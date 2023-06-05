@@ -104,12 +104,24 @@ class Player {
     this.validateArg(arg, ["groupID", "name", "users"]);
     const creator = this.user.uid;
     arg.users.push(creator);
+
+    // update database
     await groups.doc(arg.groupID).set({
       name: arg.name,
       creator: creator,
       users: arg.users.filter(onlyUnique),
       dateCreated: admin.firestore.Timestamp.now(),
     });
+
+    // update claims
+    for (const uid of arg.users) {
+      const u = await auth.getUser(uid);
+      const groups = u.customClaims["groups"] ?
+        [...u.customClaims.groups, arg.groupID] : [arg.groupID];
+      await auth.setCustomUserClaims(uid, {
+        groups: groups.filter(onlyUnique),
+      });
+    }
     return {status: "ok"};
   }
   async updateGroup(arg) {
@@ -117,10 +129,17 @@ class Player {
     if (!(["name", "users"].includes(arg.field))) {
       throw new Error("field must be name, or users");
     }
-    const value = arg.field === "users" ?
-      admin.firestore.FieldValue.arrayUnion(arg.value) : arg.value;
+    if (arg.field === "users") {
+      const u = await auth.getUser(arg.value);
+      const groups = u.customClaims["groups"] ?
+        [...u.customClaims.groups, arg.groupID] : [arg.groupID];
+      await auth.setCustomUserClaims(arg.value, {
+        groups: groups.filter(onlyUnique),
+      });
+      arg.value = admin.firestore.FieldValue.arrayUnion(arg.value);
+    }
     const update = {};
-    update[arg.field] = value;
+    update[arg.field] = arg.value;
     await groups.doc(arg.groupID).update(update);
     return {status: "ok"};
   }
