@@ -144,7 +144,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
-        <b-input-group>
+        <b-input-group prepend="group:" :description="getGroupUsers(activeGroup)">
           <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
           <b-input-group-append>
             <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
@@ -287,20 +287,7 @@ let app = new Vue({
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         self.resetAudioContext();
-        const db = await self.pLayerAPI("getDB");
-        self.tracks = db.tracks;
-        self.layers = db.layers;
-        self.users = db.users;
-        self.groups = db.groups;
-        self.myGroups = Object.keys(self.groups).map((uid) => {
-          return {
-            uid: uid,
-            name: self.groups[uid].name,
-            users: self.groups[uid].users.map(this.getUserName)
-          }
-        });
-        self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
-        self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
+        await self.updateDB();
       }
       self.busy = false;
     });
@@ -359,6 +346,23 @@ let app = new Vue({
         throw new Error("No status found in response");
       }
     },
+    async updateDB() {
+      let self = this;
+      const db = await self.pLayerAPI("getDB");
+      self.tracks = db.tracks;
+      self.layers = db.layers;
+      self.users = db.users;
+      self.groups = db.groups;
+      self.myGroups = Object.keys(self.groups).map((uid) => {
+        return {
+          uid: uid,
+          name: self.groups[uid].name,
+          users: self.groups[uid].users.map(this.getUserName)
+        }
+      });
+      self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
+      self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
+    },
     async createUser() {
       let self = this;
       self.user = await self.pLayerAPI("createUser", {
@@ -415,6 +419,7 @@ let app = new Vue({
         groupID: uuidv4(),
         users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
       });
+      await self.updateDB();
     },
     async changeUsername(un) {
       if(!un) un = this.newUsername;
@@ -423,6 +428,7 @@ let app = new Vue({
         field: "displayName",
         value: un
       });
+      await this.updateDB();
     },
     async changePassword() {
       let pw = this.newPassword;
@@ -447,6 +453,7 @@ let app = new Vue({
         field: "name",
         value: name
       });
+      await this.updateDB();
     },
     async addUser() {
       let newUser = Object.keys(this.users).filter((uid) => this.users[uid].email == this.userToAdd)[0];
@@ -457,6 +464,7 @@ let app = new Vue({
         value: newUser
       });
       this.showAddUser = false;
+      await this.updateDB();
     },
     async seekerInput(seek) {
       clearInterval(this.interval);
@@ -580,6 +588,10 @@ let app = new Vue({
       minutes = minutes < 10 ? "0" + minutes : minutes;
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
+    },
+    getGroupUsers(uid) {
+      if(!uid || !Object.keys(this.groups).length) return [];
+      return this.groups[uid].users.map(this.getUserName).join(", ");
     },
     getTrackBPM(uid) {
       if(!uid || !Object.keys(this.tracks).length) return [];
