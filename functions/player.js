@@ -40,6 +40,7 @@ class Player {
       tracks: {},
       layers: {},
       users: {},
+      groups: {},
     };
     (await layers.get()).forEach((doc) => {
       db.layers[doc.id] = doc.data();
@@ -51,6 +52,10 @@ class Player {
 
     (await users.get()).forEach((doc) => {
       db.users[doc.id] = doc.data();
+    });
+
+    (await groups.get()).forEach((doc) => {
+      db.groups[doc.id] = doc.data();
     });
 
     for (const uid of Object.keys(db.users)) {
@@ -96,9 +101,10 @@ class Player {
     return {status: "ok"};
   }
   async createGroup(arg) {
-    this.validateArg(arg, ["groupID", "users"]);
+    this.validateArg(arg, ["groupID", "name", "users"]);
     arg.users.push(this.user.uid);
     await groups.doc(arg.groupID).set({
+      name: arg.name,
       users: arg.users.filter(onlyUnique),
       dateCreated: admin.firestore.Timestamp.now(),
     });

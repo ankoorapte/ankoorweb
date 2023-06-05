@@ -50,7 +50,14 @@ let app = new Vue({
     <div ref="pLayer"></div>
     <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
       <b-col align="center">
-        <p>existing groups go here</p>
+        <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid">
+          <b-list-group-item class="d-flex justify-content-between align-items-left">
+            <p>
+              <b>{{group_item.name}}</b>
+              {{group_item.users.join(", ")}}
+            </p>
+          </b-list-group-item>
+        </b-list-group>
         <hr>
         <p>create a new group!</p>
         <b-form-group
@@ -92,10 +99,12 @@ let app = new Vue({
       tracks: {},
       layers: {},
       users: {},
+      groups: {},
       user: "",
       signedIn: false,
       email: "",
       password: "",
+      myGroups: [],
       newGroupName: "",
       newGroupUsers: ""
     }
@@ -110,6 +119,14 @@ let app = new Vue({
         self.tracks = db.tracks;
         self.layers = db.layers;
         self.users = db.users;
+        self.groups = db.groups;
+        self.myGroups = Object.keys(self.groups).map((uid) => {
+          return {
+            uid: uid,
+            name: self.groups[uid].name,
+            users: self.groups[uid].users
+          }
+        });
       }
       self.busy = false;
     });
@@ -208,6 +225,7 @@ let app = new Vue({
       const newGroupUserList = self.newGroupUsers.split(" ").filter((s) => s.length);
       console.log(uuidv4());
       await self.pLayerAPI("createGroup", {
+        name: self.newGroupName,
         groupID: uuidv4(),
         users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
       });
