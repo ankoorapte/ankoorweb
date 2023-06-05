@@ -142,7 +142,7 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
-    <b-row>
+    <b-row v-if="signedIn">
       <b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
           <b-input-group prepend="group">
