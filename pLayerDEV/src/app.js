@@ -49,7 +49,7 @@ let app = new Vue({
     </b-row>
     <hr>
     <div ref="pLayer"></div>
-    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mx-auto" align="center" shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mr-auto" align="center" shadow backdrop no-header-close>
       <b-col align="center">
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item variant="dark" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
@@ -82,7 +82,7 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-sidebar>
-    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="ml-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group>
           <b-form-input
@@ -180,7 +180,7 @@ let app = new Vue({
         <hr>
         <b-collapse v-model="showNewTrack" align="center">
           <b-form-file
-            placeholder=""
+            placeholder="click or drop"
             accept="audio/wav"
             v-model="newTrack"
             browse-text="upload"
@@ -188,7 +188,7 @@ let app = new Vue({
             :disabled="busy"
           ></b-form-file>
           <b-input-group append="name">
-            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            <b-form-input placeholder="name your track" v-model="newTrackName" :disabled="busy"></b-form-input>
           </b-input-group>
           <b-input-group append="BPM">
             <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
