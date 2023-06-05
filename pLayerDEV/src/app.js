@@ -143,7 +143,7 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-row v-if="signedIn">
-      <b-col v-if="activeGroup.length > 0">
+      <b-collapse v-model="!showLayers"><b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
           <b-input-group>
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
@@ -197,7 +197,7 @@ let app = new Vue({
             <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
           </p>
         </b-collapse>
-      </b-col>
+      </b-col></b-collapse>
     </b-row>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
@@ -209,7 +209,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item variant="secondary" href="#" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
@@ -220,6 +220,21 @@ let app = new Vue({
               </p>
           </b-list-group-item>
         </b-list-group>
+        <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
+                <p> 
+                  <b>{{ getLayerName(layer_item.id) }}</b>
+                  {{ getUserName(layer_item.user) }}
+                </p>
+                <p>
+                  <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                  <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                </p>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
         <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
@@ -248,6 +263,7 @@ let app = new Vue({
       showNewGroup: false,
       showAddUser: false,
       showNewTrack: false,
+      showLayers: false,
       userToAdd: "",
       newTrack: null,
       newTrackName: "",
@@ -368,8 +384,6 @@ let app = new Vue({
           users: self.groups[uid].users.map(this.getUserName)
         }
       });
-      self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
-      self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
     },
     async createUser() {
       let self = this;
@@ -585,6 +599,27 @@ let app = new Vue({
       self.busy = false;
       self.updateDB();
     },
+    muteLayer(index) {
+      this.layerMute[index] = true;
+      this.layerGains[index].gain.value = 0;
+    },
+    unmuteLayer(index) {
+      this.layerMute[index] = false;
+      this.layerGains[index].gain.value = 1;
+    },
+    async downloadLayer(index) {
+      this.busy = true;
+      let blob = await (await fetch(await getDownloadURL(ref(storage, this.layerBuffers[index].id)))).blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = this.layerBuffers[index].name + ".wav";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      this.busy = false;
+    },
     async detectBPM() {
       if(this.newTrack) {
         let ac = new AudioContext();
@@ -613,6 +648,10 @@ let app = new Vue({
     getTrackArtists(uid) {
       if(!uid || !Object.keys(this.tracks).length) return [];
       return [...new Set(this.tracks[uid].layers.map((layerID) => this.getUserName(this.layers[layerID].user)))];
+    },
+    getLayerName(uid) {
+      if(!uid || !Object.keys(this.layers).length) return [];
+      return this.layers[uid].name;
     },
     getLayerUser(uid) {
       if(!uid || !Object.keys(this.layers).length) return [];
