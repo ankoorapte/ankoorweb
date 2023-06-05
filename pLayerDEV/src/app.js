@@ -265,8 +265,7 @@ let app = new Vue({
       slider: 0,
       trackDuration: 0,
       interval: 0,
-      trackIdx: 0,
-      trackID: ""
+      trackIdx: 0
     }
   },
   watch: {
@@ -500,7 +499,7 @@ let app = new Vue({
     async getTrack() {
       if(!Object.keys(this.tracks).length) return;
       this.busy = true;
-      let trackLayers = this.tracks[this.trackID].layers.slice();
+      let trackLayers = this.tracks[this.activeTrack].layers.slice();
       this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
       this.seeker = 0;
       this.slider = 0;
@@ -549,11 +548,11 @@ let app = new Vue({
       this.busy = true;
       if(forward) { this.trackIdx++; }
       else { 
-        if(!this.trackIdx) this.trackIdx = Object.keys(this.tracks).length;
+        if(!this.trackIdx) this.trackIdx = Object.keys(this.groupTracks).length;
         this.trackIdx--;
       }
-      this.trackIdx = this.trackIdx % Object.keys(this.tracks).length;
-      this.trackID = Object.keys(this.tracks)[this.trackIdx];
+      this.trackIdx = this.trackIdx % Object.keys(this.groupTracks).length;
+      this.activeTrack = Object.keys(this.groupTracks)[this.trackIdx];
       await this.getTrack();
       this.busy = false;
     },
