@@ -203,7 +203,7 @@ let app = new Vue({
       <b-carousel
         id="carousel-1"
         v-model="slide"
-        interval="0"
+        interval=0
         controls
         indicators
         background="#ababab"
