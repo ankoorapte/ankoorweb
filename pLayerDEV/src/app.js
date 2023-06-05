@@ -54,7 +54,7 @@ let app = new Vue({
     <b-sidebar v-if="signedIn" id="sidebar-left" title="my groups" shadow backdrop no-header-close>
       <b-col align="center">
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid">
-          <b-list-group-item href="#" @click="activeGroup = group_item.uid" :active="activeGroup == group_item.uid" active-class="dark" class="d-flex justify-content-between align-items-left">
+          <b-list-group-item href="#" @click="activeGroup = group_item.uid" :active="activeGroup == group_item.uid" active-class="bg-dark text-light" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
               <b>{{group_item.name}}</b>
               {{group_item.users.join(", ")}}
