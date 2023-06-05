@@ -18,10 +18,19 @@ const groupExists = async (groupID) => {
 
 const addGroupToClaims = async (uid, groupID) => {
   const u = await auth.getUser(uid);
-  const groups = u.customClaims && u.customClaims["groups"] ?
-    [...u.customClaims.groups, groupID] : [groupID];
+  const groups = [];
+  if (u.customClaims && u.customClaims["groups"]) {
+    for (const idx in groups) {
+      if (await groupExists(groups[idx])) {
+        groups.push(groups[idx]);
+      }
+    }
+  }
+
+  groups.push(groupID);
+
   await auth.setCustomUserClaims(uid, {
-    groups: groups.filter(groupExists).filter(onlyUnique),
+    groups: groups.filter(onlyUnique),
   });
 };
 
@@ -119,11 +128,6 @@ class Player {
     const creator = this.user.uid;
     arg.users.push(creator);
 
-    // update claims
-    for (const uid of arg.users) {
-      await addGroupToClaims(uid, arg.groupID);
-    }
-
     // update database
     await groups.doc(arg.groupID).set({
       name: arg.name,
@@ -131,6 +135,11 @@ class Player {
       users: arg.users.filter(onlyUnique),
       dateCreated: admin.firestore.Timestamp.now(),
     });
+
+    // update claims
+    for (const uid of arg.users) {
+      await addGroupToClaims(uid, arg.groupID);
+    }
     return {status: "ok"};
   }
   async updateGroup(arg) {
