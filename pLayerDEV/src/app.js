@@ -44,7 +44,10 @@ let app = new Vue({
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
         <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
-        <b-button v-if="signedIn" variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
+        <p class="m-0 p-0">
+          <b-button v-if="signedIn" variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
+          <b-button v-if="signedIn" variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
+        </p>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
