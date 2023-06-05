@@ -13,16 +13,17 @@ const onlyUnique = (value, index, array) => {
 };
 
 const groupExists = async (groupID) => {
-  return (await groups.doc(groupID).get()).exists;
+  const doc = await groups.doc(groupID).get();
+  return doc.exists;
 };
 
 const addGroupToClaims = async (uid, groupID) => {
   const u = await auth.getUser(uid);
   const groups = [];
   if (u.customClaims && u.customClaims["groups"]) {
-    for (const idx in groups) {
-      if (await groupExists(groups[idx])) {
-        groups.push(groups[idx]);
+    for (const groupID of u.customClaims["groups"]) {
+      if (await groupExists(groupID)) {
+        groups.push(groupID);
       }
     }
   }

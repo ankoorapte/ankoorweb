@@ -272,6 +272,7 @@ let app = new Vue({
     // whenever question changes, this function will run
     activeGroup(newGroup, oldGroup) {
       let self = this;
+      self.pause();
       self.groupTracks = Object.keys(self.tracks).filter((trackID) => self.layers[trackID].group === newGroup).map((trackID) => {
         return {
           uid: trackID,
