@@ -42,16 +42,13 @@ let app = new Vue({
   <b-container style="background-color:#E1F3F6;">
     <b-row style="font-size:30px">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
-        <b-button v-if="signedIn" v-b-toggle.sidebar-left variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
+        <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
         <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
-        <p class="m-0 p-0">
-          <b-button v-if="signedIn" variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
-          <b-button v-if="signedIn" variant="outline-danger" @click="signOut"><b-icon icon="box-arrow-right"></b-icon></b-button>
-        </p>
+        <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar v-if="signedIn" id="sidebar-left" title="my groups" shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-group" title="my groups" shadow backdrop no-header-close>
       <b-col align="center">
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item href="#" @click="activeGroup = group_item.uid" :active="activeGroup == group_item.uid" active-class="active bg-dark text-light" class="d-flex justify-content-between align-items-left">
@@ -73,6 +70,52 @@ let app = new Vue({
           <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
         </b-form-group>
         <b-button @click="createGroup" :disabled="!stateGroup" variant="dark">create group</b-button>
+      </b-col>
+    </b-sidebar>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" right shadow backdrop no-header-close>
+      <b-col align="center">
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new username"
+            @keydown.native="usernameKeydownHandler"
+            v-model="newUsername" 
+            :state="stateUsername" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new password"
+            @keydown.native="passwordKeydownHandler" 
+            v-model="newPassword" 
+            type="password" 
+            :state="statePassword" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-input-group class="m-2">
+          <b-form-input
+            placeholder="new email"
+            @keydown.native="emailKeydownHandler" 
+            v-model="newEmail"
+            :state="stateEmail" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark">Report feedback</a>
+        <b-button v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-sidebar>
     <b-row><b-col align="center">
@@ -115,7 +158,10 @@ let app = new Vue({
       myGroups: [],
       newGroupName: "",
       newGroupUsers: "",
-      activeGroup: ""
+      activeGroup: "",
+      newUsername: "",
+      newPassword: "",
+      newEmail: "",
     }
   },
   async created() {
@@ -153,6 +199,17 @@ let app = new Vue({
     },
     stateGroup() {
       return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
+    },
+    stateUsername() {
+      return this.user
+        && !Object.keys(users).includes(this.newUsername)
+        && Boolean(this.newUsername.length);
+    },
+    statePassword() {
+      return this.newPassword.length >= 6;
+    },
+    stateEmail() {
+      return this.newEmail.includes("@") && this.email.includes(".");
     },
   },
   methods: {
@@ -239,9 +296,37 @@ let app = new Vue({
         users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
       });
     },
+    async changeUsername(un) {
+      if(!un) un = this.newUsername;
+      this.user.displayName = this.newUsername;
+      await this.pLayerAPI("updateUser",{
+        field: "displayName",
+        value: un
+      });
+    },
+    async changePassword() {
+      let pw = this.newPassword;
+      await this.pLayerAPI("updateUser",{
+        field: "password",
+        value: pw
+      });
+    },
+    async changeEmail() {
+      let email = this.newEmail;
+      await this.pLayerAPI("updateUser",{
+        field: "email",
+        value: email
+      });
+      await this.signOut();
+    },
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
       return this.users[uid].displayName;
+    },
+    usernameKeydownHandler(event) {
+      if (event.which === 13 && this.stateUsername) {
+        this.changeUsername();
+      }
     },
     async signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
