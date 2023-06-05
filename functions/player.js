@@ -37,6 +37,7 @@ class Player {
   async process(arg) {
     if (arg.endpoint_name != "createUser") {
       this.user = await this.authenticate(arg.id);
+      console.log(this.user.customClaims);
     }
     return this[arg.endpoint_name](arg);
   }
@@ -154,6 +155,7 @@ class Player {
     if (arg.accept) {
       await tracks.doc(arg.baseID).update({
         layers: admin.firestore.FieldValue.arrayUnion(arg.layerID),
+        dateUpdated: admin.firestore.Timestamp.now(),
       });
     }
     return {status: "ok"};
@@ -186,13 +188,15 @@ exports.updateDB = async (file, context) => {
     bpm: bpm,
     group: group,
     resolved: isBase, // if isBase, resolved!
-    timestamp: file.updated,
+    dateCreated: admin.firestore.Timestamp.now(),
   });
 
   if (isBase) {
     await tracks.doc(uid).set({
       layers: [uid],
       name: name,
+      group: group,
+      dateCreated: admin.firestore.Timestamp.now(),
     });
   }
 };
