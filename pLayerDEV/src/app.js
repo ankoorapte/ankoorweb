@@ -280,9 +280,11 @@ let app = new Vue({
         }
       });
       self.activeTrack = newGroup.length ? self.groupTracks[0].uid : "";
+      this.showNewGroup = !newGroup.length;
     },
     activeTrack(newTrack, oldTrack) {
       this.getTrack();
+      this.showNewTrack = !newTrack.length;
     }
   },
   async created() {
