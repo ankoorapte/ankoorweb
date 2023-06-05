@@ -73,7 +73,7 @@ let app = new Vue({
           <b-form-group
             :state="stateGroup"
             align="center"
-            description="enter the email addresses of existing pLayer users, separated by a space"
+            description="enter emails separated by a space"
           >
             <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
             <b-form-input placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
