@@ -147,6 +147,8 @@ let app = new Vue({
         <b-carousel
           v-model="layerView"
           :interval="0"
+          img-width="690"
+          img-height="480"
         >
           <b-carousel-slide img-blank>
             <b-form-group :description="getGroupUsers(activeGroup)" align="center">
