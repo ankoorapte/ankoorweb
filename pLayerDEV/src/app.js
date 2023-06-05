@@ -456,6 +456,16 @@ let app = new Vue({
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername();
       }
+    },    
+    passwordKeydownHandler(event) {
+      if (event.which === 13 && this.statePassword) {
+        this.changePassword();
+      }
+    },
+    emailKeydownHandler(event) {
+      if (event.which === 13 && this.stateEmail) {
+        this.changeEmail();
+      }
     },
     async signinKeydownHandler(event) {
       if (event.which === 13 && this.stateCredentials) {
