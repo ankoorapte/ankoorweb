@@ -153,6 +153,7 @@ exports.updateDB = async (file, context) => {
   const user = file.metadata.user;
   const bpm = file.metadata.bpm;
   const base = file.metadata.base;
+  const group = file.metadata.group;
   const isBase = !base.length; // empty string means isBase
 
   await layers.doc(uid).set({
@@ -161,6 +162,7 @@ exports.updateDB = async (file, context) => {
     base: base,
     user: user,
     bpm: bpm,
+    group: group,
     resolved: isBase, // if isBase, resolved!
     timestamp: file.updated,
   });

@@ -141,6 +141,7 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
+    <hr>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
         <b-input-group>
@@ -157,6 +158,34 @@ let app = new Vue({
               <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
             </b-input-group-append>
           </b-input-group>
+        </b-collapse>
+        <b-list-group flush>
+          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+            <p class="mx-auto my-0 p-0">
+              add a new track
+              <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
+              <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
+            </p>
+          </b-list-group-item>
+        </b-list-group>
+        <hr>
+        <b-collapse v-model="showNewTrack">
+          <b-form-file
+            accept="audio/wav"
+            v-model="newTrack"
+            browse-text="upload"
+            @input="detectBPM"
+            :disabled="busy"
+          ></b-form-file>
+          <b-input-group append="name">
+            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+          </b-input-group>
+          <b-input-group append="BPM">
+            <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
+          </b-input-group>
+          <p>
+            <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
+          </p>
         </b-collapse>
       </b-col>
     </b-row>
@@ -189,7 +218,11 @@ let app = new Vue({
       newEmail: "",
       showNewGroup: false,
       showAddUser: false,
-      userToAdd: ""
+      showNewTrack: false,
+      userToAdd: "",
+      newTrack: null,
+      newTrackName: "",
+      newTrackBPM: ""
     }
   },
   async created() {
@@ -367,6 +400,33 @@ let app = new Vue({
         value: newUser
       });
       this.showAddUser = false;
+    },
+    async postTrack() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const trackPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.newTrackName,
+          'user': self.user.uid,
+          'base': "",
+          'bpm': self.newTrackBPM,
+          'group': self.activeGroup
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(trackPath, self.newTrack, metadata);
+      self.newTrackName = "";
+      self.newTrackBPM = "";
+      self.newTrack = null;
+      self.busy = false;
+    },
+    async detectBPM() {
+      if(this.newTrack) {
+        let ac = new AudioContext();
+        this.newTrackBPM = bpmDetective(await ac.decodeAudioData(await this.newTrack.arrayBuffer())).toString();  
+      }
     },
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
