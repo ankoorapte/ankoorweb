@@ -243,8 +243,8 @@ let app = new Vue({
             users: self.groups[uid].users.map(this.getUserName)
           }
         });
-        self.activeGroup = self.myGroups[0].uid;
-        self.activeGroupName = self.myGroups[0].name;
+        self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
+        self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
       }
       self.busy = false;
     });
