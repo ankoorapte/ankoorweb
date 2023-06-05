@@ -292,7 +292,8 @@ let app = new Vue({
       slider: 0,
       trackDuration: 0,
       interval: 0,
-      trackIdx: 0
+      trackIdx: 0,
+      slide: 0,
     }
   },
   watch: {
