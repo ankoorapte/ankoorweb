@@ -148,7 +148,7 @@ let app = new Vue({
           v-model="layerView"
           :interval="0"
         >
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <b-carousel-slide img-blank>
             <b-form-group :description="getGroupUsers(activeGroup)" align="center">
               <b-input-group>
                 <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
@@ -203,7 +203,7 @@ let app = new Vue({
               </p>
             </b-collapse>
           </b-carousel-slide>
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <b-carousel-slide img-blank>
             <p> Hi </p>
           </b-carousel-slide>
         </b-carousel>
