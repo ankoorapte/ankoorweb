@@ -162,7 +162,7 @@ let app = new Vue({
         <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
           <b-list-group-item variant="dark" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
-              {{track_item.uid}}
+              <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
             </p>
           </b-list-group-item>
       </b-list-group>
@@ -238,9 +238,12 @@ let app = new Vue({
   watch: {
     // whenever question changes, this function will run
     activeGroup(newGroup, oldGroup) {
-      this.groupTracks = Object.keys(this.tracks).filter((trackID) => this.layers[trackID].group === newGroup).map((trackID) => {
+      let self = this;
+      self.groupTracks = Object.keys(self.tracks).filter((trackID) => self.layers[trackID].group === newGroup).map((trackID) => {
         return {
           uid: trackID,
+          name: self.tracks[trackID].name,
+          layers: self.tracks[trackID].layers
         }
       })
     }
@@ -447,6 +450,10 @@ let app = new Vue({
         let ac = new AudioContext();
         this.newTrackBPM = bpmDetective(await ac.decodeAudioData(await this.newTrack.arrayBuffer())).toString();  
       }
+    },
+    getLayerUser(uid) {
+      if(!uid || !Object.keys(this.layers).length) return [];
+      return this.layers[uid].user;
     },
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
