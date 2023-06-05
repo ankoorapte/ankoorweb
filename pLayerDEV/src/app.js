@@ -48,10 +48,10 @@ let app = new Vue({
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar id="sidebar-left" title="Groups" shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-left" title="your groups" shadow backdrop no-header-close>
       <b-col align="center">
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid">
-          <b-list-group-item class="d-flex justify-content-between align-items-left">
+          <b-list-group-item @click="activeGroup = groupItem.uid" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
             <p>
               <b>{{group_item.name}}</b>
               {{group_item.users.join(", ")}}
@@ -85,6 +85,11 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
+    <b-row>
+      <b-col>
+        <p>Group: {{activeGroup}}</p>
+      </b-col>
+    </b-row>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
@@ -106,7 +111,8 @@ let app = new Vue({
       password: "",
       myGroups: [],
       newGroupName: "",
-      newGroupUsers: ""
+      newGroupUsers: "",
+      activeGroup: ""
     }
   },
   async created() {
