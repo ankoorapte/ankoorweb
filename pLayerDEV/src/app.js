@@ -203,7 +203,7 @@ let app = new Vue({
       <b-carousel
         id="carousel-1"
         v-model="slide"
-        interval="zero"
+        :interval="0"
         controls
         indicators
         background="#ababab"
@@ -293,8 +293,7 @@ let app = new Vue({
       trackDuration: 0,
       interval: 0,
       trackIdx: 0,
-      slide: 0,
-      zero: 0
+      slide: 0
     }
   },
   watch: {
