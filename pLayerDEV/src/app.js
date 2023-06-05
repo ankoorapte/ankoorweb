@@ -58,21 +58,28 @@ let app = new Vue({
             </p>
           </b-list-group-item>
         </b-list-group>
+        <b-list-group flush>
+          <b-list-group-item variant="dark" href="#" @click="showNewGroup = !showNewGroup" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
+            <b-icon icon="plus-circle" v-if="!showNewGroup"></b-icon>
+            <b-icon icon="dash-circle" v-if="showNewGroup"></b-icon>
+          </b-list-group-item>
+        </b-list-group>
         <hr>
-        <p>create a new group!</p>
-        <b-form-group
-          :invalid-feedback="invalidGroup"
-          :state="stateGroup"
-          align="center"
-          description=""
-        >
-          <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
-          <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
-        </b-form-group>
-        <b-button @click="createGroup" :disabled="!stateGroup" variant="dark">create group</b-button>
+        <b-collapse v-model="showNewGroup">
+          <p>create a new group!</p>
+          <b-form-group
+            :state="stateGroup"
+            align="center"
+            description="enter the email addresses of existing pLayer users, separated by a space"
+          >
+            <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
+            <b-form-input placeholder="members" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
+          </b-form-group>
+          <b-button @click="createGroup" :disabled="!stateGroup" variant="dark">create group</b-button>
+        </b-collapse>
       </b-col>
     </b-sidebar>
-    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" right shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="my account" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group class="m-2">
           <b-form-input
@@ -163,6 +170,7 @@ let app = new Vue({
       newUsername: "",
       newPassword: "",
       newEmail: "",
+      showNewGroup: false,
     }
   },
   async created() {
@@ -191,9 +199,6 @@ let app = new Vue({
   computed: {
     invalidCredentials() {
       return 'enter a valid email ID and password with minimum 6 characters.'
-    },
-    invalidGroup() {
-      return 'enter the email addresses of existing pLayer users, separated by a space'
     },
     stateCredentials() {
       return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");

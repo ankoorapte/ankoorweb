@@ -102,9 +102,11 @@ class Player {
   }
   async createGroup(arg) {
     this.validateArg(arg, ["groupID", "name", "users"]);
-    arg.users.push(this.user.uid);
+    const creator = this.user.uid;
+    arg.users.push(creator);
     await groups.doc(arg.groupID).set({
       name: arg.name,
+      creator: creator,
       users: arg.users.filter(onlyUnique),
       dateCreated: admin.firestore.Timestamp.now(),
     });
