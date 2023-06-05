@@ -367,7 +367,7 @@ let app = new Vue({
           name: self.groups[uid].name,
           users: self.groups[uid].users.map(this.getUserName)
         }
-      });
+      }).filter((item) => item.users.includes(self.user.uid));
       self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
       self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
     },
