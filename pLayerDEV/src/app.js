@@ -211,9 +211,9 @@ let app = new Vue({
         <b-list-group v-if="!busy">
           <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p> 
-                <b>{{ getTrackName(trackID) }}</b>
-                {{ getTrackArtists(trackID).join(", ") }}
-                <i>{{ getTrackBPM(trackID) }} BPM</i>
+                <b>{{ getTrackName(activeTrack) }}</b>
+                {{ getTrackArtists(activeTrack).join(", ") }}
+                <i>{{ getTrackBPM(activeTrack) }} BPM</i>
               </p>
               <p>
                 {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
