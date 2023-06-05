@@ -200,6 +200,25 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
+        <b-button-group size="lg" class="mb-2" v-if="!busy">
+          <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
+          <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
+        </b-button-group>
+        <b-list-group v-if="!busy">
+          <b-list-group-item class="d-flex justify-content-between align-items-center">
+              <p> 
+                <b>{{ getTrackName(trackID) }}</b>
+                {{ getTrackArtists(trackID).join(", ") }}
+                <i>{{ getTrackBPM(trackID) }} BPM</i>
+              </p>
+              <p>
+                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
+              </p>
+          </b-list-group-item>
+        </b-list-group>
+        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -233,6 +252,19 @@ let app = new Vue({
       newTrackBPM: "",
       activeTrack: "",
       groupTracks: [],
+      paused: true,
+      layerBuffers: [],
+      audioContext: null,
+      merger: null,
+      layerMute: [],
+      layerGains: [],
+      trackLayers: [],
+      seeker: 0,
+      slider: 0,
+      trackDuration: 0,
+      interval: 0,
+      trackIdx: 0,
+      trackID: ""
     }
   },
   watch: {
@@ -254,6 +286,7 @@ let app = new Vue({
       self.busy = true;
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
+        self.resetAudioContext();
         const db = await self.pLayerAPI("getDB");
         self.tracks = db.tracks;
         self.layers = db.layers;
@@ -363,6 +396,8 @@ let app = new Vue({
       }
     },
     async signOut() {
+      this.resetAudioContext();
+      await this.pause();
       this.signedIn = false;
       this.user = null;
       this.email = "";
@@ -424,6 +459,95 @@ let app = new Vue({
       });
       this.showAddUser = false;
     },
+    async seekerInput(seek) {
+      clearInterval(this.interval);
+      this.seeker = parseFloat(seek);
+      await this.pause();
+      await this.play();
+    },
+    updateSlider() {
+      this.slider = this.seeker + this.audioContext.currentTime;
+      if(this.slider > this.trackDuration) {
+        clearInterval(this.interval);
+      }
+    },
+    resetAudioContext() {
+      this.audioContext = new AudioContext();
+      this.merger = this.audioContext.createChannelMerger(2)
+      this.merger.connect(this.audioContext.createMediaStreamDestination());
+      this.merger.connect(this.audioContext.destination);
+    },
+    async getLayerBuffer(layerID) {
+      let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
+      let data = await fetch_res.arrayBuffer();
+      return {
+        id: layerID,
+        name: layers[layerID].name,
+        user: layers[layerID].user,
+        data: data.slice(),
+        decoded_data: await this.audioContext.decodeAudioData(data)
+      }
+    }, 
+    async getTrack() {
+      if(!Object.keys(this.tracks).length) return;
+      this.busy = true;
+      let trackLayers = this.tracks[this.trackID].layers.slice();
+      this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
+      this.seeker = 0;
+      this.slider = 0;
+      this.trackDuration = this.layerBuffers[0].decoded_data.duration;
+      this.busy = false;
+    },
+    async pause() {
+      if(!this.paused) await this.togglePlay();
+    },
+    async play() {
+      if(this.paused) await this.togglePlay();
+    },
+    async togglePlay() {
+        if(this.paused) {
+          this.resetAudioContext();
+          for(const idx in this.layerBuffers) {
+            var gainNode = this.audioContext.createGain();
+            gainNode.gain.value = this.layerMute[idx] ? 0 : 1;
+            gainNode.connect(this.merger, 0, 0);
+            gainNode.connect(this.merger, 0, 1);
+            this.layerGains.push(gainNode);
+            let source = this.audioContext.createBufferSource();
+            source.buffer = this.layerBuffers[idx].decoded_data;
+            source.connect(gainNode);
+            source.start(0, this.seeker);
+            this.trackLayers.push(source);
+            let self = this;
+            source.onended = () => {
+              if(Math.ceil(self.slider) == Math.ceil(self.trackDuration)) {
+                self.pause();
+              }
+            }
+          }
+          this.interval = setInterval(this.updateSlider, 100);
+        } else {
+          clearInterval(this.interval);
+          this.seeker += this.audioContext.currentTime;
+          this.trackLayers.forEach((node) => node.stop());
+          this.trackLayers = [];
+          this.layerGains = [];
+        }
+      this.paused = !this.paused;
+    },
+    async toggleTrack(forward) {
+      await this.pause();
+      this.busy = true;
+      if(forward) { this.trackIdx++; }
+      else { 
+        if(!this.trackIdx) this.trackIdx = Object.keys(this.tracks).length;
+        this.trackIdx--;
+      }
+      this.trackIdx = this.trackIdx % Object.keys(this.tracks).length;
+      this.trackID = Object.keys(tracks)[this.trackIdx];
+      await this.getTrack();
+      this.busy = false;
+    },
     async postTrack() {
       let self = this;
       self.busy = true;
@@ -450,6 +574,25 @@ let app = new Vue({
         let ac = new AudioContext();
         this.newTrackBPM = bpmDetective(await ac.decodeAudioData(await this.newTrack.arrayBuffer())).toString();  
       }
+    },
+    trackTimestamp(seconds) {
+      let minutes = Math.floor(seconds / 60);
+      let extraSeconds = seconds % 60;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
+      return minutes + ":" + extraSeconds.toString().slice(0, 2);
+    },
+    getTrackBPM(uid) {
+      if(!uid || !Object.keys(tracks).length) return [];
+      return layers[uid].bpm;
+    },
+    getTrackName(uid) {
+      if(!uid || !Object.keys(tracks).length) return [];
+      return tracks[uid].name;
+    },
+    getTrackArtists(uid) {
+      if(!uid || !Object.keys(tracks).length) return [];
+      return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
     },
     getLayerUser(uid) {
       if(!uid || !Object.keys(this.layers).length) return [];
