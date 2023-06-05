@@ -202,7 +202,7 @@ let app = new Vue({
     },
     stateUsername() {
       return this.user
-        && !Object.keys(users).includes(this.newUsername)
+        && !Object.keys(this.users).includes(this.newUsername)
         && Boolean(this.newUsername.length);
     },
     statePassword() {
