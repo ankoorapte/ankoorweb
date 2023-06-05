@@ -155,12 +155,12 @@ let app = new Vue({
           <b-input-group>
             <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
             <b-input-group-append>
-              <b-button variant="dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+              <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-collapse>
         <b-list-group flush>
-          <b-list-group-item variant="outline-dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
               add a new track
               <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
