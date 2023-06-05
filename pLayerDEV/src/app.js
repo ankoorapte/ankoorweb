@@ -141,7 +141,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
-        <b-input-group prepend="Group">
+        <b-input-group>
           <b-form-input v-model="activeGroupName"></b-form-input>
           <b-input-group-append>
             <b-button variant="outline-dark" @click="changeGroupName" :disabled="groups[activeGroup].name == activeGroupName">update name <b-icon icon="pencil"></b-icon></b-button>

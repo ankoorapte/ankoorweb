@@ -122,6 +122,7 @@ class Player {
     const update = {};
     update[arg.field] = value;
     await groups.doc(arg.groupID).update(update);
+    return {status: "ok"};
   }
   async resolveLayer(arg) {
     this.validateArg(arg, ["layerID", "baseID", "accept"]);
