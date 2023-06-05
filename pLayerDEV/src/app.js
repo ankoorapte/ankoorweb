@@ -361,13 +361,13 @@ let app = new Vue({
       self.layers = db.layers;
       self.users = db.users;
       self.groups = db.groups;
-      self.myGroups = Object.keys(self.groups).map((uid) => {
+      self.myGroups = Object.keys(self.groups).filter((groupID) => self.groups[groupID].users.includes(self.user.uid)).map((uid) => {
         return {
           uid: uid,
           name: self.groups[uid].name,
           users: self.groups[uid].users.map(this.getUserName)
         }
-      }).filter((item) => item.users.includes(self.user.uid));
+      });
       self.activeGroup = self.myGroups[0] ? self.myGroups[0].uid : "";
       self.activeGroupName = self.myGroups[0] ? self.myGroups[0].name : "";
     },
