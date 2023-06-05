@@ -142,10 +142,10 @@ let app = new Vue({
     <b-row>
       <b-col v-if="activeGroup.length > 0">
         <b-input-group>
-          <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null"></b-form-input>
+          <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
           <b-input-group-append>
             <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
-            <b-button variant="outline-dark" @click="showAddUser = !showAddUser"><b-icon icon="person-plus"></b-icon></b-button>
+            <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
           </b-input-group-append>
         </b-input-group>
         <b-collapse v-model="showAddUser">
