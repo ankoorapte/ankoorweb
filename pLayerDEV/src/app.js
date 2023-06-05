@@ -341,8 +341,14 @@ let app = new Vue({
     stateEmail() {
       return this.newEmail.includes("@") && this.email.includes(".");
     },
-    hideLayers() {
-      return !this.showLayers;
+    hideLayers: {
+      get() {
+        return !this.showLayers;
+      },
+      set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        this.showLayers = !newValue;
+      }
     }
   },
   methods: {
