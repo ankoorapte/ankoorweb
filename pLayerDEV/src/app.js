@@ -544,7 +544,7 @@ let app = new Vue({
         this.trackIdx--;
       }
       this.trackIdx = this.trackIdx % Object.keys(this.tracks).length;
-      this.trackID = Object.keys(tracks)[this.trackIdx];
+      this.trackID = Object.keys(this.tracks)[this.trackIdx];
       await this.getTrack();
       this.busy = false;
     },
@@ -583,16 +583,16 @@ let app = new Vue({
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
     getTrackBPM(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return layers[uid].bpm;
+      if(!uid || !Object.keys(this.tracks).length) return [];
+      return this.layers[uid].bpm;
     },
     getTrackName(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return tracks[uid].name;
+      if(!uid || !Object.keys(this.tracks).length) return [];
+      return this.tracks[uid].name;
     },
     getTrackArtists(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
+      if(!uid || !Object.keys(this.tracks).length) return [];
+      return [...new Set(this.tracks[uid].layers.map((layerID) => this.getUserName(this.layers[layerID].user)))];
     },
     getLayerUser(uid) {
       if(!uid || !Object.keys(this.layers).length) return [];
