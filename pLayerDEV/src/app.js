@@ -144,7 +144,7 @@ let app = new Vue({
         <b-input-group>
           <b-form-input v-model="activeGroupName"></b-form-input>
           <b-input-group-append>
-            <b-button variant="outline-dark" @click="changeGroupName" :disabled="groups[activeGroup].name == activeGroupName">update name <b-icon icon="pencil"></b-icon></b-button>
+            <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
             <b-button variant="outline-dark" @click="showAddUser = !showAddUser"><b-icon icon="person-plus"></b-icon></b-button>
           </b-input-group-append>
         </b-input-group>
