@@ -112,6 +112,17 @@ class Player {
     });
     return {status: "ok"};
   }
+  async updateGroup(arg) {
+    this.validateArg(arg, ["groupID", "field", "value"]);
+    if (!(["name", "users"].includes(arg.field))) {
+      throw new Error("field must be name, or users");
+    }
+    const value = arg.field === "users" ?
+      admin.firestore.FieldValue.arrayUnion(arg.value) : arg.value;
+    const update = {};
+    update[arg.field] = value;
+    await groups.doc(arg.groupID).update(update);
+  }
   async resolveLayer(arg) {
     this.validateArg(arg, ["layerID", "baseID", "accept"]);
     await layers.doc(arg.layerID).update({

@@ -48,10 +48,10 @@ let app = new Vue({
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
-    <b-sidebar v-if="signedIn" id="sidebar-group" title="my groups" shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" shadow backdrop no-header-close>
       <b-col align="center">
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
-          <b-list-group-item variant="dark" href="#" @click="activeGroup = group_item.uid" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
+          <b-list-group-item variant="dark" href="#" @click="activeGroup = group_item.uid; activeGroupName = group_item.name" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
               <b>{{group_item.name}}</b>
               {{group_item.users.join(", ")}}
@@ -60,8 +60,8 @@ let app = new Vue({
         </b-list-group>
         <b-list-group flush>
           <b-list-group-item variant="dark" href="#" @click="showNewGroup = !showNewGroup" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
-            <b-icon icon="plus-circle" v-if="!showNewGroup"></b-icon>
-            <b-icon icon="dash-circle" v-if="showNewGroup"></b-icon>
+            <b-icon class="mx-auto" icon="plus-circle" v-if="!showNewGroup"></b-icon>
+            <b-icon class="mx-auto" icon="dash-circle" v-if="showNewGroup"></b-icon>
           </b-list-group-item>
         </b-list-group>
         <hr>
@@ -79,7 +79,7 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-sidebar>
-    <b-sidebar v-if="signedIn" id="sidebar-account" title="my account" right shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group class="m-2">
           <b-form-input
@@ -141,7 +141,21 @@ let app = new Vue({
     </b-col></b-row>
     <b-row>
       <b-col>
-        <p>Group: {{activeGroup}}</p>
+        <b-input-group prepend="Group">
+          <b-form-input v-model="activeGroupName"></b-form-input>
+          <b-input-group-append>
+            <b-button variant="outline-dark" @click="changeGroupName" :disabled="groups[activeGroup].name == activeGroupName">update name <b-icon icon="pencil"></b-icon></b-button>
+            <b-button variant="outline-dark" @click="showAddUser = !showAddUser"><b-icon icon="person-plus"></b-icon></b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-collapse v-model="showAddUser">
+          <b-input-group>
+            <b-form-input placeholder="members" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+            <b-input-group-append>
+              <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-collapse>
       </b-col>
     </b-row>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
@@ -167,10 +181,13 @@ let app = new Vue({
       newGroupName: "",
       newGroupUsers: "",
       activeGroup: "",
+      activeGroupName: "",
       newUsername: "",
       newPassword: "",
       newEmail: "",
       showNewGroup: false,
+      showAddUser: false,
+      userToAdd: ""
     }
   },
   async created() {
@@ -205,6 +222,9 @@ let app = new Vue({
     },
     stateGroup() {
       return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
+    },
+    stateAddUser() {
+      return Object.keys(this.users).map((uid) => this.users[uid].email).includes(this.userToAdd);
     },
     stateUsername() {
       return this.user
@@ -325,6 +345,24 @@ let app = new Vue({
       });
       await this.signOut();
     },
+    async changeGroupName() {
+      let name = this.activeGroupName;
+      let gid = this.activeGroup;
+      await this.pLayerAPI("updateGroup",{
+        groupID: gid,
+        field: "name",
+        value: name
+      });
+    },
+    async addUser() {
+      let newUser = Object.keys(this.users).filter((uid) => this.users[uid].email == this.userToAdd)[0];
+      let gid = this.activeGroup;
+      await this.pLayerAPI("updateGroup",{
+        groupID: gid,
+        field: "users",
+        value: newUser
+      });
+    },
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
       return this.users[uid].displayName;
@@ -344,5 +382,10 @@ let app = new Vue({
         await this.createGroup();
       }
     },
+    async addUserKeydownHandler(event) {
+      if (event.which === 13 && this.stateGroup) {
+        await this.addUser();
+      }
+    }
   }
 });
