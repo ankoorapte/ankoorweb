@@ -279,7 +279,7 @@ let app = new Vue({
           layers: self.tracks[trackID].layers
         }
       });
-      self.activeTrack = newGroup.length ? self.groupTracks[0].uid : "";
+      self.activeTrack = newGroup.length && self.groupTracks.length ? self.groupTracks[0].uid : "";
       this.showNewGroup = !newGroup.length;
     },
     activeTrack(newTrack, oldTrack) {
