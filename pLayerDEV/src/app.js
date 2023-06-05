@@ -144,86 +144,70 @@ let app = new Vue({
     </b-col></b-row>
     <b-row v-if="signedIn">
       <b-col v-if="activeGroup.length > 0">
-        <b-form-group :description="getGroupUsers(activeGroup)" align="center">
-          <b-input-group>
-            <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
-            <b-input-group-append>
-              <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
-              <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
-            </b-input-group-append>
-          </b-input-group>
-          <b-collapse v-model="showAddUser">
-            <b-input-group>
-              <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
-              <b-input-group-append>
-                <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-collapse>
-        </b-form-group>
-        <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
-          <b-list-group-item variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
-            <p class="p-0 m-0">
-              <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
-            </p>
-          </b-list-group-item>
-      </b-list-group>
-        <b-list-group flush>
-          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
-            <p class="mx-auto my-0 p-0">
-              create a new track
-              <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
-              <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
-            </p>
-          </b-list-group-item>
-        </b-list-group>
-        <hr>
-        <b-collapse v-model="showNewTrack" align="center">
-          <b-form-file
-            placeholder="click or drop"
-            accept="audio/wav"
-            v-model="newTrack"
-            browse-text="upload"
-            @input="detectBPM"
-            :disabled="busy"
-          ></b-form-file>
-          <b-input-group append="name">
-            <b-form-input placeholder="name your track" v-model="newTrackName" :disabled="busy"></b-form-input>
-          </b-input-group>
-          <b-input-group append="BPM">
-            <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
-          </b-input-group>
-          <p>
-            <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
-          </p>
-        </b-collapse>
+        <b-carousel
+          v-model="layerView"
+          :interval="0"
+        >
+          <b-carousel-slide>
+            <b-form-group :description="getGroupUsers(activeGroup)" align="center">
+              <b-input-group>
+                <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
+                  <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
+                </b-input-group-append>
+              </b-input-group>
+              <b-collapse v-model="showAddUser">
+                <b-input-group>
+                  <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-collapse>
+            </b-form-group>
+            <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
+              <b-list-group-item variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
+                <p class="p-0 m-0">
+                  <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+            <b-list-group flush>
+              <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+                <p class="mx-auto my-0 p-0">
+                  create a new track
+                  <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
+                  <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+            <hr>
+            <b-collapse v-model="showNewTrack" align="center">
+              <b-form-file
+                placeholder="click or drop"
+                accept="audio/wav"
+                v-model="newTrack"
+                browse-text="upload"
+                @input="detectBPM"
+                :disabled="busy"
+              ></b-form-file>
+              <b-input-group append="name">
+                <b-form-input placeholder="name your track" v-model="newTrackName" :disabled="busy"></b-form-input>
+              </b-input-group>
+              <b-input-group append="BPM">
+                <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
+              </b-input-group>
+              <p>
+                <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
+              </p>
+            </b-collapse>
+          </b-carousel-slide>
+          <b-carousel-slide>
+            <p> Hi </p>
+          </b-carousel-slide>
+        </b-carousel>
       </b-col>
-    </b-row>
-    <b-row>
-      <b-carousel
-        id="carousel-1"
-        v-model="slide"
-        :interval="0"
-        controls
-        background="#ababab"
-        img-width="1024"
-        img-height="480"
-        style="text-shadow: 1px 1px 2px #333;"
-      >
-        <b-carousel-slide
-          caption="First slide"
-          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-          img-src="https://picsum.photos/1024/480/?image=52"
-        ></b-carousel-slide>
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-          <h1>Hello world!</h1>
-        </b-carousel-slide>
-        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
-        <b-carousel-slide>
-        </b-carousel-slide>
-        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-        </b-carousel-slide>
-      </b-carousel>
     </b-row>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
@@ -235,7 +219,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item variant="secondary" href="#" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="secondary" href="#" @click="layerView = 1" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
@@ -292,7 +276,7 @@ let app = new Vue({
       trackDuration: 0,
       interval: 0,
       trackIdx: 0,
-      slide: 0
+      layerView: 0
     }
   },
   watch: {
