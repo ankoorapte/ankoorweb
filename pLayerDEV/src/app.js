@@ -222,7 +222,7 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item class="d-flex justify-content-between align-items-center">
+            <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
                 <p> 
                   <b>{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }}
