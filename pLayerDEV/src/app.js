@@ -199,6 +199,33 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-row>
+    <b-row>
+      <b-carousel
+        id="carousel-1"
+        v-model="slide"
+        :interval="4000"
+        controls
+        indicators
+        background="#ababab"
+        img-width="1024"
+        img-height="480"
+        style="text-shadow: 1px 1px 2px #333;"
+      >
+        <b-carousel-slide
+          caption="First slide"
+          text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+          img-src="https://picsum.photos/1024/480/?image=52"
+        ></b-carousel-slide>
+        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
+          <h1>Hello world!</h1>
+        </b-carousel-slide>
+        <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
+        <b-carousel-slide>
+        </b-carousel-slide>
+        <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
+        </b-carousel-slide>
+      </b-carousel>
+    </b-row>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
@@ -209,7 +236,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
