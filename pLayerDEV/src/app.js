@@ -82,7 +82,7 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-sidebar>
-    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" align="center" right shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group>
           <b-form-input
@@ -169,9 +169,9 @@ let app = new Vue({
           </b-list-group-item>
       </b-list-group>
         <b-list-group flush>
-          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
-              add a new track
+              create a new track
               <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
               <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
             </p>
@@ -202,13 +202,13 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button-group size="lg" class="mb-2" v-if="!busy">
+        <b-button-group v-if="activeTrack.length > 0" size="lg" class="mb-2" v-if="!busy">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
-        <b-list-group v-if="!busy" flush>
+        <b-list-group v-if="!busy && activeTrack.length > 0" flush>
           <b-list-group-item class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
@@ -220,7 +220,7 @@ let app = new Vue({
               </p>
           </b-list-group-item>
         </b-list-group>
-        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+        <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
