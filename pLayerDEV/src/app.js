@@ -145,7 +145,7 @@ let app = new Vue({
     <b-row v-if="signedIn">
       <b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
-          <b-input-group prepend="group">
+          <b-input-group>
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
               <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
