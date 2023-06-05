@@ -188,7 +188,7 @@ let app = new Vue({
             :disabled="busy"
           ></b-form-file>
           <b-input-group append="name">
-            <b-form-input placeholder="name your track" v-model="newTrackName" :disabled="busy"></b-form-input>
+            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
           </b-input-group>
           <b-input-group append="BPM">
             <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
@@ -583,7 +583,7 @@ let app = new Vue({
       self.newTrackBPM = "";
       self.newTrack = null;
       self.busy = false;
-      setTimeout(self.updateDB(), 5000)
+      self.updateDB();
     },
     async detectBPM() {
       if(this.newTrack) {
