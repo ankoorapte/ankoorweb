@@ -144,7 +144,7 @@ let app = new Vue({
     </b-col></b-row>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
-        <b-form-group :description="getGroupUsers(activeGroup)">
+        <b-form-group :description="getGroupUsers(activeGroup)" align="center">
           <b-input-group prepend="group:">
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
