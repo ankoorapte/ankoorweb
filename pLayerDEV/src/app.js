@@ -142,8 +142,8 @@ let app = new Vue({
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
-    <b-row v-if="signedIn">
-      <b-collapse v-model="hideLayers"><b-col v-if="activeGroup.length > 0">
+    <b-collapse v-model="hideLayers"><b-row v-if="signedIn">
+      <b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
           <b-input-group>
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
@@ -197,8 +197,8 @@ let app = new Vue({
             <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
           </p>
         </b-collapse>
-      </b-col></b-collapse>
-    </b-row>
+      </b-col>
+    </b-row></b-collapse>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
