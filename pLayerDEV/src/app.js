@@ -144,21 +144,23 @@ let app = new Vue({
     </b-col></b-row>
     <b-row>
       <b-col v-if="activeGroup.length > 0">
-        <b-input-group prepend="group:" :description="getGroupUsers(activeGroup)">
-          <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
-          <b-input-group-append>
-            <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
-            <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
-          </b-input-group-append>
-        </b-input-group>
-        <b-collapse v-model="showAddUser">
-          <b-input-group>
-            <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+        <b-form-group :description="getGroupUsers(activeGroup)">
+          <b-input-group prepend="group:">
+            <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
-              <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+              <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
+              <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
             </b-input-group-append>
           </b-input-group>
-        </b-collapse>
+          <b-collapse v-model="showAddUser">
+            <b-input-group>
+              <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+              <b-input-group-append>
+                <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-collapse>
+        </b-form-group>
         <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
           <b-list-group-item variant="dark" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
