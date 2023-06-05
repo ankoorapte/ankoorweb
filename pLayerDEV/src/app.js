@@ -160,7 +160,7 @@ let app = new Vue({
           </b-input-group>
         </b-collapse>
         <b-list-group flush>
-          <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="outline-dark" href="#" @click="showNewTrack = !showNewTrack" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
               add a new track
               <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
