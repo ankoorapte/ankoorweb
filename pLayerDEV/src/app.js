@@ -59,7 +59,7 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-list-group flush>
-          <b-list-group-item variant="dark" href="#" @click="showNewGroup = !showNewGroup" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item variant="dark" href="#" @click="showNewGroup = !showNewGroup; activeGroup = ''; activeGroupName = '';" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
             <b-icon class="mx-auto" icon="plus-circle" v-if="!showNewGroup"></b-icon>
             <b-icon class="mx-auto" icon="dash-circle" v-if="showNewGroup"></b-icon>
           </b-list-group-item>
