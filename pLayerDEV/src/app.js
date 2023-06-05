@@ -143,7 +143,7 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-row v-if="signedIn">
-      <b-collapse v-model="!showLayers"><b-col v-if="activeGroup.length > 0">
+      <b-collapse v-model="hideLayers"><b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
           <b-input-group>
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
@@ -341,6 +341,9 @@ let app = new Vue({
     stateEmail() {
       return this.newEmail.includes("@") && this.email.includes(".");
     },
+    hideLayers() {
+      return !this.showLayers;
+    }
   },
   methods: {
     isMobile() {
