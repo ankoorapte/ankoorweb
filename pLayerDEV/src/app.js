@@ -202,8 +202,6 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-collapse v-model="showTimeline"><b-card style="height:240px" :header="getTrackName(activeTrack)">
-        </b-card></b-collapse>
         <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="my-2">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
@@ -222,6 +220,14 @@ let app = new Vue({
               </p>
           </b-list-group-item>
         </b-list-group>
+        <b-collapse v-model="showTimeline">
+          <b-list-group flush>
+            <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
+              <b-card style="height:240px" :header="getTrackName(activeTrack)">
+              </b-card>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
             <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
