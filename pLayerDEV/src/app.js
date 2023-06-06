@@ -329,8 +329,9 @@ let app = new Vue({
       this.showNewGroup = !newGroup.length;
       this.showLayers = false;
     },
-    activeTrack(newTrack, oldTrack) {
-      this.getTrack();
+    async activeTrack(newTrack, oldTrack) {
+      await this.pause()
+      await this.getTrack();
       this.showNewTrack = !newTrack.length;
     }
   },

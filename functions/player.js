@@ -97,11 +97,13 @@ class Player {
         password: arg.password,
         displayName: arg.email,
       });
+      const now = admin.firestore.Timestamp.now();
       console.log(userRecord);
       this.user = userRecord;
       await users.doc(this.user.uid).set({
         displayName: arg.email,
-        dateCreated: admin.firestore.Timestamp.now(),
+        dateCreated: now,
+        dateUpdated: now,
       });
       return {status: "ok", data: userRecord.user};
     } catch (e) {
@@ -115,6 +117,7 @@ class Player {
     }
     const update = {};
     update[arg.field] = arg.value;
+    update["dateUpdated"] = admin.firestore.Timestamp.now();
     if (arg.field === "displayName") {
       await users.doc(this.user.uid).update(update);
     }
@@ -126,6 +129,7 @@ class Player {
   }
   async createGroup(arg) {
     this.validateArg(arg, ["groupID", "name", "users"]);
+    const now = admin.firestore.Timestamp.now();
     const creator = this.user.uid;
     arg.users.push(creator);
 
@@ -134,7 +138,8 @@ class Player {
       name: arg.name,
       creator: creator,
       users: arg.users.filter(onlyUnique),
-      dateCreated: admin.firestore.Timestamp.now(),
+      dateCreated: now,
+      dateUpdated: now,
     });
 
     // update claims
@@ -154,18 +159,21 @@ class Player {
     }
     const update = {};
     update[arg.field] = arg.value;
+    update["dateUpdated"] = admin.firestore.Timestamp.now();
     await groups.doc(arg.groupID).update(update);
     return {status: "ok"};
   }
   async resolveLayer(arg) {
     this.validateArg(arg, ["layerID", "baseID", "accept"]);
+    const now = admin.firestore.Timestamp.now();
     await layers.doc(arg.layerID).update({
       resolved: true,
+      dateUpdated: now,
     });
     if (arg.accept) {
       await tracks.doc(arg.baseID).update({
         layers: admin.firestore.FieldValue.arrayUnion(arg.layerID),
-        dateUpdated: admin.firestore.Timestamp.now(),
+        dateUpdated: now,
       });
     }
     return {status: "ok"};
@@ -189,6 +197,7 @@ exports.updateDB = async (file, context) => {
   const base = file.metadata.base;
   const group = file.metadata.group;
   const isBase = !base.length; // empty string means isBase
+  const now = admin.firestore.Timestamp.now();
 
   await layers.doc(uid).set({
     bucket: uid,
@@ -198,7 +207,8 @@ exports.updateDB = async (file, context) => {
     bpm: bpm,
     group: group,
     resolved: isBase, // if isBase, resolved!
-    dateCreated: admin.firestore.Timestamp.now(),
+    dateCreated: now,
+    dateUpdated: now,
   });
 
   if (isBase) {
@@ -206,7 +216,8 @@ exports.updateDB = async (file, context) => {
       layers: [uid],
       name: name,
       group: group,
-      dateCreated: admin.firestore.Timestamp.now(),
+      dateCreated: now,
+      dateUpdated: now,
     });
   }
 };
