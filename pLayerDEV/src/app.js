@@ -373,7 +373,7 @@ let app = new Vue({
     },
     hideLayers: {
       get() {
-        return Boolean(!this.showLayers);
+        return !this.showLayers;
       },
       set(newValue) {
         // Note: we are using destructuring assignment syntax here.
@@ -382,7 +382,7 @@ let app = new Vue({
     },
     showTimeline: {
       get() {
-        return this.activeGroup.length && this.activeTrack.length && this.showLayers && !this.showNewLayer;
+        return Boolean(this.activeGroup.length) && Boolean(this.activeTrack.length) && this.showLayers && !this.showNewLayer;
       },
       set(newValue) {
       }
