@@ -202,7 +202,7 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-card style="height:480px">
+        <b-card style="height:120px">
         </b-card>
         <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="mb-2">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
