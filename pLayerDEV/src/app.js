@@ -223,7 +223,7 @@ let app = new Vue({
         <b-collapse v-model="showTimeline">
           <b-list-group flush>
             <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
-              <b-card style="height:240px" :header="getTrackName(activeTrack)">
+              <b-card style="height:240px" no-header>
               </b-card>
             </b-list-group-item>
           </b-list-group>
