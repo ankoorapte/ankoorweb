@@ -202,7 +202,7 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-card style="height:120px">
+        <b-card style="height:240px" v-model="showTimeline">
         </b-card>
         <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="mb-2">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
@@ -378,6 +378,13 @@ let app = new Vue({
       set(newValue) {
         // Note: we are using destructuring assignment syntax here.
         this.showLayers = !newValue;
+      }
+    },
+    showTimeline: {
+      get() {
+        return this.showLayers && !this.showNewLayer;
+      },
+      set(newValue) {
       }
     }
   },
