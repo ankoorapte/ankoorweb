@@ -709,7 +709,7 @@ let app = new Vue({
       return this.layers[uid].bpm;
     },
     getTrackName(uid) {
-      if(!uid || !Object.keys(this.tracks).length) return [];
+      if(!uid || !Object.keys(this.tracks).length) return "";
       return this.tracks[uid].name;
     },
     getTrackArtists(uid) {
@@ -717,7 +717,7 @@ let app = new Vue({
       return [...new Set(this.tracks[uid].layers.map((layerID) => this.getUserName(this.layers[layerID].user)))];
     },
     getLayerName(uid) {
-      if(!uid || !Object.keys(this.layers).length) return [];
+      if(!uid || !Object.keys(this.layers).length) return "";
       return this.layers[uid].name;
     },
     getLayerUser(uid) {
