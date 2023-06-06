@@ -373,7 +373,7 @@ let app = new Vue({
     },
     hideLayers: {
       get() {
-        return !this.showLayers;
+        return Boolean(!this.showLayers);
       },
       set(newValue) {
         // Note: we are using destructuring assignment syntax here.
