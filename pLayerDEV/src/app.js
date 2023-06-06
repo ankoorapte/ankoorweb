@@ -333,6 +333,7 @@ let app = new Vue({
       await this.pause()
       await this.getTrack();
       this.showNewTrack = !newTrack.length;
+      if(newTrack.length) await this.play();
     }
   },
   async created() {
