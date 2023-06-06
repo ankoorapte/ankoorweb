@@ -221,7 +221,7 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
-          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
             <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
                 <p class="p-0 m-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b>
@@ -234,6 +234,30 @@ let app = new Vue({
                 </p>
             </b-list-group-item>
           </b-list-group>
+          <b-list-group flush>
+            <b-list-group-item variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
+              <p class="mx-auto my-0 p-0">
+                create a new layer
+                <b-icon icon="plus-circle" v-if="!showNewLayer"></b-icon>
+                <b-icon icon="dash-circle" v-if="showNewLayer"></b-icon>
+              </p>
+            </b-list-group-item>
+          </b-list-group>
+          <b-collapse v-model="showNewLayer" align="center">
+            <b-form-file
+              placeholder="click or drop"
+              accept="audio/wav"
+              v-model="newLayer"
+              browse-text="upload"
+              :disabled="busy"
+            ></b-form-file>
+            <b-input-group append="name">
+              <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <p>
+              <b-button :disabled="busy || !newLayer || !newLayerName.length" variant="success" @click="postLayer()">post</b-button>
+            </p>
+          </b-collapse>
         </b-collapse>
         <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
@@ -263,10 +287,13 @@ let app = new Vue({
       showNewGroup: false,
       showAddUser: false,
       showNewTrack: false,
+      showNewLayer: false,
       showLayers: false,
       userToAdd: "",
       newTrack: null,
       newTrackName: "",
+      newLayer: null,
+      newLayerName: "",
       newTrackBPM: "",
       activeTrack: "",
       groupTracks: [],
@@ -606,6 +633,27 @@ let app = new Vue({
       self.newTrackName = "";
       self.newTrackBPM = "";
       self.newTrack = null;
+      self.busy = false;
+      self.updateDB();
+    },
+    async postLayer() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const trackPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.newLayerName,
+          'user': self.user.uid,
+          'base': self.activeTrack,
+          'bpm': self.getTrackBPM(self.activeTrack),
+          'group': self.activeGroup
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(trackPath, self.newTrack, metadata);
+      self.newLayerName = "";
+      self.newLayer = null;
       self.busy = false;
       self.updateDB();
     },
