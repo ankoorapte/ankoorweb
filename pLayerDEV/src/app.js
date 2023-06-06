@@ -382,7 +382,7 @@ let app = new Vue({
     },
     showTimeline: {
       get() {
-        return this.showLayers && !this.showNewLayer;
+        return this.activeGroup.length && this.activeTrack.length && this.showLayers && !this.showNewLayer;
       },
       set(newValue) {
       }
