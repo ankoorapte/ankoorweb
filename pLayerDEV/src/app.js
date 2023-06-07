@@ -618,6 +618,8 @@ let app = new Vue({
             source.onended = () => {
               if(Math.ceil(self.slider) == Math.ceil(self.trackDuration)) {
                 self.pause();
+                self.slider = 0;
+                self.seeker = 0;
               }
             }
           }
