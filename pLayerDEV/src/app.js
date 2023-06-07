@@ -348,7 +348,6 @@ let app = new Vue({
       await this.getTrack();
       this.showNewTrack = !newTrack.length;
       if(newTrack.length) await this.play();
-      //this.trackIdx = this.groupTracks.findIndex((track) => track.uid = newTrack);
       this.busy = false;
     }
   },
@@ -589,6 +588,7 @@ let app = new Vue({
       this.seeker = 0;
       this.slider = 0;
       this.trackDuration = this.layerBuffers[0].decoded_data.duration;
+      this.trackIdx = this.groupTracks.findIndex((track) => track.uid == newTrack);
       this.busy = false;
     },
     async pause() {
