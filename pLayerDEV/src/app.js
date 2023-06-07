@@ -49,7 +49,7 @@ let app = new Vue({
     </b-row>
     <hr>
     <div ref="pLayer"></div>
-    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mr-auto" shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mx-auto" shadow backdrop no-header-close>
       <b-col>
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
@@ -82,7 +82,7 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-sidebar>
-    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="ml-auto" align="center" right shadow backdrop no-header-close>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group class="my-2">
           <b-form-input
