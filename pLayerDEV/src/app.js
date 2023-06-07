@@ -338,7 +338,6 @@ let app = new Vue({
         }
       });
       this.showNewGroup = !newGroup.length;
-      if(!newGroup.length) this.activeTrack = "";
       this.showNewTrack = false;
       this.showLayers = false;
     },
