@@ -341,6 +341,7 @@ let app = new Vue({
       await this.getTrack();
       this.showNewTrack = !newTrack.length;
       if(newTrack.length) await this.play();
+      this.trackIdx = this.groupTracks.findIndex((track) => track.uid = newTrack);
       this.busy = false;
     }
   },
@@ -674,6 +675,7 @@ let app = new Vue({
       self.newLayerName = "";
       self.newLayer = null;
       self.busy = false;
+      self.showLayers = false;
       self.updateDB();
     },
     muteLayer(index) {
