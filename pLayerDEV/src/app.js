@@ -224,7 +224,7 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-            <b-list-group-item :disabled="busy" variant="secondary" class="p-0">
+            <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="height:300px" no-header class="w-100 m-0">
               </b-card>
             </b-list-group-item>
@@ -232,7 +232,7 @@ let app = new Vue({
         </b-collapse>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item :disabled="busy" variant="dark" href="#" @click="layerMute[index] ? unmuteLayer(index) : muteLayer(index)" class="d-flex justify-content-between align-items-center">
                 <p class="p-0 m-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }}
