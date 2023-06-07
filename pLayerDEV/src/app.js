@@ -222,7 +222,7 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showTimeline">
           <b-list-group flush>
-            <b-list-group-item variant="secondary">
+            <b-list-group-item variant="secondary" class="p-0">
               <b-card style="height:240px" no-header class="w-100 m-0">
               </b-card>
             </b-list-group-item>
@@ -237,7 +237,7 @@ let app = new Vue({
                 </p>
                 <p class="p-0 m-0">
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                  <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                   <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
                 </p>
             </b-list-group-item>
