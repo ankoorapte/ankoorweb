@@ -148,7 +148,7 @@ let app = new Vue({
           <b-input-group>
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
-              <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">update <b-icon icon="pencil"></b-icon></b-button>
+              <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">save <b-icon icon="pencil"></b-icon></b-button>
               <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
             </b-input-group-append>
           </b-input-group>
@@ -221,9 +221,9 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showTimeline">
-          <b-list-group flush>
+          <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" variant="secondary" class="p-0">
-              <b-card style="height:240px" no-header class="w-100 m-0">
+              <b-card style="height:300px" no-header class="w-100 m-0">
               </b-card>
             </b-list-group-item>
           </b-list-group>
