@@ -209,7 +209,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item :disabled="busy" variant="secondary" active href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
