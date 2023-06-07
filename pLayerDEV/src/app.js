@@ -47,7 +47,6 @@ let app = new Vue({
         <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
-    <hr>
     <div ref="pLayer"></div>
     <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mx-auto" shadow backdrop no-header-close>
       <b-col>
@@ -68,7 +67,6 @@ let app = new Vue({
             </p>
           </b-list-group-item>
         </b-list-group>
-        <hr>
         <b-collapse v-model="showNewGroup">
           <b-form-group
             :state="stateGroup"
@@ -84,7 +82,7 @@ let app = new Vue({
     </b-sidebar>
     <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
-        <b-input-group class="my-2">
+        <b-input-group class="my-1">
           <b-form-input
             placeholder="new username"
             @keydown.native="usernameKeydownHandler"
@@ -97,7 +95,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="my-2">
+        <b-input-group class="my-1">
           <b-form-input
             placeholder="new password"
             @keydown.native="passwordKeydownHandler" 
@@ -111,7 +109,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="my-2">
+        <b-input-group class="my-1">
           <b-form-input
             placeholder="new email"
             @keydown.native="emailKeydownHandler" 
@@ -124,9 +122,9 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
           </b-input-group-append>
         </b-input-group>
-        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-2">Report feedback</a>
+        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-1">Report feedback</a>
         <br>
-        <b-button class="my-2" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
+        <b-button class="my-1" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-sidebar>
     <b-row><b-col align="center">
@@ -177,7 +175,6 @@ let app = new Vue({
             </p>
           </b-list-group-item>
         </b-list-group>
-        <hr>
         <b-collapse v-model="showNewTrack" align="center">
           <b-form-file
             placeholder="click or drop"
@@ -186,14 +183,15 @@ let app = new Vue({
             browse-text="upload"
             @input="detectBPM"
             :disabled="busy"
+            class="m-1"
           ></b-form-file>
-          <b-input-group append="name">
+          <b-input-group append="name" class="m-1">
             <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
           </b-input-group>
-          <b-input-group append="BPM">
+          <b-input-group append="BPM" class="m-1">
             <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
           </b-input-group>
-          <p>
+          <p class="m-1">
             <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
           </p>
         </b-collapse>
@@ -202,7 +200,7 @@ let app = new Vue({
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="my-2">
+        <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="my-1">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
@@ -258,11 +256,12 @@ let app = new Vue({
               v-model="newLayer"
               browse-text="upload"
               :disabled="busy"
+              class="m-1"
             ></b-form-file>
-            <b-input-group append="name">
+            <b-input-group append="name" class="m-1">
               <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
             </b-input-group>
-            <p>
+            <p class="m-1">
               <b-button :disabled="busy || !newLayer || !newLayerName.length" variant="success" @click="postLayer()">post</b-button>
             </p>
           </b-collapse>
