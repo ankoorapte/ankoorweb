@@ -51,10 +51,12 @@ let app = new Vue({
     <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mx-auto" shadow backdrop no-header-close>
       <b-col>
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
-          <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
-            <p><b>{{group_item.name}}</b></p>
-            <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
-          </b-list-group-item>
+          <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid">
+            <b-col class="d-flex justify-content-between align-items-left">
+              <p><b>{{group_item.name}}</b></p>
+              <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
+            </b-col>  
+          </b-list-group-item>  
         </b-list-group>
         <b-list-group flush>
           <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewGroup = !showNewGroup; activeGroup = ''; activeGroupName = '';" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
