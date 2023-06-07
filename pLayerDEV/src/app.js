@@ -338,6 +338,7 @@ let app = new Vue({
         }
       });
       this.showNewGroup = !newGroup.length;
+      if(!newGroup.length) this.activeTrack = "";
       this.showNewTrack = false;
       this.showLayers = false;
     },
@@ -347,7 +348,7 @@ let app = new Vue({
       await this.getTrack();
       this.showNewTrack = !newTrack.length;
       if(newTrack.length) await this.play();
-      this.trackIdx = this.groupTracks.findIndex((track) => track.uid = newTrack);
+      //this.trackIdx = this.groupTracks.findIndex((track) => track.uid = newTrack);
       this.busy = false;
     }
   },
