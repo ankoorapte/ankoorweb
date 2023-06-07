@@ -271,7 +271,7 @@ let app = new Vue({
           </b-col></b-row>
         </b-collapse>
         <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
-        <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="my-1">
+        <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="mb-1">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
