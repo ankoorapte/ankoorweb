@@ -84,7 +84,7 @@ let app = new Vue({
     </b-sidebar>
     <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="ml-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
-        <b-input-group>
+        <b-input-group class="my-2">
           <b-form-input
             placeholder="new username"
             @keydown.native="usernameKeydownHandler"
@@ -97,7 +97,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group>
+        <b-input-group class="my-2">
           <b-form-input
             placeholder="new password"
             @keydown.native="passwordKeydownHandler" 
@@ -111,7 +111,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group>
+        <b-input-group class="my-2">
           <b-form-input
             placeholder="new email"
             @keydown.native="emailKeydownHandler" 
@@ -124,9 +124,9 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
           </b-input-group-append>
         </b-input-group>
-        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark">Report feedback</a>
+        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-2">Report feedback</a>
         <br>
-        <b-button v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
+        <b-button class="my-2" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-sidebar>
     <b-row><b-col align="center">
