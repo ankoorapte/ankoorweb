@@ -53,7 +53,7 @@ let app = new Vue({
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid">
             <b-row><b-col>
-              <p><b>{{group_item.name}}</b></p>
+              <p class="p-0 m-0"><b>{{group_item.name}}</b></p>
               <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
             </b-col></b-row>  
           </b-list-group-item>  
