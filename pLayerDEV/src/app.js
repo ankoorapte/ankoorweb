@@ -254,21 +254,23 @@ let app = new Vue({
             </b-list-group-item>
           </b-list-group>
           <b-collapse v-model="showNewLayer" align="center">
-            <b-input-group class="m-1">
-              <b-form-file
-                placeholder="click or drop"
-                accept="audio/wav"
-                v-model="newLayer"
-                browse-text="upload"
-                :disabled="busy"
-              ></b-form-file>
-            </b-input-group>
-            <b-input-group append="name" class="m-1">
-              <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
-            </b-input-group>
-            <p class="m-1">
-              <b-button :disabled="busy || !newLayer || !newLayerName.length" variant="success" @click="postLayer()">post</b-button>
-            </p>
+            <b-row><b-col align="center">
+              <b-input-group class="m-1">
+                <b-form-file
+                  placeholder="click or drop"
+                  accept="audio/wav"
+                  v-model="newLayer"
+                  browse-text="upload"
+                  :disabled="busy"
+                ></b-form-file>
+              </b-input-group>
+              <b-input-group append="name" class="m-1">
+                <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
+              </b-input-group>
+              <p class="m-1">
+                <b-button :disabled="busy || !newLayer || !newLayerName.length" variant="success" @click="postLayer()">post</b-button>
+              </p>
+            </b-col></b-row>
           </b-collapse>
         </b-collapse>
         <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
@@ -336,6 +338,7 @@ let app = new Vue({
         }
       });
       this.showNewGroup = !newGroup.length;
+      if(!newGroup.length) this.activeTrack = "";
       this.showNewTrack = false;
       this.showLayers = false;
     },
