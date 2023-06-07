@@ -177,25 +177,27 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showNewTrack" align="center">
-          <b-input-group class="m-1">
-            <b-form-file
-              placeholder="click or drop"
-              accept="audio/wav"
-              v-model="newTrack"
-              browse-text="upload"
-              @input="detectBPM"
-              :disabled="busy"
-            ></b-form-file>
-          </b-input-group>
-          <b-input-group append="name" class="m-1">
-            <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
-          </b-input-group>
-          <b-input-group append="BPM" class="m-1">
-            <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
-          </b-input-group>
-          <p class="m-1">
-            <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
-          </p>
+          <b-row><b-col align="center">
+            <b-input-group class="m-1">
+              <b-form-file
+                placeholder="click or drop"
+                accept="audio/wav"
+                v-model="newTrack"
+                browse-text="upload"
+                @input="detectBPM"
+                :disabled="busy"
+              ></b-form-file>
+            </b-input-group>
+            <b-input-group append="name" class="m-1">
+              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <b-input-group append="BPM" class="m-1">
+              <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <p class="m-1">
+              <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
+            </p>
+          </b-col></b-row>
         </b-collapse>
       </b-col>
     </b-row></b-collapse>
