@@ -336,10 +336,16 @@ let app = new Vue({
       this.showLayers = false;
     },
     async activeTrack(newTrack, oldTrack) {
-      await this.pause()
-      await this.getTrack();
-      this.showNewTrack = !newTrack.length;
-      if(newTrack.length) await this.play();
+      if(this.busy) {
+        this.activeTrack = oldTrack;
+      } else {
+        this.busy = true;
+        await this.pause()
+        await this.getTrack();
+        this.showNewTrack = !newTrack.length;
+        if(newTrack.length) await this.play();
+        this.busy = false;
+      }
     }
   },
   async created() {
