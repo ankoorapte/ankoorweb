@@ -77,7 +77,9 @@ let app = new Vue({
             <b-form-input class="my-1" placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
             <b-form-input class="my-1" placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
           </b-form-group>
-          <b-button @click="createGroup" :disabled="!stateGroup" variant="dark" class="mx-auto my-1">create group</b-button>
+          <b-row><b-col align="center">
+            <b-button @click="createGroup" :disabled="!stateGroup" variant="success" class="mx-auto my-1">create group</b-button>
+          </b-col></b-row>
         </b-collapse>
       </b-col>
     </b-sidebar>
