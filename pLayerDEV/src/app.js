@@ -52,10 +52,10 @@ let app = new Vue({
       <b-col>
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid">
-            <b-col class="d-flex justify-content-between align-items-left">
+            <b-row><b-col>
               <p><b>{{group_item.name}}</b></p>
               <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
-            </b-col>  
+            </b-col></b-row>  
           </b-list-group-item>  
         </b-list-group>
         <b-list-group flush>
@@ -95,7 +95,7 @@ let app = new Vue({
           >
           </b-form-input>
           <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
+            <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">change username</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="my-1">
@@ -108,7 +108,7 @@ let app = new Vue({
           >
           </b-form-input>
           <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
+            <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">change password</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="my-1">
@@ -120,7 +120,7 @@ let app = new Vue({
           >
           </b-form-input>
           <b-input-group-append>
-            <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
+            <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">change email</b-button>
           </b-input-group-append>
         </b-input-group>
         <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-1">Report feedback</a>
@@ -225,15 +225,15 @@ let app = new Vue({
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
             <b-list-group-item :disabled="busy" variant="secondary" @click="soloLayer(index)" href="#" class="d-flex justify-content-between align-items-center">
-                <p class="p-0 m-0"> 
-                  <b>{{ getLayerName(layer_item.id) }}</b>
-                  {{ getUserName(layer_item.user) }}
-                </p>
-                <p class="p-0 m-0">
-                  <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                  <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
-                </p>
+              <p class="p-0 m-0"> 
+                <b>{{ getLayerName(layer_item.id) }}</b>
+                {{ getUserName(layer_item.user) }}
+              </p>
+              <p class="p-0 m-0">
+                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+              </p>
             </b-list-group-item>
           </b-list-group>
         </b-collapse>
