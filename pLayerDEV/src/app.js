@@ -222,8 +222,8 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showTimeline">
           <b-list-group flush>
-            <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
-              <b-card style="height:240px" no-header>
+            <b-list-group-item variant="secondary">
+              <b-card style="height:240px" no-header class="w-100 m-0">
               </b-card>
             </b-list-group-item>
           </b-list-group>
