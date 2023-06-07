@@ -72,11 +72,12 @@ let app = new Vue({
             :state="stateGroup"
             align="center"
             description="enter emails separated by a space"
+            class="my-1"
           >
-            <b-form-input placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
-            <b-form-input placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
+            <b-form-input class="my-1" placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
+            <b-form-input class="my-1" placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
           </b-form-group>
-          <b-button @click="createGroup" :disabled="!stateGroup" variant="dark" class="mx-auto">create group</b-button>
+          <b-button @click="createGroup" :disabled="!stateGroup" variant="dark" class="mx-auto my-1">create group</b-button>
         </b-collapse>
       </b-col>
     </b-sidebar>
