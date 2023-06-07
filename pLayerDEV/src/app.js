@@ -52,10 +52,8 @@ let app = new Vue({
       <b-col>
         <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
-            <p class="p-0 m-0">
-              <b>{{group_item.name}}</b>
-              {{group_item.users.join(", ")}}
-            </p>
+            <p><b>{{group_item.name}}</b></p>
+            <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
           </b-list-group-item>
         </b-list-group>
         <b-list-group flush>
@@ -100,7 +98,6 @@ let app = new Vue({
         </b-input-group>
         <b-input-group class="my-1">
           <b-form-input
-            placeholder="new password"
             @keydown.native="passwordKeydownHandler" 
             v-model="newPassword" 
             type="password" 
@@ -114,7 +111,6 @@ let app = new Vue({
         </b-input-group>
         <b-input-group class="my-1">
           <b-form-input
-            placeholder="new email"
             @keydown.native="emailKeydownHandler" 
             v-model="newEmail"
             :state="stateEmail" 
@@ -182,7 +178,7 @@ let app = new Vue({
           <b-row><b-col align="center">
             <b-input-group class="m-1 w-75">
               <b-form-file
-                placeholder="click or drop"
+                placeholder=".wav"
                 accept="audio/wav"
                 v-model="newTrack"
                 browse-text="upload"
@@ -260,7 +256,7 @@ let app = new Vue({
             <b-row><b-col align="center">
               <b-input-group class="m-1 w-75">
                 <b-form-file
-                  placeholder="click or drop"
+                  placeholder=".wav"
                   accept="audio/wav"
                   v-model="newLayer"
                   browse-text="upload"
@@ -386,9 +382,11 @@ let app = new Vue({
         && Boolean(this.newUsername.length);
     },
     statePassword() {
+      if(!this.newPassword.length) return null;
       return this.newPassword.length >= 6;
     },
     stateEmail() {
+      if(!this.newEmail.length) return null;
       return this.newEmail.includes("@") && this.email.includes(".");
     },
     hideLayers: {
