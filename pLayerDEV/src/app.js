@@ -51,7 +51,7 @@ let app = new Vue({
     <div ref="pLayer"></div>
     <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mr-auto" shadow backdrop no-header-close>
       <b-col>
-        <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
+        <b-list-group :disabled="busy" v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
           <b-list-group-item variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
               <b>{{group_item.name}}</b>
@@ -59,7 +59,7 @@ let app = new Vue({
             </p>
           </b-list-group-item>
         </b-list-group>
-        <b-list-group flush>
+        <b-list-group :disabled="busy" flush>
           <b-list-group-item variant="dark" href="#" @click="showNewGroup = !showNewGroup; activeGroup = ''; activeGroupName = '';" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
               create a new group 
@@ -161,14 +161,14 @@ let app = new Vue({
             </b-input-group>
           </b-collapse>
         </b-form-group>
-        <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
+        <b-list-group :disabled="busy" v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
           <b-list-group-item variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
             <p class="p-0 m-0">
               <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
             </p>
           </b-list-group-item>
         </b-list-group>
-        <b-list-group flush>
+        <b-list-group :disabled="busy" flush>
           <b-list-group-item variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
               create a new track
@@ -208,7 +208,7 @@ let app = new Vue({
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
-        <b-list-group v-if="!busy && activeTrack.length > 0" flush>
+        <b-list-group :disabled="busy" v-if="!busy && activeTrack.length > 0" flush>
           <b-list-group-item variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
@@ -221,7 +221,7 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showTimeline">
-          <b-list-group flush>
+          <b-list-group :disabled="busy" flush>
             <b-list-group-item variant="secondary" class="p-0">
               <b-card style="height:240px" no-header class="w-100 m-0">
               </b-card>
@@ -229,7 +229,7 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
-          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
+          <b-list-group :disabled="busy" v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
             <b-list-group-item variant="secondary" class="d-flex justify-content-between align-items-center">
                 <p class="p-0 m-0"> 
                   <b>{{ getLayerName(layer_item.id) }}</b>
@@ -242,7 +242,7 @@ let app = new Vue({
                 </p>
             </b-list-group-item>
           </b-list-group>
-          <b-list-group flush>
+          <b-list-group :disabled="busy" flush>
             <b-list-group-item variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
               <p class="mx-auto my-0 p-0">
                 create a new layer
@@ -336,16 +336,12 @@ let app = new Vue({
       this.showLayers = false;
     },
     async activeTrack(newTrack, oldTrack) {
-      if(this.busy) {
-        this.activeTrack = oldTrack;
-      } else {
-        this.busy = true;
-        await this.pause()
-        await this.getTrack();
-        this.showNewTrack = !newTrack.length;
-        if(newTrack.length) await this.play();
-        this.busy = false;
-      }
+      this.busy = true;
+      await this.pause()
+      await this.getTrack();
+      this.showNewTrack = !newTrack.length;
+      if(newTrack.length) await this.play();
+      this.busy = false;
     }
   },
   async created() {
