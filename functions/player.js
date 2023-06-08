@@ -204,6 +204,7 @@ class Player {
     }
 
     timeline.sort((a, b) => a.when.toMillis() - b.when.toMillis());
+    timeline.forEach((event) => event.when = event.when.toDate());
     return {status: "ok", data: timeline};
   }
   async addComment(arg) {
