@@ -605,7 +605,6 @@ let app = new Vue({
       self.trackDuration = self.layerBuffers[0].decoded_data.duration;
       self.trackIdx = self.groupTracks.findIndex((track) => track.uid == self.activeTrack);
       self.timeline = await self.pLayerAPI("getTimeline", { trackID: self.activeTrack });
-      console.log(self.timeline);
       self.busy = false;
     },
     async pause() {
@@ -705,6 +704,8 @@ let app = new Vue({
       await self.updateDB();
     },
     soloLayer(index) {
+      console.log(index);
+      console.log(this.layerMute);
       for(const idx in this.layerMute) {
         if(idx === index) {
           console.log("unmuting " + idx);
