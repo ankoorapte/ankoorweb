@@ -39,7 +39,7 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
-  <b-container style="background-color:#99CAFF;">
+  <b-container>
     <b-row style="font-size:30px" class="mb-1">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
