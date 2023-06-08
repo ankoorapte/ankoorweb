@@ -178,6 +178,48 @@ class Player {
     }
     return {status: "ok"};
   }
+  async getTimeline(arg) {
+    this.validateArg(arg, ["trackID"]);
+    const timeline = [];
+    const trackDoc = await tracks.doc(arg.trackID).get();
+    if (trackDoc.data()["comments"]) {
+      timeline.push(...trackDoc.data()["comments"]);
+    }
+
+    timeline.push({
+      when: trackDoc.data().dateCreated,
+      user: trackDoc.data().user,
+      message: "created",
+      resolved: true,
+    });
+
+    for (const layerID of trackDoc.data().layers) {
+      const layerDoc = await layers.doc(layerID).get();
+      timeline.push({
+        when: layerDoc.data().dateCreated,
+        user: layerDoc.data().user,
+        message: "layered",
+        resolved: layerDoc.data().resolved,
+      });
+    }
+
+    timeline.sort((a, b) => a.when.toMillis() - b.when.toMillis());
+    return {status: "ok", data: timeline};
+  }
+  async addComment(arg) {
+    this.validateArg(arg, ["trackID", "message"]);
+    const now = admin.firestore.Timestamp.now();
+    const uid = this.user.uid;
+    await tracks.doc(arg.trackID).update({
+      comments: admin.firestore.FieldValue.arrayUnion({
+        when: now,
+        user: uid,
+        message: arg.message,
+        resolved: true,
+      }),
+    });
+    return {status: "ok"};
+  }
 }
 
 exports.api = async (arg) => {
@@ -214,6 +256,7 @@ exports.updateDB = async (file, context) => {
   if (isBase) {
     await tracks.doc(uid).set({
       layers: [uid],
+      user: user,
       name: name,
       group: group,
       dateCreated: now,

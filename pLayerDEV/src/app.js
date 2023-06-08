@@ -235,7 +235,10 @@ let app = new Vue({
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
-              <b-card style="height:300px" no-header class="w-100 m-0">
+              <b-card style="height:300px; max-height:300px; overflow: auto;" no-header class="w-100 m-0">
+                <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
+                  <p style="font-size:12px"><b>{{timeline_item.user}}: </b> {{timeline_item.message}}</p>
+                </b-list-group>
               </b-card>
             </b-list-group-item>
           </b-list-group>
@@ -326,6 +329,7 @@ let app = new Vue({
       trackDuration: 0,
       interval: 0,
       trackIdx: 0,
+      timeline: []
     }
   },
   watch: {
@@ -591,15 +595,17 @@ let app = new Vue({
       }
     }, 
     async getTrack() {
-      if(!this.groupTracks.length || !this.activeTrack.length) return;
-      this.busy = true;
-      let trackLayers = this.tracks[this.activeTrack].layers.slice();
-      this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
-      this.seeker = 0;
-      this.slider = 0;
-      this.trackDuration = this.layerBuffers[0].decoded_data.duration;
-      this.trackIdx = this.groupTracks.findIndex((track) => track.uid == this.activeTrack);
-      this.busy = false;
+      let self = this;
+      if(!self.groupTracks.length || !self.activeTrack.length) return;
+      self.busy = true;
+      let trackLayers = self.tracks[self.activeTrack].layers.slice();
+      self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
+      self.seeker = 0;
+      self.slider = 0;
+      self.trackDuration = self.layerBuffers[0].decoded_data.duration;
+      self.trackIdx = self.groupTracks.findIndex((track) => track.uid == self.activeTrack);
+      self.timeline = await self.pLayerAPI("getTimeline", { trackID: self.activeTrack });
+      self.busy = false;
     },
     async pause() {
       if(!this.paused) await this.togglePlay();
