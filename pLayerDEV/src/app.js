@@ -218,7 +218,7 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" variant="secondary" href="#" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b>{{ getLayerName(layer_item.id) }}</b>
                 {{ getUserName(layer_item.user) }}
@@ -341,7 +341,7 @@ let app = new Vue({
         }
       });
       this.showNewGroup = !newGroup.length;
-      if(!newGroup.length) this.activeTrack = "";
+      this.activeTrack = "";
       this.showNewTrack = false;
       this.showLayers = false;
     },
