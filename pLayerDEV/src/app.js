@@ -706,8 +706,10 @@ let app = new Vue({
     soloLayer(index) {
       for(const idx in this.layerMute) {
         if(idx === index) {
+          console.log("unmuting " + index);
           this.unmuteLayer(index);
         } else {
+          console.log("muting " + index);
           this.muteLayer(index);
         }
       }
