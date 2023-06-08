@@ -235,7 +235,7 @@ let app = new Vue({
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
-              <b-card style="height:300px; max-height:300px; overflow: auto;" no-header class="w-100 m-0">
+              <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
                   <p style="font-size:12px"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
@@ -600,6 +600,8 @@ let app = new Vue({
       self.busy = true;
       let trackLayers = self.tracks[self.activeTrack].layers.slice();
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
+      self.layerMute = Array(trackLayers.length).fill(false);
+      self.layerGains = Array(trackLayers.length).fill(1);
       self.seeker = 0;
       self.slider = 0;
       self.trackDuration = self.layerBuffers[0].decoded_data.duration;
