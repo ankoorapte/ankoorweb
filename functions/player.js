@@ -194,6 +194,7 @@ class Player {
     });
 
     for (const layerID of trackDoc.data().layers) {
+      if (layerID === arg.trackID) continue;
       const layerDoc = await layers.doc(layerID).get();
       timeline.push({
         when: layerDoc.data().dateCreated,
