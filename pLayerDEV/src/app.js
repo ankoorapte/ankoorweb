@@ -679,7 +679,7 @@ let app = new Vue({
       self.newTrackBPM = "";
       self.newTrack = null;
       self.busy = false;
-      self.updateDB();
+      await self.updateDB();
     },
     async postLayer() {
       let self = this;
@@ -701,7 +701,7 @@ let app = new Vue({
       self.newLayer = null;
       self.busy = false;
       self.showLayers = false;
-      self.updateDB();
+      await self.updateDB();
     },
     soloLayer(index) {
       for(const idx in this.layerMute) {
