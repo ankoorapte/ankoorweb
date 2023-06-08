@@ -61,7 +61,7 @@ let app = new Vue({
         <b-list-group flush>
           <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewGroup = !showNewGroup; activeGroup = ''; activeGroupName = '';" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
-              create a new group 
+              new group 
               <b-icon icon="plus-circle" v-if="!showNewGroup"></b-icon>
               <b-icon icon="dash-circle" v-if="showNewGroup"></b-icon>
             </p>
@@ -170,7 +170,7 @@ let app = new Vue({
         <b-list-group flush>
           <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
             <p class="mx-auto my-0 p-0">
-              create a new track
+              new track
               <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
               <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
             </p>
@@ -244,7 +244,7 @@ let app = new Vue({
           <b-list-group flush>
             <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
               <p class="mx-auto my-0 p-0">
-                create a new layer
+                new layer
                 <b-icon icon="plus-circle" v-if="!showNewLayer"></b-icon>
                 <b-icon icon="dash-circle" v-if="showNewLayer"></b-icon>
               </p>
