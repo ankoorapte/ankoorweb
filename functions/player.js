@@ -193,16 +193,15 @@ class Player {
       resolved: true,
     });
 
-    for (const layerID of trackDoc.data().layers) {
-      if (layerID === arg.trackID) continue;
-      const layerDoc = await layers.doc(layerID).get();
+    const layerDocs = await layers.where("base", "==", arg.trackID).get();
+    layerDocs.forEach((doc) => {
       timeline.push({
-        when: layerDoc.data().dateCreated,
-        user: layerDoc.data().user,
+        when: doc.data().dateCreated,
+        user: doc.data().user,
         message: "layered",
-        resolved: layerDoc.data().resolved,
+        resolved: doc.data().resolved,
       });
-    }
+    });
 
     timeline.sort((a, b) => a.when.toMillis() - b.when.toMillis());
     timeline.forEach((event) => event.when = event.when.toDate().getTime());
