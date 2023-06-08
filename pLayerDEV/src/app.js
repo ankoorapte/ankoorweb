@@ -236,7 +236,7 @@ let app = new Vue({
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="height:300px; max-height:300px; overflow: auto;" no-header class="w-100 m-0">
-                <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
+                <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
                   <p style="font-size:12px"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
               </b-card>
