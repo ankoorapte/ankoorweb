@@ -43,7 +43,7 @@ let app = new Vue({
     <b-row style="font-size:30px" class="mb-1">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
-        <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayerDEV</b></b>
+        <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayer</b></b>
         <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
