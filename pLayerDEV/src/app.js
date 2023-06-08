@@ -39,8 +39,8 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
-  <b-container>
-    <b-row style="font-size:30px" class="mb-1">
+  <b-container class="m-0 p-0">
+    <b-row style="font-size:30px" class="mb-2">
       <b-col align="center" class="d-flex justify-content-between align-items-center">
         <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
         <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayer</b></b>
