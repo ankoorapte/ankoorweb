@@ -633,6 +633,7 @@ let app = new Vue({
       self.busy = true;
       let trackLayers = self.tracks[self.activeTrack].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
+      console.log(draftLayer);
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
       self.seeker = 0;
