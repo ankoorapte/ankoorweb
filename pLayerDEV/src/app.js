@@ -237,7 +237,7 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{getDateTimestamp(timeline_item.when)}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
               </b-card>
             </b-list-group-item>
@@ -346,8 +346,8 @@ let app = new Vue({
       });
       this.showNewGroup = !newGroup.length;
       this.activeTrack = "";
-      this.showNewTrack = false;
       this.showLayers = false;
+      this.showNewTrack = false;
     },
     async activeTrack(newTrack, oldTrack) {
       this.busy = true;
@@ -774,6 +774,10 @@ let app = new Vue({
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
       return this.users[uid].displayName;
+    },
+    getDateTimestamp(when) {
+      const d = new Date(when);
+      return d.toDateString() + " " + d.toTimeString();
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
