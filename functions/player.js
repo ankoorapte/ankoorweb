@@ -197,7 +197,7 @@ class Player {
     const layerDocs = await layers.where("base", "==", arg.trackID).get();
     layerDocs.forEach((doc) => {
       timeline.push({
-        uid: trackDoc.id,
+        uid: doc.id,
         user: doc.data().user,
         when: doc.data().dateCreated,
         message: "added layer " + doc.data().name,

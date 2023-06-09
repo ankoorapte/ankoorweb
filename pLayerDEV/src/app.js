@@ -713,6 +713,7 @@ let app = new Vue({
       self.newTrackName = "";
       self.newTrackBPM = "";
       self.newTrack = null;
+      self.showNewTrack = false;
       self.busy = false;
       await self.updateDB();
     },
@@ -736,6 +737,7 @@ let app = new Vue({
       self.newLayer = null;
       self.busy = false;
       self.showLayers = false;
+      self.showNewLayer = false;
       await self.updateDB();
     },
     soloLayer(index) {
