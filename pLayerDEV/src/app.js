@@ -601,7 +601,6 @@ let app = new Vue({
       let trackLayers = self.tracks[self.activeTrack].layers.slice();
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
-      self.layerGains = Array(trackLayers.length).fill(1);
       self.seeker = 0;
       self.slider = 0;
       self.trackDuration = self.layerBuffers[0].decoded_data.duration;
