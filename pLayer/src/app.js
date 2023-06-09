@@ -238,7 +238,7 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-collapse v-model="showTimeline">
-          <b-list-group v-if="!busy && activeTrack.length > 0" flush>
+          <b-list-group v-if="!busy && activeTrack.length > 0" flush class="p-0 m-0">
             <b-list-group-item :disabled="busy" class="p-0 m-0">
               <b-card no-header class="w-100 m-0 p-0">
                 <div class="m-0 p-0" style="max-height:200px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
