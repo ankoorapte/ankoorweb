@@ -265,7 +265,7 @@ let app = new Vue({
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
-                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added new layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added new ') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
                             <b-icon icon="play-fill"></b-icon> play
                           </b-badge>
                         </p>
@@ -807,8 +807,7 @@ let app = new Vue({
       this.layerGains[index].gain.value = 1;
     },
     async uploadSubstitute(layerID) {
-      this.subLayer = layerID; 
-      console.log(this.$refs['newSub'].childNodes[1].childNodes[0]);
+      this.subLayer = layerID;
       this.$refs['newSub'].childNodes[1].childNodes[0].click();
     },
     async downloadLayer(index) {
