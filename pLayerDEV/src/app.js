@@ -223,7 +223,7 @@ let app = new Vue({
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card no-header class="w-100 m-0 p-0">
-                <div class="m-0 p-0" style="max-height:300px; overflow-y:scroll;">
+                <div class="m-0 p-0" style="max-height:300px; overflow-y:scroll; flex-direction: column-reverse">
                   <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
                     <b-row class="m-0 p-0">
                       <b-col class="m-0 p-0" align="left">
