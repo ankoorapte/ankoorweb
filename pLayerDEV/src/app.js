@@ -95,7 +95,7 @@ let app = new Vue({
           >
           </b-form-input>
           <b-input-group-append>
-            <b-button variant="dark" :disabled="busy || !newUsername.length" @click="changeUsername()">change username</b-button>
+            <b-button variant="dark" :disabled="busy || !newUsername.length || newUsername === user.displayName" @click="changeUsername()">change username</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="my-1" :disabled="busy">
