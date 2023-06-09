@@ -184,9 +184,9 @@ class Player {
   }
   async resolveSubstitution(arg) {
     this.validateArg(arg, ["layerID", "subLayer", "accept"]);
-    const trackDoc = await tracks.doc(arg.baseID).get();
-    if (trackDoc.data().user !== this.user.uid) {
-      throw new Error("user is not owner of track " + arg.baseID);
+    const layerDoc = await layers.doc(arg.subLayer).get();
+    if (layerDoc.data().user !== this.user.uid) {
+      throw new Error("user is not owner of layer " + arg.subLayer);
     }
     const now = admin.firestore.Timestamp.now();
     await layers.doc(arg.layerID).update({
@@ -194,10 +194,7 @@ class Player {
       dateUpdated: now,
     });
     if (arg.accept) {
-      await tracks.doc(arg.baseID).update({
-        layers: admin.firestore.FieldValue.arrayUnion(arg.layerID),
-        dateUpdated: now,
-      });
+      // put into track doc
     }
     return {status: "ok"};
   }
@@ -280,6 +277,7 @@ exports.updateDB = async (file, context) => {
     resolved: isBase, // if isBase, resolved!
     dateCreated: now,
     dateUpdated: now,
+    revisions: [uid],
   });
 
   if (isBase) {
