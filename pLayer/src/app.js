@@ -266,7 +266,7 @@ let app = new Vue({
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
-                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added new layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
                             <b-icon icon="play-fill"></b-icon> play
                           </b-badge>
                         </p>
@@ -859,8 +859,9 @@ let app = new Vue({
       this.draft = "";
       await this.updateDB();
     },
-    showResolve() {
+    showResolve(layerID) {
       return this.draft.length > 0 &&
+            this.draft === layerID && 
             this.user.uid === this.tracks[this.activeTrack].user;
     },
     async detectBPM() {
