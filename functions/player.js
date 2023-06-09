@@ -183,18 +183,22 @@ class Player {
     return {status: "ok"};
   }
   async resolveSubstitution(arg) {
-    this.validateArg(arg, ["layerID", "subLayer", "accept"]);
-    const layerDoc = await layers.doc(arg.subLayer).get();
-    if (layerDoc.data().user !== this.user.uid) {
-      throw new Error("user is not owner of layer " + arg.subLayer);
+    this.validateArg(arg, ["layerID", "subLayerID", "baseID", "accept"]);
+    const trackDoc = await tracks.doc(arg.baseID).get();
+    if (trackDoc.data().user !== this.user.uid) {
+      throw new Error("user is not owner of track " + arg.baseID);
     }
     const now = admin.firestore.Timestamp.now();
     await layers.doc(arg.layerID).update({
       resolved: true,
       dateUpdated: now,
     });
+
     if (arg.accept) {
-      // put into track doc
+      await layers.doc(arg.subLayerID).update({
+        revisions: admin.firestore.FieldValue.arrayUnion(arg.layerID),
+        dateUpdated: now,
+      });
     }
     return {status: "ok"};
   }
@@ -216,11 +220,14 @@ class Player {
 
     const layerDocs = await layers.where("base", "==", arg.trackID).get();
     layerDocs.forEach((doc) => {
+      const msg = (doc.data().sub.length ?
+        "added new version of '" : "added new layer '") +
+        doc.data().name + "'";
       timeline.push({
         uid: doc.id,
         user: doc.data().user,
         when: doc.data().dateCreated,
-        message: "added layer '" + doc.data().name + "'",
+        message: msg,
         resolved: doc.data().resolved,
       });
     });

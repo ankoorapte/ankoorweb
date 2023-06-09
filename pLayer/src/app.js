@@ -654,7 +654,7 @@ let app = new Vue({
       if(!self.groupTracks.length || !self.activeTrack.length) return;
       self.draft = draftLayer;
       self.busy = true;
-      let trackLayers = self.tracks[self.activeTrack].layers.slice();
+      let trackLayers = self.tracks[self.activeTrack].layers.map((layerID) => self.layers[layerID].revisions.slice(-1)[0]);
       if(draftLayer.length) trackLayers.push(draftLayer);
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
@@ -841,6 +841,19 @@ let app = new Vue({
       await this.pLayerAPI("resolveLayer",{
         layerID: layerID,
         baseID: baseID,
+        accept: accept
+      });
+      this.draft = "";
+      await this.updateDB();
+    },
+    async resolveSubstitution(layerID, accept) {
+      const baseID = this.activeTrack;
+      const subLayerID = "";//????
+      await this.pause();
+      await this.pLayerAPI("resolveSubstitution",{
+        layerID: layerID,
+        baseID: baseID,
+        subLayerID: subLayerID,
         accept: accept
       });
       this.draft = "";
