@@ -809,7 +809,7 @@ let app = new Vue({
     showResolve(layerID) {
       return this.draft.length > 0 && 
             this.draft === layerID &&
-            this.user.uid === this.tracks[activeTrack].user;
+            this.user.uid === this.tracks[this.activeTrack].user;
     },
     async detectBPM() {
       if(this.newTrack) {
