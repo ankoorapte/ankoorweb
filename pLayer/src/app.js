@@ -242,7 +242,7 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0 m-0">
               <b-card no-header class="w-100 m-0 p-0">
                 <div class="m-0 p-0" style="max-height:200px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
-                  <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
+                  <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush class="m-0 p-0">
                     <b-row class="m-0 p-1">
                       <b-col class="m-0 p-0" align="left">
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
