@@ -619,7 +619,6 @@ let app = new Vue({
     async getLayerBuffer(layerID) {
       let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
       let data = await fetch_res.arrayBuffer();
-      console.log(data);
       return {
         id: layerID,
         name: this.layers[layerID].name,
@@ -744,7 +743,7 @@ let app = new Vue({
       await self.updateDB();
     },
     soloLayer(index) {
-      for(const idx in this.layerMute) {
+      for(const idx in this.layerBuffers) {
         if(idx === index.toString()) {
           this.unmuteLayer(index);
         } else {
