@@ -237,7 +237,10 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{getDateTimestamp(timeline_item.when)}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                  <p style="font-size:12px" class="m-0 p-0 d-flex justify-content-between align-items-center">
+                    <p lass="m-0 p-0"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                    <p class="m-0 p-0 text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
+                  </p>
                 </b-list-group>
               </b-card>
             </b-list-group-item>
@@ -775,7 +778,7 @@ let app = new Vue({
       if(!uid || !Object.keys(this.users).length) return [];
       return this.users[uid].displayName;
     },
-    getDateTimestamp(when) {
+    getTimelineTimestamp(when) {
       const d = new Date(when);
       return d.toLocaleString();
     },
