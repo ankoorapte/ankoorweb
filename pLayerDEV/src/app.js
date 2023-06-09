@@ -253,6 +253,7 @@ let app = new Vue({
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
             <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
+                <b-icon icon="arrow-return-right"></b-icon>
                 <b>{{ getLayerName(layer_item.id) }}</b>
                 {{ getUserName(layer_item.user) }}
               </p>
