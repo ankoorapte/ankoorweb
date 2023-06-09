@@ -209,7 +209,7 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center p-1 m-0">
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center p-2 m-0">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
