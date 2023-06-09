@@ -757,10 +757,10 @@ let app = new Vue({
         console.log(idx);
         if(idx === index.toString()) {
           console.log("unmuting");
-          this.unmuteLayer(index);
+          this.unmuteLayer(idx);
         } else {
           console.log("muting");
-          this.muteLayer(index);
+          this.muteLayer(idx);
         }
       }
     },
