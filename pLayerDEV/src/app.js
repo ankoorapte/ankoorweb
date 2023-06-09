@@ -777,7 +777,7 @@ let app = new Vue({
     },
     getDateTimestamp(when) {
       const d = new Date(when);
-      return d.toDateString() + " " + d.toTimeString();
+      return d.toLocaleString(undefined, {timeZone: "local"});
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
