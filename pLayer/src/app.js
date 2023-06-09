@@ -16,11 +16,6 @@ import {
   uploadBytes, 
   getDownloadURL } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
 
-import { 
-  getFirestore, 
-  collection,
-  onSnapshot  } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
-
 import bpmDetective from 'https://cdn.jsdelivr.net/npm/bpm-detective@2.0.5/+esm';
 
 // FIREBASE
@@ -35,16 +30,7 @@ const firebaseConfig = {
 };
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
-const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
-
-// CACHES
-let tracks = {};
-let layers = {};
-let users = {};
-let unsubscribe_tracks = () => {};
-let unsubscribe_layers = () => {};
-let unsubscribe_users = () => {};
 
 NodeList.prototype.forEach = Array.prototype.forEach;
 
@@ -53,13 +39,95 @@ let app = new Vue({
   el: '#app',
   // GUI
   template: `
-  <b-container style="background-color:#E1F3F6;">
-    <b-row style="font-size:40px">
-      <b-col align="center">
-        <h1 @click="tabIndex = 0" class="mt-2" style="font-family:Georgia, serif;"><b>pLayer</b></h1>
+  <b-container>
+    <b-row style="font-size:35px" class="mb-2">
+      <b-col align="center" class="d-flex justify-content-between align-items-center">
+        <b-button v-if="signedIn" v-b-toggle.sidebar-group variant="outline-dark"><b-icon icon="people"></b-icon></b-button>
+        <b class="mt-1 mx-auto" style="font-family:Georgia, serif;"><b>pLayer</b></b>
+        <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
     <div ref="pLayer"></div>
+    <b-sidebar v-if="signedIn" id="sidebar-group" title="groups" header-class="mx-auto" shadow backdrop no-header-close>
+      <b-col>
+        <b-list-group v-for="(group_item, index) in myGroups" v-bind:key="group_item.uid" flush>
+          <b-list-group-item v-b-toggle.sidebar-group :disabled="busy" variant="secondary" href="#" @click="pause(); activeGroup = group_item.uid; activeGroupName = group_item.name; play()" :active="activeGroup == group_item.uid">
+            <b-row><b-col>
+              <p class="p-0 m-0"><b>{{group_item.name}}</b></p>
+              <p class="p-0 m-0">{{group_item.users.join(", ")}}</p>
+            </b-col></b-row>  
+          </b-list-group-item>  
+        </b-list-group>
+        <b-list-group flush>
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewGroup = !showNewGroup; activeGroup = ''; activeGroupName = '';" :active="showNewGroup" class="d-flex justify-content-between align-items-center">
+            <p class="mx-auto my-0 p-0">
+              new group 
+              <b-icon icon="plus-circle" v-if="!showNewGroup"></b-icon>
+              <b-icon icon="dash-circle" v-if="showNewGroup"></b-icon>
+            </p>
+          </b-list-group-item>
+        </b-list-group>
+        <b-collapse v-model="showNewGroup">
+          <b-form-group
+            :state="stateGroup"
+            align="center"
+            description="enter emails separated by a space"
+            class="my-1"
+          >
+            <b-form-input class="my-1" placeholder="group name" @keydown.native="groupKeydownHandler" v-model="newGroupName" :state="stateGroup"></b-form-input>
+            <b-form-input class="my-1" placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
+          </b-form-group>
+          <b-row><b-col align="center">
+            <b-button @click="createGroup" :disabled="!stateGroup" variant="success" class="mx-auto my-1">create group</b-button>
+          </b-col></b-row>
+        </b-collapse>
+      </b-col>
+    </b-sidebar>
+    <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
+      <b-col align="center">
+        <b-input-group class="my-1" :disabled="busy">
+          <b-form-input
+            placeholder="new username"
+            @keydown.native="usernameKeydownHandler"
+            v-model="newUsername" 
+            :state="stateUsername" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :disabled="busy || !newUsername.length || newUsername === user.displayName" @click="changeUsername()">change username</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-input-group class="my-1" :disabled="busy">
+          <b-form-input
+            @keydown.native="passwordKeydownHandler" 
+            v-model="newPassword" 
+            type="password" 
+            :state="statePassword" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :disabled="busy || !newPassword.length" @click="changePassword()">change password</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <b-input-group class="my-1" :disabled="busy">
+          <b-form-input
+            @keydown.native="emailKeydownHandler" 
+            v-model="newEmail"
+            :state="stateEmail" 
+            trim
+          >
+          </b-form-input>
+          <b-input-group-append>
+            <b-button variant="dark" :disabled="busy || !newEmail.length" @click="changeEmail()">change email</b-button>
+          </b-input-group-append>
+        </b-input-group>
+        <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-1">Report feedback</a>
+        <br>
+        <b-button :disabled="busy" class="my-1" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
+      </b-col>
+    </b-sidebar>
     <b-row><b-col align="center">
       <b-card v-if="!signedIn" align="center" class="w-75">
         <b-form-group
@@ -68,194 +136,186 @@ let app = new Vue({
           align="center"
         >
           <b-form-input placeholder="email" @keydown.native="signinKeydownHandler" v-model="email" :state="stateCredentials" trim></b-form-input>
-          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" id="input-2" v-model="password" :state="stateCredentials" trim></b-form-input>
+          <b-form-input placeholder="password" @keydown.native="signinKeydownHandler" type="password" v-model="password" :state="stateCredentials" trim></b-form-input>
         </b-form-group>
         <b-button :disabled="!stateCredentials" @click="signIn(0)" variant="success">sign in</b-button>
       </b-card>
     </b-col></b-row>
-    <b-collapse v-model="signedIn">
-      <b-tabs card align="center" v-model="tabIndex" class="mb-3">
-        <b-tab class="p-0"  :title-link-class="linkClassMain(0)">
-          <template #title>
-            <b-icon icon="person"></b-icon> {{ user && user.displayName ? user.displayName : "" }}
-          </template>
-          <b-tabs card align="center" v-model="subTabIndex">
-            <b-tab class="p-0" :title-link-class="linkClassSub(0)">
-              <template #title>
-                <b-icon icon="music-note"></b-icon> new
-              </template>
-              <b-row><b-col align="center" v-show="!busy">
-                <b-form-file
-                  placeholder=""
-                  accept="audio/wav"
-                  v-model="layer"
-                  browse-text="upload"
-                  class="mb-1 mt-1"
-                  @input="detectBPM"
-                  :disabled="busy"
-                ></b-form-file>
-                <b-input-group append="name" class="mb-1">
-                  <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
-                </b-input-group>
-                <b-input-group append="BPM" class="mb-1">
-                  <b-form-input v-model="newLayerBPM" :disabled="busy"></b-form-input>
-                </b-input-group>
-                <p class="mt-2">
-                  <b-button :disabled="busy" variant="outline-dark" @click="layering = !layering" v-if="!layering"> click to layer on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
-                  <b-button :disabled="busy" variant="danger" @click="layering = !layering" v-if="layering"> layering on top of <b>{{getTrackName(trackID)}}</b> by <b>{{getTrackArtists(trackID).join(", ")}}</b></b-button>
-                  <b-button :disabled="busy || !layer || !newLayerName.length || !newLayerBPM.length" variant="success" @click="post()"><b-icon icon="music-note-list"></b-icon> post</b-button>
-                </p>
-              </b-col></b-row>
-            </b-tab>
-            <b-tab active class="p-0" :title-link-class="linkClassSub(1)">
-              <template #title>
-                <b-icon icon="music-note-list"></b-icon> tracks
-              </template>
-              <b-list-group v-show="!busy" v-for="(disco_item, index) in discography" v-bind:key="disco_item.trackID">
-                <b-list-group-item class="p-0 d-flex justify-content-between align-items-left" @click="playDiscography(index)">
-                  <p style="font-size:14px" class="ml-2 mb-0">
-                    <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b>
-                    {{ getTrackArtists(disco_item.trackID).join(", ") }}
-                    <i style="font-size:10px" class="ml-1">     {{ getTrackBPM(disco_item.trackID) }} BPM</i>
-                    <b-badge class="ml-2" href="#" variant="info" @click="layerDiscography(index)">layer</b-badge>
-                  </p>
-                </b-list-group-item>
-              </b-list-group>
-            </b-tab>
-            <b-tab class="p-0" :title-link-class="linkClassSub(2)">
-              <template #title>
-                <p class="m-0"><b-icon icon="bell"></b-icon> notifs {{inbox.length || outbox.length ? "(" + (inbox.length+outbox.length) + ")" : ""}}</p>
-              </template>
-              <b-list-group v-for="(inbox_item, index) in inbox" v-bind:key="inbox_item.layerID">
-                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                  <p class="ml-1 mb-0">
-                    <b>{{ getUserName(inbox_item.userID) }}</b> wants to layer <b>{{ getLayerName(inbox_item.layerID) }}</b> on top of <b>{{ getLayerName(inbox_item.baseID) }}</b>
-                  </p>
-                  <p class="mr-1 mb-1">
-                    <b-badge href="#" variant="dark" @click="playDraft(index, 'inbox')"><b-icon icon="play-fill"></b-icon></b-badge>
-                    <b-badge href="#" variant="success" @click="resolveDraft(index, 1)">accept</b-badge>
-                    <b-badge href="#" variant="danger" @click="resolveDraft(index, 0)">reject</b-badge>
-                  </p>
-                </b-list-group-item>
-              </b-list-group>
-              <b-list-group v-for="(outbox_item, index) in outbox" v-bind:key="outbox_item.layerID">
-                <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                  <p class="ml-1 mb-0">You want to layer <b>{{ getLayerName(outbox_item.layerID) }}</b> on top of <b>{{ getLayerName(outbox_item.baseID) }}</b> by <b>{{ getUserName(getBaseUser(outbox_item.baseID)) }}</b></p>
-                  <p class="mr-1 mb-1">
-                    <b-badge href="#" variant="dark" @click="playDraft(index, 'outbox')"><b-icon icon="play-fill"></b-icon></b-badge>
-                  </p>
-                </b-list-group-item>
-              </b-list-group>
-            </b-tab>
-            <b-tab class="p-0" :title-link-class="linkClassSub(3)">
-              <template #title>
-                <b-icon icon="wrench"></b-icon> account
-              </template>
-              <b-col align="center">
-                <b-input-group class="m-2">
-                  <b-form-input
-                    placeholder="new username"
-                    @keydown.native="usernameKeydownHandler"
-                    v-model="newUsername" 
-                    :state="stateUsername" 
-                    trim
-                  >
-                  </b-form-input>
-                  <b-input-group-append>
-                    <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">update username</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-                <b-input-group class="m-2">
-                  <b-form-input
-                    placeholder="new password"
-                    @keydown.native="passwordKeydownHandler" 
-                    v-model="newPassword" 
-                    type="password" 
-                    :state="statePassword" 
-                    trim
-                  >
-                  </b-form-input>
-                  <b-input-group-append>
-                    <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">update password</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-                <b-input-group class="m-2">
-                  <b-form-input
-                    placeholder="new email"
-                    @keydown.native="emailKeydownHandler" 
-                    v-model="newEmail"
-                    :state="stateEmail" 
-                    trim
-                  >
-                  </b-form-input>
-                  <b-input-group-append>
-                    <b-button variant="dark" :sign="busy || !newEmail" @click="changeEmail()">update email</b-button>
-                  </b-input-group-append>
-                </b-input-group>
-                <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark">Report feedback</a>
-              </b-col>
-            </b-tab>
-            <template #tabs-end>
-              <b-button variant="outline-danger" @click="signOut" href="#" class="ml-1 p-1"><b-icon icon="box-arrow-right"></b-icon></b-button>
-            </template>
-          </b-tabs>
-        </b-tab>
-        <b-tab class="p-0" :title-link-class="linkClassMain(1)">
-          <template #title>
-            <b-icon icon="people"></b-icon> all
-          </template>
-          <b-list-group v-for="(disco_item, index) in group_discography" v-bind:key="disco_item.trackID">
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-left" @click="playGroupDiscography(index)">
-              <p style="font-size:14px" class="ml-2 mb-0">
-                <b style="font-size:16px">{{ getTrackName(disco_item.trackID) }}</b> 
-                {{ getTrackArtists(disco_item.trackID).join(", ") }}
-                <i style="font-size:10px" class="ml-1">     {{ getTrackBPM(disco_item.trackID) }} BPM</i>
-                <b-badge class="ml-2" href="#" variant="info" @click="layerGroupDiscography(index)">layer</b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-tab>
-      </b-tabs>
-    </b-collapse>
+    <b-collapse v-model="hideLayers"><b-row v-if="signedIn">
+      <b-col v-if="!activeGroup.length" class="m-auto p-5" align="center">
+        <p class="mx-auto mt-5">welcome, {{user.displayName}}</p>
+      </b-col>
+      <b-col v-if="activeGroup.length > 0">
+        <b-form-group :description="getGroupUsers(activeGroup)" align="center">
+          <b-input-group class="my-1">
+            <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
+            <b-input-group-append>
+              <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">save <b-icon icon="pencil"></b-icon></b-button>
+              <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
+            </b-input-group-append>
+          </b-input-group>
+          <b-collapse v-model="showAddUser">
+            <b-input-group class="my-1">
+              <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+              <b-input-group-append>
+                <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-collapse>
+        </b-form-group>
+        <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
+          <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
+            <p class="p-0 m-0">
+              <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
+            </p>
+          </b-list-group-item>
+        </b-list-group>
+        <b-list-group flush>
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+            <p class="mx-auto my-0 p-0">
+              new track
+              <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
+              <b-icon icon="dash-circle" v-if="showNewTrack"></b-icon>
+            </p>
+          </b-list-group-item>
+        </b-list-group>
+        <b-collapse v-model="showNewTrack" align="center">
+          <b-row><b-col align="center">
+            <b-input-group class="m-1 w-75">
+              <b-form-file
+                placeholder=".wav"
+                accept="audio/wav"
+                v-model="newTrack"
+                browse-text="upload"
+                @input="detectBPM"
+                :disabled="busy"
+              ></b-form-file>
+            </b-input-group>
+            <b-input-group append="name" class="m-1 w-75">
+              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <b-input-group append="BPM" class="m-1 w-75">
+              <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <p class="m-1">
+              <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
+            </p>
+          </b-col></b-row>
+        </b-collapse>
+      </b-col>
+    </b-row></b-collapse>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
-        <b-button-group size="lg" class="mb-2" v-if="!busy">
+        <b-list-group v-if="!busy && activeTrack.length > 0" flush>
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
+              <p class="p-0 m-0"> 
+                <b>{{ getTrackName(activeTrack) }}</b>
+                {{ getTrackArtists(activeTrack).join(", ") }}
+                <i>{{ getTrackBPM(activeTrack) }} BPM</i>
+              </p>
+              <p class="p-0 m-0">
+                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
+              </p>
+          </b-list-group-item>
+        </b-list-group>
+        <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
+            <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center">
+              <p class="p-0 m-0"> 
+                <b-icon icon="arrow-return-right"></b-icon>
+                <b>{{ getLayerName(layer_item.id) }}</b>
+                {{ getUserName(layer_item.user) }} 
+                <i v-if="draft.length > 0 && draft === layer_item.id">(DRAFT)</i>
+              </p>
+              <p class="p-0 m-0">
+                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
+              </p>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
+        <b-collapse v-model="showTimeline">
+          <b-list-group v-if="!busy && activeTrack.length > 0" flush>
+            <b-list-group-item :disabled="busy" class="p-0">
+              <b-card no-header class="w-100 m-0 p-0">
+                <div class="m-0 p-0" style="max-height:200px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
+                  <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
+                    <b-row class="m-0 p-1">
+                      <b-col class="m-0 p-0" align="left">
+                        <p style="font-size:13px" class="m-0 p-0 mr-auto">
+                          <b>{{getUserName(timeline_item.user)}}: </b> 
+                          {{timeline_item.message}} 
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
+                            <b-icon icon="play-fill"></b-icon>
+                          </b-badge>
+                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 1)">
+                            accept
+                          </b-badge>
+                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 0)">
+                            reject
+                          </b-badge>
+                        </p>
+                      </b-col>
+                      <b-col class="m-0 p-0" align="right"> 
+                        <p style="font-size:13px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
+                      </b-col>
+                    </b-row>
+                  </b-list-group>
+                </div>
+                <b-input-group class="m-0 p-0" :disabled="busy" size="sm">
+                  <b-form-input
+                    @keydown.native="commentKeydownHandler" 
+                    v-model="newComment"
+                  >
+                  </b-form-input>
+                  <b-input-group-append>
+                    <b-button variant="dark" :disabled="busy || !newComment.length" @click="addComment()"><b-icon icon="chat-fill"></b-icon></b-button>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-card>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
+        <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
+          <b-list-group flush>
+            <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
+              <p class="mx-auto my-0 p-0">
+                new layer
+                <b-icon icon="plus-circle" v-if="!showNewLayer"></b-icon>
+                <b-icon icon="dash-circle" v-if="showNewLayer"></b-icon>
+              </p>
+            </b-list-group-item>
+          </b-list-group>
+        </b-collapse>
+        <b-collapse v-model="showNewLayer" v-show="!busy" align="center">
+          <b-row v-show="!busy && showNewLayer"><b-col align="center">
+            <b-input-group class="m-1 w-75">
+              <b-form-file
+                placeholder=".wav"
+                accept="audio/wav"
+                v-model="newLayer"
+                browse-text="upload"
+                :disabled="busy"
+              ></b-form-file>
+            </b-input-group>
+            <b-input-group append="name" class="m-1 w-75">
+              <b-form-input v-model="newLayerName" :disabled="busy"></b-form-input>
+            </b-input-group>
+            <p class="m-1">
+              <b-button :disabled="busy || !newLayer || !newLayerName.length" variant="success" @click="postLayer()">post</b-button>
+            </p>
+          </b-col></b-row>
+        </b-collapse>
+        <b-form-input v-if="!busy && activeTrack.length > 0" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
+        <b-button-group v-if="!busy && activeTrack.length > 0" size="lg" class="mb-1">
           <b-button class="p-1" variant="dark" @click="toggleTrack(0)"><b-icon icon="skip-backward-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="pause()" v-show="!paused"><b-icon icon="pause-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="play()" v-show="paused"><b-icon icon="play-fill"></b-icon></b-button>
           <b-button class="p-1" variant="dark" @click="toggleTrack(1)"><b-icon icon="skip-forward-fill"></b-icon></b-button>
         </b-button-group>
-        <b-list-group v-if="!busy">
-          <b-list-group-item class="p-1 d-flex justify-content-between align-items-center" @click="showLayers = !showLayers">
-              <p style="font-size:14px" class="ml-2 mb-0"> 
-                <b style="font-size:18px">{{ getTrackName(trackID) }}</b>
-                {{ getTrackArtists(trackID).join(", ") }}
-                <i style="font-size:10px" class="ml-1">     {{ getTrackBPM(trackID) }} BPM</i>
-                <b-badge class="ml-2" v-show="!draft.length" href="#" variant="info" @click="layering = true; tabIndex = 0; subTabIndex = 0;">layer</b-badge>
-                <i v-show="draft.length">draft version with new layer <b>{{getLayerName(draft)}}</b></i>
-              </p>
-              <p class="mr-2 mb-0" style="font-size:14px">
-                {{ trackTimestamp(slider) }}/{{ trackTimestamp(trackDuration) }}
-              </p>
-          </b-list-group-item>
-        </b-list-group>
-        <b-collapse v-model="showLayers" class="mb-2" v-if="!busy">
-          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index">
-            <b-list-group-item class="p-0 d-flex justify-content-between align-items-center">
-                <p style="font-size:14px" class="ml-2 mb-0"> 
-                  <b style="font-size:14px">{{ getLayerName(layer_item.id) }}</b>
-                  {{ getUserName(layer_item.user) }}
-                </p>
-                <p class="mr-2 mb-1">
-                  <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                  <b-badge href="#" variant="info" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
-                </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-collapse>
-        <b-form-input v-if="!busy" type="range" @input="seekerInput" v-model="slider" min="0" :max="trackDuration" step="0.1"></b-form-input>
         <p style="font-size:9px" class="m-auto">Copyright © 2023 - Ankoor Apte. All rights reserved.</p>
       </b-col>
     </b-navbar>
@@ -263,40 +323,77 @@ let app = new Vue({
   `,
   data() {
     return {
+      busy: true,
+      tracks: {},
+      layers: {},
+      users: {},
+      groups: {},
       user: "",
       signedIn: false,
       email: "",
       password: "",
+      myGroups: [],
+      newGroupName: "",
+      newGroupUsers: "",
+      activeGroup: "",
+      activeGroupName: "",
       newUsername: "",
       newPassword: "",
       newEmail: "",
-      busy: true,
-      layer: null,
-      layers: [],
-      layerGains: [],
-      layerMute: [],
-      layerBuffers: [],
+      showNewGroup: false,
+      showAddUser: false,
+      showNewTrack: false,
+      showNewLayer: false,
+      showLayers: false,
+      userToAdd: "",
+      newTrack: null,
+      newTrackName: "",
+      newLayer: null,
       newLayerName: "",
-      newLayerBPM: "",
-      trackID: "",
-      trackIdx: 0,
-      layering: false,
+      newTrackBPM: "",
+      activeTrack: "",
+      groupTracks: [],
       paused: true,
+      layerBuffers: [],
       audioContext: null,
       merger: null,
+      layerMute: [],
+      layerGains: [],
+      trackLayers: [],
       seeker: 0,
-      inbox: [],
-      outbox: [],
-      discography: [],
-      group_discography: [],
-      draft: "",
-      tabIndex: 1,
-      subTabIndex: 0,
-      showLayers: false,
-      trackDuration: 0,
-      interval: null,
       slider: 0,
+      trackDuration: 0,
+      interval: 0,
+      trackIdx: 0,
+      timeline: [],
+      newComment: "",
+      draft: "",
     }
+  },
+  watch: {
+    // whenever question changes, this function will run
+    activeGroup(newGroup, oldGroup) {
+      let self = this;
+      self.pause();
+      self.groupTracks = Object.keys(self.tracks).filter((trackID) => self.layers[trackID].group === newGroup).map((trackID) => {
+        return {
+          uid: trackID,
+          name: self.tracks[trackID].name,
+          layers: self.tracks[trackID].layers
+        }
+      });
+      this.showNewGroup = !newGroup.length;
+      this.activeTrack = "";
+      this.showLayers = false;
+      this.showNewTrack = false;
+    },
+    async activeTrack(newTrack, oldTrack) {
+      this.busy = true;
+      await this.pause()
+      await this.getTrack();
+      if(newTrack.length) await this.play();
+      this.busy = false;
+    },
   },
   async created() {
     let self = this;
@@ -305,54 +402,54 @@ let app = new Vue({
       if(user) { await self.signIn(user); }
       if(self.signedIn) {
         self.resetAudioContext();
-        self.showLayers = false;
-        unsubscribe_layers = onSnapshot(collection(db, "layers"), (layerDocs) => {
-          layers = {};
-          layerDocs.forEach((doc) => {
-            layers[doc.id] = doc.data();
-          });
-          self.updateBoxes();
-        });
-
-        unsubscribe_tracks = onSnapshot(collection(db, "tracks"), (trackDocs) => {
-          tracks = {};
-          trackDocs.forEach((doc) => {
-            tracks[doc.id] = doc.data();
-          });
-          self.trackID = Object.keys(tracks)[0];
-          self.updateDiscography();
-          self.getTrack();
-        });
-
-        unsubscribe_users = onSnapshot(collection(db, "users"), (userDocs) => {
-          users = {};
-          userDocs.forEach((doc) => {
-            users[doc.id] = doc.data();
-          });
-        });
+        await self.updateDB();
       }
       self.busy = false;
     });
     self.busy = false;
   },
   computed: {
-    stateCredentials() {
-      return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
-    },
     invalidCredentials() {
       return 'enter a valid email ID and password with minimum 6 characters.'
     },
+    stateCredentials() {
+      return this.password.length >= 6 && this.email.includes("@") && this.email.includes(".");
+    },
+    stateGroup() {
+      return Boolean(this.newGroupName.length) && this.newGroupUsers.split(" ").filter((s) => s.length).every((email) => Object.keys(this.users).map((uid) => this.users[uid].email).includes(email));
+    },
+    stateAddUser() {
+      return Object.keys(this.users).map((uid) => this.users[uid].email).includes(this.userToAdd);
+    },
     stateUsername() {
       return this.user
-        && !Object.keys(users).includes(this.newUsername)
+        && !Object.keys(this.users).includes(this.newUsername)
         && Boolean(this.newUsername.length);
     },
     statePassword() {
+      if(!this.newPassword.length) return null;
       return this.newPassword.length >= 6;
     },
     stateEmail() {
+      if(!this.newEmail.length) return null;
       return this.newEmail.includes("@") && this.email.includes(".");
     },
+    hideLayers: {
+      get() {
+        return !this.showLayers;
+      },
+      set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        this.showLayers = !newValue;
+      }
+    },
+    showTimeline: {
+      get() {
+        return Boolean(this.activeGroup.length) && Boolean(this.activeTrack.length) && this.showLayers && !this.showNewLayer;
+      },
+      set(newValue) {
+      }
+    }
   },
   methods: {
     isMobile() {
@@ -381,6 +478,22 @@ let app = new Vue({
       } else {
         throw new Error("No status found in response");
       }
+    },
+    async updateDB() {
+      let self = this;
+      const db = await self.pLayerAPI("getDB");
+      self.tracks = db.tracks;
+      self.layers = db.layers;
+      self.users = db.users;
+      self.groups = db.groups;
+      self.myGroups = Object.keys(self.groups).filter((groupID) => self.groups[groupID].users.includes(self.user.uid)).map((uid) => {
+        return {
+          uid: uid,
+          name: self.groups[uid].name,
+          users: self.groups[uid].users.map(this.getUserName)
+        }
+      });
+      if(self.activeTrack.length) self.timeline = await self.pLayerAPI("getTimeline", { trackID: self.activeTrack });
     },
     async createUser() {
       let self = this;
@@ -421,15 +534,24 @@ let app = new Vue({
     async signOut() {
       this.resetAudioContext();
       await this.pause();
-      unsubscribe_tracks();
-      unsubscribe_layers();
-      unsubscribe_users();
       this.signedIn = false;
       this.user = null;
       this.email = "";
       this.password = "";
-      this.showLayers = false;
+      this.tracks = {};
+      this.layers = {};
+      this.users = {};
       await signOut(auth);
+    },
+    async createGroup() {
+      let self = this;
+      const newGroupUserList = self.newGroupUsers.split(" ").filter((s) => s.length);
+      await self.pLayerAPI("createGroup", {
+        name: self.newGroupName,
+        groupID: uuidv4(),
+        users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
+      });
+      await self.updateDB();
     },
     async changeUsername(un) {
       if(!un) un = this.newUsername;
@@ -438,6 +560,7 @@ let app = new Vue({
         field: "displayName",
         value: un
       });
+      await this.updateDB();
     },
     async changePassword() {
       let pw = this.newPassword;
@@ -454,6 +577,27 @@ let app = new Vue({
       });
       await this.signOut();
     },
+    async changeGroupName() {
+      let name = this.activeGroupName;
+      let gid = this.activeGroup;
+      await this.pLayerAPI("updateGroup",{
+        groupID: gid,
+        field: "name",
+        value: name
+      });
+      await this.updateDB();
+    },
+    async addUser() {
+      let newUser = Object.keys(this.users).filter((uid) => this.users[uid].email == this.userToAdd)[0];
+      let gid = this.activeGroup;
+      await this.pLayerAPI("updateGroup",{
+        groupID: gid,
+        field: "users",
+        value: newUser
+      });
+      this.showAddUser = false;
+      await this.updateDB();
+    },
     async seekerInput(seek) {
       clearInterval(this.interval);
       this.seeker = parseFloat(seek);
@@ -464,6 +608,147 @@ let app = new Vue({
       this.slider = this.seeker + this.audioContext.currentTime;
       if(this.slider > this.trackDuration) {
         clearInterval(this.interval);
+      }
+    },
+    resetAudioContext() {
+      this.audioContext = new AudioContext();
+      this.merger = this.audioContext.createChannelMerger(2)
+      this.merger.connect(this.audioContext.createMediaStreamDestination());
+      this.merger.connect(this.audioContext.destination);
+    },
+    async getLayerBuffer(layerID) {
+      let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
+      let data = await fetch_res.arrayBuffer();
+      return {
+        id: layerID,
+        name: this.layers[layerID].name,
+        user: this.layers[layerID].user,
+        data: data.slice(),
+        decoded_data: await this.audioContext.decodeAudioData(data)
+      }
+    }, 
+    async getTrack(draftLayer="") {
+      let self = this;
+      await self.pause();
+      if(!self.groupTracks.length || !self.activeTrack.length) return;
+      self.draft = draftLayer;
+      self.busy = true;
+      let trackLayers = self.tracks[self.activeTrack].layers.slice();
+      if(draftLayer.length) trackLayers.push(draftLayer);
+      self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
+      self.layerMute = Array(trackLayers.length).fill(false);
+      self.seeker = 0;
+      self.slider = 0;
+      self.trackDuration = self.layerBuffers[0].decoded_data.duration;
+      self.trackIdx = self.groupTracks.findIndex((track) => track.uid == self.activeTrack);
+      self.timeline = await self.pLayerAPI("getTimeline", { trackID: self.activeTrack });
+      self.busy = false;
+    },
+    async pause() {
+      if(!this.paused) await this.togglePlay();
+    },
+    async play() {
+      if(this.paused) await this.togglePlay();
+    },
+    async togglePlay() {
+        if(this.paused) {
+          this.resetAudioContext();
+          for(const idx in this.layerBuffers) {
+            var gainNode = this.audioContext.createGain();
+            gainNode.gain.value = this.layerMute[idx] ? 0 : 1;
+            gainNode.connect(this.merger, 0, 0);
+            gainNode.connect(this.merger, 0, 1);
+            this.layerGains.push(gainNode);
+            let source = this.audioContext.createBufferSource();
+            source.buffer = this.layerBuffers[idx].decoded_data;
+            source.connect(gainNode);
+            source.start(0, this.seeker);
+            this.trackLayers.push(source);
+            let self = this;
+            source.onended = () => {
+              if(Math.ceil(self.slider) == Math.ceil(self.trackDuration)) {
+                self.pause();
+                self.slider = 0;
+                self.seeker = 0;
+              }
+            }
+          }
+          this.interval = setInterval(this.updateSlider, 100);
+        } else {
+          clearInterval(this.interval);
+          this.seeker += this.audioContext.currentTime;
+          this.trackLayers.forEach((node) => node.stop());
+          this.trackLayers = [];
+          this.layerGains = [];
+        }
+      this.paused = !this.paused;
+    },
+    async toggleTrack(forward) {
+      await this.pause();
+      this.busy = true;
+      if(forward) { this.trackIdx++; }
+      else { 
+        if(!this.trackIdx) this.trackIdx = this.groupTracks.length;
+        this.trackIdx--;
+      }
+      this.trackIdx = this.trackIdx % this.groupTracks.length;
+      this.activeTrack = this.groupTracks[this.trackIdx].uid;
+      await this.getTrack();
+      this.busy = false;
+    },
+    async postTrack() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const trackPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.newTrackName,
+          'user': self.user.uid,
+          'base': "",
+          'bpm': self.newTrackBPM,
+          'group': self.activeGroup
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(trackPath, self.newTrack, metadata);
+      self.newTrackName = "";
+      self.newTrackBPM = "";
+      self.newTrack = null;
+      self.showNewTrack = false;
+      self.busy = false;
+      await self.updateDB();
+    },
+    async postLayer() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const trackPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.newLayerName,
+          'user': self.user.uid,
+          'base': self.activeTrack,
+          'bpm': self.getTrackBPM(self.activeTrack),
+          'group': self.activeGroup
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(trackPath, self.newLayer, metadata);
+      self.newLayerName = "";
+      self.newLayer = null;
+      self.busy = false;
+      self.showLayers = false;
+      self.showNewLayer = false;
+      await self.updateDB();
+    },
+    soloLayer(index) {
+      for(const idx in this.layerBuffers) {
+        if(idx === index.toString()) {
+          this.unmuteLayer(index);
+        } else {
+          this.muteLayer(index);
+        }
       }
     },
     muteLayer(index) {
@@ -487,196 +772,31 @@ let app = new Vue({
       window.URL.revokeObjectURL(url);
       this.busy = false;
     },
-    async detectBPM() {
-      if(this.layer) {
-        let ac = new AudioContext();
-        this.newLayerBPM = bpmDetective(await ac.decodeAudioData(await this.layer.arrayBuffer())).toString();  
-      }
-    },
-    resetAudioContext() {
-      this.audioContext = new AudioContext();
-      this.merger = this.audioContext.createChannelMerger(2)
-      this.merger.connect(this.audioContext.createMediaStreamDestination());
-      this.merger.connect(this.audioContext.destination);
-    },
-    async getLayerBuffer(layerID) {
-      let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
-      let data = await fetch_res.arrayBuffer();
-      return {
-        id: layerID,
-        name: layers[layerID].name,
-        user: layers[layerID].user,
-        data: data.slice(),
-        decoded_data: await this.audioContext.decodeAudioData(data)
-      }
-    }, 
-    async getTrack(draftLayer="") {
-      if(!Object.keys(tracks).length) return;
-      this.busy = true;
-      this.showLayers = false;
-      let trackLayers = tracks[this.trackID].layers.slice();
-      if(draftLayer.length) trackLayers.push(draftLayer);
-      this.draft = draftLayer;
-      this.layerBuffers = await Promise.all(trackLayers.map(this.getLayerBuffer));
-      this.seeker = 0;
-      this.slider = 0;
-      this.trackDuration = this.layerBuffers[0].decoded_data.duration;
-      this.busy = false;
-    },
-    async pause() {
-      if(!this.paused) await this.togglePlay();
-    },
-    async play() {
-      if(this.paused) await this.togglePlay();
-    },
-    async togglePlay() {
-        if(this.paused) {
-          this.resetAudioContext();
-          for(const idx in this.layerBuffers) {
-            var gainNode = this.audioContext.createGain();
-            gainNode.gain.value = this.layerMute[idx] ? 0 : 1;
-            gainNode.connect(this.merger, 0, 0);
-            gainNode.connect(this.merger, 0, 1);
-            this.layerGains.push(gainNode);
-            let source = this.audioContext.createBufferSource();
-            source.buffer = this.layerBuffers[idx].decoded_data;
-            source.connect(gainNode);
-            source.start(0, this.seeker);
-            this.layers.push(source);
-            let self = this;
-            source.onended = () => {
-              if(Math.ceil(self.slider) == Math.ceil(self.trackDuration)) {
-                self.pause();
-              }
-            }
-          }
-          this.interval = setInterval(this.updateSlider, 100);
-        } else {
-          clearInterval(this.interval);
-          this.seeker += this.audioContext.currentTime;
-          this.layers.forEach((node) => node.stop());
-          this.layers = [];
-          this.layerGains = [];
-        }
-      this.paused = !this.paused;
-    },
-    async toggleTrack(forward) {
-      await this.pause();
-      this.busy = true;
-      if(forward) { this.trackIdx++; }
-      else { 
-        if(!this.trackIdx) this.trackIdx = Object.keys(tracks).length;
-        this.trackIdx--;
-      }
-      this.trackIdx = this.trackIdx % Object.keys(tracks).length;
-      this.trackID = Object.keys(tracks)[this.trackIdx];
-      await this.getTrack();
-      this.busy = false;
-    },
-    async post() {
+    async addComment() {
       let self = this;
-      await self.pause();
-      self.busy = true;
-      const uid = uuidv4();
-      const layerPath = ref(storage, uid);
-      const metadata = {
-        customMetadata: {
-          'name': self.newLayerName,
-          'user': self.user.uid,
-          'base': self.layering ? self.trackID : "",
-          'bpm': self.newLayerBPM,
-        },
-        contentType: 'audio/wav'
-      }; 
-      await uploadBytes(layerPath, self.layer, metadata);
-      self.newLayerName = "";
-      self.newLayerBPM = "";
-      self.layer = null;
-      self.layering = false;
-      self.busy = false;
+      let arg = {
+        trackID: self.activeTrack,
+        message: self.newComment
+      }
+      await self.pLayerAPI("addComment", arg);
+      self.timeline = await self.pLayerAPI("getTimeline", arg);
+      self.newComment = "";
     },
-    updateBoxes() {
-      let self = this;
-      let layersArray = Object.keys(layers).map((layerID) => layers[layerID]);
-      let myLayers = layersArray.filter((layer) => layer.user === self.user.uid);
-      let myBaseIDs = myLayers.filter((layer) => !layer.base.length).map((layer) => layer.bucket);
-      let submissions = myLayers.filter((layer) => !layer.resolved);
-
-      self.inbox = layersArray.filter((layer) => myBaseIDs.includes(layer.base) && !layer.resolved).map((layer) => {
-        return {
-          layerID: layer.bucket,
-          userID: layer.user,
-          baseID: layer.base
-        }
-      });
-
-      self.outbox = submissions.map((layer) => { 
-        return {
-          layerID: layer.bucket,
-          userID: layer.user,
-          baseID: layer.base
-        }  
-      });
-    },
-    updateDiscography() {
-      this.discography = Object.keys(tracks).filter((trackID) => layers[trackID].user == this.user.uid).map((t) => {return {trackID:t}});
-      this.group_discography = Object.keys(tracks).map((t) => {return {trackID:t}});
-    },
-    async playDiscography(index) {
+    async resolveDraft(layerID, accept) {
+      const baseID = this.activeTrack;
       await this.pause();
-      this.trackID = this.discography[index].trackID;
-      await this.getTrack();
-      await this.play();
-    },
-    async layerDiscography(index) {
-      await this.pause();
-      this.trackID = this.discography[index].trackID;
-      await this.getTrack();
-      this.layering = true;
-      this.tabIndex = 0;
-      this.subTabIndex = 0;
-    },
-    async playGroupDiscography(index) {
-      await this.pause();
-      this.trackID = this.group_discography[index].trackID;
-      await this.getTrack();
-      await this.play();
-    },
-    async layerGroupDiscography(index) {
-      await this.pause();
-      this.trackID = this.group_discography[index].trackID;
-      await this.getTrack();
-      this.layering = true;
-      this.tabIndex = 0;
-      this.subTabIndex = 0;
-    },
-    async playDraft(index, whichbox) {
-      await this.pause();
-      this.trackID = this[whichbox][index].baseID
-      await this.getTrack(this[whichbox][index].layerID);
-    },
-    async resolveDraft(index, accept) {
-      await this.pause();
-      let layerID = this.inbox[index].layerID;
-      let baseID = this.inbox[index].baseID;
       await this.pLayerAPI("resolveLayer",{
         layerID: layerID,
         baseID: baseID,
         accept: accept
       });
+      this.draft = "";
+      await this.updateDB();
     },
-    linkClassMain(index) {
-      if (this.tabIndex === index) {
-        return ['bg-white', 'text-dark']
-      } else {
-        return ['text-dark']
-      }
-    },
-    linkClassSub(index) {
-      if (this.subTabIndex === index) {
-        return ['bg-white', 'text-dark', 'p-1', 'm-0']
-      } else {
-        return ['text-dark', 'p-1', 'm-0']
+    async detectBPM() {
+      if(this.newTrack) {
+        let ac = new AudioContext();
+        this.newTrackBPM = bpmDetective(await ac.decodeAudioData(await this.newTrack.arrayBuffer())).toString();  
       }
     },
     trackTimestamp(seconds) {
@@ -686,43 +806,51 @@ let app = new Vue({
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
-    getLayerName(uid) {
-      if(!uid || !Object.keys(layers).length) return [];
-      return layers[uid].name;
+    getTimelineTimestamp(when) {
+      const d = new Date(when);
+      return d.toLocaleString();
     },
-    getLayerURL(buffer) {
-      return window.URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
-    },
-    getBaseUser(uid) {
-      if(!uid || !Object.keys(layers).length) return [];
-      return layers[uid].user;
+    getGroupUsers(uid) {
+      if(!uid || !Object.keys(this.groups).length) return [];
+      return this.groups[uid].users.map(this.getUserName).join(", ");
     },
     getTrackBPM(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return layers[uid].bpm;
+      if(!uid || !Object.keys(this.tracks).length) return [];
+      return this.layers[uid].bpm;
     },
     getTrackName(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return tracks[uid].name;
+      if(!uid || !Object.keys(this.tracks).length) return "";
+      return this.tracks[uid].name;
     },
     getTrackArtists(uid) {
-      if(!uid || !Object.keys(tracks).length) return [];
-      return [...new Set(tracks[uid].layers.map((layerID) => this.getUserName(layers[layerID].user)))];
+      if(!uid || !Object.keys(this.tracks).length) return [];
+      return [...new Set(this.tracks[uid].layers.map((layerID) => this.getUserName(this.layers[layerID].user)))];
+    },
+    getLayerName(uid) {
+      if(!uid || !Object.keys(this.layers).length) return "";
+      return this.layers[uid].name;
+    },
+    getLayerUser(uid) {
+      if(!uid || !Object.keys(this.layers).length) return [];
+      return this.layers[uid].user;
+    },
+    getLayerId(name) {
+
     },
     getUserName(uid) {
-      if(!uid || !Object.keys(users).length) return [];
-      return users[uid].displayName;
-    },
-    signinKeydownHandler(event) {
-      if (event.which === 13 && this.stateCredentials) {
-        this.signIn();
-      }
+      if(!uid || !Object.keys(this.users).length) return [];
+      return this.users[uid].displayName;
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
         this.changeUsername();
       }
-    },
+    },    
+    commentKeydownHandler(event) {
+      if (event.which === 13 && this.newComment.length) {
+        this.addComment();
+      }
+    },  
     passwordKeydownHandler(event) {
       if (event.which === 13 && this.statePassword) {
         this.changePassword();
@@ -732,6 +860,24 @@ let app = new Vue({
       if (event.which === 13 && this.stateEmail) {
         this.changeEmail();
       }
+    },
+    async signinKeydownHandler(event) {
+      if (event.which === 13 && this.stateCredentials) {
+        await this.signIn();
+      }
+    },
+    async groupKeydownHandler(event) {
+      if (event.which === 13 && this.stateGroup) {
+        await this.createGroup();
+      }
+    },
+    async addUserKeydownHandler(event) {
+      if (event.which === 13 && this.stateGroup) {
+        await this.addUser();
+      }
+    },
+    layerVariant(layerID) {
+      return this.draft === layerID ? "light" : "secondary";
     }
   }
 });
