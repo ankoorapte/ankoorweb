@@ -395,6 +395,9 @@ let app = new Vue({
       if(newTrack.length) await this.play();
       this.busy = false;
     },
+    showLayers(newBool, oldBool) {
+      if(!newBool) this.showNewLayer = false;
+    }
   },
   async created() {
     let self = this;
