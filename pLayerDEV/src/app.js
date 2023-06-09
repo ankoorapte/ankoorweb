@@ -221,10 +221,14 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="max-height:300px; overflow: scroll; flex-direction: column-reverse" no-header class="w-100 m-0 p-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <b-row class="m-0 p-0"><b-col class="m-0 p-0 d-flex justify-content-between align-items-center">
-                    <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
-                    <p style="font-size:12px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
-                  </b-col></b-row>
+                  <b-row class="m-0 p-0">
+                    <b-col class="m-0 p-0" align="left">
+                      <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                    </b-col>
+                    <b-col class="m-0 p-0" align="right"> 
+                      <p style="font-size:12px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
+                    </b-col>
+                  </b-row>
                 </b-list-group>
                 <b-input-group class="m-0 p-0" style="font-size:12px" :disabled="busy" size="sm">
                   <b-form-input
