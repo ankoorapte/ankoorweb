@@ -205,6 +205,15 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-row></b-collapse>
+    <b-input-group v-show="false">
+      <b-form-file
+        ref="newSub"
+        accept="audio/wav"
+        v-model="newSub"
+        @input="postSubstitution"
+        :disabled="busy"
+      ></b-form-file>
+    </b-input-group>
     <b-navbar v-if="signedIn" variant="faded" fixed="bottom" type="dark">
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
@@ -221,34 +230,37 @@ let app = new Vue({
           </b-list-group-item>
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
-          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center p-1 m-0">
-              <p class="p-0 m-0"> 
-                <b-icon icon="arrow-return-right"></b-icon>
-                <b>{{ getLayerName(layer_item.id) }}</b>
-                {{ getUserName(layer_item.user) }} 
-                <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 1)">
-                  accept
-                </b-badge>
-                <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 0)">
-                  reject
-                </b-badge>
-                <i v-if="draft.length > 0 && draft === layer_item.id"></i>
-              </p>
-              <p class="p-0 m-0">
-                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
-                <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
+          <div class="m-0 p-0" style="max-height:128px; overflow-y:scroll;">
+            <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
+              <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center p-1 m-0">
+                <p class="p-0 m-0"> 
+                  <b-icon icon="arrow-return-right"></b-icon>
+                  <b>{{ getLayerName(layer_item.id) }}</b>
+                  {{ getUserName(layer_item.user) }} 
+                  <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 1)">
+                    accept
+                  </b-badge>
+                  <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 0)">
+                    reject
+                  </b-badge>
+                  <i v-if="draft.length > 0 && draft === layer_item.id"></i>
+                </p>
+                <p class="p-0 m-0">
+                  <b-badge href="#" variant="dark" @click="subLayer = layer_item.id; $refs['newSub'].click()"><b-icon icon="upload"></b-icon></b-badge>
+                  <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                  <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
+                  <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                  <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                </p>
+              </b-list-group-item>
+            </b-list-group>
+          </div>
         </b-collapse>
         <b-collapse v-model="showTimeline" class="p-0 m-0">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush class="p-0 m-0">
             <b-list-group-item :disabled="busy" class="p-0 m-0">
               <b-card no-header class="w-100 m-0 p-0">
-                <div class="m-0 p-0" style="max-height:200px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
+                <div class="m-0 p-0" style="max-height:150px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
                   <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush class="m-0 p-0">
                     <b-row class="m-0 py-1 px-0">
                       <b-col class="m-0 p-0" align="left">
@@ -352,6 +364,8 @@ let app = new Vue({
       newTrack: null,
       newTrackName: "",
       newLayer: null,
+      newSub: null,
+      subLayer: "",
       newLayerName: "",
       newTrackBPM: "",
       activeTrack: "",
@@ -714,6 +728,7 @@ let app = new Vue({
           'name': self.newTrackName,
           'user': self.user.uid,
           'base': "",
+          'sub': "",
           'bpm': self.newTrackBPM,
           'group': self.activeGroup
         },
@@ -737,6 +752,7 @@ let app = new Vue({
           'name': self.newLayerName,
           'user': self.user.uid,
           'base': self.activeTrack,
+          'sub': "",
           'bpm': self.getTrackBPM(self.activeTrack),
           'group': self.activeGroup
         },
@@ -744,6 +760,31 @@ let app = new Vue({
       }; 
       await uploadBytes(trackPath, self.newLayer, metadata);
       self.newLayerName = "";
+      self.newLayer = null;
+      self.busy = false;
+      self.showLayers = false;
+      self.showNewLayer = false;
+      await self.updateDB();
+    },
+    async postSubstitution() {
+      let self = this;
+      self.busy = true;
+      const uid = uuidv4();
+      const trackPath = ref(storage, uid);
+      const metadata = {
+        customMetadata: {
+          'name': self.layers[self.subLayer].name,
+          'user': self.user.uid,
+          'base': self.activeTrack,
+          'sub': self.subLayer,
+          'bpm': self.getTrackBPM(self.activeTrack),
+          'group': self.activeGroup
+        },
+        contentType: 'audio/wav'
+      }; 
+      await uploadBytes(trackPath, self.newSub, metadata);
+      self.newLayerName = "";
+      self.subLayer = "";
       self.newLayer = null;
       self.busy = false;
       self.showLayers = false;
