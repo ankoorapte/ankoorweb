@@ -142,8 +142,8 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="hideLayers"><b-row v-if="signedIn">
-      <b-col v-if="!activeGroup.length">
-        <p class="m-auto">welcome, {{user.displayName}}</p>
+      <b-col v-if="!activeGroup.length" class="m-auto p-5">
+        <p class="m-auto mt-5">welcome, {{user.displayName}}</p>
       </b-col>
       <b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
@@ -222,8 +222,8 @@ let app = new Vue({
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
-              <b-card style="max-height:300px; overflow: scroll; flex-direction: column-reverse" no-header class="w-100 m-0 p-0">
-                <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
+              <b-card no-header class="w-100 m-0 p-0">
+                <b-list-group style="max-height:300px; overflow-y:auto;" v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
                   <b-row class="m-0 p-0">
                     <b-col class="m-0 p-0" align="left">
                       <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
