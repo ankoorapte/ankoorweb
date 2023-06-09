@@ -269,6 +269,7 @@ let app = new Vue({
                   <b-form-input
                     @keydown.native="commentKeydownHandler" 
                     v-model="newComment"
+                    placeholder="comment"
                   >
                   </b-form-input>
                   <b-input-group-append>
@@ -292,7 +293,7 @@ let app = new Vue({
         </b-collapse>
         <b-collapse v-model="showNewLayer" v-show="!busy" align="center">
           <b-row v-show="!busy && showNewLayer"><b-col align="center">
-            <b-input-group class="m-1 w-75">
+            <b-input-group size="sm" class="m-1 w-75">
               <b-form-file
                 placeholder=".wav"
                 accept="audio/wav"
@@ -302,7 +303,7 @@ let app = new Vue({
                 size="sm"
               ></b-form-file>
             </b-input-group>
-            <b-input-group append="name" class="m-1 w-75">
+            <b-input-group size="sm" append="name" class="m-1 w-75">
               <b-form-input size="sm" v-model="newLayerName" :disabled="busy"></b-form-input>
             </b-input-group>
             <p class="m-1">
