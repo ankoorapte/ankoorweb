@@ -146,17 +146,17 @@ let app = new Vue({
         <p class="mx-auto mt-5">welcome, {{user.displayName}}</p>
       </b-col>
       <b-col v-if="activeGroup.length > 0">
-        <b-form-group :description="getGroupUsers(activeGroup)" class="d-flex justify-content-center">
-          <b-input-group class="my-1">
-            <b-form-input class="w-100" v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
+        <b-form-group :description="getGroupUsers(activeGroup)">
+          <b-input-group class="my-1 d-flex justify-content-center">
+            <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
               <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">save <b-icon icon="pencil"></b-icon></b-button>
               <b-button variant="outline-dark" @click="showAddUser = !showAddUser" v-if="groups[activeGroup].creator == user.uid"><b-icon icon="person-plus"></b-icon></b-button>
             </b-input-group-append>
           </b-input-group>
           <b-collapse v-model="showAddUser">
-            <b-input-group class="my-1">
-              <b-form-input class="w-100" placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
+            <b-input-group class="my-1 d-flex justify-content-center">
+              <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
               <b-input-group-append>
                 <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
               </b-input-group-append>
