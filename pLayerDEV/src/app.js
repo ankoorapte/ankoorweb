@@ -380,6 +380,11 @@ let app = new Vue({
     },
     showLayers(newBool, oldBool) {
       this.showNewLayer = false;
+    },
+    showNewLayer(newBool, oldBool) {
+      console.log(newBool);
+      console.log(this.busy);
+      console.log(this.showLayers);
     }
   },
   async created() {
