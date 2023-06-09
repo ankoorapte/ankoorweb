@@ -493,6 +493,7 @@ let app = new Vue({
           users: self.groups[uid].users.map(this.getUserName)
         }
       });
+      if(self.activeTrack.length) self.timeline = await self.pLayerAPI("getTimeline", { trackID: self.activeTrack });
     },
     async createUser() {
       let self = this;
