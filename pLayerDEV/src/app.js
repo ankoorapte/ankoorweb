@@ -216,22 +216,6 @@ let app = new Vue({
               </p>
           </b-list-group-item>
         </b-list-group>
-        <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
-          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
-              <p class="p-0 m-0"> 
-                <b>{{ getLayerName(layer_item.id) }}</b>
-                {{ getUserName(layer_item.user) }}
-              </p>
-              <p class="p-0 m-0">
-                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
-              </p>
-            </b-list-group-item>
-          </b-list-group>
-        </b-collapse>
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
@@ -257,6 +241,20 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
+          <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
+            <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
+              <p class="p-0 m-0"> 
+                <b>{{ getLayerName(layer_item.id) }}</b>
+                {{ getUserName(layer_item.user) }}
+              </p>
+              <p class="p-0 m-0">
+                <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
+              </p>
+            </b-list-group-item>
+          </b-list-group>
           <b-list-group flush>
             <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
               <p class="mx-auto my-0 p-0">
