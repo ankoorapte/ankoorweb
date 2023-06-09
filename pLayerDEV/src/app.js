@@ -142,8 +142,8 @@ let app = new Vue({
       </b-card>
     </b-col></b-row>
     <b-collapse v-model="hideLayers"><b-row v-if="signedIn">
-      <b-col v-if="!activeGroup.length" class="m-auto p-5">
-        <p class="m-auto mt-5">welcome, {{user.displayName}}</p>
+      <b-col v-if="!activeGroup.length" class="m-auto p-5" align="center">
+        <p class="mx-auto mt-5">welcome, {{user.displayName}}</p>
       </b-col>
       <b-col v-if="activeGroup.length > 0">
         <b-form-group :description="getGroupUsers(activeGroup)" align="center">
