@@ -85,7 +85,7 @@ let app = new Vue({
     </b-sidebar>
     <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
-        <b-input-group class="my-1">
+        <b-input-group class="my-1" :disabled="busy">
           <b-form-input
             placeholder="new username"
             @keydown.native="usernameKeydownHandler"
@@ -98,7 +98,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newUsername" @click="changeUsername()">change username</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="my-1">
+        <b-input-group class="my-1" :disabled="busy">
           <b-form-input
             @keydown.native="passwordKeydownHandler" 
             v-model="newPassword" 
@@ -111,7 +111,7 @@ let app = new Vue({
             <b-button variant="dark" :sign="busy || !newPassword" @click="changePassword()">change password</b-button>
           </b-input-group-append>
         </b-input-group>
-        <b-input-group class="my-1">
+        <b-input-group class="my-1" :disabled="busy">
           <b-form-input
             @keydown.native="emailKeydownHandler" 
             v-model="newEmail"
@@ -125,7 +125,7 @@ let app = new Vue({
         </b-input-group>
         <a href="https://forms.gle/TSSQvBinSwGLrnyT6" target="_blank" class="text-dark my-1">Report feedback</a>
         <br>
-        <b-button class="my-1" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
+        <b-button :disabled="busy" class="my-1" v-if="signedIn" variant="outline-danger" @click="signOut">sign out <b-icon icon="box-arrow-right"></b-icon></b-button>
       </b-col>
     </b-sidebar>
     <b-row><b-col align="center">
@@ -237,7 +237,7 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{(new Date(timeline_item.when)).toDateString() + " " + (new Date(timeline_item.when)).toTimeString()}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{(new Date(timeline_item.when)).toDateString() + ", " + (new Date(timeline_item.when)).toTimeString()}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
               </b-card>
             </b-list-group-item>
