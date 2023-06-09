@@ -190,7 +190,7 @@ class Player {
       uid: trackDoc.id,
       user: trackDoc.data().user,
       when: trackDoc.data().dateCreated,
-      message: "created track " + trackDoc.data().name,
+      message: "created track '" + trackDoc.data().name + "'",
       resolved: true,
     });
 
@@ -200,7 +200,7 @@ class Player {
         uid: doc.id,
         user: doc.data().user,
         when: doc.data().dateCreated,
-        message: "added layer " + doc.data().name,
+        message: "added layer '" + doc.data().name + "'",
         resolved: doc.data().resolved,
       });
     });
