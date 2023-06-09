@@ -767,6 +767,7 @@ let app = new Vue({
       }
       await self.pLayerAPI("addComment", arg);
       self.timeline = await self.pLayerAPI("getTimeline", arg);
+      self.newComment = "";
     },
     getGroupUsers(uid) {
       if(!uid || !Object.keys(this.groups).length) return [];
