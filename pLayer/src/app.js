@@ -809,7 +809,7 @@ let app = new Vue({
     async uploadSubstitute(layerID) {
       this.subLayer = layerID; 
       console.log(this.$refs['newSub'].childNodes[1].childNodes[0]);
-      his.$refs['newSub'].childNodes[1].childNodes[0].click();
+      this.$refs['newSub'].childNodes[1].childNodes[0].click();
     },
     async downloadLayer(index) {
       this.busy = true;
