@@ -231,9 +231,9 @@ let app = new Vue({
               </p>
               <p class="p-0 m-0">
                 <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
+                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
                 <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
                 <b-badge href="#" variant="danger" @click="unmuteLayer(index)" v-if="layerGains[index] && !layerGains[index].gain.value"><b-icon icon="volume-mute-fill"></b-icon></b-badge>
-                <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
               </p>
             </b-list-group-item>
           </b-list-group>
