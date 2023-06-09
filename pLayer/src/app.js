@@ -146,8 +146,8 @@ let app = new Vue({
         <p class="mx-auto mt-5">welcome, {{user.displayName}}</p>
       </b-col>
       <b-col v-if="activeGroup.length > 0">
-        <b-form-group :description="getGroupUsers(activeGroup)" class="d-flex justify-content-center w-75">
-          <b-input-group class="my-1">
+        <b-form-group :description="getGroupUsers(activeGroup)" class="d-flex justify-content-center">
+          <b-input-group class="my-1 w-100">
             <b-form-input v-model="activeGroupName" :state="groups[activeGroup].name != activeGroupName ? false : null" :disabled="groups[activeGroup].creator != user.uid"></b-form-input>
             <b-input-group-append>
               <b-button variant="outline-dark" @click="changeGroupName" v-show="groups[activeGroup].name != activeGroupName">save <b-icon icon="pencil"></b-icon></b-button>
@@ -155,7 +155,7 @@ let app = new Vue({
             </b-input-group-append>
           </b-input-group>
           <b-collapse v-model="showAddUser">
-            <b-input-group class="my-1">
+            <b-input-group class="my-1 w-100">
               <b-form-input placeholder="new member email" @keydown.native="addUserKeydownHandler" v-model="userToAdd" :state="stateAddUser" trim></b-form-input>
               <b-input-group-append>
                 <b-button variant="outline-dark" @click="addUser" :disabled="!stateAddUser">add user</b-button>
