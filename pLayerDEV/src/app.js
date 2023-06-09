@@ -291,7 +291,7 @@ let app = new Vue({
           </b-list-group>
         </b-collapse>
         <b-collapse v-model="showNewLayer" v-show="!busy" align="center">
-          <b-row><b-col align="center">
+          <b-row v-show="!busy && showNewLayer"><b-col align="center">
             <b-input-group class="m-1 w-75">
               <b-form-file
                 placeholder=".wav"
