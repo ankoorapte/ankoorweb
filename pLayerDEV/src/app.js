@@ -449,9 +449,6 @@ let app = new Vue({
       },
       set(newValue) {
       }
-    },
-    layerVariant(layerID) {
-      return this.draft === layerID ? "light" : "secondary";
     }
   },
   methods: {
@@ -871,6 +868,9 @@ let app = new Vue({
       if (event.which === 13 && this.stateGroup) {
         await this.addUser();
       }
+    },
+    layerVariant(layerID) {
+      return this.draft === layerID ? "light" : "secondary";
     }
   }
 });
