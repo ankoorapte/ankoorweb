@@ -189,7 +189,7 @@ class Player {
     timeline.push({
       when: trackDoc.data().dateCreated,
       user: trackDoc.data().user,
-      message: "created",
+      message: "created track " + trackDoc.data().name,
       resolved: true,
     });
 
@@ -198,7 +198,7 @@ class Player {
       timeline.push({
         when: doc.data().dateCreated,
         user: doc.data().user,
-        message: "layered",
+        message: "added layer " + doc.data().name,
         resolved: doc.data().resolved,
       });
     });
