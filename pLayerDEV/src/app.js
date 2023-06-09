@@ -705,14 +705,10 @@ let app = new Vue({
       await self.updateDB();
     },
     soloLayer(index) {
-      console.log(index);
-      console.log(this.layerMute);
       for(const idx in this.layerMute) {
         if(idx === index.toString()) {
-          console.log("unmuting " + idx);
           this.unmuteLayer(index);
         } else {
-          console.log("muting " + idx);
           this.muteLayer(index);
         }
       }
