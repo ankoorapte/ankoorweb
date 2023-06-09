@@ -78,7 +78,7 @@ let app = new Vue({
             <b-form-input class="my-1" placeholder="members (optional)" @keydown.native="groupKeydownHandler" v-model="newGroupUsers" :state="stateGroup"></b-form-input>
           </b-form-group>
           <b-row><b-col align="center">
-            <b-button @click="createGroup" :disabled="!stateGroup" variant="success" class="mx-auto my-1">create group</b-button>
+            <b-button @click="createGroup" :disabled="!stateGroup || busy" variant="success" class="mx-auto my-1">create group</b-button>
           </b-col></b-row>
         </b-collapse>
       </b-col>
@@ -558,6 +558,8 @@ let app = new Vue({
         users: Object.keys(self.users).filter((uid) => newGroupUserList.includes(self.users[uid].email))
       });
       await self.updateDB();
+      self.showNewGroup = false;
+      self.newGroupUsers = "";
     },
     async changeUsername(un) {
       if(!un) un = this.newUsername;
