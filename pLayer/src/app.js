@@ -227,7 +227,13 @@ let app = new Vue({
                 <b-icon icon="arrow-return-right"></b-icon>
                 <b>{{ getLayerName(layer_item.id) }}</b>
                 {{ getUserName(layer_item.user) }} 
-                <i v-if="draft.length > 0 && draft === layer_item.id">(DRAFT)</i>
+                <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 1)">
+                  accept
+                </b-badge>
+                <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 0)">
+                  reject
+                </b-badge>
+                <i v-if="draft.length > 0 && draft === layer_item.id"></i>
               </p>
               <p class="p-0 m-0">
                 <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
@@ -250,13 +256,7 @@ let app = new Vue({
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
                           <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
-                            <b-icon icon="play-fill"></b-icon>
-                          </b-badge>
-                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 1)">
-                            accept
-                          </b-badge>
-                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 0)">
-                            reject
+                            <b-icon icon="play-fill"></b-icon> play
                           </b-badge>
                         </p>
                       </b-col>
@@ -805,6 +805,11 @@ let app = new Vue({
       });
       this.draft = "";
       await this.updateDB();
+    },
+    showResolve(layerID) {
+      return this.draft.length > 0 && 
+            this.draft === layerID &&
+            this.user.uid === this.tracks[activeTrack].user;
     },
     async detectBPM() {
       if(this.newTrack) {
