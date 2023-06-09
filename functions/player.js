@@ -182,6 +182,25 @@ class Player {
     }
     return {status: "ok"};
   }
+  async resolveSubstitution(arg) {
+    this.validateArg(arg, ["layerID", "subLayer", "accept"]);
+    const trackDoc = await tracks.doc(arg.baseID).get();
+    if (trackDoc.data().user !== this.user.uid) {
+      throw new Error("user is not owner of track " + arg.baseID);
+    }
+    const now = admin.firestore.Timestamp.now();
+    await layers.doc(arg.layerID).update({
+      resolved: true,
+      dateUpdated: now,
+    });
+    if (arg.accept) {
+      await tracks.doc(arg.baseID).update({
+        layers: admin.firestore.FieldValue.arrayUnion(arg.layerID),
+        dateUpdated: now,
+      });
+    }
+    return {status: "ok"};
+  }
   async getTimeline(arg) {
     this.validateArg(arg, ["trackID"]);
     const timeline = [];
@@ -245,6 +264,7 @@ exports.updateDB = async (file, context) => {
   const user = file.metadata.user;
   const bpm = file.metadata.bpm;
   const base = file.metadata.base;
+  const sub = file.metadata.sub;
   const group = file.metadata.group;
   const isBase = !base.length; // empty string means isBase
   const now = admin.firestore.Timestamp.now();
@@ -253,6 +273,7 @@ exports.updateDB = async (file, context) => {
     bucket: uid,
     name: name,
     base: base,
+    sub: sub,
     user: user,
     bpm: bpm,
     group: group,

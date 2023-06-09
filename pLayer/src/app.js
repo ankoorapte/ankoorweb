@@ -205,7 +205,7 @@ let app = new Vue({
         </b-collapse>
       </b-col>
     </b-row></b-collapse>
-    <b-input-group v-show="false">
+    <b-input-group style="visibility: hidden">
       <b-form-file
         ref="newSub"
         accept="audio/wav"
