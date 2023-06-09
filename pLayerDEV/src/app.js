@@ -242,7 +242,7 @@ let app = new Vue({
               <b-card no-header class="w-100 m-0 p-0">
                 <div class="m-0 p-0" style="max-height:240px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
                   <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
-                    <b-row class="m-0 p-0">
+                    <b-row class="m-0 p-1">
                       <b-col class="m-0 p-0" align="left">
                         <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                       </b-col>
@@ -252,7 +252,7 @@ let app = new Vue({
                     </b-row>
                   </b-list-group>
                 </div>
-                <b-input-group class="m-0 p-0" style="font-size:12px" :disabled="busy" size="sm">
+                <b-input-group class="m-0 p-0" :disabled="busy" size="sm">
                   <b-form-input
                     @keydown.native="commentKeydownHandler" 
                     v-model="newComment"
