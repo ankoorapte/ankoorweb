@@ -165,9 +165,9 @@ class Player {
   }
   async resolveLayer(arg) {
     this.validateArg(arg, ["layerID", "baseID", "accept"]);
-    let trackDoc = await tracks.doc(arg.baseID).get();
-    if(trackDoc.data().user !== this.user.uid) {
-      throw new Error("user is not owner of track " + arg.baseID)
+    const trackDoc = await tracks.doc(arg.baseID).get();
+    if (trackDoc.data().user !== this.user.uid) {
+      throw new Error("user is not owner of track " + arg.baseID);
     }
     const now = admin.firestore.Timestamp.now();
     await layers.doc(arg.layerID).update({
