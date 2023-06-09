@@ -859,9 +859,8 @@ let app = new Vue({
       this.draft = "";
       await this.updateDB();
     },
-    showResolve(layerID) {
-      return this.draft.length > 0 && 
-            this.draft === layerID &&
+    showResolve() {
+      return this.draft.length > 0 &&
             this.user.uid === this.tracks[this.activeTrack].user;
     },
     async detectBPM() {
