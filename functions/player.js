@@ -187,8 +187,9 @@ class Player {
     }
 
     timeline.push({
-      when: trackDoc.data().dateCreated,
+      uid: trackDoc.id,
       user: trackDoc.data().user,
+      when: trackDoc.data().dateCreated,
       message: "created track " + trackDoc.data().name,
       resolved: true,
     });
@@ -196,8 +197,9 @@ class Player {
     const layerDocs = await layers.where("base", "==", arg.trackID).get();
     layerDocs.forEach((doc) => {
       timeline.push({
-        when: doc.data().dateCreated,
+        uid: trackDoc.id,
         user: doc.data().user,
+        when: doc.data().dateCreated,
         message: "added layer " + doc.data().name,
         resolved: doc.data().resolved,
       });
@@ -210,11 +212,12 @@ class Player {
   async addComment(arg) {
     this.validateArg(arg, ["trackID", "message"]);
     const now = admin.firestore.Timestamp.now();
-    const uid = this.user.uid;
+    const userID = this.user.uid;
     await tracks.doc(arg.trackID).update({
       comments: admin.firestore.FieldValue.arrayUnion({
+        uid: arg.trackID,
+        user: userID,
         when: now,
-        user: uid,
         message: arg.message,
         resolved: true,
       }),

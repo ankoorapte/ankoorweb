@@ -248,13 +248,13 @@ let app = new Vue({
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
-                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer')" @click="draft = timeline_item.message.replace('added layer', ''); getTrack(timeline_item.message.replace('added layer ', '')).then(play)">
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="draft = timeline_item.message.replace('added layer', ''); getTrack(timeline_item.uid).then(play)">
                             <b-icon icon="play-fill"></b-icon>
                           </b-badge>
-                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer')" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 1)">
+                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 1)">
                             accept
                           </b-badge>
-                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer')" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 0)">
+                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 0)">
                             reject
                           </b-badge>
                         </p>
@@ -829,6 +829,9 @@ let app = new Vue({
     getLayerUser(uid) {
       if(!uid || !Object.keys(this.layers).length) return [];
       return this.layers[uid].user;
+    },
+    getLayerId(name) {
+
     },
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
