@@ -223,7 +223,7 @@ let app = new Vue({
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card no-header class="w-100 m-0 p-0">
-                <b-list-group style="height: auto, max-height:50px; overflow-y:scroll;" v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
+                <b-list-group style="height: 300px, max-height:300px; overflow-y:scroll;" v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
                   <b-row class="m-0 p-0">
                     <b-col class="m-0 p-0" align="left">
                       <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
