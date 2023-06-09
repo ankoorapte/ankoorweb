@@ -208,7 +208,7 @@ let app = new Vue({
       <b-col align="center">
         <b-spinner v-show="busy" variant="dark" type="grow"></b-spinner>
         <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showLayers = !showLayers" class="d-flex justify-content-between align-items-center p-0 m-0">
               <p class="p-0 m-0"> 
                 <b>{{ getTrackName(activeTrack) }}</b>
                 {{ getTrackArtists(activeTrack).join(", ") }}
@@ -221,7 +221,7 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center p-0 m-0">
               <p class="p-0 m-0"> 
                 <b-icon icon="arrow-return-right"></b-icon>
                 <b>{{ getLayerName(layer_item.id) }}</b>
@@ -239,7 +239,7 @@ let app = new Vue({
         </b-collapse>
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
-            <b-list-group-item :disabled="busy" class="p-0">
+            <b-list-group-item :disabled="busy" class="p-0 m-0">
               <b-card no-header class="w-100 m-0 p-0">
                 <div class="m-0 p-0" style="max-height:200px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
                   <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
@@ -281,7 +281,7 @@ let app = new Vue({
         </b-collapse>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group flush>
-            <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewLayer = !showNewLayer" :active="showNewLayer" class="d-flex justify-content-between align-items-center p-0 m-0">
               <p class="mx-auto my-0 p-0">
                 new layer
                 <b-icon icon="plus-circle" v-if="!showNewLayer"></b-icon>
