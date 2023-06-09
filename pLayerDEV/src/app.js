@@ -221,11 +221,12 @@ let app = new Vue({
         </b-list-group>
         <b-collapse v-model="showLayers" v-if="!busy && activeTrack.length > 0">
           <b-list-group v-for="(layer_item, index) in layerBuffers" v-bind:key="index" flush>
-            <b-list-group-item :disabled="busy" variant="secondary" class="d-flex justify-content-between align-items-center">
+            <b-list-group-item :disabled="busy" :variant="layerVariant(layer_item.id)" class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0"> 
                 <b-icon icon="arrow-return-right"></b-icon>
                 <b>{{ getLayerName(layer_item.id) }}</b>
-                {{ getUserName(layer_item.user) }}
+                {{ getUserName(layer_item.user) }} 
+                <i v-if="draft.length">(DRAFT)</i>
               </p>
               <p class="p-0 m-0">
                 <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
@@ -240,11 +241,23 @@ let app = new Vue({
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card no-header class="w-100 m-0 p-0">
-                <div class="m-0 p-0" style="max-height:240px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
+                <div class="m-0 p-0" style="max-height:230px; overflow-y:scroll; display:flex; flex-direction: column-reverse">
                   <b-list-group v-for="(timeline_item, index) in timeline.slice().reverse()" v-bind:key="timeline_item.when" flush>
                     <b-row class="m-0 p-1">
                       <b-col class="m-0 p-0" align="left">
-                        <p style="font-size:13px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                        <p style="font-size:13px" class="m-0 p-0 mr-auto">
+                          <b>{{getUserName(timeline_item.user)}}: </b> 
+                          {{timeline_item.message}} 
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes("added layer")" @click="draft = timeline_item.message.replace("added layer ", ""); getTrack(timeline_item.message.replace("added layer ", "")).then(play)">
+                            <b-icon icon="play-fill"></b-icon>
+                          </b-badge>
+                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes("added layer")" @click="resolveDraft(timeline_item.message.replace("added layer ", ""), 1)">
+                            accept
+                          </b-badge>
+                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes("added layer")" @click="resolveDraft(timeline_item.message.replace("added layer ", ""), 0)">
+                            reject
+                          </b-badge>
+                        </p>
                       </b-col>
                       <b-col class="m-0 p-0" align="right"> 
                         <p style="font-size:13px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
@@ -354,6 +367,7 @@ let app = new Vue({
       trackIdx: 0,
       timeline: [],
       newComment: "",
+      draft: "",
     }
   },
   watch: {
@@ -435,6 +449,9 @@ let app = new Vue({
       },
       set(newValue) {
       }
+    },
+    layerVariant(layerID) {
+      return this.draft === layerID ? "light" : "secondary";
     }
   },
   methods: {
@@ -612,11 +629,13 @@ let app = new Vue({
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
     }, 
-    async getTrack() {
+    async getTrack(draftLayer="") {
       let self = this;
+      await self.pause();
       if(!self.groupTracks.length || !self.activeTrack.length) return;
       self.busy = true;
       let trackLayers = self.tracks[self.activeTrack].layers.slice();
+      if(draftLayer.length) trackLayers.push(draftLayer);
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
       self.seeker = 0;
@@ -752,6 +771,27 @@ let app = new Vue({
       window.URL.revokeObjectURL(url);
       this.busy = false;
     },
+    async addComment() {
+      let self = this;
+      let arg = {
+        trackID: self.activeTrack,
+        message: self.newComment
+      }
+      await self.pLayerAPI("addComment", arg);
+      self.timeline = await self.pLayerAPI("getTimeline", arg);
+      self.newComment = "";
+    },
+    async resolveDraft(layerID, accept) {
+      const baseID = this.activeTrack;
+      await this.pause();
+      await this.pLayerAPI("resolveLayer",{
+        layerID: layerID,
+        baseID: baseID,
+        accept: accept
+      });
+      this.draft = "";
+      await this.updateDB();
+    },
     async detectBPM() {
       if(this.newTrack) {
         let ac = new AudioContext();
@@ -765,15 +805,9 @@ let app = new Vue({
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
-    async addComment() {
-      let self = this;
-      let arg = {
-        trackID: self.activeTrack,
-        message: self.newComment
-      }
-      await self.pLayerAPI("addComment", arg);
-      self.timeline = await self.pLayerAPI("getTimeline", arg);
-      self.newComment = "";
+    getTimelineTimestamp(when) {
+      const d = new Date(when);
+      return d.toLocaleString();
     },
     getGroupUsers(uid) {
       if(!uid || !Object.keys(this.groups).length) return [];
@@ -802,10 +836,6 @@ let app = new Vue({
     getUserName(uid) {
       if(!uid || !Object.keys(this.users).length) return [];
       return this.users[uid].displayName;
-    },
-    getTimelineTimestamp(when) {
-      const d = new Date(when);
-      return d.toLocaleString();
     },
     usernameKeydownHandler(event) {
       if (event.which === 13 && this.stateUsername) {
