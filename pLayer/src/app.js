@@ -242,10 +242,9 @@ let app = new Vue({
                   <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 0)">
                     reject
                   </b-badge>
-                  <i v-if="draft.length > 0 && draft === layer_item.id"></i>
                 </p>
                 <p class="p-0 m-0">
-                  <b-badge href="#" variant="dark" @click="uploadSubstitute(layer_item.id)"><b-icon icon="upload"></b-icon></b-badge>
+                  <b-badge href="#" variant="dark" @click="uploadSubstitute(layer_item.id)" v-if="!showResolve(layer_item.id)"><b-icon icon="upload"></b-icon></b-badge>
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
                   <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
                   <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
