@@ -248,13 +248,13 @@ let app = new Vue({
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
-                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="draft = timeline_item.message.replace('added layer', ''); getTrack(timeline_item.uid).then(play)">
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
                             <b-icon icon="play-fill"></b-icon>
                           </b-badge>
-                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 1)">
+                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.uid, 1)">
                             accept
                           </b-badge>
-                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.message.replace('added layer', ''), 0)">
+                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.uid, 0)">
                             reject
                           </b-badge>
                         </p>
@@ -631,10 +631,10 @@ let app = new Vue({
       let self = this;
       await self.pause();
       if(!self.groupTracks.length || !self.activeTrack.length) return;
+      self.draft = draftLayer;
       self.busy = true;
       let trackLayers = self.tracks[self.activeTrack].layers.slice();
       if(draftLayer.length) trackLayers.push(draftLayer);
-      console.log(draftLayer);
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
       self.seeker = 0;
