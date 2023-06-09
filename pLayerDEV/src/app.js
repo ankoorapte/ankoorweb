@@ -251,10 +251,10 @@ let app = new Vue({
                           <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
                             <b-icon icon="play-fill"></b-icon>
                           </b-badge>
-                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.uid, 1)">
+                          <b-badge href="#" variant="success" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 1)">
                             accept
                           </b-badge>
-                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved" @click="resolveDraft(timeline_item.uid, 0)">
+                          <b-badge href="#" variant="danger" v-if="timeline_item.message.includes('added layer') && !timeline_item.resolved && user.uid === tracks[activeTrack].user" @click="resolveDraft(timeline_item.uid, 0)">
                             reject
                           </b-badge>
                         </p>
