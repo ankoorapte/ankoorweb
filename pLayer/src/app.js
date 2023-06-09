@@ -164,14 +164,14 @@ let app = new Vue({
           </b-collapse>
         </b-form-group>
         <b-list-group v-for="(track_item, index) in groupTracks" v-bind:key="track_item.uid" flush>
-          <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left">
+          <b-list-group-item :disabled="busy" variant="secondary" href="#" @click="activeTrack = track_item.uid" :active="activeTrack == track_item.uid" class="d-flex justify-content-between align-items-left p-1 m-0">
             <p class="p-0 m-0">
               <b>{{track_item.name}}</b> {{track_item.layers.map((uid) => getUserName(getLayerUser(uid))).join(", ")}}
             </p>
           </b-list-group-item>
         </b-list-group>
         <b-list-group flush>
-          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center">
+          <b-list-group-item :disabled="busy" variant="dark" href="#" @click="showNewTrack = !showNewTrack; activeTrack = ''" :active="showNewTrack" class="d-flex justify-content-between align-items-center p-1 m-0">
             <p class="mx-auto my-0 p-0">
               new track
               <b-icon icon="plus-circle" v-if="!showNewTrack"></b-icon>
@@ -189,16 +189,17 @@ let app = new Vue({
                 browse-text="upload"
                 @input="detectBPM"
                 :disabled="busy"
+                size="sm"
               ></b-form-file>
             </b-input-group>
-            <b-input-group append="name" class="m-1 w-75">
-              <b-form-input v-model="newTrackName" :disabled="busy"></b-form-input>
+            <b-input-group size="sm" append="name" class="m-1 w-75">
+              <b-form-input size="sm" v-model="newTrackName" :disabled="busy"></b-form-input>
             </b-input-group>
-            <b-input-group append="BPM" class="m-1 w-75">
-              <b-form-input v-model="newTrackBPM" :disabled="busy"></b-form-input>
+            <b-input-group size="sm" append="BPM" class="m-1 w-75">
+              <b-form-input size="sm" v-model="newTrackBPM" :disabled="busy"></b-form-input>
             </b-input-group>
             <p class="m-1">
-              <b-button :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
+              <b-button size="sm" :disabled="busy || !newTrack || !newTrackName.length || !newTrackBPM.length" variant="success" @click="postTrack()">post</b-button>
             </p>
           </b-col></b-row>
         </b-collapse>
