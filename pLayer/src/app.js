@@ -246,7 +246,7 @@ let app = new Vue({
                   <i v-if="draft.length > 0 && draft === layer_item.id"></i>
                 </p>
                 <p class="p-0 m-0">
-                  <b-badge href="#" variant="dark" @click="subLayer = layer_item.id; $refs['newSub'].click()"><b-icon icon="upload"></b-icon></b-badge>
+                  <b-badge href="#" variant="dark" @click="uploadSubstitute(layer_item.id)"><b-icon icon="upload"></b-icon></b-badge>
                   <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
                   <b-badge href="#" variant="dark" @click="soloLayer(index)" v-if="!paused">S</b-badge>
                   <b-badge href="#" variant="dark" @click="muteLayer(index)" v-if="layerGains[index] && layerGains[index].gain.value"><b-icon icon="volume-up-fill"></b-icon></b-badge>
@@ -807,6 +807,11 @@ let app = new Vue({
     unmuteLayer(index) {
       this.layerMute[index] = false;
       this.layerGains[index].gain.value = 1;
+    },
+    async uploadSubstitute(layerID) {
+      this.subLayer = layerID; 
+      console.log(this.$refs['newSub']);
+      this.$refs['newSub'].click();
     },
     async downloadLayer(index) {
       this.busy = true;
