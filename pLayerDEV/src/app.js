@@ -618,6 +618,7 @@ let app = new Vue({
     async getLayerBuffer(layerID) {
       let fetch_res = await fetch(await getDownloadURL(ref(storage, layerID)));
       let data = await fetch_res.arrayBuffer();
+      console.log(data);
       return {
         id: layerID,
         name: this.layers[layerID].name,
