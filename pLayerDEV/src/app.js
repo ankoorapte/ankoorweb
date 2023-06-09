@@ -223,16 +223,18 @@ let app = new Vue({
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card no-header class="w-100 m-0 p-0">
-                <b-list-group style="height: 300px, max-height:300px; overflow-y:scroll;" v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <b-row class="m-0 p-0">
-                    <b-col class="m-0 p-0" align="left">
-                      <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
-                    </b-col>
-                    <b-col class="m-0 p-0" align="right"> 
-                      <p style="font-size:12px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
-                    </b-col>
-                  </b-row>
-                </b-list-group>
+                <div class="m-0 p-0" style="height: 300px, max-height:300px; overflow-y:scroll;">
+                  <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
+                    <b-row class="m-0 p-0">
+                      <b-col class="m-0 p-0" align="left">
+                        <p style="font-size:12px" class="m-0 p-0 mr-auto"><b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                      </b-col>
+                      <b-col class="m-0 p-0" align="right"> 
+                        <p style="font-size:12px" class="m-0 p-0 ml-auto text-secondary">{{getTimelineTimestamp(timeline_item.when)}}</p>
+                      </b-col>
+                    </b-row>
+                  </b-list-group>
+                </div>
                 <b-input-group class="m-0 p-0" style="font-size:12px" :disabled="busy" size="sm">
                   <b-form-input
                     @keydown.native="commentKeydownHandler" 
