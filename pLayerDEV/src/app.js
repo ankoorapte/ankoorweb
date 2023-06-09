@@ -708,7 +708,7 @@ let app = new Vue({
       console.log(index);
       console.log(this.layerMute);
       for(const idx in this.layerMute) {
-        if(idx === index) {
+        if(idx === index.toString()) {
           console.log("unmuting " + idx);
           this.unmuteLayer(index);
         } else {
