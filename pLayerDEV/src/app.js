@@ -235,8 +235,8 @@ let app = new Vue({
         <b-collapse v-model="showTimeline">
           <b-list-group v-if="!busy && activeTrack.length > 0" flush>
             <b-list-group-item :disabled="busy" class="p-0">
-              <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0 d-flex justify-content-between align-items-left">
-                <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
+              <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0">
+                <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush class="d-flex justify-content-between align-items-left">
                   <p style="font-size:12px" class="m-0 p-0">{{(new Date(timeline_item.when)).toUTCString()}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
               </b-card>
