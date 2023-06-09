@@ -734,7 +734,7 @@ let app = new Vue({
         },
         contentType: 'audio/wav'
       }; 
-      await uploadBytes(trackPath, self.newTrack, metadata);
+      await uploadBytes(trackPath, self.newLayer, metadata);
       self.newLayerName = "";
       self.newLayer = null;
       self.busy = false;
