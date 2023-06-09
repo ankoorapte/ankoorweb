@@ -342,7 +342,8 @@ let app = new Vue({
       trackDuration: 0,
       interval: 0,
       trackIdx: 0,
-      timeline: []
+      timeline: [],
+      newComment: "",
     }
   },
   watch: {
@@ -760,6 +761,15 @@ let app = new Vue({
       extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
       return minutes + ":" + extraSeconds.toString().slice(0, 2);
     },
+    async addComment() {
+      let self = this;
+      let arg = {
+        trackID: self.activeTrack,
+        message: self.newComment
+      }
+      await self.pLayerAPI("addComment", arg);
+      self.timeline = await self.pLayerAPI("getTimeline", arg);
+    },
     getGroupUsers(uid) {
       if(!uid || !Object.keys(this.groups).length) return [];
       return this.groups[uid].users.map(this.getUserName).join(", ");
@@ -797,6 +807,11 @@ let app = new Vue({
         this.changeUsername();
       }
     },    
+    commentKeydownHandler(event) {
+      if (event.which === 13 && this.newComment.length) {
+        this.addComment();
+      }
+    },  
     passwordKeydownHandler(event) {
       if (event.which === 13 && this.statePassword) {
         this.changePassword();
