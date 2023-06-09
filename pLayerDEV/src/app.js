@@ -374,7 +374,6 @@ let app = new Vue({
       this.busy = true;
       await this.pause()
       await this.getTrack();
-      this.showNewTrack = !newTrack.length;
       if(newTrack.length) await this.play();
       this.busy = false;
     },
