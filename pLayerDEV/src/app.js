@@ -624,7 +624,7 @@ let app = new Vue({
         name: this.layers[layerID].name,
         user: this.layers[layerID].user,
         data: data.slice(),
-        decoded_data: await this.audioContext.decodeAudioData(data)x
+        decoded_data: await this.audioContext.decodeAudioData(data)
       }
     }, 
     async getTrack(draftLayer="") {
