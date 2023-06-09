@@ -237,7 +237,7 @@ let app = new Vue({
             <b-list-group-item :disabled="busy" class="p-0">
               <b-card style="max-height:300px; overflow: auto;" no-header class="w-100 m-0 p-0">
                 <b-list-group v-for="(timeline_item, index) in timeline" v-bind:key="timeline_item.when" flush>
-                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{(new Date(timeline_item.when)).toUTCString().slice(0,-4)}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
+                  <p style="font-size:12px" class="m-0 p-0 mr-auto">{{(new Date(timeline_item.when)).toDateString() + " " + (new Date(timeline_item.when)).toTimeString()}} <b>{{getUserName(timeline_item.user)}}: </b> {{timeline_item.message}}</p>
                 </b-list-group>
               </b-card>
             </b-list-group-item>
