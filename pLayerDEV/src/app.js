@@ -226,7 +226,7 @@ let app = new Vue({
                 <b-icon icon="arrow-return-right"></b-icon>
                 <b>{{ getLayerName(layer_item.id) }}</b>
                 {{ getUserName(layer_item.user) }} 
-                <i v-if="draft.length">(DRAFT)</i>
+                <i v-if="draft.length > 0 && draft === layer_item.id">(DRAFT)</i>
               </p>
               <p class="p-0 m-0">
                 <b-badge href="#" variant="dark" @click="downloadLayer(index)"><b-icon icon="download"></b-icon></b-badge>
