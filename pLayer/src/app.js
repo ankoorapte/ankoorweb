@@ -236,6 +236,7 @@ let app = new Vue({
                   <b-icon icon="arrow-return-right"></b-icon>
                   <b>{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }} 
+                  <i v-if="draft.length > 0 && draft === layer_item.id"> new </i>
                   <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, layers[layer_item.id].sub, 1)">
                     accept
                   </b-badge>
