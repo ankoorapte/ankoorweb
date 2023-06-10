@@ -411,6 +411,7 @@ let app = new Vue({
       await this.pause()
       await this.getTrack();
       if(newTrack.length) await this.play();
+      else this.showNewTrack = false;
       this.busy = false;
     },
     showLayers(newBool, oldBool) {
