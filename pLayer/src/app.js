@@ -236,11 +236,14 @@ let app = new Vue({
                   <b-icon icon="arrow-return-right"></b-icon>
                   <b>{{ getLayerName(layer_item.id) }}</b>
                   {{ getUserName(layer_item.user) }} 
-                  <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 1)">
+                  <b-badge href="#" variant="success" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, layers[layer_item.id].sub, 1)">
                     accept
                   </b-badge>
-                  <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, 0)">
+                  <b-badge href="#" variant="danger" v-if="showResolve(layer_item.id)" @click="resolveDraft(layer_item.id, layers[layer_item.id].sub, 0)">
                     reject
+                  </b-badge>
+                  <b-badge href="#" variant="dark" v-if="draft.length > 0 && draft === layer_item.id && layers[layer_item.id].sub.length" @click="draft = ''; getTrack()">
+                    original
                   </b-badge>
                 </p>
                 <p class="p-0 m-0">
@@ -265,7 +268,7 @@ let app = new Vue({
                         <p style="font-size:13px" class="m-0 p-0 mr-auto">
                           <b>{{getUserName(timeline_item.user)}}: </b> 
                           {{timeline_item.message}} 
-                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added new ') && !timeline_item.resolved" @click="getTrack(timeline_item.uid).then(play)">
+                          <b-badge href="#" variant="dark" v-if="timeline_item.message.includes('added new ') && !timeline_item.resolved" @click="getTrack(timeline_item.uid, layers[timeline_item.uid].sub).then(play)">
                             <b-icon icon="play-fill"></b-icon> play
                           </b-badge>
                         </p>
@@ -647,14 +650,20 @@ let app = new Vue({
         decoded_data: await this.audioContext.decodeAudioData(data)
       }
     }, 
-    async getTrack(draftLayer="") {
+    async getTrack(draftLayer="", subLayer="") {
       let self = this;
       await self.pause();
       if(!self.groupTracks.length || !self.activeTrack.length) return;
       self.draft = draftLayer;
       self.busy = true;
       let trackLayers = self.tracks[self.activeTrack].layers.map((layerID) => self.layers[layerID].revisions.slice(-1)[0]);
-      if(draftLayer.length) trackLayers.push(draftLayer);
+      if(draftLayer.length) {
+        if(subLayer.length) {
+          trackLayers[trackLayers.findIndex((layerID) => subLayer === layerID)] = draftLayer;
+        } else {
+          trackLayers.push(draftLayer);
+        }
+      }
       self.layerBuffers = await Promise.all(trackLayers.map(self.getLayerBuffer));
       self.layerMute = Array(trackLayers.length).fill(false);
       self.seeker = 0;
@@ -833,22 +842,11 @@ let app = new Vue({
       self.timeline = await self.pLayerAPI("getTimeline", arg);
       self.newComment = "";
     },
-    async resolveDraft(layerID, accept) {
+    async resolveDraft(layerID, subLayerID, accept) {
       const baseID = this.activeTrack;
+      const endpoint = subLayerID.length ? "resolveSubstitution" : "resolveLayer";
       await this.pause();
-      await this.pLayerAPI("resolveLayer",{
-        layerID: layerID,
-        baseID: baseID,
-        accept: accept
-      });
-      this.draft = "";
-      await this.updateDB();
-    },
-    async resolveSubstitution(layerID, accept) {
-      const baseID = this.activeTrack;
-      const subLayerID = "";//????
-      await this.pause();
-      await this.pLayerAPI("resolveSubstitution",{
+      await this.pLayerAPI(endpoint,{
         layerID: layerID,
         baseID: baseID,
         subLayerID: subLayerID,
