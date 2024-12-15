@@ -141,7 +141,6 @@ let app = new Vue({
       newTrackBPM: "",
       activeTrack: "",
       groupTracks: [],
-      paused: true,
       layerBuffers: [],
       audioContext: null,
       merger: null,
@@ -252,7 +251,6 @@ let app = new Vue({
       }
     },
     async signOut() {
-      await this.pause();
       this.signedIn = false;
       this.user = null;
       this.email = "";
