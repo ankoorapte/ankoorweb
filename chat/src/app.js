@@ -47,7 +47,7 @@ let app = new Vue({
         <b-button v-if="signedIn" v-b-toggle.sidebar-account variant="outline-dark"><b-icon icon="person"></b-icon></b-button>
       </b-col>
     </b-row>
-    <div ref="pLayer"></div>
+    <div ref="ankoor chat"></div>
     <b-sidebar v-if="signedIn" id="sidebar-account" title="account" header-class="mx-auto" align="center" right shadow backdrop no-header-close>
       <b-col align="center">
         <b-input-group class="my-1" :disabled="busy">
