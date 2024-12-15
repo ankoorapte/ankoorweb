@@ -164,11 +164,7 @@ let app = new Vue({
     let self = this;
     onAuthStateChanged(auth, async (user) => {
       self.busy = true;
-      if(user) { await self.signIn(user); }
-      if(self.signedIn) {
-        self.resetAudioContext();
-        await self.updateDB();
-      }
+      if(user) await self.signIn(user)
       self.busy = false;
     });
     self.busy = false;
@@ -256,7 +252,6 @@ let app = new Vue({
       }
     },
     async signOut() {
-      this.resetAudioContext();
       await this.pause();
       this.signedIn = false;
       this.user = null;
@@ -274,7 +269,6 @@ let app = new Vue({
         field: "displayName",
         value: un
       });
-      await this.updateDB();
     },
     async changePassword() {
       let pw = this.newPassword;
